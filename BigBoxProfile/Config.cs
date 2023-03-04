@@ -187,6 +187,6 @@ namespace BigBoxProfile
 			//SoundCardUtils.SetDefaultMic(cmb_primarysoundcard.GetItemText(cmb_primarysoundcard.SelectedItem));
 
 		}
-*/
+
 	}
 }
