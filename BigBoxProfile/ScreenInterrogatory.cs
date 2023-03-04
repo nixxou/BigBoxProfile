@@ -283,7 +283,7 @@ namespace BigBoxProfile
 			return deviceName.monitorFriendlyDeviceName;
 		}
 
-		public static IEnumerable<string> GetAllMonitorsFriendlyNames()
+		private static IEnumerable<string> GetAllMonitorsFriendlyNames()
 		{
 			uint pathCount, modeCount;
 			var error = GetDisplayConfigBufferSizes(QUERY_DEVICE_CONFIG_FLAGS.QDC_ONLY_ACTIVE_PATHS, out pathCount, out modeCount);
@@ -311,7 +311,7 @@ namespace BigBoxProfile
 			return null;
 		}
 
-		public static DISPLAYCONFIG_MODE_INFO[] GetAllMonitorsData()
+		private static IEnumerable<uint> GetAllMonitorsTargetID()
 		{
 			uint pathCount, modeCount;
 			var error = GetDisplayConfigBufferSizes(QUERY_DEVICE_CONFIG_FLAGS.QDC_ONLY_ACTIVE_PATHS, out pathCount, out modeCount);
@@ -325,13 +325,24 @@ namespace BigBoxProfile
 			if (error != ERROR_SUCCESS)
 				throw new Win32Exception(error);
 
-			return displayModes;
-			/*
+			List<uint> tIds = new List<uint>();
 			for (var i = 0; i < modeCount; i++)
 				if (displayModes[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE.DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
-					yield return MonitorFriendlyName(displayModes[i].adapterId, displayModes[i].id);
-			*/
+					tIds.Add(displayModes[i].id);
+			
+			return tIds.ToArray();
+			
+		}
 
+
+
+		public static uint DeviceTargetID(this Screen screen)
+		{
+			var allFriendlyNames = GetAllMonitorsTargetID();
+			for (var index = 0; index < Screen.AllScreens.Length; index++)
+				if (Equals(screen, Screen.AllScreens[index]))
+					return allFriendlyNames.ToArray()[index];
+			return 0;
 		}
 
 

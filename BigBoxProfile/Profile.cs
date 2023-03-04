@@ -78,6 +78,11 @@ namespace BigBoxProfile
 		public static Profile CreateDefaultProfile(string name)
 		{
 			Profile defaultProfile = new Profile(name);
+			defaultProfile.Configuration.Add("monitor", "main");
+			defaultProfile.Configuration.Add("monitorswitch", "<none>");
+			defaultProfile.Configuration.Add("soundcard", "<dontchange>");
+
+
 			return defaultProfile;
 		}
 
@@ -153,6 +158,7 @@ namespace BigBoxProfile
 			profileName = BigBoxUtils.FilterFileName(profileName);
 			if (ProfileList.ContainsKey(profileName)) throw (new Exception("A profile with this name already exist"));
 			ProfileName = profileName;
+			Configuration = new Dictionary<string, string>();
 		}
 
 		private void AddProfileToList(bool save=false)

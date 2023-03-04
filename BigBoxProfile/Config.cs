@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualBasic;
+﻿using AudioDeviceCmdlets;
+using CoreAudioApi;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +8,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +27,8 @@ namespace BigBoxProfile
 		{
 			UpdateRegisterStatus();
 			UpdateCmbListProfile("default");
+			InitializeCmbSoundCard();
+			InitializeCmbMonitorSwitch();
 			Profile.ActiveProfileChanged += Profile_ActiveProfileChanged;
 			Profile.ProfileListChanged += Profile_ProfileListChanged;
 
@@ -44,6 +49,27 @@ namespace BigBoxProfile
 
 		}
 
+		public void InitializeCmbSoundCard()
+		{
+			cmb_primarysoundcard.Items.Clear();
+			cmb_primarysoundcard.Items.Add("<dontchange>");
+
+			foreach(var soundcard in SoundCardUtils.GetSoundCards())
+			{
+				cmb_primarysoundcard.Items.Add($"{soundcard}");
+				Debug.WriteLine(Encoding.ASCII.GetString(Encoding.Default.GetBytes(soundcard)));
+
+
+			}
+
+		}
+
+		public void InitializeCmbMonitorSwitch()
+		{
+			cmb_monitorswitch.Items.Clear();
+			cmb_monitorswitch.Items.Add("<none>");
+		}
+
 		public void UpdateCmbListProfile(string selected)
 		{
 			cmb_listProfiles.Items.Clear();
@@ -56,6 +82,18 @@ namespace BigBoxProfile
 				index++;
 			}
 			if(index != -1) cmb_listProfiles.SelectedIndex = index_default;
+		}
+
+		public void UpdateProfileConfiguration()
+		{
+			var config = Profile.ActiveProfile.Configuration;
+			if (config != null)
+			{
+				if (config["monitor"] != txt_monitorpriority.Text) txt_monitorpriority.Text = config["monitor"];
+			}
+
+
+
 		}
 
 		public void UpdateRegisterStatus()
@@ -124,7 +162,6 @@ namespace BigBoxProfile
 				Debug.WriteLine($"TrueName : {ScreenInterrogatory.DeviceFriendlyName(screen)}");
 
 			}
-			var xxx = ScreenInterrogatory.GetAllMonitorsData();
 
 
 		}
@@ -138,12 +175,18 @@ namespace BigBoxProfile
 			}
 
 		}
-		/*
 
-private void cmb_listProfiles_SelectedIndexChanged(object sender, EventArgs e)
-{
-Debug.WriteLine(cmb_listProfiles.SelectedIndex);
-}
+		private void button3_Click(object sender, EventArgs e)
+		{
+			var frm = new HelpMonitor();
+			frm.ShowDialog();
+		}
+
+		private void button5_Click(object sender, EventArgs e)
+		{
+			//SoundCardUtils.SetDefaultMic(cmb_primarysoundcard.GetItemText(cmb_primarysoundcard.SelectedItem));
+
+		}
 */
 	}
 }
