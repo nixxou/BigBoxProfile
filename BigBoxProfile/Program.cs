@@ -28,7 +28,7 @@ namespace BigBoxProfile
 					bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 					if (isAdmin)
 					{
-						BigBoxProfile.RegisterApp();
+						BigBoxUtils.RegisterApp();
 					}
 					else
 					{
@@ -41,7 +41,7 @@ namespace BigBoxProfile
 					bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 					if (isAdmin)
 					{
-						BigBoxProfile.UnregisterApp();
+						BigBoxUtils.UnregisterApp();
 					}
 					else
 					{
