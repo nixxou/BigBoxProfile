@@ -79,7 +79,7 @@ namespace BigBoxProfile
 		{
 			Profile defaultProfile = new Profile(name);
 			defaultProfile.Configuration.Add("monitor", "main");
-			defaultProfile.Configuration.Add("monitorswitch", "<none>");
+			defaultProfile.Configuration.Add("monitorswitch", "");
 			defaultProfile.Configuration.Add("soundcard", "<dontchange>");
 
 

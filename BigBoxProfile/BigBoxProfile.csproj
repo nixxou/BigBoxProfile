@@ -39,6 +39,9 @@
     <Reference Include="CliWrap, Version=3.6.0.0, Culture=neutral, PublicKeyToken=1c4a4fc2d6886e5a, processorArchitecture=MSIL">
       <HintPath>..\packages\CliWrap.3.6.0\lib\net462\CliWrap.dll</HintPath>
     </Reference>
+    <Reference Include="KellermanSoftware.Compare-NET-Objects, Version=4.79.0.0, Culture=neutral, PublicKeyToken=d970ace04cc85217, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompareNETObjects.4.79.0\lib\net48\KellermanSoftware.Compare-NET-Objects.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -93,6 +96,7 @@
   <ItemGroup>
     <Compile Include="BigBoxLauncher.cs" />
     <Compile Include="BigBoxUtils.cs" />
+    <Compile Include="CCDWrapper.cs" />
     <Compile Include="Config.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +111,7 @@
     <Compile Include="HelpMonitor.Designer.cs">
       <DependentUpon>HelpMonitor.cs</DependentUpon>
     </Compile>
+    <Compile Include="MonitorSwitcher.cs" />
     <Compile Include="Profile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,6 +145,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SetDpi.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -13,6 +13,8 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MonitorSwitcherGUI;
+
 
 namespace BigBoxProfile
 {
@@ -71,6 +73,8 @@ namespace BigBoxProfile
 		{
 			cmb_monitorswitch.Items.Clear();
 			cmb_monitorswitch.Items.Add("<none>");
+
+
 			string selected = Profile.ActiveProfile.Configuration["monitorswitch"];
 			var index = cmb_monitorswitch.Items.IndexOf(selected);
 			if (index >= 0) cmb_monitorswitch.SelectedIndex = index;
@@ -196,6 +200,11 @@ namespace BigBoxProfile
 		private void groupBox1_Enter(object sender, EventArgs e)
 		{
 
+		}
+
+		private void button4_Click(object sender, EventArgs e)
+		{
+			MonitorSwitcher.SaveDisplaySettings("zog.xml");
 		}
 	}
 }

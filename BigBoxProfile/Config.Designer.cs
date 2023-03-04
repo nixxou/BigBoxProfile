@@ -65,6 +65,10 @@
 			this.txt_soundcard = new System.Windows.Forms.TextBox();
 			this.txt_monitorswitch = new System.Windows.Forms.TextBox();
 			this.button10 = new System.Windows.Forms.Button();
+			this.radio_monitorswitch_yes = new System.Windows.Forms.RadioButton();
+			this.radio_monitorswitch_no = new System.Windows.Forms.RadioButton();
+			this.label8 = new System.Windows.Forms.Label();
+			this.button12 = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -269,6 +273,10 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.button12);
+			this.groupBox2.Controls.Add(this.label8);
+			this.groupBox2.Controls.Add(this.radio_monitorswitch_no);
+			this.groupBox2.Controls.Add(this.radio_monitorswitch_yes);
 			this.groupBox2.Controls.Add(this.button10);
 			this.groupBox2.Controls.Add(this.txt_monitorswitch);
 			this.groupBox2.Controls.Add(this.txt_soundcard);
@@ -284,7 +292,7 @@
 			this.groupBox2.Controls.Add(this.label2);
 			this.groupBox2.Location = new System.Drawing.Point(6, 19);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(360, 200);
+			this.groupBox2.Size = new System.Drawing.Size(360, 265);
 			this.groupBox2.TabIndex = 9;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "\'";
@@ -329,27 +337,28 @@
 			// 
 			// button4
 			// 
-			this.button4.Location = new System.Drawing.Point(300, 58);
+			this.button4.Location = new System.Drawing.Point(289, 212);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(54, 23);
 			this.button4.TabIndex = 14;
 			this.button4.Text = "Select";
 			this.button4.UseVisualStyleBackColor = true;
+			this.button4.Click += new System.EventHandler(this.button4_Click);
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(10, 63);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(131, 13);
+			this.label3.Size = new System.Drawing.Size(137, 13);
 			this.label3.TabIndex = 13;
-			this.label3.Text = "Use MonitorSwitch Profile:";
+			this.label3.Text = "Use Custom Monitor Profile:";
 			// 
 			// cmb_monitorswitch
 			// 
 			this.cmb_monitorswitch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_monitorswitch.FormattingEnabled = true;
-			this.cmb_monitorswitch.Location = new System.Drawing.Point(150, 58);
+			this.cmb_monitorswitch.Location = new System.Drawing.Point(139, 212);
 			this.cmb_monitorswitch.Name = "cmb_monitorswitch";
 			this.cmb_monitorswitch.Size = new System.Drawing.Size(144, 21);
 			this.cmb_monitorswitch.TabIndex = 12;
@@ -419,7 +428,7 @@
 			// 
 			// txt_monitorswitch
 			// 
-			this.txt_monitorswitch.Location = new System.Drawing.Point(150, 85);
+			this.txt_monitorswitch.Location = new System.Drawing.Point(139, 239);
 			this.txt_monitorswitch.Name = "txt_monitorswitch";
 			this.txt_monitorswitch.ReadOnly = true;
 			this.txt_monitorswitch.Size = new System.Drawing.Size(204, 20);
@@ -433,6 +442,46 @@
 			this.button10.TabIndex = 24;
 			this.button10.Text = "button10";
 			this.button10.UseVisualStyleBackColor = true;
+			// 
+			// radio_monitorswitch_yes
+			// 
+			this.radio_monitorswitch_yes.AutoSize = true;
+			this.radio_monitorswitch_yes.Location = new System.Drawing.Point(153, 61);
+			this.radio_monitorswitch_yes.Name = "radio_monitorswitch_yes";
+			this.radio_monitorswitch_yes.Size = new System.Drawing.Size(43, 17);
+			this.radio_monitorswitch_yes.TabIndex = 25;
+			this.radio_monitorswitch_yes.TabStop = true;
+			this.radio_monitorswitch_yes.Text = "Yes";
+			this.radio_monitorswitch_yes.UseVisualStyleBackColor = true;
+			// 
+			// radio_monitorswitch_no
+			// 
+			this.radio_monitorswitch_no.AutoSize = true;
+			this.radio_monitorswitch_no.Location = new System.Drawing.Point(202, 61);
+			this.radio_monitorswitch_no.Name = "radio_monitorswitch_no";
+			this.radio_monitorswitch_no.Size = new System.Drawing.Size(39, 17);
+			this.radio_monitorswitch_no.TabIndex = 26;
+			this.radio_monitorswitch_no.TabStop = true;
+			this.radio_monitorswitch_no.Text = "No";
+			this.radio_monitorswitch_no.UseVisualStyleBackColor = true;
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(150, 81);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(35, 13);
+			this.label8.TabIndex = 27;
+			this.label8.Text = "label8";
+			// 
+			// button12
+			// 
+			this.button12.Location = new System.Drawing.Point(300, 58);
+			this.button12.Name = "button12";
+			this.button12.Size = new System.Drawing.Size(54, 23);
+			this.button12.TabIndex = 28;
+			this.button12.Text = "button12";
+			this.button12.UseVisualStyleBackColor = true;
 			// 
 			// Config
 			// 
@@ -503,6 +552,10 @@
 		private System.Windows.Forms.TextBox txt_monitorswitch;
 		private System.Windows.Forms.TextBox txt_soundcard;
 		private System.Windows.Forms.Button button10;
+		private System.Windows.Forms.Button button12;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.RadioButton radio_monitorswitch_no;
+		private System.Windows.Forms.RadioButton radio_monitorswitch_yes;
 	}
 }
 
