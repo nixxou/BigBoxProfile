@@ -64,6 +64,7 @@
 			this.txt_monitorpriority = new System.Windows.Forms.TextBox();
 			this.txt_soundcard = new System.Windows.Forms.TextBox();
 			this.txt_monitorswitch = new System.Windows.Forms.TextBox();
+			this.button10 = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -129,6 +130,7 @@
 			this.groupBox1.Size = new System.Drawing.Size(742, 387);
 			this.groupBox1.TabIndex = 5;
 			this.groupBox1.TabStop = false;
+			this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
 			// 
 			// groupBox4
 			// 
@@ -190,6 +192,7 @@
 			// 
 			// comboBox5
 			// 
+			this.comboBox5.Enabled = false;
 			this.comboBox5.FormattingEnabled = true;
 			this.comboBox5.Location = new System.Drawing.Point(509, 19);
 			this.comboBox5.Name = "comboBox5";
@@ -204,6 +207,7 @@
 			this.groupBox3.Controls.Add(this.label7);
 			this.groupBox3.Controls.Add(this.listBox1);
 			this.groupBox3.Controls.Add(this.comboBox6);
+			this.groupBox3.Enabled = false;
 			this.groupBox3.Location = new System.Drawing.Point(385, 46);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(338, 335);
@@ -265,6 +269,7 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.button10);
 			this.groupBox2.Controls.Add(this.txt_monitorswitch);
 			this.groupBox2.Controls.Add(this.txt_soundcard);
 			this.groupBox2.Controls.Add(this.txt_monitorpriority);
@@ -315,6 +320,7 @@
 			// 
 			// cmb_primarysoundcard
 			// 
+			this.cmb_primarysoundcard.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_primarysoundcard.FormattingEnabled = true;
 			this.cmb_primarysoundcard.Location = new System.Drawing.Point(150, 112);
 			this.cmb_primarysoundcard.Name = "cmb_primarysoundcard";
@@ -341,6 +347,7 @@
 			// 
 			// cmb_monitorswitch
 			// 
+			this.cmb_monitorswitch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_monitorswitch.FormattingEnabled = true;
 			this.cmb_monitorswitch.Location = new System.Drawing.Point(150, 58);
 			this.cmb_monitorswitch.Name = "cmb_monitorswitch";
@@ -349,7 +356,7 @@
 			// 
 			// button3
 			// 
-			this.button3.Location = new System.Drawing.Point(310, 29);
+			this.button3.Location = new System.Drawing.Point(100, 29);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(44, 23);
 			this.button3.TabIndex = 11;
@@ -399,7 +406,7 @@
 			// 
 			this.txt_monitorpriority.Location = new System.Drawing.Point(150, 29);
 			this.txt_monitorpriority.Name = "txt_monitorpriority";
-			this.txt_monitorpriority.Size = new System.Drawing.Size(154, 20);
+			this.txt_monitorpriority.Size = new System.Drawing.Size(142, 20);
 			this.txt_monitorpriority.TabIndex = 21;
 			// 
 			// txt_soundcard
@@ -417,6 +424,15 @@
 			this.txt_monitorswitch.ReadOnly = true;
 			this.txt_monitorswitch.Size = new System.Drawing.Size(204, 20);
 			this.txt_monitorswitch.TabIndex = 23;
+			// 
+			// button10
+			// 
+			this.button10.Location = new System.Drawing.Point(300, 29);
+			this.button10.Name = "button10";
+			this.button10.Size = new System.Drawing.Size(54, 23);
+			this.button10.TabIndex = 24;
+			this.button10.Text = "button10";
+			this.button10.UseVisualStyleBackColor = true;
 			// 
 			// Config
 			// 
@@ -486,6 +502,7 @@
 		private System.Windows.Forms.TextBox txt_monitorpriority;
 		private System.Windows.Forms.TextBox txt_monitorswitch;
 		private System.Windows.Forms.TextBox txt_soundcard;
+		private System.Windows.Forms.Button button10;
 	}
 }
 

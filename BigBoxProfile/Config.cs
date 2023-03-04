@@ -26,9 +26,14 @@ namespace BigBoxProfile
 		private void Config_Load(object sender, EventArgs e)
 		{
 			UpdateRegisterStatus();
-			UpdateCmbListProfile("default");
+			UpdateCmbListProfile();
 			InitializeCmbSoundCard();
 			InitializeCmbMonitorSwitch();
+
+			txt_monitorpriority.Text = Profile.ActiveProfile.Configuration["monitor"];
+			txt_monitorswitch.Text = Profile.ActiveProfile.Configuration["monitorswitch"];
+			txt_soundcard.Text = Profile.ActiveProfile.Configuration["soundcard"];
+
 			Profile.ActiveProfileChanged += Profile_ActiveProfileChanged;
 			Profile.ProfileListChanged += Profile_ProfileListChanged;
 
@@ -37,7 +42,7 @@ namespace BigBoxProfile
 		private void Profile_ProfileListChanged(object sender, EventArgs e)
 		{
 			Debug.WriteLine("Profile_ProfileListChanged");
-			UpdateCmbListProfile(Profile.ActiveProfile.ProfileName);
+			UpdateCmbListProfile();
 		}
 
 		private void Profile_ActiveProfileChanged(object sender, EventArgs e)
@@ -45,7 +50,7 @@ namespace BigBoxProfile
 			Debug.WriteLine("activeProfileChanged");
 			string selected = cmb_listProfiles.GetItemText(cmb_listProfiles.SelectedItem);
 
-			if (selected != Profile.ActiveProfile.ProfileName) UpdateCmbListProfile(Profile.ActiveProfile.ProfileName);
+			if (selected != Profile.ActiveProfile.ProfileName) UpdateCmbListProfile();
 
 		}
 
@@ -53,35 +58,35 @@ namespace BigBoxProfile
 		{
 			cmb_primarysoundcard.Items.Clear();
 			cmb_primarysoundcard.Items.Add("<dontchange>");
-
 			foreach(var soundcard in SoundCardUtils.GetSoundCards())
 			{
 				cmb_primarysoundcard.Items.Add($"{soundcard}");
-				Debug.WriteLine(Encoding.ASCII.GetString(Encoding.Default.GetBytes(soundcard)));
-
-
 			}
-
+			string selected = Profile.ActiveProfile.Configuration["soundcard"];
+			var index = cmb_primarysoundcard.Items.IndexOf(selected);
+			if(index >= 0) cmb_primarysoundcard.SelectedIndex = index;
 		}
 
 		public void InitializeCmbMonitorSwitch()
 		{
 			cmb_monitorswitch.Items.Clear();
 			cmb_monitorswitch.Items.Add("<none>");
+			string selected = Profile.ActiveProfile.Configuration["monitorswitch"];
+			var index = cmb_monitorswitch.Items.IndexOf(selected);
+			if (index >= 0) cmb_monitorswitch.SelectedIndex = index;
+
 		}
 
-		public void UpdateCmbListProfile(string selected)
+		public void UpdateCmbListProfile()
 		{
 			cmb_listProfiles.Items.Clear();
-			int index = 0;
-			int index_default = -1;
 			foreach (var p in Profile.ProfileList)
 			{
 				cmb_listProfiles.Items.Add(p.Value.ProfileName);
-				if (p.Value.ProfileName == selected) index_default = index;
-				index++;
 			}
-			if(index != -1) cmb_listProfiles.SelectedIndex = index_default;
+			string selected = Profile.ActiveProfile.ProfileName;
+			var index = cmb_listProfiles.Items.IndexOf(selected);
+			if (index >= 0) cmb_listProfiles.SelectedIndex = index;
 		}
 
 		public void UpdateProfileConfiguration()
@@ -188,5 +193,9 @@ namespace BigBoxProfile
 
 		}
 
+		private void groupBox1_Enter(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
