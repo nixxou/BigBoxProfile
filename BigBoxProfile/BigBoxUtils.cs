@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -17,6 +18,23 @@ namespace BigBoxProfile
 {
 	internal class BigBoxUtils
 	{
+
+		[DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+		//static extern bool CreateSymbolicLink(string lpSymlinkFileName, string lpTargetFileName, int dwFlags);
+		static extern bool CreateHardLink(
+		  string lpFileName,
+		  string lpExistingFileName,
+		  IntPtr lpSecurityAttributes
+		);
+
+		public static void MakeLink(string source, string target)
+		{
+			if (!File.Exists(source)) return;
+			if (File.Exists(target)) return;
+
+			CreateHardLink(target, source, IntPtr.Zero);
+		}
+
 		public static void RegisterApp()
 		{
 
