@@ -54,13 +54,13 @@
 			this.txt_monitorswitch = new System.Windows.Forms.TextBox();
 			this.txt_soundcard = new System.Windows.Forms.TextBox();
 			this.txt_monitorpriority = new System.Windows.Forms.TextBox();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.btn_editPriority = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
 			this.button2 = new System.Windows.Forms.Button();
 			this.label5 = new System.Windows.Forms.Label();
+			this.checkBox1 = new System.Windows.Forms.CheckBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -328,16 +328,6 @@
 			this.txt_monitorpriority.Size = new System.Drawing.Size(144, 20);
 			this.txt_monitorpriority.TabIndex = 21;
 			// 
-			// checkBox1
-			// 
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Location = new System.Drawing.Point(150, 113);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Size = new System.Drawing.Size(142, 17);
-			this.checkBox1.TabIndex = 18;
-			this.checkBox1.Text = "Restaure On BigBox Exit";
-			this.checkBox1.UseVisualStyleBackColor = true;
-			// 
 			// label4
 			// 
 			this.label4.AutoSize = true;
@@ -394,6 +384,16 @@
 			this.label5.TabIndex = 7;
 			this.label5.Text = "Select Profile :";
 			// 
+			// checkBox1
+			// 
+			this.checkBox1.AutoSize = true;
+			this.checkBox1.Location = new System.Drawing.Point(150, 113);
+			this.checkBox1.Name = "checkBox1";
+			this.checkBox1.Size = new System.Drawing.Size(142, 17);
+			this.checkBox1.TabIndex = 18;
+			this.checkBox1.Text = "Restaure On BigBox Exit";
+			this.checkBox1.UseVisualStyleBackColor = true;
+			// 
 			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -441,7 +441,6 @@
 		private System.Windows.Forms.ListBox listBox1;
 		private System.Windows.Forms.ComboBox comboBox6;
 		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.CheckBox checkBox1;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Button btn_editPriority;
@@ -458,6 +457,7 @@
 		private System.Windows.Forms.TextBox txt_soundcard;
 		private System.Windows.Forms.Button btn_editMonitorSwitch;
 		private System.Windows.Forms.Button btn_editSoundcard;
+		private System.Windows.Forms.CheckBox checkBox1;
 	}
 }
 

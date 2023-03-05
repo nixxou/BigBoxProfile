@@ -170,12 +170,17 @@ namespace MonitorSwitcherGUI
 				dpiInfoArray[i] = dpiInfoList[i];
 			}
 
+
+
+            /*
 			CCDWrapper.DisplayConfigPathInfo[] pathInfoArrayTest = new CCDWrapper.DisplayConfigPathInfo[0];
 			CCDWrapper.DisplayConfigModeInfo[] modeInfoArrayTest = new CCDWrapper.DisplayConfigModeInfo[0];
 			CCDWrapper.MonitorAdditionalInfo[] additionalInfoTest = new CCDWrapper.MonitorAdditionalInfo[0];
 			CCDWrapper.DpiInfo[] dpiInfoArrayTest = new CCDWrapper.DpiInfo[0];
+
+            
 			Boolean res = GetDisplaySettings(ref pathInfoArrayTest, ref modeInfoArrayTest, ref additionalInfoTest, ref dpiInfoArrayTest, true);
-			CompareLogic compareLogic = new CompareLogic();
+            CompareLogic compareLogic = new CompareLogic();
 			ComparisonResult resultPathInfo = compareLogic.Compare(pathInfoArrayTest, pathInfoArray);
 			ComparisonResult resultModeInfo = compareLogic.Compare(modeInfoArrayTest, modeInfoArray);
 			ComparisonResult resultDpiInfo = compareLogic.Compare(dpiInfoArrayTest, dpiInfoArray);
@@ -207,6 +212,8 @@ namespace MonitorSwitcherGUI
 				}
 
             }
+            */
+            
 
 
 

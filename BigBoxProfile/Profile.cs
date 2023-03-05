@@ -21,8 +21,9 @@ namespace BigBoxProfile
 
 	public class Profile
 	{
-		public const string PathMainProfile = @"BigBoxProfile_Config/main.xml";
-		public const string PathMainProfileDir = @"BigBoxProfile_Config";
+		public static string PathMainProfileDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BigBoxProfile");
+		public static string PathMainProfile = Path.Combine(PathMainProfileDir,"main.xml");
+
 
 		private static Dictionary<string, Profile> _profileList;
 
@@ -230,6 +231,8 @@ namespace BigBoxProfile
 				ProfileListSave();
 			}
 		}
+
+
 
 
 

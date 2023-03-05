@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using MonitorSwitcherGUI;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace BigBoxProfile
 {
@@ -167,7 +169,7 @@ namespace BigBoxProfile
 			return sb.ToString();
 		}
 
-		public static string[] GetListViewItems(ListView listView)
+		public static string[] GetListViewItems(System.Windows.Forms.ListView listView)
 		{
 			List<string> items = new List<string>();
 
@@ -184,6 +186,75 @@ namespace BigBoxProfile
 			}
 
 			return items.ToArray();
+		}
+
+		public static bool UseMonitorDisposition(string key)
+		{
+			var cfg = Path.Combine(Profile.PathMainProfileDir, "disposition_" + key + ".xml");
+			if (File.Exists(cfg))
+			{
+				return MonitorSwitcher.LoadDisplaySettings(cfg);
+			}
+			return false;
+		}
+
+		public static Dictionary<string,int> GetMonitorsTagDictionary()
+		{
+			var result = new Dictionary<string,int>();
+			string FirstDevice = "";
+			Screen[] screens = Screen.AllScreens;
+			Debug.WriteLine($"Nombre d'écrans : {screens.Length}");
+			for (int i = 0; i < screens.Length; i++)
+			{
+				Screen screen = screens[i];
+				string MonitorFriendlyName = ScreenInterrogatory.DeviceFriendlyName(screen);
+				MonitorFriendlyName = MonitorFriendlyName.Replace(" ", "_");
+				if (FirstDevice == "") FirstDevice = MonitorFriendlyName;
+				string DeviceName = screen.DeviceName.Trim('\\').Trim('.').Trim('\\');
+				string TargetID = ScreenInterrogatory.DeviceTargetID(screen).ToString();
+				if (screen.Primary) result.Add("main", i);
+				result.Add(MonitorFriendlyName, i);
+				result.Add(DeviceName, i);
+				result.Add(TargetID, i);
+
+
+			}
+			return result;
+		}
+
+		public static int GetMonitorIDFromPriorityList(string priorityList)
+		{
+			var dic = GetMonitorsTagDictionary();
+			var exploded = BigBoxUtils.explode(priorityList, ",");
+			foreach (string exp in exploded)
+			{
+				var key = exp.Trim();
+				if (dic.ContainsKey(key))
+				{
+					return dic[key];
+				}
+			}
+
+			return -1;
+
+		}
+		public static void ModifierParametrePrimaryMonitorIndex(string cheminFichierXml, int nouvelleValeur)
+		{
+			// Chargement du fichier XML
+			XmlDocument doc = new XmlDocument();
+			doc.Load(cheminFichierXml);
+
+			// Recherche de l'élément <PrimaryMonitorIndex>
+			XmlNode nodePrimaryMonitorIndex = doc.SelectSingleNode("//PrimaryMonitorIndex");
+
+			// Modification de la valeur de l'élément
+			if (nodePrimaryMonitorIndex != null)
+			{
+				nodePrimaryMonitorIndex.InnerText = nouvelleValeur.ToString();
+			}
+
+			// Sauvegarde des modifications dans le fichier XML
+			doc.Save(cheminFichierXml);
 		}
 
 
