@@ -8,6 +8,17 @@ using System.Threading.Tasks;
 
 namespace BigBoxProfile
 {
+	public class ConfigurationChangedEventArgs : EventArgs
+	{
+		public string Key { get; private set; }
+		public string Value { get; private set; }
+		public ConfigurationChangedEventArgs(string key, string value)
+		{
+			Key = key;
+			Value = value;	
+		}
+	}
+
 	public class Profile
 	{
 		const string PathMainProfile = @"BigBoxProfile_Config/main.xml";
@@ -41,6 +52,20 @@ namespace BigBoxProfile
 				}
 			}
 		}
+
+		public static event EventHandler<ConfigurationChangedEventArgs> ConfigurationChanged;
+
+		private static void OnConfigurationChanged(string key, string value)
+		{
+			EventHandler<ConfigurationChangedEventArgs> handler = ConfigurationChanged;
+			if (handler != null)
+			{
+				var args = new ConfigurationChangedEventArgs(key, value);
+				handler(null, args);
+			}
+		}
+
+
 
 		public string ProfileName { get; private set; }
 		public Dictionary<string,string> Configuration { get; private set; }
@@ -79,7 +104,7 @@ namespace BigBoxProfile
 		{
 			Profile defaultProfile = new Profile(name);
 			defaultProfile.Configuration.Add("monitor", "main");
-			defaultProfile.Configuration.Add("monitorswitch", "");
+			defaultProfile.Configuration.Add("monitorswitch", "<none>");
 			defaultProfile.Configuration.Add("soundcard", "<dontchange>");
 
 
@@ -152,13 +177,36 @@ namespace BigBoxProfile
 		}
 
 
-
+		
 		public Profile(string profileName)
 		{
 			profileName = BigBoxUtils.FilterFileName(profileName);
 			if (ProfileList.ContainsKey(profileName)) throw (new Exception("A profile with this name already exist"));
 			ProfileName = profileName;
 			Configuration = new Dictionary<string, string>();
+		}
+
+		public void SetOption(string key, string value)
+		{
+			bool changed = false;
+			if (Configuration.ContainsKey(key))
+			{
+				if (Configuration[key] != value)
+				{
+					Configuration[key] = value;
+					changed = true;
+				}
+			}
+			else
+			{
+				Configuration.Add(key, value);
+				changed = true;
+			}
+			if (changed)
+			{
+				OnConfigurationChanged(key, value);
+				ProfileListSave();
+			}
 		}
 
 		private void AddProfileToList(bool save=false)
@@ -181,6 +229,8 @@ namespace BigBoxProfile
 				ProfileListSave();
 			}
 		}
+
+
 
 
 

@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace BigBoxProfile
@@ -108,6 +109,63 @@ namespace BigBoxProfile
 			title = title.Trim().Replace("  ", " ").Replace("  ", " ").Replace("  ", " ").Replace("  ", " ").Trim().ToLower();
 			return title;
 
+		}
+
+		public static string[] explode(string input, string delimiter)
+		{
+			string[] result;
+
+			if (input.Contains(delimiter))
+			{
+				result = input.Split(new string[] { delimiter }, StringSplitOptions.None);
+			}
+			else
+			{
+				result = new string[] { input };
+			}
+
+			return result;
+		}
+
+		public static string Join(string[] arr, string delimiter)
+		{
+			if (arr == null || arr.Length == 0)
+			{
+				return string.Empty;
+			}
+
+			StringBuilder sb = new StringBuilder();
+
+			for (int i = 0; i < arr.Length; i++)
+			{
+				sb.Append(arr[i]);
+
+				if (i < arr.Length - 1)
+				{
+					sb.Append(delimiter);
+				}
+			}
+
+			return sb.ToString();
+		}
+
+		public static string[] GetListViewItems(ListView listView)
+		{
+			List<string> items = new List<string>();
+
+			foreach (ListViewItem item in listView.Items)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.Append(item.Text);
+				for (int i = 1; i < item.SubItems.Count; i++)
+				{
+					sb.Append(",");
+					sb.Append(item.SubItems[i].Text);
+				}
+				items.Add(sb.ToString());
+			}
+
+			return items.ToArray();
 		}
 
 

@@ -29,16 +29,23 @@ namespace BigBoxProfile
 		{
 			UpdateRegisterStatus();
 			UpdateCmbListProfile();
-			InitializeCmbSoundCard();
-			InitializeCmbMonitorSwitch();
+			//InitializeCmbSoundCard();
+			//InitializeCmbMonitorSwitch();
 
-			txt_monitorpriority.Text = Profile.ActiveProfile.Configuration["monitor"];
-			txt_monitorswitch.Text = Profile.ActiveProfile.Configuration["monitorswitch"];
-			txt_soundcard.Text = Profile.ActiveProfile.Configuration["soundcard"];
+			UpdateProfileConfigurationTxt();
 
 			Profile.ActiveProfileChanged += Profile_ActiveProfileChanged;
 			Profile.ProfileListChanged += Profile_ProfileListChanged;
+			Profile.ConfigurationChanged += Profile_ConfigurationChanged;
 
+		}
+
+		private void Profile_ConfigurationChanged(object sender, ConfigurationChangedEventArgs e)
+		{
+			Debug.WriteLine("ConfigurationChanged");
+			if (e.Key == "monitor")			 txt_monitorpriority.Text = e.Value.ToString();
+			if (e.Key == "monitorswitch")	 txt_monitorswitch.Text = e.Value.ToString();
+			if (e.Key == "soundcard")		 txt_soundcard.Text = e.Value.ToString();
 		}
 
 		private void Profile_ProfileListChanged(object sender, EventArgs e)
@@ -49,13 +56,23 @@ namespace BigBoxProfile
 
 		private void Profile_ActiveProfileChanged(object sender, EventArgs e)
 		{
-			Debug.WriteLine("activeProfileChanged");
-			string selected = cmb_listProfiles.GetItemText(cmb_listProfiles.SelectedItem);
 
-			if (selected != Profile.ActiveProfile.ProfileName) UpdateCmbListProfile();
+			string selected = Profile.ActiveProfile.ProfileName;
+			var index = cmb_listProfiles.Items.IndexOf(selected);
+			if (index >= 0) cmb_listProfiles.SelectedIndex = index;
+
+			Debug.WriteLine("activeProfileChanged");
+			UpdateProfileConfigurationTxt();
 
 		}
 
+		public void UpdateProfileConfigurationTxt()
+		{
+			txt_monitorpriority.Text = Profile.ActiveProfile.Configuration["monitor"];
+			txt_monitorswitch.Text = Profile.ActiveProfile.Configuration["monitorswitch"];
+			txt_soundcard.Text = Profile.ActiveProfile.Configuration["soundcard"];
+		}
+		/*
 		public void InitializeCmbSoundCard()
 		{
 			cmb_primarysoundcard.Items.Clear();
@@ -80,7 +97,7 @@ namespace BigBoxProfile
 			if (index >= 0) cmb_monitorswitch.SelectedIndex = index;
 
 		}
-
+		*/
 		public void UpdateCmbListProfile()
 		{
 			cmb_listProfiles.Items.Clear();
@@ -185,11 +202,29 @@ namespace BigBoxProfile
 
 		}
 
-		private void button3_Click(object sender, EventArgs e)
+		private void btn_editPriority_Click(object sender, EventArgs e)
 		{
-			var frm = new HelpMonitor();
-			frm.ShowDialog();
+			var frm = new MonitorPriorityConfig();
+			var result = frm.ShowDialog();
+
+			if (result == DialogResult.OK)
+			{
+				Profile.ActiveProfile.SetOption("monitor", frm.result);
+			}
+
 		}
+		private void btn_editSoundcard_Click(object sender, EventArgs e)
+		{
+			var frm = new SoundCardConfig();
+			var result = frm.ShowDialog();
+
+			if (result == DialogResult.OK)
+			{
+				Profile.ActiveProfile.SetOption("soundcard", frm.result);
+			}
+		}
+
+
 
 		private void button5_Click(object sender, EventArgs e)
 		{
@@ -206,5 +241,17 @@ namespace BigBoxProfile
 		{
 			MonitorSwitcher.SaveDisplaySettings("zog.xml");
 		}
+
+		private void button10_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void button4_Click_1(object sender, EventArgs e)
+		{
+
+		}
+
+
 	}
 }
