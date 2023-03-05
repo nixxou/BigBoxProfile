@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigBoxProfile", "BigBoxProfile\BigBoxProfile.csproj", "{E11EE0B8-EFB4-47E2-B317-6EDFA37CB6A7}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BigBoxProfile Installer", "BigBoxProfile Installer\BigBoxProfile Installer.vdproj", "{FFEED127-9F01-4152-BD75-2CD68772F351}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E11EE0B8-EFB4-47E2-B317-6EDFA37CB6A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E11EE0B8-EFB4-47E2-B317-6EDFA37CB6A7}.Release|x86.ActiveCfg = Release|Any CPU
 		{E11EE0B8-EFB4-47E2-B317-6EDFA37CB6A7}.Release|x86.Build.0 = Release|Any CPU
+		{FFEED127-9F01-4152-BD75-2CD68772F351}.Debug|Any CPU.ActiveCfg = Debug
+		{FFEED127-9F01-4152-BD75-2CD68772F351}.Debug|x86.ActiveCfg = Debug
+		{FFEED127-9F01-4152-BD75-2CD68772F351}.Release|Any CPU.ActiveCfg = Release
+		{FFEED127-9F01-4152-BD75-2CD68772F351}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
