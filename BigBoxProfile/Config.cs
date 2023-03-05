@@ -71,6 +71,16 @@ namespace BigBoxProfile
 			txt_monitorpriority.Text = Profile.ActiveProfile.Configuration["monitor"];
 			txt_monitorswitch.Text = Profile.ActiveProfile.Configuration["monitorswitch"];
 			txt_soundcard.Text = Profile.ActiveProfile.Configuration["soundcard"];
+
+			if (Profile.ActiveProfile.Configuration.ContainsKey("restore"))
+			{
+				if (Profile.ActiveProfile.Configuration["restore"] == "yes") chk_restore.Checked = true;
+				else chk_restore.Checked = false;
+
+			}
+
+
+
 		}
 		/*
 		public void InitializeCmbSoundCard()
@@ -262,6 +272,10 @@ namespace BigBoxProfile
 
 		}
 
-
+		private void chk_restore_CheckedChanged(object sender, EventArgs e)
+		{
+			if(chk_restore.Checked) Profile.ActiveProfile.SetOption("restore", "yes");
+			else Profile.ActiveProfile.SetOption("restore", "no");
+		}
 	}
 }

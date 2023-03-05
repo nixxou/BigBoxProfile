@@ -103,9 +103,6 @@ namespace BigBoxProfile
 				BigBoxUtils.ModifierParametrePrimaryMonitorIndex(BigBoxSettingsFile, MonitorToSwitch);
 			}
 			
-
-			
-
 		}
 
 		public void ExecuteRestoreActions()
@@ -152,8 +149,13 @@ namespace BigBoxProfile
 			ExecutePrelaunchAction();
 			var task = ExecuteBigBox();
 			task.Wait();
-			Thread.Sleep(1000);
-			ExecuteRestoreActions();
+
+			if (SelectedProfile.Configuration["restore"] == "yes")
+			{
+				Thread.Sleep(1000);
+				ExecuteRestoreActions();
+			}
+
 		}
 
 

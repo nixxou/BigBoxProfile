@@ -60,7 +60,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.button2 = new System.Windows.Forms.Button();
 			this.label5 = new System.Windows.Forms.Label();
-			this.checkBox1 = new System.Windows.Forms.CheckBox();
+			this.chk_restore = new System.Windows.Forms.CheckBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -272,14 +272,14 @@
 			this.groupBox2.Controls.Add(this.txt_monitorswitch);
 			this.groupBox2.Controls.Add(this.txt_soundcard);
 			this.groupBox2.Controls.Add(this.txt_monitorpriority);
-			this.groupBox2.Controls.Add(this.checkBox1);
+			this.groupBox2.Controls.Add(this.chk_restore);
 			this.groupBox2.Controls.Add(this.label4);
 			this.groupBox2.Controls.Add(this.label3);
 			this.groupBox2.Controls.Add(this.btn_editPriority);
 			this.groupBox2.Controls.Add(this.label2);
 			this.groupBox2.Location = new System.Drawing.Point(6, 19);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(360, 265);
+			this.groupBox2.Size = new System.Drawing.Size(360, 156);
 			this.groupBox2.TabIndex = 9;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "\'";
@@ -384,15 +384,16 @@
 			this.label5.TabIndex = 7;
 			this.label5.Text = "Select Profile :";
 			// 
-			// checkBox1
+			// chk_restore
 			// 
-			this.checkBox1.AutoSize = true;
-			this.checkBox1.Location = new System.Drawing.Point(150, 113);
-			this.checkBox1.Name = "checkBox1";
-			this.checkBox1.Size = new System.Drawing.Size(142, 17);
-			this.checkBox1.TabIndex = 18;
-			this.checkBox1.Text = "Restaure On BigBox Exit";
-			this.checkBox1.UseVisualStyleBackColor = true;
+			this.chk_restore.AutoSize = true;
+			this.chk_restore.Location = new System.Drawing.Point(150, 113);
+			this.chk_restore.Name = "chk_restore";
+			this.chk_restore.Size = new System.Drawing.Size(142, 17);
+			this.chk_restore.TabIndex = 18;
+			this.chk_restore.Text = "Restaure On BigBox Exit";
+			this.chk_restore.UseVisualStyleBackColor = true;
+			this.chk_restore.CheckedChanged += new System.EventHandler(this.chk_restore_CheckedChanged);
 			// 
 			// Config
 			// 
@@ -457,7 +458,7 @@
 		private System.Windows.Forms.TextBox txt_soundcard;
 		private System.Windows.Forms.Button btn_editMonitorSwitch;
 		private System.Windows.Forms.Button btn_editSoundcard;
-		private System.Windows.Forms.CheckBox checkBox1;
+		private System.Windows.Forms.CheckBox chk_restore;
 	}
 }
 
