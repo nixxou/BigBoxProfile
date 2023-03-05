@@ -21,7 +21,8 @@ namespace BigBoxProfile
 
 	public class Profile
 	{
-		const string PathMainProfile = @"BigBoxProfile_Config/main.xml";
+		public const string PathMainProfile = @"BigBoxProfile_Config/main.xml";
+		public const string PathMainProfileDir = @"BigBoxProfile_Config";
 
 		private static Dictionary<string, Profile> _profileList;
 
@@ -114,7 +115,7 @@ namespace BigBoxProfile
 		public static void ProfileListLoad()
 		{
 			ProfileList.Clear();
-			if (!Directory.Exists("BigBoxProfile_Config")) Directory.CreateDirectory("BigBoxProfile_Config");
+			if (!Directory.Exists(PathMainProfileDir)) Directory.CreateDirectory(PathMainProfileDir);
 			if (File.Exists(PathMainProfile))
 			{
 				var data = ConfigurationData.LoadConfigurationDataList(PathMainProfile);

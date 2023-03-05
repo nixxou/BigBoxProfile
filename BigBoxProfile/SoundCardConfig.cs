@@ -13,7 +13,7 @@ namespace BigBoxProfile
 {
 	public partial class SoundCardConfig : Form
 	{
-		public string result;
+		public string result = Profile.ActiveProfile.Configuration["soundcard"];
 		public SoundCardConfig()
 		{
 			InitializeComponent();

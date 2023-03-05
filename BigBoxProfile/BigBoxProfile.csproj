@@ -105,6 +105,12 @@
     </Compile>
     <Compile Include="ConfigurationData.cs" />
     <Compile Include="DataContractSerializer.cs" />
+    <Compile Include="MonitorDispositionConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MonitorDispositionConfig.Designer.cs">
+      <DependentUpon>MonitorDispositionConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="MonitorPriorityConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +131,9 @@
     <Compile Include="SoundCardUtility.cs" />
     <EmbeddedResource Include="Config.resx">
       <DependentUpon>Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MonitorDispositionConfig.resx">
+      <DependentUpon>MonitorDispositionConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MonitorPriorityConfig.resx">
       <DependentUpon>MonitorPriorityConfig.cs</DependentUpon>

@@ -302,6 +302,7 @@
 			this.btn_editMonitorSwitch.TabIndex = 28;
 			this.btn_editMonitorSwitch.Text = "Edit";
 			this.btn_editMonitorSwitch.UseVisualStyleBackColor = true;
+			this.btn_editMonitorSwitch.Click += new System.EventHandler(this.btn_editMonitorSwitch_Click);
 			// 
 			// txt_monitorswitch
 			// 
