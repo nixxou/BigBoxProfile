@@ -13,7 +13,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
-using KellermanSoftware.CompareNetObjects;
+
 
 namespace MonitorSwitcherGUI
 {
