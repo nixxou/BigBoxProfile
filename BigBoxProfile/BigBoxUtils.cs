@@ -29,6 +29,11 @@ namespace BigBoxProfile
 		  IntPtr lpSecurityAttributes
 		);
 
+		[DllImport("shell32.dll", SetLastError = true)]
+		static extern IntPtr CommandLineToArgvW([MarshalAs(UnmanagedType.LPWStr)] string lpCmdLine, out int pNumArgs);
+
+
+
 		public static void MakeLink(string source, string target)
 		{
 			if (!File.Exists(source)) return;
@@ -257,7 +262,119 @@ namespace BigBoxProfile
 			doc.Save(cheminFichierXml);
 		}
 
+		public static List<string> GetEmulatorsNames(string filePath)
+		{
+			// Créer une liste pour stocker les noms d'exécutable
+			List<string> executableNames = new List<string>();
 
+			// Charger le fichier XML
+			XmlDocument xmlDoc = new XmlDocument();
+			xmlDoc.Load(filePath);
+
+			// Récupérer tous les éléments avec la balise "ApplicationPath"
+			XmlNodeList applicationPathNodes = xmlDoc.GetElementsByTagName("ApplicationPath");
+
+			// Ajouter chaque nom d'exécutable à la liste
+			foreach (XmlNode node in applicationPathNodes)
+			{
+				string path = node.InnerText;
+				string executableName = Path.GetFileName(path);
+				executableNames.Add(executableName);
+			}
+
+			// Enlever les doublons et trier la liste par ordre alphabétique
+			List<string> uniqueExecutableNames = executableNames.Distinct().OrderBy(name => name).ToList();
+
+			// Retourner la liste des noms d'exécutable uniques et triés
+			return uniqueExecutableNames;
+		}
+
+
+
+		public static string ArgsToCommandLine(string[] arguments)
+		{
+			var sb = new StringBuilder();
+			foreach (string argument in arguments)
+			{
+				bool needsQuoting = argument.Any(c => char.IsWhiteSpace(c) || c == '\"');
+				if (!needsQuoting)
+				{
+					sb.Append(argument);
+				}
+				else
+				{
+					sb.Append('\"');
+					foreach (char c in argument)
+					{
+						int backslashes = 0;
+						while (backslashes < argument.Length && argument[backslashes] == '\\')
+						{
+							backslashes++;
+						}
+						if (c == '\"')
+						{
+							sb.Append('\\', backslashes * 2 + 1);
+							sb.Append(c);
+						}
+						else if (c == '\0')
+						{
+							sb.Append('\\', backslashes * 2);
+							break;
+						}
+						else
+						{
+							sb.Append('\\', backslashes);
+							sb.Append(c);
+						}
+					}
+					sb.Append('\"');
+				}
+				sb.Append(' ');
+			}
+			return sb.ToString().TrimEnd();
+		}
+
+		public static string[] CommandLineToArgs(string commandLine, bool addfakeexe = true)
+		{
+			string executableName;
+			return CommandLineToArgs(commandLine, out executableName,addfakeexe);
+		}
+		public static string[] CommandLineToArgs(string commandLine, out string executableName, bool addfakeexe = true)
+		{
+			if (addfakeexe) commandLine = "test.exe " + commandLine;
+			int argCount;
+			IntPtr result;
+			string arg;
+			IntPtr pStr;
+			result = CommandLineToArgvW(commandLine, out argCount);
+			if (result == IntPtr.Zero)
+			{
+				throw new System.ComponentModel.Win32Exception();
+			}
+			else
+			{
+				try
+				{
+					// Jump to location 0*IntPtr.Size (in other words 0).  
+					pStr = Marshal.ReadIntPtr(result, 0 * IntPtr.Size);
+					executableName = Marshal.PtrToStringUni(pStr);
+					// Ignore the first parameter because it is the application   
+					// name which is not usually part of args in Managed code.   
+					string[] args = new string[argCount - 1];
+					for (int i = 0; i < args.Length; i++)
+					{
+						pStr = Marshal.ReadIntPtr(result, (i + 1) * IntPtr.Size);
+						arg = Marshal.PtrToStringUni(pStr);
+						args[i] = arg;
+					}
+					return args;
+				}
+				finally
+				{
+					Marshal.FreeHGlobal(result);
+				}
+			}
+		}
 
 
 	}

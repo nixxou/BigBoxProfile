@@ -102,6 +102,21 @@
     </Compile>
     <Compile Include="ConfigurationData.cs" />
     <Compile Include="DataContractSerializer.cs" />
+    <Compile Include="Emulator.cs" />
+    <Compile Include="EmulatorActions\Prefix.cs" />
+    <Compile Include="EmulatorActions\Prefix_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\Prefix_Config.Designer.cs">
+      <DependentUpon>Prefix_Config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmulatorConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorConfig.Designer.cs">
+      <DependentUpon>EmulatorConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IEmulatorAction.cs" />
     <Compile Include="MonitorDispositionConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +143,12 @@
     <Compile Include="SoundCardUtility.cs" />
     <EmbeddedResource Include="Config.resx">
       <DependentUpon>Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\Prefix_Config.resx">
+      <DependentUpon>Prefix_Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorConfig.resx">
+      <DependentUpon>EmulatorConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MonitorDispositionConfig.resx">
       <DependentUpon>MonitorDispositionConfig.cs</DependentUpon>

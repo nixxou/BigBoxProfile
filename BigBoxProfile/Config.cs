@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MonitorSwitcherGUI;
-
+using System.IO;
 
 namespace BigBoxProfile
 {
@@ -27,6 +27,7 @@ namespace BigBoxProfile
 
 		private void Config_Load(object sender, EventArgs e)
 		{
+			UpdateCmbEmulatorList();
 			UpdateRegisterStatus();
 			UpdateCmbListProfile();
 			//InitializeCmbSoundCard();
@@ -38,6 +39,18 @@ namespace BigBoxProfile
 			Profile.ProfileListChanged += Profile_ProfileListChanged;
 			Profile.ConfigurationChanged += Profile_ConfigurationChanged;
 
+		}
+
+		private void UpdateCmbEmulatorList()
+		{
+			var liste_dir = Directory.GetDirectories(Profile.PathMainProfileDir);
+			foreach(var dir in liste_dir)
+			{
+				if (dir.ToLower().EndsWith(".exe"))
+				{
+					cmb_emulatorList.Items.Add(Path.GetFileName(dir));
+				}
+			}
 		}
 
 		private void Profile_ConfigurationChanged(object sender, ConfigurationChangedEventArgs e)
@@ -276,6 +289,39 @@ namespace BigBoxProfile
 		{
 			if(chk_restore.Checked) Profile.ActiveProfile.SetOption("restore", "yes");
 			else Profile.ActiveProfile.SetOption("restore", "no");
+		}
+
+		private void button3_Click(object sender, EventArgs e)
+		{
+			string name = Interaction.InputBox("Name of the exe file :", "Exe Name", "");
+			if(!string.IsNullOrEmpty(name.Trim()) && name.IndexOfAny(Path.GetInvalidFileNameChars())<0 && name.ToLower().EndsWith(".exe"))
+			{
+				Directory.CreateDirectory(Path.Combine(Profile.PathMainProfileDir,name));
+			}
+		}
+
+		private void button4_Click_2(object sender, EventArgs e)
+		{
+			string selected_emulatorExe = cmb_emulatorList.GetItemText(cmb_emulatorList.SelectedItem);
+			if (selected_emulatorExe.ToLower().EndsWith(".exe"))
+			{
+				var frm = new EmulatorConfig(selected_emulatorExe, Profile.ActiveProfile.ProfileName);
+				var result = frm.ShowDialog();
+
+			}
+
+		}
+
+		private void cmb_emulatorList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if(cmb_emulatorList.SelectedIndex== -1)
+			{
+				btn_editEmulator.Enabled = false;
+			}
+			else
+			{
+				btn_editEmulator.Enabled = true;
+			}
 		}
 	}
 }
