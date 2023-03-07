@@ -103,13 +103,27 @@
     <Compile Include="ConfigurationData.cs" />
     <Compile Include="DataContractSerializer.cs" />
     <Compile Include="Emulator.cs" />
-    <Compile Include="EmulatorActions\Prefix.cs" />
+    <Compile Include="EmulatorActions\Replace_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\Replace_Config.Designer.cs">
+      <DependentUpon>Replace_Config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmulatorActions\Replace.cs" />
+    <Compile Include="EmulatorActions\Suffix_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\Suffix_Config.designer.cs">
+      <DependentUpon>Suffix_Config.cs</DependentUpon>
+    </Compile>
     <Compile Include="EmulatorActions\Prefix_Config.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EmulatorActions\Prefix_Config.Designer.cs">
+    <Compile Include="EmulatorActions\Prefix_Config.designer.cs">
       <DependentUpon>Prefix_Config.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmulatorActions\Suffix.cs" />
+    <Compile Include="EmulatorActions\Prefix.cs" />
     <Compile Include="EmulatorConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +157,12 @@
     <Compile Include="SoundCardUtility.cs" />
     <EmbeddedResource Include="Config.resx">
       <DependentUpon>Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\Replace_Config.resx">
+      <DependentUpon>Replace_Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\Suffix_Config.resx">
+      <DependentUpon>Suffix_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\Prefix_Config.resx">
       <DependentUpon>Prefix_Config.cs</DependentUpon>

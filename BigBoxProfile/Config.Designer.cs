@@ -207,6 +207,7 @@
 			// 
 			// cmb_emulatorList
 			// 
+			this.cmb_emulatorList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_emulatorList.FormattingEnabled = true;
 			this.cmb_emulatorList.Location = new System.Drawing.Point(117, 181);
 			this.cmb_emulatorList.Name = "cmb_emulatorList";
