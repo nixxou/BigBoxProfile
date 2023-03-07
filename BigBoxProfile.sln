@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BigBoxProfile", "BigBoxProf
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BigBoxProfile Installer", "BigBoxProfile Installer\BigBoxProfile Installer.vdproj", "{FFEED127-9F01-4152-BD75-2CD68772F351}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallerLib", "InstallerLib\InstallerLib.csproj", "{31308686-94E8-468A-AD2A-4C93AA8AEC44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,14 @@ Global
 		{FFEED127-9F01-4152-BD75-2CD68772F351}.Debug|x86.ActiveCfg = Debug
 		{FFEED127-9F01-4152-BD75-2CD68772F351}.Release|Any CPU.ActiveCfg = Release
 		{FFEED127-9F01-4152-BD75-2CD68772F351}.Release|x86.ActiveCfg = Release
+		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Debug|x86.Build.0 = Debug|Any CPU
+		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Release|x86.ActiveCfg = Release|Any CPU
+		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
