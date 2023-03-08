@@ -180,7 +180,7 @@ namespace BigBoxProfile
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			string name = Interaction.InputBox("Entrez votre nom :", "Saisie de nom", "");
+			string name = Interaction.InputBox("Profile Name :", "Profile Name", "");
 
 			if (!string.IsNullOrEmpty(name.Trim()))
 			{

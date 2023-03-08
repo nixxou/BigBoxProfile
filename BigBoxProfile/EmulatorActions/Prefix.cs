@@ -36,7 +36,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void Configure()
 		{
-			var frm = new Suffix_Config(this.Options);
+			var frm = new Prefix_Config(this.Options);
 			var result = frm.ShowDialog();
 
 			if (result == DialogResult.OK)

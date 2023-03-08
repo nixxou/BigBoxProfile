@@ -123,6 +123,7 @@
     <Compile Include="ConfigurationData.cs" />
     <Compile Include="DataContractSerializer.cs" />
     <Compile Include="Emulator.cs" />
+    <Compile Include="EmulatorActions\ChangeExe.cs" />
     <Compile Include="EmulatorActions\Replace_Config.cs">
       <SubType>Form</SubType>
     </Compile>
