@@ -147,20 +147,23 @@ namespace BigBoxProfile
 
 		public void UpdateRegisterStatus()
 		{
+			
 			if (BigBoxUtils.IsAppRegistered())
 			{
 				label_status.Text = "Active !";
-				btn_register.Text = "Disable";
+				//btn_register.Text = "Disable";
 			}
 			else
 			{
 				label_status.Text = "Inactive !";
-				btn_register.Text = "Enable";
+				//btn_register.Text = "Enable";
 			}
+			
 		}
 
 		private void btn_register_Click(object sender, EventArgs e)
 		{
+			
 			if (BigBoxUtils.IsAppRegistered())
 			{
 				BigBoxUtils.UnregisterExec();
@@ -171,6 +174,7 @@ namespace BigBoxProfile
 			}
 			MessageBox.Show("Done !");
 			UpdateRegisterStatus();
+			
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -296,8 +300,16 @@ namespace BigBoxProfile
 			string name = Interaction.InputBox("Name of the exe file :", "Exe Name", "");
 			if(!string.IsNullOrEmpty(name.Trim()) && name.IndexOfAny(Path.GetInvalidFileNameChars())<0 && name.ToLower().EndsWith(".exe"))
 			{
+
 				Directory.CreateDirectory(Path.Combine(Profile.PathMainProfileDir,name));
+				if (!BigBoxUtils.IsAppRegistered() || !BigBoxUtils.IsGamesRegistered())
+				{
+					MessageBox.Show("You need Admin right to register the game");
+					BigBoxUtils.RegisterExec();
+				}
+
 			}
+			UpdateCmbEmulatorList();
 		}
 
 		private void button4_Click_2(object sender, EventArgs e)
@@ -322,6 +334,16 @@ namespace BigBoxProfile
 			{
 				btn_editEmulator.Enabled = true;
 			}
+		}
+
+		private void label_status_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void label1_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

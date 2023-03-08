@@ -29,7 +29,6 @@
 		private void InitializeComponent()
 		{
 			this.label_status = new System.Windows.Forms.Label();
-			this.btn_register = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.cmb_listProfiles = new System.Windows.Forms.ComboBox();
 			this.button1 = new System.Windows.Forms.Button();
@@ -64,36 +63,28 @@
 			// label_status
 			// 
 			this.label_status.AutoSize = true;
-			this.label_status.Location = new System.Drawing.Point(138, 9);
+			this.label_status.Location = new System.Drawing.Point(345, 25);
 			this.label_status.Name = "label_status";
 			this.label_status.Size = new System.Drawing.Size(45, 13);
 			this.label_status.TabIndex = 0;
 			this.label_status.Text = "Inactive";
-			// 
-			// btn_register
-			// 
-			this.btn_register.Location = new System.Drawing.Point(24, 25);
-			this.btn_register.Name = "btn_register";
-			this.btn_register.Size = new System.Drawing.Size(159, 23);
-			this.btn_register.TabIndex = 1;
-			this.btn_register.Text = "Activate";
-			this.btn_register.UseVisualStyleBackColor = true;
-			this.btn_register.Click += new System.EventHandler(this.btn_register_Click);
+			this.label_status.Click += new System.EventHandler(this.label_status_Click);
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(27, 9);
+			this.label1.Location = new System.Drawing.Point(337, 9);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(65, 13);
 			this.label1.TabIndex = 2;
 			this.label1.Text = "App Status :";
+			this.label1.Click += new System.EventHandler(this.label1_Click);
 			// 
 			// cmb_listProfiles
 			// 
 			this.cmb_listProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_listProfiles.FormattingEnabled = true;
-			this.cmb_listProfiles.Location = new System.Drawing.Point(297, 17);
+			this.cmb_listProfiles.Location = new System.Drawing.Point(106, 7);
 			this.cmb_listProfiles.Name = "cmb_listProfiles";
 			this.cmb_listProfiles.Size = new System.Drawing.Size(121, 21);
 			this.cmb_listProfiles.TabIndex = 3;
@@ -101,7 +92,7 @@
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(267, 44);
+			this.button1.Location = new System.Drawing.Point(76, 34);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 35);
 			this.button1.TabIndex = 4;
@@ -328,7 +319,7 @@
 			// 
 			// button2
 			// 
-			this.button2.Location = new System.Drawing.Point(348, 44);
+			this.button2.Location = new System.Drawing.Point(157, 34);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(70, 35);
 			this.button2.TabIndex = 6;
@@ -339,7 +330,7 @@
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(216, 20);
+			this.label5.Location = new System.Drawing.Point(25, 10);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(75, 13);
 			this.label5.TabIndex = 7;
@@ -356,7 +347,6 @@
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.cmb_listProfiles);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.btn_register);
 			this.Controls.Add(this.label_status);
 			this.Name = "Config";
 			this.Text = "à";
@@ -375,7 +365,6 @@
 		#endregion
 
 		private System.Windows.Forms.Label label_status;
-		private System.Windows.Forms.Button btn_register;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ComboBox cmb_listProfiles;
 		private System.Windows.Forms.Button button1;

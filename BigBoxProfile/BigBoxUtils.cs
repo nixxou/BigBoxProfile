@@ -48,12 +48,64 @@ namespace BigBoxProfile
 			RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true);
 			RegistryKey subkey = key.CreateSubKey("BigBox.exe");
 			subkey.SetValue("Debugger", Assembly.GetEntryAssembly().Location);
+
+			foreach (var dir in Directory.GetDirectories(Profile.PathMainProfileDir, "*"))
+			{
+				string ExeName = Path.GetFileName(dir);
+				if (ExeName != "")
+				{
+					key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true);
+					subkey = key.CreateSubKey(ExeName);
+					subkey.SetValue("Debugger", Assembly.GetEntryAssembly().Location);
+				}
+			}
 		}
 
 		public static void UnregisterApp()
 		{
 			DeleteRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\BigBox.exe");
+
+			foreach (var dir in Directory.GetDirectories(Profile.PathMainProfileDir, "*"))
+			{
+				string ExeName = Path.GetFileName(dir);
+				string RegPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\" + ExeName;
+				if (ExeName != "")
+				{
+					List<string> subKeys;
+					Dictionary<string, string> values;
+					GetSubKeysAndValues(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\" + ExeName, out subKeys, out values);
+					if (subKeys.Count() == 0 && values.Count() == 1 && values.ContainsKey("Debugger"))
+					{
+						DeleteRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\" + ExeName);
+					}
+
+				}
+			}
 		}
+
+		public static void GetSubKeysAndValues(string registryKeyPath, out List<string> subKeys, out Dictionary<string, string> values)
+		{
+			subKeys = new List<string>();
+			values = new Dictionary<string, string>();
+
+			using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registryKeyPath))
+			{
+				if (key != null)
+				{
+					subKeys.AddRange(key.GetSubKeyNames());
+					foreach (string valueName in key.GetValueNames())
+					{
+						object value = key.GetValue(valueName);
+						if (value != null)
+						{
+							values.Add(valueName, value.ToString());
+						}
+					}
+				}
+			}
+		}
+
+
 
 		public static void RegisterExec()
 		{
@@ -84,6 +136,23 @@ namespace BigBoxProfile
 			string debuggerValue = CheckRegistryValue(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\BigBox.exe", "Debugger");
 			if (debuggerValue != null && debuggerValue == Assembly.GetEntryAssembly().Location) return true;
 			return false;
+		}
+
+		public static bool IsGamesRegistered()
+		{
+			foreach (var dir in Directory.GetDirectories(Profile.PathMainProfileDir, "*"))
+			{
+				string ExeName = Path.GetFileName(dir);
+				string RegPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\" + ExeName;
+				if (ExeName != "")
+				{
+					string debuggerValue = CheckRegistryValue(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\" + ExeName, "Debugger");
+					if (debuggerValue == null || debuggerValue != Assembly.GetEntryAssembly().Location) return false;
+
+				}
+			}
+			return true;
+
 		}
 
 		static void DeleteRegistryKey(string keyName)

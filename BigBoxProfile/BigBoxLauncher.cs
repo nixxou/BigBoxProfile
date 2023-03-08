@@ -3,6 +3,7 @@ using MonitorSwitcherGUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -155,8 +156,46 @@ namespace BigBoxProfile
 				Thread.Sleep(1000);
 				ExecuteRestoreActions();
 			}
-
 		}
+
+		public static async Task TestExec(string[] args)
+		{
+			try
+			{
+
+				string FileName = args[0];
+
+				string dir = Path.GetDirectoryName(FileName);
+				string exeWithoutFilename = Path.GetFileNameWithoutExtension(FileName);
+				string newExe = Path.Combine(dir, exeWithoutFilename + "_.exe");
+
+
+				BigBoxUtils.MakeLink(FileName, newExe);
+
+				
+				string[] newArgs = new string[args.Length - 1];
+				Array.Copy(args, 1, newArgs, 0, args.Length - 1);
+
+
+				var ResultRPCS = await Cli.Wrap(newExe)
+					.WithArguments(newArgs)
+					.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
+					.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
+					.WithValidation(CommandResultValidation.None)
+					.ExecuteAsync();
+
+
+				File.Delete(newExe);
+
+
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+		}
+
+
 
 
 	}

@@ -27,6 +27,13 @@ namespace BigBoxProfile
 
 			if (args.Length== 0)
 			{
+
+				if (!BigBoxUtils.IsAppRegistered() || !BigBoxUtils.IsGamesRegistered())
+				{
+					MessageBox.Show("You need Admin right to register the App or Games");
+					BigBoxUtils.RegisterExec();
+				}
+
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
 				Application.Run(new Config());
@@ -62,11 +69,27 @@ namespace BigBoxProfile
 
 				if (args.Length >= 1)
 				{
-					if (args[0].EndsWith("BigBox.exe") && File.Exists(args[0]))
+					if (File.Exists(args[0]))
 					{
-						var bigBoxLauncher = new BigBoxLauncher(args);
-						bigBoxLauncher.Exec();
+						if (args[0].EndsWith("BigBox.exe"))
+						{
+							var bigBoxLauncher = new BigBoxLauncher(args);
+							bigBoxLauncher.Exec();
+						}
+						else
+						{
+							var emulatorLauncher = new EmulatorLauncher(args);
+							emulatorLauncher.Exec();
+
+							/*
+							MessageBox.Show("ici");
+							var task = BigBoxLauncher.TestExec(args);
+							task.Wait();
+							*/
+
+						}
 					}
+
 				}
 
 

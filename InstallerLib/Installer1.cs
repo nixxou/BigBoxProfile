@@ -39,7 +39,6 @@ namespace InstallerLib
 
 		public override void Uninstall(System.Collections.IDictionary stateSaver)
 		{
-
 			string PathMainProfileDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BigBoxProfile");
 			bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 			if (isAdmin)
@@ -53,7 +52,8 @@ namespace InstallerLib
 					{
 						List<string> subKeys;
 						Dictionary<string, string> values;
-						GetSubKeysAndValues(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\iexplore.exe", out subKeys, out values);
+						GetSubKeysAndValues(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\" + ExeName, out subKeys, out values);
+
 						if(subKeys.Count() == 0 && values.Count()==1 && values.ContainsKey("Debugger"))
 						{
 							DeleteRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\" + ExeName);
