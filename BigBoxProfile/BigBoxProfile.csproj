@@ -123,6 +123,13 @@
     <Compile Include="ConfigurationData.cs" />
     <Compile Include="DataContractSerializer.cs" />
     <Compile Include="Emulator.cs" />
+    <Compile Include="EmulatorActions\ChangeDisposition.cs" />
+    <Compile Include="EmulatorActions\ChangeDisposition_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\ChangeDisposition_Config.Designer.cs">
+      <DependentUpon>ChangeDisposition_Config.cs</DependentUpon>
+    </Compile>
     <Compile Include="EmulatorActions\ChangeExe.cs" />
     <Compile Include="EmulatorActions\Replace_Config.cs">
       <SubType>Form</SubType>
@@ -181,6 +188,9 @@
     <Compile Include="SoundCardUtility.cs" />
     <EmbeddedResource Include="Config.resx">
       <DependentUpon>Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\ChangeDisposition_Config.resx">
+      <DependentUpon>ChangeDisposition_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\Replace_Config.resx">
       <DependentUpon>Replace_Config.cs</DependentUpon>

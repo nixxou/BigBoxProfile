@@ -32,6 +32,8 @@ namespace BigBoxProfile
 			_modules.Add(new Replace());
 			_modules.Add(new ChangeExe());
 
+			_modules.Add(new ChangeDisposition());
+
 
 			List<ConfigurationData> loadedModules = ConfigurationData.LoadConfigurationDataList(FileNameConfig);
 			foreach (var module in loadedModules)
@@ -58,6 +60,12 @@ namespace BigBoxProfile
 				if (module.name == "ChangeExe")
 				{
 					var obj = new ChangeExe();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+				if (module.name == "ChangeDisposition")
+				{
+					var obj = new ChangeDisposition();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}

@@ -10,31 +10,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
 
-namespace BigBoxProfile
+namespace BigBoxProfile.EmulatorActions
 {
-	public partial class MonitorDispositionConfig : Form
+	public partial class ChangeDisposition_Config : Form
 	{
-		public string result = Profile.ActiveProfile.Configuration["monitorswitch"];
-		public MonitorDispositionConfig()
+
+		public string result = "";
+
+		public ChangeDisposition_Config(Dictionary<string, string> Options)
 		{
+			result = Options.ContainsKey("disposition") ? Options["disposition"] : "";
 			InitializeComponent();
+			ReloadCmb();
+
 		}
 
-		private void btn_cancel_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			this.Close();
-		}
 
-		private void btn_ok_Click(object sender, EventArgs e)
-		{
-			result = cmb_DispositionList.SelectedItem.ToString();
-			this.DialogResult = DialogResult.OK;
-			this.Close();
-		}
-
-		private void MonitorDispositionConfig_Load(object sender, EventArgs e)
+		private void ChangeDisposition_Config_Load(object sender, EventArgs e)
 		{
 			ReloadCmb();
 		}
@@ -52,8 +46,7 @@ namespace BigBoxProfile
 
 				cmb_DispositionList.Items.Add($"{disposition_name}");
 			}
-			string selected = Profile.ActiveProfile.Configuration["monitorswitch"];
-			var index = cmb_DispositionList.Items.IndexOf(selected);
+			var index = cmb_DispositionList.Items.IndexOf(result);
 			if (index >= 0) cmb_DispositionList.SelectedIndex = index;
 		}
 
@@ -62,8 +55,8 @@ namespace BigBoxProfile
 			string name = Interaction.InputBox("Disposition Name :", "Name", "");
 
 			string truename = BigBoxUtils.FilterFileName(name);
-			string filename = Path.Combine(Profile.PathMainProfileDir,"disposition_" + truename + ".xml");
-			if (File.Exists(filename))
+			string filename = Path.Combine(Profile.PathMainProfileDir, "disposition_" + truename + ".xml");
+			if (System.IO.File.Exists(filename))
 			{
 				MessageBox.Show("Name already exist");
 
@@ -76,9 +69,19 @@ namespace BigBoxProfile
 					ReloadCmb();
 				}
 			}
+		}
 
+		private void btn_ok_Click(object sender, EventArgs e)
+		{
+			result = cmb_DispositionList.SelectedItem.ToString();
+			this.DialogResult = DialogResult.OK;
+			this.Close();
+		}
 
-
+		private void btn_cancel_Click(object sender, EventArgs e)
+		{
+			this.DialogResult = DialogResult.Cancel;
+			this.Close();
 		}
 	}
 }
