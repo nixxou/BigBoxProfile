@@ -45,6 +45,10 @@ namespace BigBoxProfile
 
 		public static void RegisterApp()
 		{
+			var r = new RegisteryManager(Profile.PathMainProfileDir, Assembly.GetEntryAssembly().Location);
+			r.FixRegistery();
+
+			/*
 
 			RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options", true);
 			RegistryKey subkey = key.CreateSubKey("BigBox.exe");
@@ -60,10 +64,12 @@ namespace BigBoxProfile
 					subkey.SetValue("Debugger", Assembly.GetEntryAssembly().Location);
 				}
 			}
+			*/
 		}
 
 		public static void UnregisterApp()
 		{
+			/*
 			DeleteRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\BigBox.exe");
 
 			foreach (var dir in Directory.GetDirectories(Profile.PathMainProfileDir, "*"))
@@ -82,6 +88,9 @@ namespace BigBoxProfile
 
 				}
 			}
+			*/
+			var r = new RegisteryManager(Profile.PathMainProfileDir, Assembly.GetEntryAssembly().Location);
+			r.DeleteAllDebuggerKeys();
 		}
 
 		public static void GetSubKeysAndValues(string registryKeyPath, out List<string> subKeys, out Dictionary<string, string> values)

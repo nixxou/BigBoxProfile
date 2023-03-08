@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,11 +29,21 @@ namespace BigBoxProfile
 			if (args.Length== 0)
 			{
 
+				/*
 				if (!BigBoxUtils.IsAppRegistered() || !BigBoxUtils.IsGamesRegistered())
 				{
 					MessageBox.Show("You need Admin right to register the App or Games");
 					BigBoxUtils.RegisterExec();
 				}
+				*/
+
+				var registeryManager = new RegisteryManager(Profile.PathMainProfileDir, Assembly.GetEntryAssembly().Location);
+				if (registeryManager.CheckIfActionIsNeeded())
+				{
+					MessageBox.Show("You need Admin right to register the App or Games");
+					registeryManager.FixRegistery();
+				}
+				
 
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);

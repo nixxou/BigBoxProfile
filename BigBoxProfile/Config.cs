@@ -303,12 +303,26 @@ namespace BigBoxProfile
 			{
 
 				Directory.CreateDirectory(Path.Combine(Profile.PathMainProfileDir,name));
+
+				var registeryManager = new RegisteryManager(Profile.PathMainProfileDir, Assembly.GetEntryAssembly().Location);
+				if (registeryManager.CheckIfActionIsNeeded())
+				{
+					MessageBox.Show("You need Admin right to register the Games");
+					registeryManager.FixRegistery();
+				}
+
+				/*
 				if (!BigBoxUtils.IsAppRegistered() || !BigBoxUtils.IsGamesRegistered())
 				{
 					MessageBox.Show("You need Admin right to register the game");
 					BigBoxUtils.RegisterExec();
 				}
+				*/
 
+			}
+			else
+			{
+				MessageBox.Show("Invalid Name");
 			}
 			UpdateCmbEmulatorList();
 		}
