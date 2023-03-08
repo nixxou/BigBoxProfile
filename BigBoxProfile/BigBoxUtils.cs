@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using BigBoxProfile.EmulatorActions;
+using Microsoft.Win32;
 using MonitorSwitcherGUI;
 using System;
 using System.Collections.Generic;
@@ -443,6 +444,33 @@ namespace BigBoxProfile
 					Marshal.FreeHGlobal(result);
 				}
 			}
+		}
+
+		public static string[] ArgsWithoutFirstElement(string[] args)
+		{
+			string[] filteredArgs;
+			if (args.Length > 1)
+			{
+				filteredArgs = new string[args.Length - 1];
+
+				for (int i = 1; i < args.Length; i++)
+				{
+					filteredArgs[i - 1] = args[i];
+				}
+			}
+			else
+			{
+				filteredArgs = new string[0];
+			}
+			return filteredArgs;
+		}
+
+		public static string[] AddFirstElementToArg(string[] args,string argument)
+		{
+			string[] newArgs = new string[args.Length + 1]; // créer une nouvelle instance de tableau avec une taille plus grande
+			Array.Copy(args, 0, newArgs, 1, args.Length); // copier tous les éléments de args dans la nouvelle instance à partir de l'index 1
+			newArgs[0] = argument; // définir le premier élément comme étant votre nouvelle valeur
+			return newArgs;
 		}
 
 

@@ -57,6 +57,23 @@ namespace BigBoxProfile
 			
 		}
 
+		public static bool Exist(string profileName, string fileNameEmulator)
+		{
+			if (Profile.ProfileList.ContainsKey(profileName))
+			{
+				string pathFn = Path.Combine(Profile.PathMainProfileDir,fileNameEmulator);
+				if (Directory.Exists(pathFn))
+				{
+					if(File.Exists(Path.Combine(pathFn,profileName + ".xml")))
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+
+		}
+
 		public void SaveOptions()
 		{
 			_options.Clear();

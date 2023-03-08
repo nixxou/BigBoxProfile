@@ -90,7 +90,7 @@ namespace BigBoxProfile
 
 				BigBoxUtils.MakeLink(ExeFileFull, NewExe);
 				var ResultRPCS = await Cli.Wrap(NewExe)
-					.WithArguments(ArgsWithoutFirstElement())
+					.WithArguments(BigBoxUtils.ArgsWithoutFirstElement(Args))
 					.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
 					.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
 					.WithValidation(CommandResultValidation.None)
@@ -120,8 +120,18 @@ namespace BigBoxProfile
 			}
 			else
 			{
-
 				ExecutePrelaunch();
+
+				if(Emulator.Exist(SelectedProfile.ProfileName, ExeFile))
+				{
+					var emulator = new Emulator(SelectedProfile.ProfileName, ExeFile);
+					foreach (var module in emulator._selectedModules)
+					{
+						if (module.IsConfigured()) Args = module.ModifyExemple(Args);
+					}
+				}
+
+
 				Execute();
 				Thread.Sleep(1000);
 				ExecutePostlaunch();
@@ -131,27 +141,7 @@ namespace BigBoxProfile
 			
 		}
 
-		public string[] ArgsWithoutFirstElement()
-		{
-			string[] filteredArgs;
 
-			if (Args.Length > 1)
-			{
-				filteredArgs = new string[Args.Length - 1];
-
-				for (int i = 1; i < Args.Length; i++)
-				{
-					filteredArgs[i - 1] = Args[i];
-				}
-			}
-			else
-			{
-				filteredArgs = new string[0];
-			}
-
-			return filteredArgs;
-
-		}
 
 	}
 }

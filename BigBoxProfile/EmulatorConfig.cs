@@ -47,7 +47,9 @@ namespace BigBoxProfile
 		private void CalculateExemple()
 		{
 			string initial_cmd = txt_exempleIn.Text;
-			string[] args = BigBoxUtils.CommandLineToArgs(initial_cmd, false);
+			string ExeName = "";
+			string[] args = BigBoxUtils.CommandLineToArgs(initial_cmd, out ExeName, false);
+			args = BigBoxUtils.AddFirstElementToArg(args, ExeName);
 
 			foreach (ListViewItem lvitem in lv_selectedActions.Items)
 			{
@@ -55,7 +57,7 @@ namespace BigBoxProfile
 				if(module.IsConfigured()) args = module.ModifyExemple(args);
 			}
 			string outCmd = BigBoxUtils.ArgsToCommandLine(args);
-			txt_exempleOut.Text = _emulator.FileNameEmulator + " " + outCmd;
+			txt_exempleOut.Text = outCmd;
 		}
 
 		private void button6_Click(object sender, EventArgs e)

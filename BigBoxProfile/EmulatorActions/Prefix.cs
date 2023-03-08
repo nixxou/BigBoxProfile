@@ -94,6 +94,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
+		/*
 		public string[] ModifyExemple(string[] args)
 		{
 			string cmd = BigBoxUtils.ArgsToCommandLine(args);
@@ -115,9 +116,39 @@ namespace BigBoxProfile.EmulatorActions
 
 			return args;
 		}
+		*/
+
+		public string[] ModifyExemple(string[] args)
+		{
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string exeArg = args[0];
+			var filteredArgs = BigBoxUtils.ArgsWithoutFirstElement(args);
+			var filteredCmd = BigBoxUtils.ArgsToCommandLine(filteredArgs);
+
+			if (_filter == "" || cmd.Contains(_filter))
+			{
+				if (_asArg)
+				{
+					filteredArgs = BigBoxUtils.AddFirstElementToArg(filteredArgs,_prefix);
+				}
+				else
+				{
+
+					filteredCmd = _prefix + filteredCmd;
+					filteredArgs = BigBoxUtils.CommandLineToArgs(filteredCmd);
+				}
+			}
+
+			args = BigBoxUtils.AddFirstElementToArg(filteredArgs, exeArg);
+
+			return args;
+		}
+
+
 
 		public string[] ModifyReal(string[] args)
 		{
+			args = ModifyExemple(args);
 			return args;
 		}
 

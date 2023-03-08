@@ -114,6 +114,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
+		/*
 		public string[] ModifyExemple(string[] args)
 		{
 			if (_asArg)
@@ -147,9 +148,55 @@ namespace BigBoxProfile.EmulatorActions
 
 			return args;
 		}
+		*/
+
+
+		public string[] ModifyExemple(string[] args)
+		{
+
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string exeArg = args[0];
+			var filteredArgs = BigBoxUtils.ArgsWithoutFirstElement(args);
+			var filteredCmd = BigBoxUtils.ArgsToCommandLine(filteredArgs);
+
+
+			if (_asArg)
+			{
+				var newarg = new string[filteredArgs.Length];
+				int index = 0;
+				foreach (var elem in filteredArgs)
+				{
+					RegexOptions options = RegexOptions.Multiline;
+					if (!_casesensitive) options |= RegexOptions.IgnoreCase;
+					Regex regex = _useregex ? new Regex(_search, options) : null;
+					string result = _useregex ? regex.Replace(elem, MatchEvaluator) : elem.Replace(_search, _replacewith);
+					newarg[index] = result;
+					index++;
+				}
+				filteredArgs = newarg;
+			}
+			else
+			{
+				RegexOptions options = RegexOptions.Multiline;
+				if (!_casesensitive) options |= RegexOptions.IgnoreCase;
+				Regex regex = _useregex ? new Regex(_search, options) : null;
+
+				string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator) : filteredCmd.Replace(_search, _replacewith);
+
+				filteredArgs = BigBoxUtils.CommandLineToArgs(result);
+			}
+			args = BigBoxUtils.AddFirstElementToArg(filteredArgs, exeArg);
+
+
+
+			return args;
+		}
+
+
 
 		public string[] ModifyReal(string[] args)
 		{
+			args = ModifyExemple(args);
 			return args;
 		}
 

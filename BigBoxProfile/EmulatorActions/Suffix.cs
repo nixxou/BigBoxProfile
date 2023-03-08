@@ -115,8 +115,12 @@ namespace BigBoxProfile.EmulatorActions
 			return args;
 		}
 
+
+
+
 		public string[] ModifyReal(string[] args)
 		{
+			args = ModifyExemple(args);
 			return args;
 		}
 

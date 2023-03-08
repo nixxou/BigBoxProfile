@@ -43,6 +43,7 @@ namespace BigBoxProfile
 
 		private void UpdateCmbEmulatorList()
 		{
+			cmb_emulatorList.Items.Clear();
 			var liste_dir = Directory.GetDirectories(Profile.PathMainProfileDir);
 			foreach(var dir in liste_dir)
 			{
