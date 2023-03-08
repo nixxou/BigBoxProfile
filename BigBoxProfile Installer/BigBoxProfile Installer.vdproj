@@ -195,6 +195,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_91A901DE3A7D46B7BF8581925987F00A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_AF736F64DD291ADCD7F03892B50AA2AE"
         "OwnerKey" = "8:_6D11E01F1964427BBBBE83C72A4133F8"
         "MsmSig" = "8:_UNDEFINED"
@@ -261,12 +267,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D30ED37FBA9D4E2D848A4F1858C040AA"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_D5F03304391548D9B1F288DD02E43B01"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -317,6 +317,12 @@
         {
         "MsmKey" = "8:_F524F8BCD3BF232817BFEDFF0C7560D2"
         "OwnerKey" = "8:_6D11E01F1964427BBBBE83C72A4133F8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FAB285CCBD7F4EABB3B1530CF807C3B6"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -929,6 +935,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_91A901DE3A7D46B7BF8581925987F00A"
+            {
+            "SourcePath" = "8:..\\BigBoxProfile\\thirdParty\\x64\\JustRun.exe"
+            "TargetName" = "8:JustRun.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_9B9BD218FF414C9FA98C38F98E2B6100"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AF736F64DD291ADCD7F03892B50AA2AE"
             {
             "AssemblyRegister" = "3:1"
@@ -1051,26 +1077,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D30ED37FBA9D4E2D848A4F1858C040AA"
-            {
-            "SourcePath" = "8:..\\BigBoxProfile\\SetDpi.dll"
-            "TargetName" = "8:SetDpi.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_9B9BD218FF414C9FA98C38F98E2B6100"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E193EF25B6019A161E1E265DF37DF4F6"
@@ -1197,6 +1203,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FAB285CCBD7F4EABB3B1530CF807C3B6"
+            {
+            "SourcePath" = "8:..\\BigBoxProfile\\thirdParty\\x64\\SetDpi.dll"
+            "TargetName" = "8:SetDpi.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_9B9BD218FF414C9FA98C38F98E2B6100"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -1265,13 +1291,13 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:BigBoxProfile"
         "ProductCode" = "8:{2DD15A8D-0768-45BA-A4B4-1CD71D196761}"
-        "PackageCode" = "8:{0771BCC0-83EE-450E-9E0B-B8923343BBFA}"
+        "PackageCode" = "8:{26718623-AA2E-40D2-8C90-D16B064C052F}"
         "UpgradeCode" = "8:{F695BE76-4013-4A8F-A812-55CC52A4392E}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:TRUE"
+        "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
         "Manufacturer" = "8:NixxSoft"
         "ARPHELPTELEPHONE" = "8:"
