@@ -294,14 +294,30 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
+			string directory = txt_filter.Text;
+			string directoryToCheck = txt_filter.Text;
+			if (directory.StartsWith(@"\\"))
+			{
+				directoryToCheck = @"Z:\" + directory.Substring(2);
+			}
+			if (Path.IsPathRooted(directoryToCheck))
+			{
+				filter = txt_filter.Text;
+				hight_priority = ConcatenateListViewItems(list_hightpriority);
+				low_priority = ConcatenateListViewItems(list_lowpriority);
+
+				this.DialogResult = DialogResult.OK;
+				this.Close();
+			}
+			else
+			{
+				MessageBox.Show("The specified directory is not valid !");
+			}
 
 
-			filter = txt_filter.Text;
-			hight_priority = ConcatenateListViewItems(list_hightpriority);
-			low_priority = ConcatenateListViewItems(list_lowpriority);
 
-			this.DialogResult = DialogResult.OK;
-			this.Close();
+
+
 		}
 
 		private void btn_cancel_Click(object sender, EventArgs e)
