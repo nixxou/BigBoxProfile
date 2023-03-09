@@ -289,6 +289,8 @@ namespace BigBoxProfile
 			var error = GetDisplayConfigBufferSizes(QUERY_DEVICE_CONFIG_FLAGS.QDC_ONLY_ACTIVE_PATHS, out pathCount, out modeCount);
 			if (error != ERROR_SUCCESS)
 				throw new Win32Exception(error);
+			
+			var xxx = Screen.AllScreens;
 
 			var displayPaths = new DISPLAYCONFIG_PATH_INFO[pathCount];
 			var displayModes = new DISPLAYCONFIG_MODE_INFO[modeCount];
@@ -296,6 +298,14 @@ namespace BigBoxProfile
 				ref pathCount, displayPaths, ref modeCount, displayModes, IntPtr.Zero);
 			if (error != ERROR_SUCCESS)
 				throw new Win32Exception(error);
+
+			var screen_val = xxx[1];
+			var hash = screen_val.DeviceName.GetHashCode();
+			
+			var path_val = displayPaths[2];
+			var hash2 = path_val.targetInfo.adapterId.LowPart;
+			var adapt = displayModes[2].adapterId;
+
 
 			for (var i = 0; i < modeCount; i++)
 				if (displayModes[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE.DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)

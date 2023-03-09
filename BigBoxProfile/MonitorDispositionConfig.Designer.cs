@@ -86,7 +86,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "MonitorDispositionConfig";
-			this.Text = "MonitorDispositionConfig";
+			this.Text = "Monitor Disposition : Select or Register Monitor Layouts";
 			this.Load += new System.EventHandler(this.MonitorDispositionConfig_Load);
 			this.ResumeLayout(false);
 

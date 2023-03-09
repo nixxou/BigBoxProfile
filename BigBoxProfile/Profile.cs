@@ -109,6 +109,8 @@ namespace BigBoxProfile
 			defaultProfile.Configuration.Add("monitorswitch", "<none>");
 			defaultProfile.Configuration.Add("soundcard", "<dontchange>");
 			defaultProfile.Configuration.Add("restore", "yes");
+			defaultProfile.Configuration.Add("launchbox", "no");
+			defaultProfile.Configuration.Add("maximize_launchbox", "no");
 
 			return defaultProfile;
 		}

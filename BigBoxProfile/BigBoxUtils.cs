@@ -291,15 +291,15 @@ namespace BigBoxProfile
 			for (int i = 0; i < screens.Length; i++)
 			{
 				Screen screen = screens[i];
-				string MonitorFriendlyName = ScreenInterrogatory.DeviceFriendlyName(screen);
-				MonitorFriendlyName = MonitorFriendlyName.Replace(" ", "_");
-				if (FirstDevice == "") FirstDevice = MonitorFriendlyName;
+				//string MonitorFriendlyName = ScreenInterrogatory.DeviceFriendlyName(screen);
+				//MonitorFriendlyName = MonitorFriendlyName.Replace(" ", "_");
+				//if (FirstDevice == "") FirstDevice = MonitorFriendlyName;
 				string DeviceName = screen.DeviceName.Trim('\\').Trim('.').Trim('\\');
-				string TargetID = ScreenInterrogatory.DeviceTargetID(screen).ToString();
+				//string TargetID = ScreenInterrogatory.DeviceTargetID(screen).ToString();
 				if (screen.Primary) result.Add("main", i);
-				result.Add(MonitorFriendlyName, i);
+				//result.Add(MonitorFriendlyName, i);
 				result.Add(DeviceName, i);
-				result.Add(TargetID, i);
+				//result.Add(TargetID, i);
 
 
 			}

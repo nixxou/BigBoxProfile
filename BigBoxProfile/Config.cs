@@ -94,7 +94,18 @@ namespace BigBoxProfile
 
 			}
 
+			if (Profile.ActiveProfile.Configuration.ContainsKey("launchbox"))
+			{
+				if (Profile.ActiveProfile.Configuration["launchbox"] == "yes") chk_launchbox.Checked = true;
+				else chk_launchbox.Checked = false;
+			}
 
+			if (Profile.ActiveProfile.Configuration.ContainsKey("maximize_launchbox"))
+			{
+				if (Profile.ActiveProfile.Configuration["maximize_launchbox"] == "yes") chk_maximize.Checked = true;
+				else chk_maximize.Checked = false;
+
+			}
 
 		}
 		/*
@@ -362,6 +373,16 @@ namespace BigBoxProfile
 
 		}
 
+		private void chk_launchbox_CheckedChanged(object sender, EventArgs e)
+		{
+			if (chk_launchbox.Checked) Profile.ActiveProfile.SetOption("launchbox", "yes");
+			else Profile.ActiveProfile.SetOption("launchbox", "no");
+		}
 
+		private void chk_maximize_CheckedChanged(object sender, EventArgs e)
+		{
+			if (chk_maximize.Checked) Profile.ActiveProfile.SetOption("maximize_launchbox", "yes");
+			else Profile.ActiveProfile.SetOption("maximize_launchbox", "no");
+		}
 	}
 }

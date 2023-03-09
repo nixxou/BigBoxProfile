@@ -74,7 +74,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "SoundCardConfig";
-			this.Text = "SoundCardConfig";
+			this.Text = "Select Sound Card to use as Main Soundcard";
 			this.Load += new System.EventHandler(this.SoundCardConfig_Load);
 			this.ResumeLayout(false);
 

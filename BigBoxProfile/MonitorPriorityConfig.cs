@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +15,12 @@ namespace BigBoxProfile
 {
 	public partial class MonitorPriorityConfig : Form
 	{
+
+		[DllImport("SetDpi.dll", EntryPoint = "dpi_GetMonitorDPI", CallingConvention = CallingConvention.StdCall)]
+		public static extern int GetMonitorDPI(int index);
+
+		[DllImport("SetDpi.dll", EntryPoint = "dpi_GetMonitorID", CallingConvention = CallingConvention.StdCall)]
+		public static extern int GetMonitorID(int index);
 
 		public string result = Profile.ActiveProfile.Configuration["monitor"];
 		public MonitorPriorityConfig()
@@ -49,32 +56,43 @@ namespace BigBoxProfile
 				Debug.WriteLine($"Working Area : {screen.WorkingArea}");
 				Debug.WriteLine($"Bounds : {screen.Bounds}");
 				Debug.WriteLine($"Primary : {screen.Primary}");
+				/*
 				Debug.WriteLine($"TrueName : {ScreenInterrogatory.DeviceFriendlyName(screen)}");
 
 				string MonitorFriendlyName = ScreenInterrogatory.DeviceFriendlyName(screen);
+				
 				MonitorFriendlyName = MonitorFriendlyName.Replace(" ", "_");
 
 				if(FirstDevice=="") FirstDevice = MonitorFriendlyName;
+				*/
 
 				string DeviceName = screen.DeviceName.Trim('\\').Trim('.').Trim('\\');
 
-				string TargetID = ScreenInterrogatory.DeviceTargetID(screen).ToString();
+				//string TargetID = ScreenInterrogatory.DeviceTargetID(screen).ToString();
+				/*
+				Debug.WriteLine($"ID V1 : {TargetID}");
+				Debug.WriteLine($"DPI V2 : {GetMonitorDPI(i)}");
+				Debug.WriteLine($"ID V2 : {GetMonitorID(i)}");
+				*/
 
-				cmb_add.Items.Add(MonitorFriendlyName);
+
+				//cmb_add.Items.Add(MonitorFriendlyName);
 				cmb_add.Items.Add(DeviceName);
-				cmb_add.Items.Add(TargetID);
+				//cmb_add.Items.Add(TargetID);
 
-
+				/*
 				listView1.Items.Add(new ListViewItem(new[] { screen.Primary ? "main" : "",
-						DeviceName,
-						MonitorFriendlyName,
-						TargetID
+						DeviceName
+						//,
+						//MonitorFriendlyName,
+						//TargetID
 					}));
+				*/
 
 			}
 
-			textBox1.Text = FirstDevice + ",DISPLAY2,main";
-			label6.Text = "It will use " + FirstDevice + " if availiable, if not it will use DISPLAY2 and if not here. \r\n If none are availiable it will use Main Monitor";
+			//textBox1.Text = FirstDevice + ",DISPLAY2,main";
+			//label6.Text = "It will use " + FirstDevice + " if availiable, if not it will use DISPLAY2 and if not here. \r\n If none are availiable it will use Main Monitor";
 		}
 
 		public void Update_txt_result()
