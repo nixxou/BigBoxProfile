@@ -41,7 +41,7 @@ namespace BigBoxProfile
 				if (registeryManager.CheckIfActionIsNeeded())
 				{
 					MessageBox.Show("You need Admin right to register the App or Games");
-					registeryManager.FixRegistery();
+					BigBoxUtils.RegisterExec();
 				}
 				
 
@@ -82,7 +82,7 @@ namespace BigBoxProfile
 				{
 					if (File.Exists(args[0]))
 					{
-						if (args[0].EndsWith("BigBox.exe"))
+						if (args[0].EndsWith("BigBox.exe") || args[0].EndsWith("LaunchBox.exe"))
 						{
 							var bigBoxLauncher = new BigBoxLauncher(args);
 							bigBoxLauncher.Exec();

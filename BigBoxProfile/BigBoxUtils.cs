@@ -476,8 +476,10 @@ namespace BigBoxProfile
 
 		public static string[] AddFirstElementToArg(string[] args,string argument)
 		{
-			string[] newArgs = new string[args.Length + 1]; // créer une nouvelle instance de tableau avec une taille plus grande
-			Array.Copy(args, 0, newArgs, 1, args.Length); // copier tous les éléments de args dans la nouvelle instance à partir de l'index 1
+			string[] argsNonVides = Array.FindAll(args, s => !string.IsNullOrEmpty(s));
+
+			string[] newArgs = new string[argsNonVides.Length + 1]; // créer une nouvelle instance de tableau avec une taille plus grande
+			Array.Copy(argsNonVides, 0, newArgs, 1, argsNonVides.Length); // copier tous les éléments de args dans la nouvelle instance à partir de l'index 1
 			newArgs[0] = argument; // définir le premier élément comme étant votre nouvelle valeur
 			return newArgs;
 		}

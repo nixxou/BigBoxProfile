@@ -30,7 +30,10 @@ namespace BigBoxProfile
 			{
 				string process_name = p.ProcessName;
 				var exp = BigBoxUtils.explode(process_name,"_");
-				if(exp != null && exp.Length == 2 && exp[0].ToLower() == "bigbox")
+				//foreach(var x in exp) { MessageBox.Show(x); }
+
+
+				if(exp != null && exp.Length == 2 && (exp[0].ToLower() == "bigbox" || exp[0].ToLower() == "launchbox"))
 				{
 
 					if (Profile.ProfileList.ContainsKey(exp[1]))
@@ -39,6 +42,9 @@ namespace BigBoxProfile
 					}
 				}
 			}
+
+			//MessageBox.Show(SelectedProfile.ProfileName);
+
 			LaunchFromDir = Environment.CurrentDirectory;
 			ExeFileFull = args[0];
 			Dir = Path.GetDirectoryName(ExeFileFull);
@@ -66,6 +72,7 @@ namespace BigBoxProfile
 			try
 			{
 				string JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
+				//JustRunExe = @"C:\LaunchBox\Emulators\SimpleFowarder.exe";
 
 				var ResultRPCS = await Cli.Wrap(JustRunExe)
 					.WithArguments(Args)

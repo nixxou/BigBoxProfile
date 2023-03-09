@@ -309,7 +309,7 @@ namespace BigBoxProfile
 				if (registeryManager.CheckIfActionIsNeeded())
 				{
 					MessageBox.Show("You need Admin right to register the Games");
-					registeryManager.FixRegistery();
+					BigBoxUtils.RegisterExec();
 				}
 
 				/*
