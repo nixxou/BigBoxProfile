@@ -84,8 +84,19 @@ namespace BigBoxProfile
 					{
 						if (args[0].EndsWith("BigBox.exe") || args[0].EndsWith("LaunchBox.exe"))
 						{
-							var bigBoxLauncher = new BigBoxLauncher(args);
-							bigBoxLauncher.Exec();
+							bool skip = false;
+							var p = ParentProcessUtilities.GetParentProcess();
+							if (p != null)
+							{
+								string process_name = p.ProcessName;
+								if(process_name.ToLower()=="launchbox" || process_name.ToLower()=="bigbox") skip = true;
+							}
+							if (!skip)
+							{
+								var bigBoxLauncher = new BigBoxLauncher(args);
+								bigBoxLauncher.Exec();
+							}
+
 						}
 						else
 						{

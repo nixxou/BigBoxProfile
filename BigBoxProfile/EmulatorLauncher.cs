@@ -41,6 +41,20 @@ namespace BigBoxProfile
 						SelectedProfile= Profile.ProfileList[exp[1]];
 					}
 				}
+				else
+				{
+					if (process_name.ToLower() == "bigbox" || process_name.ToLower() == "launchbox")
+					{
+						if (Profile.ProfileList.ContainsKey("default"))
+						{
+							SelectedProfile = Profile.ProfileList["default"];
+						}
+					}
+
+				}
+
+
+
 			}
 
 			//MessageBox.Show(SelectedProfile.ProfileName);

@@ -19,6 +19,8 @@ namespace BigBoxProfile
 		public Profile SelectedProfile { get; private set; }
 		public List<string> Args;
 
+		public string[] OriginalArgs;
+
 		public string LaunchFromDir;
 		public string FileOriginal;
 		public string FileNew;
@@ -124,19 +126,50 @@ namespace BigBoxProfile
 		{
 			try
 			{
+				if(SelectedProfile.ProfileName == "default")
+				{
 
-				BigBoxUtils.MakeLink(FileOriginal, FileNew);
+					string JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
+					/*
+					MessageBox.Show(FileOriginal);
+					JustRunExe = @"C:\LaunchBox\Emulators\SimpleFowarder.exe";
+					
+					var ResultRPCS = await Cli.Wrap(JustRunExe)
+						.WithArguments(FileOriginal)
+						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
+						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
+						.WithValidation(CommandResultValidation.None)
+						.ExecuteAsync();
+					
 
-				//MessageBox.Show("execute " + newExe);
-				var ResultRPCS = await Cli.Wrap(FileNew)
-					.WithArguments(Args)
-					.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
-					.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
-					.WithValidation(CommandResultValidation.None)
-					.ExecuteAsync();
+				    JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
+					*/
+					var ResultRPCS2 = await Cli.Wrap(JustRunExe)
+						.WithArguments(FileOriginal)
+						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
+						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
+						.WithValidation(CommandResultValidation.None)
+						.ExecuteAsync();
 
 
-				File.Delete(FileNew);
+				}
+				else
+				{
+					BigBoxUtils.MakeLink(FileOriginal, FileNew);
+
+					//MessageBox.Show("execute " + newExe);
+					var ResultRPCS = await Cli.Wrap(FileNew)
+						.WithArguments(Args)
+						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
+						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
+						.WithValidation(CommandResultValidation.None)
+						.ExecuteAsync();
+
+
+					File.Delete(FileNew);
+
+				}
+
 
 			}
 			catch (Exception ex)
