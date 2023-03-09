@@ -32,7 +32,10 @@ namespace BigBoxProfile
 			_modules.Add(new Replace());
 			_modules.Add(new ChangeExe());
 
-			_modules.Add(new ChangeDisposition());
+			//_modules.Add(new ChangeDisposition());
+			_modules.Add(new UseFileContent());
+			_modules.Add(new ChangeRomPath());
+
 
 
 			List<ConfigurationData> loadedModules = ConfigurationData.LoadConfigurationDataList(FileNameConfig);
@@ -63,12 +66,27 @@ namespace BigBoxProfile
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
+				/*
 				if (module.name == "ChangeDisposition")
 				{
 					var obj = new ChangeDisposition();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
+				*/
+				if (module.name == "UseFileContent")
+				{
+					var obj = new UseFileContent();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+				if (module.name == "ChangeRomPath")
+				{
+					var obj = new ChangeRomPath();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+
 			}
 			
 		}

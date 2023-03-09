@@ -131,6 +131,13 @@
       <DependentUpon>ChangeDisposition_Config.cs</DependentUpon>
     </Compile>
     <Compile Include="EmulatorActions\ChangeExe.cs" />
+    <Compile Include="EmulatorActions\ChangeRomPath.cs" />
+    <Compile Include="EmulatorActions\ChangeRomPath_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\ChangeRomPath_Config.Designer.cs">
+      <DependentUpon>ChangeRomPath_Config.cs</DependentUpon>
+    </Compile>
     <Compile Include="EmulatorActions\Replace_Config.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +159,13 @@
     </Compile>
     <Compile Include="EmulatorActions\Suffix.cs" />
     <Compile Include="EmulatorActions\Prefix.cs" />
+    <Compile Include="EmulatorActions\UseFileContent.cs" />
+    <Compile Include="EmulatorActions\UseFileContent_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\UseFileContent_Config.Designer.cs">
+      <DependentUpon>UseFileContent_Config.cs</DependentUpon>
+    </Compile>
     <Compile Include="EmulatorConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,6 +206,9 @@
     <EmbeddedResource Include="EmulatorActions\ChangeDisposition_Config.resx">
       <DependentUpon>ChangeDisposition_Config.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\ChangeRomPath_Config.resx">
+      <DependentUpon>ChangeRomPath_Config.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\Replace_Config.resx">
       <DependentUpon>Replace_Config.cs</DependentUpon>
     </EmbeddedResource>
@@ -200,6 +217,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\Prefix_Config.resx">
       <DependentUpon>Prefix_Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\UseFileContent_Config.resx">
+      <DependentUpon>UseFileContent_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorConfig.resx">
       <DependentUpon>EmulatorConfig.cs</DependentUpon>

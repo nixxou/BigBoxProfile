@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MonitorSwitcherGUI;
 using System.IO;
+using BigBoxProfile.EmulatorActions;
 
 namespace BigBoxProfile
 {
@@ -360,5 +361,7 @@ namespace BigBoxProfile
 		{
 
 		}
+
+
 	}
 }

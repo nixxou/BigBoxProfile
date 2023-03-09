@@ -141,7 +141,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "Prefix_Config";
-			this.Text = "Prefix_Config";
+			this.Text = "à";
 			this.Load += new System.EventHandler(this.Prefix_Config_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();

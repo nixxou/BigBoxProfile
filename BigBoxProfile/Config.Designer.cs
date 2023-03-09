@@ -349,7 +349,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.label_status);
 			this.Name = "Config";
-			this.Text = "à";
+			this.Text = "\'";
 			this.Load += new System.EventHandler(this.Config_Load);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
