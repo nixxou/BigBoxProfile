@@ -225,12 +225,12 @@ namespace BigBoxProfile
 									double screenBaseHeight = screen.Bounds.Height;
 
 									bool maximize = false;
-									if (SelectedProfile.Configuration.ContainsKey("maximize_launchbox") && SelectedProfile.Configuration["maximize_launchbox"] == "yes") maximize = true;
+									//if (SelectedProfile.Configuration.ContainsKey("maximize_launchbox") && SelectedProfile.Configuration["maximize_launchbox"] == "yes") maximize = true;
 
 									
 
 									int MonitorToSwitch = BigBoxUtils.GetMonitorIDFromPriorityList(SelectedProfile.Configuration["monitor"]);
-									MessageBox.Show(MonitorToSwitch.ToString());
+									//MessageBox.Show(MonitorToSwitch.ToString());
 
 									if (screenIndex != MonitorToSwitch)
 									{
@@ -260,14 +260,17 @@ namespace BigBoxProfile
 										}
 
 									}
-
+									/*
 									if(maximize)
 									{
+										
+										if(didAction) Thread.Sleep(2000);
 										didAction = true;
-										if(didAction) Thread.Sleep(1000);
+										Thread.Sleep(1000);
 										ShowWindow(targetProcess.MainWindowHandle, 3);
 									}
-									if (didAction) Thread.Sleep(1000);
+									*/
+									if (didAction) Thread.Sleep(1500);
 									SetForegroundWindow(targetProcess.MainWindowHandle);
 
 									break;

@@ -51,6 +51,7 @@
 			this.btn_addEmulator = new System.Windows.Forms.Button();
 			this.btn_editEmulator = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.label7 = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -243,6 +244,7 @@
 			this.chk_maximize.TabIndex = 7;
 			this.chk_maximize.Text = "Maximize Launchbox";
 			this.chk_maximize.UseVisualStyleBackColor = true;
+			this.chk_maximize.Visible = false;
 			this.chk_maximize.CheckedChanged += new System.EventHandler(this.chk_maximize_CheckedChanged);
 			// 
 			// cmb_emulatorList
@@ -291,6 +293,7 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.label7);
 			this.groupBox1.Controls.Add(this.chk_maximize);
 			this.groupBox1.Controls.Add(this.btn_editEmulator);
 			this.groupBox1.Controls.Add(this.chk_launchbox);
@@ -315,6 +318,15 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "&";
 			this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(13, 180);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(154, 13);
+			this.label7.TabIndex = 24;
+			this.label7.Text = "Hijack Emulator command line :";
 			// 
 			// Config
 			// 
@@ -365,6 +377,7 @@
 		private System.Windows.Forms.Button btn_addEmulator;
 		private System.Windows.Forms.Button btn_editEmulator;
 		private System.Windows.Forms.GroupBox groupBox1;
+		private System.Windows.Forms.Label label7;
 	}
 }
 
