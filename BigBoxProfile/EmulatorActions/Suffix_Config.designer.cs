@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Suffix_Config));
 			this.btn_ok = new System.Windows.Forms.Button();
 			this.txt_option = new System.Windows.Forms.TextBox();
 			this.btn_cancel = new System.Windows.Forms.Button();
@@ -138,6 +139,7 @@
 			this.Controls.Add(this.btn_ok);
 			this.Controls.Add(this.txt_option);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "Suffix_Config";

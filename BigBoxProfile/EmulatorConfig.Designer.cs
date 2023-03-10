@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmulatorConfig));
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.btn_delete = new System.Windows.Forms.Button();
 			this.btn_down = new System.Windows.Forms.Button();
@@ -250,6 +251,7 @@
 			this.Controls.Add(this.txt_profileName);
 			this.Controls.Add(this.txt_emulatorExe);
 			this.Controls.Add(this.groupBox3);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "EmulatorConfig";

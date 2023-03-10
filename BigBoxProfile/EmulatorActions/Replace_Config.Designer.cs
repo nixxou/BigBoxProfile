@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Replace_Config));
 			this.label3 = new System.Windows.Forms.Label();
 			this.txt_filter = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
@@ -181,6 +182,7 @@
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
 			this.Controls.Add(this.txt_search);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Replace_Config";
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Replace_Config_Load);

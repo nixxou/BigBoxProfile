@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Config));
 			this.label_status = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.cmb_listProfiles = new System.Windows.Forms.ComboBox();
@@ -341,6 +342,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.label_status);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "Config";
 			this.Text = "BigBoxProfile Configuration";

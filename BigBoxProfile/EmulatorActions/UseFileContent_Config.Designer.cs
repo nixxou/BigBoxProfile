@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UseFileContent_Config));
 			this.label3 = new System.Windows.Forms.Label();
 			this.txt_filter = new System.Windows.Forms.TextBox();
 			this.btn_cancel = new System.Windows.Forms.Button();
@@ -117,6 +118,7 @@
 			this.Controls.Add(this.txt_filter);
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "UseFileContent_Config";
 			this.Text = "UseFileContent_Config";
 			this.Load += new System.EventHandler(this.UseFileContent_Config_Load);

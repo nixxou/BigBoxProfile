@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundCardConfig));
 			this.cmb_SoundCardList = new System.Windows.Forms.ComboBox();
 			this.btn_ok = new System.Windows.Forms.Button();
 			this.btn_cancel = new System.Windows.Forms.Button();
@@ -71,6 +72,7 @@
 			this.Controls.Add(this.btn_ok);
 			this.Controls.Add(this.cmb_SoundCardList);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "SoundCardConfig";

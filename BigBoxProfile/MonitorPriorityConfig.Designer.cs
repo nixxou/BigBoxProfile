@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MonitorPriorityConfig));
 			this.listView_monitor = new System.Windows.Forms.ListView();
 			this.val = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cmb_add = new System.Windows.Forms.ComboBox();
@@ -164,6 +165,7 @@
 			this.Controls.Add(this.cmb_add);
 			this.Controls.Add(this.listView_monitor);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "MonitorPriorityConfig";

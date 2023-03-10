@@ -28,12 +28,15 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChangeRomPath_Config));
 			this.label3 = new System.Windows.Forms.Label();
 			this.txt_filter = new System.Windows.Forms.TextBox();
 			this.btn_cancel = new System.Windows.Forms.Button();
 			this.btn_ok = new System.Windows.Forms.Button();
 			this.list_hightpriority = new System.Windows.Forms.ListView();
+			this.valh = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.list_lowpriority = new System.Windows.Forms.ListView();
+			this.val = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.txt_hightpriority = new System.Windows.Forms.TextBox();
 			this.txt_lowpriority = new System.Windows.Forms.TextBox();
 			this.btn_add_hightpriority = new System.Windows.Forms.Button();
@@ -44,13 +47,11 @@
 			this.btn_up_lowpriority = new System.Windows.Forms.Button();
 			this.btn_down_lowpriority = new System.Windows.Forms.Button();
 			this.btn_delete_lowpriority = new System.Windows.Forms.Button();
-			this.val = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.valh = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label1 = new System.Windows.Forms.Label();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
@@ -238,6 +239,33 @@
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Hight Priority Path";
 			// 
+			// label4
+			// 
+			this.label4.AutoSize = true;
+			this.label4.Location = new System.Drawing.Point(6, 60);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(254, 13);
+			this.label4.TabIndex = 2;
+			this.label4.Text = " you copy few games on C:\\Roms on your fast nvme";
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(6, 41);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(260, 13);
+			this.label2.TabIndex = 1;
+			this.label2.Text = "For exemple, you have your RomSet on D:\\Roms, but";
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(6, 25);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(325, 13);
+			this.label1.TabIndex = 0;
+			this.label1.Text = "Hight Priority path will replace the path, even if the normal path exist";
+			// 
 			// groupBox2
 			// 
 			this.groupBox2.Controls.Add(this.label6);
@@ -254,33 +282,6 @@
 			this.groupBox2.TabIndex = 32;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Low Priority Path";
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(6, 25);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(325, 13);
-			this.label1.TabIndex = 0;
-			this.label1.Text = "Hight Priority path will replace the path, even if the normal path exist";
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(6, 41);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(260, 13);
-			this.label2.TabIndex = 1;
-			this.label2.Text = "For exemple, you have your RomSet on D:\\Roms, but";
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(6, 60);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(254, 13);
-			this.label4.TabIndex = 2;
-			this.label4.Text = " you copy few games on C:\\Roms on your fast nvme";
 			// 
 			// label6
 			// 
@@ -311,6 +312,7 @@
 			this.Controls.Add(this.txt_filter);
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "ChangeRomPath_Config";
 			this.Text = "ChangeRomPath_Config";
 			this.Load += new System.EventHandler(this.ChangeRomPath_Config_Load);

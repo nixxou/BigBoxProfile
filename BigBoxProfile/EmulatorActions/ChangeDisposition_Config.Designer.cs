@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChangeDisposition_Config));
 			this.button1 = new System.Windows.Forms.Button();
 			this.btn_cancel = new System.Windows.Forms.Button();
 			this.btn_ok = new System.Windows.Forms.Button();
@@ -81,6 +82,7 @@
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
 			this.Controls.Add(this.cmb_DispositionList);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "ChangeDisposition_Config";
 			this.Text = "ChangeDisposition_Config";
 			this.Load += new System.EventHandler(this.ChangeDisposition_Config_Load);
