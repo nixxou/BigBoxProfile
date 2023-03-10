@@ -49,9 +49,9 @@ namespace BigBoxProfile.EmulatorActions
 			return true;
 		}
 
-		public void LoadConfiguration(Dictionary<string, string> Options)
+		public void LoadConfiguration(Dictionary<string, string> options)
 		{
-			this.Options = Options;
+			this.Options = options;
 			if (Options.ContainsKey("filter") == false) Options["filter"] = "";
 			if (Options.ContainsKey("low_priority") == false) Options["low_priority"] = "";
 			if (Options.ContainsKey("hight_priority") == false) Options["hight_priority"] = "";
@@ -59,6 +59,18 @@ namespace BigBoxProfile.EmulatorActions
 		}
 
 		public string[] ModifyExemple(string[] args)
+		{
+			try
+			{
+				args = Modify(args);
+			}
+			catch { }
+
+			return args;
+
+		}
+
+		public string[] Modify(string[] args)
 		{
 			string exeArg = args[0];
 			var filteredArgs = BigBoxUtils.ArgsWithoutFirstElement(args);
@@ -72,11 +84,17 @@ namespace BigBoxProfile.EmulatorActions
 					int indexsearch = elem.IndexOf(_filter);
 					string before = elem.Substring(0, indexsearch);
 					string after = elem.Substring(indexsearch + _filter.Length);
+					if (after == "\\") after = "";
+					after = after.TrimStart('\\');
+					after = after.TrimEnd('"');
 
 					var hight_priority_array = BigBoxUtils.explode(_hight_priority, "|||");
 					foreach(var potentialPath in hight_priority_array)
 					{
-						if(NetworkPathExists(Path.Combine(potentialPath, after.TrimStart('\\'))))
+						
+						string newPath = potentialPath;
+						if (!String.IsNullOrEmpty(after.TrimStart('\\'))) newPath = Path.Combine(potentialPath, after.TrimStart('\\'));
+						if (NetworkPathExists(newPath))
 						{
 							found = true;
 							filteredArgs[index] = before + Path.Combine(potentialPath, after.TrimStart('\\'));
@@ -92,7 +110,9 @@ namespace BigBoxProfile.EmulatorActions
 							var low_priority_array = BigBoxUtils.explode(_low_priority, "|||");
 							foreach (var potentialPath in low_priority_array)
 							{
-								if (NetworkPathExists(Path.Combine(potentialPath, after.TrimStart('\\'))))
+								string newPath = potentialPath;
+								if (!String.IsNullOrEmpty(after.TrimStart('\\'))) newPath = Path.Combine(potentialPath, after.TrimStart('\\'));
+								if (NetworkPathExists(newPath))
 								{
 									found = true;
 									filteredArgs[index] = before + Path.Combine(potentialPath, after.TrimStart('\\'));

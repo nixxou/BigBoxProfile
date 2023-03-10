@@ -50,9 +50,9 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
-		public void LoadConfiguration(Dictionary<string, string> Options)
+		public void LoadConfiguration(Dictionary<string, string> options)
 		{
-			this.Options = Options;
+			this.Options = options;
 			if (Options.ContainsKey("prefix") == false) Options["prefix"] = "";
 			if (Options.ContainsKey("filter") == false) Options["filter"] = "";
 			if (Options.ContainsKey("as_arg") == false) Options["as_arg"] = "yes";
@@ -117,8 +117,18 @@ namespace BigBoxProfile.EmulatorActions
 			return args;
 		}
 		*/
-
 		public string[] ModifyExemple(string[] args)
+		{
+			try
+			{
+				args = Modify(args);
+			}
+			catch { }
+
+			return args;
+
+		}
+		public string[] Modify(string[] args)
 		{
 			string cmd = BigBoxUtils.ArgsToCommandLine(args);
 			string exeArg = args[0];

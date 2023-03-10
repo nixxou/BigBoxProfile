@@ -65,9 +65,9 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
-		public void LoadConfiguration(Dictionary<string, string> Options)
+		public void LoadConfiguration(Dictionary<string, string> options)
 		{
-			this.Options = Options;
+			this.Options = options;
 			if (Options.ContainsKey("search") == false) Options["search"] = "";
 			if (Options.ContainsKey("replacewith") == false) Options["replacewith"] = "";
 			if (Options.ContainsKey("useregex") == false) Options["useregex"] = "no";
@@ -150,7 +150,17 @@ namespace BigBoxProfile.EmulatorActions
 		}
 		*/
 
+		public string[] Modify(string[] args)
+		{
+			try
+			{
+				args = Modify(args);
+			}
+			catch { }
 
+			return args;
+
+		}
 		public string[] ModifyExemple(string[] args)
 		{
 

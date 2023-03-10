@@ -84,6 +84,9 @@ namespace BigBoxProfile
 					{
 						if (args[0].EndsWith("BigBox.exe") || args[0].EndsWith("LaunchBox.exe"))
 						{
+							//MessageBox.Show("exec here ! " + BigBoxUtils.ArgsToCommandLine(args));
+
+							/*
 							bool skip = false;
 							var p = ParentProcessUtilities.GetParentProcess();
 							if (p != null)
@@ -96,6 +99,25 @@ namespace BigBoxProfile
 								var bigBoxLauncher = new BigBoxLauncher(args);
 								bigBoxLauncher.Exec();
 							}
+
+							*/
+
+							bool directlaunch = false;
+							if(args.Length >= 2)
+							{
+								if (args[1].Contains("--profile=")==false) directlaunch= true;
+							}
+							if (directlaunch)
+							{
+								var task = BigBoxLauncher.DirectLaunch(args);
+								task.Wait();
+							}
+							else
+							{
+								var bigBoxLauncher = new BigBoxLauncher(args);
+								bigBoxLauncher.Exec();
+							}
+
 
 						}
 						else

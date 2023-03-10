@@ -41,14 +41,26 @@ namespace BigBoxProfile.EmulatorActions
 			return true;
 		}
 
-		public void LoadConfiguration(Dictionary<string, string> Options)
+		public void LoadConfiguration(Dictionary<string, string> options)
 		{
-			if (Options.ContainsKey("filter") == false) Options["filter"] = "";
-			if (Options.ContainsKey("usefile") == false) Options["usefile"] = "yes";
+			this.Options = options;
+			if (options.ContainsKey("filter") == false) Options["filter"] = "";
+			if (options.ContainsKey("usefile") == false) Options["usefile"] = "yes";
 
 			UpdateConfig();
 		}
 
+		public string[] Modify(string[] args)
+		{
+			try
+			{
+				args = Modify(args);
+			}
+			catch { }
+
+			return args;
+
+		}
 		public string[] ModifyExemple(string[] args)
 		{
 			if(args.Length > 1)
@@ -58,10 +70,10 @@ namespace BigBoxProfile.EmulatorActions
 					if (File.Exists(args[i]))
 					{
 						var content = File.ReadAllText(args[i]);
-						if (!Path.IsPathRooted(args[i]))
+						if (!Path.IsPathRooted(content))
 						{
 							string path = "";
-							if(_usefile) path = Path.GetDirectoryName(path);
+							if(_usefile) path = Path.GetDirectoryName(args[i]);
 							else path = Directory.GetCurrentDirectory();
 							content = Path.Combine(path, content);
 						}
@@ -94,6 +106,8 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void UpdateConfig()
 		{
+			//if (Options.ContainsKey("filter") == false) Options["filter"] = "";
+			//if (Options.ContainsKey("usefile") == false) Options["usefile"] = "yes";
 			_filter = Options["filter"];
 			_usefile = Options["usefile"] == "yes" ? true : false;
 		}

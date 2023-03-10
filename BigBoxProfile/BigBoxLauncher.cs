@@ -289,6 +289,8 @@ namespace BigBoxProfile
 				}
 				else
 				{
+					//MessageBox.Show("execute " + FileNew);
+					
 					BigBoxUtils.MakeLink(FileOriginal, FileNew);
 
 					//MessageBox.Show("execute " + newExe);
@@ -301,6 +303,7 @@ namespace BigBoxProfile
 
 
 					File.Delete(FileNew);
+					
 
 				}
 
@@ -323,6 +326,18 @@ namespace BigBoxProfile
 				Thread.Sleep(1000);
 				ExecuteRestoreActions();
 			}
+		}
+
+		public static async Task DirectLaunch(string[] args)
+		{ 
+			string JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
+
+			var ResultRPCS2 = await Cli.Wrap(JustRunExe)
+				.WithArguments(args)
+				.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
+				.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
+				.WithValidation(CommandResultValidation.None)
+				.ExecuteAsync();
 		}
 
 		public static async Task TestExec(string[] args)

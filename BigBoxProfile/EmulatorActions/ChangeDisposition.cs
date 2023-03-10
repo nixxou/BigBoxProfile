@@ -41,9 +41,9 @@ namespace BigBoxProfile.EmulatorActions
 			return true;
 		}
 
-		public void LoadConfiguration(Dictionary<string, string> Options)
+		public void LoadConfiguration(Dictionary<string, string> options)
 		{
-			this.Options = Options;
+			this.Options = options;
 			if (Options.ContainsKey("disposition") == false) Options["disposition"] = "";
 			UpdateConfig();
 		}

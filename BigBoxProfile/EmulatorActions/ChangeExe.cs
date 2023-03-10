@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,16 +41,36 @@ namespace BigBoxProfile.EmulatorActions
 			return true;
 		}
 
-		public void LoadConfiguration(Dictionary<string, string> Options)
+		public void LoadConfiguration(Dictionary<string, string> options)
 		{
-			this.Options = Options;
+			this.Options = options;
 			if (Options.ContainsKey("newexe") == false) Options["newexe"] = "";
 			UpdateConfig();
 		}
 
 		public string[] ModifyExemple(string[] args)
 		{
-			args[0] = _newexe;
+			try
+			{
+				args = Modify(args);
+			}
+			catch { }
+
+			return args;
+
+		}
+
+		public string[] Modify(string[] args)
+		{
+			if (Path.IsPathRooted(_newexe))
+			{
+				args[0] = _newexe;
+			}
+			else
+			{
+				args[0] = Path.Combine(Path.GetDirectoryName(args[0]),_newexe);
+			}
+			
 			return args;
 		}
 
