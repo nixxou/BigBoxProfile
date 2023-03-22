@@ -179,15 +179,17 @@ namespace MonitorSwitcherGUI
             ForceUint32 = 0xFFFFFFFF
         }
 
-        public struct DpiInfo
-        {
-            public int id;
-            public int dpi;
-        }
+		public struct DpiInfo
+		{
+			public int id;
+			public uint adapter;
+			public int dpi;
+		}
 
 		public enum DisplayConfigDpiInfoType : uint
 		{
 			id = 0,
+			adapter = 0,
 			dpi = 100
 		}
 

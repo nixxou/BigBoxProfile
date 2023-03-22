@@ -27,7 +27,10 @@ namespace MonitorSwitcherGUI
         [DllImport("SetDpi.dll", EntryPoint = "dpi_GetMonitorID", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetMonitorID(int index);
 
-        [DllImport("SetDpi.dll", EntryPoint = "dpi_GetMonitorDPI", CallingConvention = CallingConvention.StdCall)]
+		[DllImport("SetDpi.dll", EntryPoint = "dpi_GetAdapterID", CallingConvention = CallingConvention.StdCall)]
+		public static extern uint GetAdapterID(int index);
+
+		[DllImport("SetDpi.dll", EntryPoint = "dpi_GetMonitorDPI", CallingConvention = CallingConvention.StdCall)]
         public static extern int GetMonitorDPI(int index);
 
         [DllImport("SetDpi.dll", EntryPoint = "dpi_SetMonitorDPI", CallingConvention = CallingConvention.StdCall)]
@@ -133,7 +136,11 @@ namespace MonitorSwitcherGUI
 					DebugOutput("\t\tReading dpiInfo");
 					xml.Read();
 					xml.Read();
-                    dpiInfo.id = Convert.ToInt32(xml.Value);
+					dpiInfo.id = Convert.ToInt32(xml.Value);
+					xml.Read();
+					xml.Read();
+					xml.Read();
+					dpiInfo.adapter = Convert.ToUInt32(xml.Value);
 					xml.Read();
 					xml.Read();
 					xml.Read();
@@ -223,6 +230,23 @@ namespace MonitorSwitcherGUI
             CCDWrapper.DisplayConfigModeInfo[] modeInfoArrayCurrent = new CCDWrapper.DisplayConfigModeInfo[0];
             CCDWrapper.MonitorAdditionalInfo[] additionalInfoCurrent = new CCDWrapper.MonitorAdditionalInfo[0];
 			CCDWrapper.DpiInfo[] dpiInfoCurrent = new CCDWrapper.DpiInfo[0];
+
+			Dictionary<uint, uint> CorrespondanceTargetAdapterIndex = new Dictionary<uint, uint>();
+			foreach (var dpi in dpiInfoArray)
+			{
+				int i = 0;
+				foreach (var xmlpathinfo in pathInfoArray)
+				{
+					if (dpi.adapter == xmlpathinfo.targetInfo.adapterId.LowPart)
+					{
+						if (!CorrespondanceTargetAdapterIndex.ContainsKey(dpi.adapter))
+						{
+							CorrespondanceTargetAdapterIndex[dpi.adapter] = Convert.ToUInt32(i);
+						}
+					}
+					i++;
+				}
+			}
 
 			Boolean statusCurrent = GetDisplaySettings(ref pathInfoArrayCurrent, ref modeInfoArrayCurrent, ref additionalInfoCurrent, ref dpiInfoCurrent, false);
 			if (statusCurrent)
@@ -482,23 +506,44 @@ namespace MonitorSwitcherGUI
                     }
                 }
 
-                Dictionary<int, int> dpiData = new Dictionary<int, int>();
-                foreach(var dpi in dpiInfoArray)
-                {
-                    dpiData.Add(dpi.id, dpi.dpi);
-                }
-                for(int i = 0; i < dpiData.Count(); i++)
-                {
-                    int MonitorId = DPIUtils.GetMonitorID(i);
-                    if (dpiData.ContainsKey(MonitorId))
-                    {
-                        int currentDpi = DPIUtils.GetMonitorDPI(i);
-                        if(currentDpi != dpiData[MonitorId]) DPIUtils.SetMonitorDPI(i, dpiData[MonitorId]);
-                    }
-                }
+				Dictionary<uint, uint> CorrespondanceTargetAdapterValue = new Dictionary<uint, uint>();
+				foreach (var dpi in dpiInfoArray)
+				{
+					if (CorrespondanceTargetAdapterIndex.ContainsKey(dpi.adapter))
+					{
+						int index = Convert.ToInt32(CorrespondanceTargetAdapterIndex[dpi.adapter]);
+						CorrespondanceTargetAdapterValue[dpi.adapter] = pathInfoArray[index].targetInfo.adapterId.LowPart;
+					}
+				}
 
-                
-                return true;
+				for (int i = 0; i < dpiInfoCurrent.Count(); i++)
+				{
+					int MonitorId = DPIUtils.GetMonitorID(i);
+					ulong MonitorAdapter = DPIUtils.GetAdapterID(i);
+
+
+					foreach (var dpi in dpiInfoArray)
+					{
+						uint adapterValue = dpi.adapter;
+						if (CorrespondanceTargetAdapterValue.ContainsKey(dpi.adapter))
+						{
+							adapterValue = CorrespondanceTargetAdapterValue[dpi.adapter];
+						}
+
+						if (dpi.id == MonitorId && adapterValue == MonitorAdapter)
+						{
+							int currentDpi = DPIUtils.GetMonitorDPI(i);
+							if (currentDpi != dpi.dpi)
+							{
+								DPIUtils.SetMonitorDPI(i, dpi.dpi);
+							}
+							break;
+						}
+					}
+				}
+
+
+				return true;
             }
 
             DebugOutput("Failed to get current display settings");
@@ -581,10 +626,11 @@ namespace MonitorSwitcherGUI
                             {
                                 pathInfoArray[index] = pathInfo;
 
-                                dpiInfoArray[index].id = DPIUtils.GetMonitorID(index);
+								dpiInfoArray[index].id = DPIUtils.GetMonitorID(index);
 								dpiInfoArray[index].dpi = DPIUtils.GetMonitorDPI(index);
+								dpiInfoArray[index].adapter = DPIUtils.GetAdapterID(index);
 
-                                index++;
+								index++;
 
                                 
                             }
@@ -671,6 +717,7 @@ namespace MonitorSwitcherGUI
 				textWriter.WriteLine("<dpiInfo>");
 				CCDWrapper.DpiInfo dpiInfo = dpiInfoArray[i];
 				textWriter.WriteLine("<id>" + dpiInfo.id.ToString() + "</id>");
+				textWriter.WriteLine("<adapter>" + dpiInfo.adapter.ToString() + "</adapter>");
 				textWriter.WriteLine("<dpi>" + dpiInfo.dpi.ToString() + "</dpi>");
 				textWriter.WriteLine("</dpiInfo>");
 			}
@@ -749,6 +796,7 @@ namespace MonitorSwitcherGUI
 					xml.WriteStartElement("dpiInfo");
 					CCDWrapper.DpiInfo dpiInfo = dpiInfoArray[i];
 					xml.WriteElementString("id", dpiInfo.id.ToString());
+					xml.WriteElementString("adapter", dpiInfo.adapter.ToString());
 					xml.WriteElementString("dpi", dpiInfo.dpi.ToString());
 					xml.WriteEndElement();
 				}
