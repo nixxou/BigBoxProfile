@@ -384,5 +384,6 @@ namespace BigBoxProfile
 			if (chk_maximize.Checked) Profile.ActiveProfile.SetOption("maximize_launchbox", "yes");
 			else Profile.ActiveProfile.SetOption("maximize_launchbox", "no");
 		}
+
 	}
 }

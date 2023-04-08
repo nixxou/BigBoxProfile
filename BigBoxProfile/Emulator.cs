@@ -31,6 +31,7 @@ namespace BigBoxProfile
 			_modules.Add(new Suffix());
 			_modules.Add(new Replace());
 			_modules.Add(new ChangeExe());
+			_modules.Add(new FixRetroarchMonitor());
 
 			//_modules.Add(new ChangeDisposition());
 			_modules.Add(new UseFileContent());
@@ -86,7 +87,12 @@ namespace BigBoxProfile
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
-
+				if (module.name == "FixRetroarchMonitor")
+				{
+					var obj = new FixRetroarchMonitor();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
 			}
 			
 		}

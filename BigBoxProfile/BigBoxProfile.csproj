@@ -141,6 +141,7 @@
     <Compile Include="EmulatorActions\ChangeRomPath_Config.Designer.cs">
       <DependentUpon>ChangeRomPath_Config.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmulatorActions\FixRetroarchMonitor.cs" />
     <Compile Include="EmulatorActions\Replace_Config.cs">
       <SubType>Form</SubType>
     </Compile>

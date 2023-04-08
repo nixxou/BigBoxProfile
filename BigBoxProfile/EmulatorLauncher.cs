@@ -148,7 +148,7 @@ namespace BigBoxProfile
 					var emulator = new Emulator(SelectedProfile.ProfileName, ExeFile);
 					foreach (var module in emulator._selectedModules)
 					{
-						if (module.IsConfigured()) Args = module.ModifyExemple(Args);
+						if (module.IsConfigured()) Args = module.ModifyReal(Args);
 					}
 				}
 
