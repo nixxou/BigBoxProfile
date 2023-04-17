@@ -9,6 +9,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BigBoxProfile Installer", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallerLib", "InstallerLib\InstallerLib.csproj", "{31308686-94E8-468A-AD2A-4C93AA8AEC44}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskRegForRunAsAdmin", "TaskRegForRunAsAdmin\TaskRegForRunAsAdmin.csproj", "{AC467344-10C8-4C4B-9C36-9984A4C356C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,18 @@ Global
 		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Release|x64.Build.0 = Release|Any CPU
 		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Release|x86.ActiveCfg = Release|Any CPU
 		{31308686-94E8-468A-AD2A-4C93AA8AEC44}.Release|x86.Build.0 = Release|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Debug|x64.Build.0 = Debug|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Debug|x86.Build.0 = Debug|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Release|x64.ActiveCfg = Release|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Release|x64.Build.0 = Release|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{AC467344-10C8-4C4B-9C36-9984A4C356C2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

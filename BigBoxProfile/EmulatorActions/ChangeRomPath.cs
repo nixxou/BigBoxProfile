@@ -190,5 +190,14 @@ namespace BigBoxProfile.EmulatorActions
 				return false;
 			}
 		}
+
+		public void ExecuteBefore(string[] args)
+		{
+
+		}
+		public void ExecuteAfter(string[] args)
+		{
+
+		}
 	}
 }

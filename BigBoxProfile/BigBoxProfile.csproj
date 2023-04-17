@@ -56,6 +56,9 @@
     <ApplicationIcon>cube.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoHotkey.Interop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoHotkey.Interop.1.0.0.1\lib\net45\AutoHotkey.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="ClassLibrary">
       <HintPath>..\..\..\..\Documents\sources\AudioDeviceCmdlets\SOURCE\bin\Debug\ClassLibrary.dll</HintPath>
     </Reference>
@@ -69,11 +72,15 @@
     <Reference Include="Microsoft.Win32.Registry, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.4.7.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.10.1.0, Culture=neutral, PublicKeyToken=e25603a88b3aa7da, processorArchitecture=MSIL">
+      <HintPath>..\packages\TaskScheduler.2.10.1\lib\net452\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
@@ -141,6 +148,13 @@
     <Compile Include="EmulatorActions\ChangeRomPath_Config.Designer.cs">
       <DependentUpon>ChangeRomPath_Config.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmulatorActions\FakeFullScreen.cs" />
+    <Compile Include="EmulatorActions\FakeFullScreen_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\FakeFullScreen_Config.Designer.cs">
+      <DependentUpon>FakeFullScreen_Config.cs</DependentUpon>
+    </Compile>
     <Compile Include="EmulatorActions\FixRetroarchMonitor.cs" />
     <Compile Include="EmulatorActions\Replace_Config.cs">
       <SubType>Form</SubType>
@@ -149,6 +163,13 @@
       <DependentUpon>Replace_Config.cs</DependentUpon>
     </Compile>
     <Compile Include="EmulatorActions\Replace.cs" />
+    <Compile Include="EmulatorActions\RunAsAdminTask.cs" />
+    <Compile Include="EmulatorActions\RunAsAdminTask_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\RunAsAdminTask_Config.Designer.cs">
+      <DependentUpon>RunAsAdminTask_Config.cs</DependentUpon>
+    </Compile>
     <Compile Include="EmulatorActions\Suffix_Config.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -206,15 +227,24 @@
     <Compile Include="SoundCardUtility.cs" />
     <EmbeddedResource Include="Config.resx">
       <DependentUpon>Config.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\ChangeDisposition_Config.resx">
       <DependentUpon>ChangeDisposition_Config.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\ChangeRomPath_Config.resx">
       <DependentUpon>ChangeRomPath_Config.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\FakeFullScreen_Config.resx">
+      <DependentUpon>FakeFullScreen_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\Replace_Config.resx">
       <DependentUpon>Replace_Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\RunAsAdminTask_Config.resx">
+      <DependentUpon>RunAsAdminTask_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\Suffix_Config.resx">
       <DependentUpon>Suffix_Config.cs</DependentUpon>
@@ -227,9 +257,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorConfig.resx">
       <DependentUpon>EmulatorConfig.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MonitorDispositionConfig.resx">
       <DependentUpon>MonitorDispositionConfig.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MonitorPriorityConfig.resx">
       <DependentUpon>MonitorPriorityConfig.cs</DependentUpon>

@@ -26,6 +26,15 @@ namespace BigBoxProfile
 		{
 			txt_emulatorExe.Text = _emulator.FileNameEmulator;
 			txt_profileName.Text = _emulator.ProfileName;
+
+			if(_emulator.ProfileName.ToLower() != "default") chk_ApplyWithoutLaunchbox.Visible= false;
+			else
+			{
+				if (_emulator.ApplyWithoutLaunchbox) chk_ApplyWithoutLaunchbox.Checked = true;
+				else chk_ApplyWithoutLaunchbox.Checked= false;
+			}
+
+
 			foreach (var module in _emulator._modules)
 			{
 				cmb_selectAction.Items.Add(module.ModuleName);
@@ -123,6 +132,21 @@ namespace BigBoxProfile
 				options.Add(emulationActionOption);
 
 			}
+
+			var emulationActionOptionEmulator = new ConfigurationData();
+			emulationActionOptionEmulator.name = "OptionsEmulator";
+			emulationActionOptionEmulator.Options = new Dictionary<string, string>();
+			if (chk_ApplyWithoutLaunchbox.Checked)
+			{
+				emulationActionOptionEmulator.Options["ApplyWithoutLaunchbox"] = "yes";
+			}
+			else
+			{
+				emulationActionOptionEmulator.Options["ApplyWithoutLaunchbox"] = "no";
+			}
+			options.Add(emulationActionOptionEmulator);
+
+
 			ConfigurationData.SaveConfigurationDataList(_emulator.FileNameConfig, options);
 		}
 

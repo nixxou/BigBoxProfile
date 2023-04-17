@@ -145,6 +145,7 @@ namespace BigBoxProfile
 		{
 			string debuggerValue = CheckRegistryValue(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\BigBox.exe", "Debugger");
 			if (debuggerValue != null && debuggerValue == Assembly.GetEntryAssembly().Location) return true;
+
 			return false;
 		}
 
@@ -282,9 +283,9 @@ namespace BigBoxProfile
 			return false;
 		}
 
-		public static Dictionary<string,int> GetMonitorsTagDictionary()
+		public static Dictionary<string, int> GetMonitorsTagDictionary()
 		{
-			var result = new Dictionary<string,int>();
+			var result = new Dictionary<string, int>();
 			string FirstDevice = "";
 			Screen[] screens = Screen.AllScreens;
 			Debug.WriteLine($"Nombre d'écrans : {screens.Length}");
@@ -411,6 +412,54 @@ namespace BigBoxProfile
 				sb.Append(' ');
 			}
 			return sb.ToString().TrimEnd();
+		}
+
+		public static bool IsValidPath(string path)
+		{
+			try
+			{
+				string fullpath = Path.GetFullPath(path);
+			}
+			catch {
+				return false;			
+			}
+			return true;
+		}
+
+		public static string[] ArgsToAbsoluteArgs(string[] args)
+		{
+			List<string> newArgs = new List<string>();
+			for (int i = 0; i < args.Length; i++)
+			{
+				string arg = args[i];
+
+
+
+				if (IsValidPath(arg))
+				{
+
+					string filePath = arg;
+
+					if (!Path.IsPathRooted(filePath))
+					{
+						filePath = Path.GetFullPath(filePath);
+					}
+
+					if (File.Exists(filePath))
+					{
+						arg = filePath;
+					}
+					else if (Directory.Exists(filePath))
+					{
+						arg = filePath;
+					}
+					
+				}
+				newArgs.Add(arg);
+			}
+			return newArgs.ToArray();
+
+
 		}
 
 		public static string[] CommandLineToArgs(string commandLine, bool addfakeexe = true)

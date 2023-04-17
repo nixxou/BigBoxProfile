@@ -72,8 +72,7 @@ namespace BigBoxProfile
 
 		public void ExecutePrelaunch()
 		{
-
-
+			
 		}
 
 		public void ExecutePostlaunch()
@@ -135,7 +134,30 @@ namespace BigBoxProfile
 
 		public void Exec()
 		{
+			Emulator emulator = null;
 			if (SelectedProfile == null)
+			{
+				if (Emulator.Exist("default", ExeFile))
+				{
+					var default_emulator = new Emulator("default", ExeFile);
+					if (default_emulator.ApplyWithoutLaunchbox)
+					{
+						emulator = default_emulator;
+						SelectedProfile = Profile.ProfileList["default"];
+					}
+				}
+			}
+			else
+			{
+				if (Emulator.Exist(SelectedProfile.ProfileName, ExeFile))
+				{
+					emulator = new Emulator(SelectedProfile.ProfileName, ExeFile);
+				}
+			}
+
+
+
+			if (emulator == null)
 			{
 				Execute();
 			}
@@ -143,18 +165,30 @@ namespace BigBoxProfile
 			{
 				ExecutePrelaunch();
 
-				if(Emulator.Exist(SelectedProfile.ProfileName, ExeFile))
+				foreach (var module in emulator._selectedModules)
 				{
-					var emulator = new Emulator(SelectedProfile.ProfileName, ExeFile);
-					foreach (var module in emulator._selectedModules)
+					if (module.IsConfigured())
 					{
-						if (module.IsConfigured()) Args = module.ModifyReal(Args);
+						module.ExecuteBefore(Args);
+						Args = module.ModifyReal(Args);
+							
+					}
+						
+				}
+				
+				Execute();
+				Thread.Sleep(1000);
+
+				for (int i = emulator._selectedModules.Count - 1; i >= 0; i--)
+				{
+					var module = emulator._selectedModules[i];
+					if (module.IsConfigured())
+					{
+						module.ExecuteAfter(Args);
 					}
 				}
 
 
-				Execute();
-				Thread.Sleep(1000);
 				ExecutePostlaunch();
 			}
 			

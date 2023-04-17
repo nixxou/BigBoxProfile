@@ -21,5 +21,9 @@ namespace BigBoxProfile
 		string[] ModifyReal(string[] args);
 
 		void LoadConfiguration(Dictionary<string, string> Options);
+
+		void ExecuteBefore(string[] args);
+
+		void ExecuteAfter(string[] args);
 	}
 }

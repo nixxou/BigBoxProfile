@@ -47,6 +47,7 @@
 			this.txt_profileName = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
+			this.chk_ApplyWithoutLaunchbox = new System.Windows.Forms.CheckBox();
 			this.groupBox3.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -65,7 +66,7 @@
 			this.groupBox3.Controls.Add(this.label7);
 			this.groupBox3.Controls.Add(this.cmb_selectAction);
 			this.groupBox3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.groupBox3.Location = new System.Drawing.Point(12, 77);
+			this.groupBox3.Location = new System.Drawing.Point(12, 107);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(648, 512);
 			this.groupBox3.TabIndex = 13;
@@ -241,11 +242,22 @@
 			this.label2.TabIndex = 17;
 			this.label2.Text = "BigBox Profile :";
 			// 
+			// chk_ApplyWithoutLaunchbox
+			// 
+			this.chk_ApplyWithoutLaunchbox.AutoSize = true;
+			this.chk_ApplyWithoutLaunchbox.Location = new System.Drawing.Point(12, 65);
+			this.chk_ApplyWithoutLaunchbox.Name = "chk_ApplyWithoutLaunchbox";
+			this.chk_ApplyWithoutLaunchbox.Size = new System.Drawing.Size(272, 17);
+			this.chk_ApplyWithoutLaunchbox.TabIndex = 18;
+			this.chk_ApplyWithoutLaunchbox.Text = "Apply even if not launch thought Launchbox/Bigbox";
+			this.chk_ApplyWithoutLaunchbox.UseVisualStyleBackColor = true;
+			// 
 			// EmulatorConfig
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(672, 597);
+			this.ClientSize = new System.Drawing.Size(669, 625);
+			this.Controls.Add(this.chk_ApplyWithoutLaunchbox);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.txt_profileName);
@@ -283,5 +295,6 @@
 		private System.Windows.Forms.Button btn_delete;
 		private System.Windows.Forms.Button btn_down;
 		private System.Windows.Forms.Button btn_up;
+		private System.Windows.Forms.CheckBox chk_ApplyWithoutLaunchbox;
 	}
 }

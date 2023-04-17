@@ -112,6 +112,15 @@ namespace BigBoxProfile.EmulatorActions
 			_usefile = Options["usefile"] == "yes" ? true : false;
 		}
 
+		public void ExecuteBefore(string[] args)
+		{
+
+		}
+		public void ExecuteAfter(string[] args)
+		{
+
+		}
+
 
 	}
 }

@@ -15,10 +15,13 @@ namespace BigBoxProfile
 		public string ProfileName;
 		public string FileNameConfig;
 		public bool IsRegistered = false;
+		public bool ApplyWithoutLaunchbox = false;
 
 		private List<ConfigurationData> _options = new List<ConfigurationData>();
 		public List<IEmulatorAction> _modules = new List<IEmulatorAction>();
 		public List<IEmulatorAction> _selectedModules = new List<IEmulatorAction>();
+
+		public Dictionary<string, string> OptionsEmulator { get; set; } = new Dictionary<string, string>();
 
 		public Emulator(string profileName,string fileNameEmulator)
 		{
@@ -36,12 +39,26 @@ namespace BigBoxProfile
 			//_modules.Add(new ChangeDisposition());
 			_modules.Add(new UseFileContent());
 			_modules.Add(new ChangeRomPath());
+			_modules.Add(new ChangeDisposition());
+			_modules.Add(new FakeFullScreen());
+			_modules.Add(new RunAsAdminTask());
 
 
 
 			List<ConfigurationData> loadedModules = ConfigurationData.LoadConfigurationDataList(FileNameConfig);
 			foreach (var module in loadedModules)
 			{
+				
+				if (module.name == "OptionsEmulator")
+				{
+					OptionsEmulator = module.Options;
+					if (OptionsEmulator.ContainsKey("ApplyWithoutLaunchbox") && OptionsEmulator["ApplyWithoutLaunchbox"] == "yes" && profileName.ToLower() == "default")
+					{
+						ApplyWithoutLaunchbox = true;
+					}
+				}
+
+
 				if (module.name == "Prefix")
 				{
 					var obj = new Prefix();
@@ -93,6 +110,27 @@ namespace BigBoxProfile
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
+				if (module.name == "ChangeDisposition")
+				{
+					var obj = new ChangeDisposition();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+
+				if (module.name == "FakeFullScreen")
+				{
+					var obj = new FakeFullScreen();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+
+				if (module.name == "RunAsAdminTask")
+				{
+					var obj = new RunAsAdminTask();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+
 			}
 			
 		}
@@ -124,6 +162,21 @@ namespace BigBoxProfile
 				emulationActionOption.Options = module.Options;
 				_options.Add(emulationActionOption);
 			}
+
+			if (ApplyWithoutLaunchbox)
+			{
+				OptionsEmulator["ApplyWithoutLaunchbox"] = "yes";
+			}
+			else
+			{
+				OptionsEmulator["ApplyWithoutLaunchbox"] = "no";
+			}
+
+			var emulationActionOptionEmulator = new ConfigurationData();
+			emulationActionOptionEmulator.name = "OptionsEmulator";
+			emulationActionOptionEmulator.Options = OptionsEmulator;
+			_options.Add(emulationActionOptionEmulator);
+
 			ConfigurationData.SaveConfigurationDataList(FileNameConfig, _options);
 		}
 	}

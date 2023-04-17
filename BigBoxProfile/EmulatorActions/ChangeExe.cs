@@ -103,5 +103,14 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			_newexe = Options["newexe"];
 		}
+
+		public void ExecuteBefore(string[] args)
+		{
+
+		}
+		public void ExecuteAfter(string[] args)
+		{
+
+		}
 	}
 }

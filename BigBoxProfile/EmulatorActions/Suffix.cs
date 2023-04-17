@@ -141,5 +141,14 @@ namespace BigBoxProfile.EmulatorActions
 			_filter = Options["filter"];
 			_asArg = Options["as_arg"] == "yes" ? true : false;
 		}
+
+		public void ExecuteBefore(string[] args)
+		{
+
+		}
+		public void ExecuteAfter(string[] args)
+		{
+
+		}
 	}
 }

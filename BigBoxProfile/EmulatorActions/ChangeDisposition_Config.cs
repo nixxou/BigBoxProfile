@@ -18,13 +18,19 @@ namespace BigBoxProfile.EmulatorActions
 	{
 
 		public string result = "";
+		public string filter = "";
+		public string filterInsideFile = "";
 
 		public ChangeDisposition_Config(Dictionary<string, string> Options)
 		{
 			result = Options.ContainsKey("disposition") ? Options["disposition"] : "";
+			filter = Options.ContainsKey("filter") ? Options["filter"] : "";
+			filterInsideFile = Options.ContainsKey("filterInsideFile") ? Options["filterInsideFile"] : "";
+
 			InitializeComponent();
 			ReloadCmb();
-
+			txt_filter.Text = filter;
+			txt_filter_inside_file.Text = filterInsideFile;
 		}
 
 
@@ -74,6 +80,9 @@ namespace BigBoxProfile.EmulatorActions
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
 			result = cmb_DispositionList.SelectedItem.ToString();
+			filter = txt_filter.Text;
+			filterInsideFile = txt_filter_inside_file.Text;
+
 			this.DialogResult = DialogResult.OK;
 			this.Close();
 		}

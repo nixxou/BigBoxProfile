@@ -232,5 +232,14 @@ namespace BigBoxProfile.EmulatorActions
 
 			return replaceWith;
 		}
+
+		public void ExecuteBefore(string[] args)
+		{
+
+		}
+		public void ExecuteAfter(string[] args)
+		{
+
+		}
 	}
 }
