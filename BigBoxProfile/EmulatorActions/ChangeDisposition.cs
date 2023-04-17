@@ -99,7 +99,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void ExecuteBefore(string[] args)
 		{
-			
+
 			if (IsConfigured() == false)
 			{
 				return;
