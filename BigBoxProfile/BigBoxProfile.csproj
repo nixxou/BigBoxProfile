@@ -155,6 +155,7 @@
     <Compile Include="EmulatorActions\FakeFullScreen_Config.Designer.cs">
       <DependentUpon>FakeFullScreen_Config.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmulatorActions\FixMameMonitor.cs" />
     <Compile Include="EmulatorActions\FixRetroarchMonitor.cs" />
     <Compile Include="EmulatorActions\Replace_Config.cs">
       <SubType>Form</SubType>
