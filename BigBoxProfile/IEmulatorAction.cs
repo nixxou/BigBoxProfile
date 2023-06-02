@@ -25,5 +25,7 @@ namespace BigBoxProfile
 		void ExecuteBefore(string[] args);
 
 		void ExecuteAfter(string[] args);
+
+		bool UseM3UContent();
 	}
 }

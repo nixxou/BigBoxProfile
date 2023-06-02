@@ -4,10 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.LinkLabel;
 
 namespace BigBoxProfile
 {
@@ -163,34 +165,132 @@ namespace BigBoxProfile
 			}
 			else
 			{
+
+				//var argstring = BigBoxUtils.ArgsToCommandLine(Args);
+				//MessageBox.Show(argstring);
+
 				ExecutePrelaunch();
 
-				foreach (var module in emulator._selectedModules)
+				string m3uFile = BigBoxUtils.HaveLaunchboxM3U(Args);
+				if (String.IsNullOrEmpty(m3uFile))
 				{
-					if (module.IsConfigured())
+					foreach (var module in emulator._selectedModules)
 					{
-						module.ExecuteBefore(Args);
-						Args = module.ModifyReal(Args);
-							
-					}
-						
-				}
-				
-				Execute();
-				Thread.Sleep(1000);
+						if (module.IsConfigured())
+						{
+							module.ExecuteBefore(Args);
+							Args = module.ModifyReal(Args);
 
-				for (int i = emulator._selectedModules.Count - 1; i >= 0; i--)
+						}
+
+					}
+					
+					Execute();
+					Thread.Sleep(1000);
+
+					for (int i = emulator._selectedModules.Count - 1; i >= 0; i--)
+					{
+						var module = emulator._selectedModules[i];
+						if (module.IsConfigured())
+						{
+							module.ExecuteAfter(Args);
+						}
+					}
+
+				}
+				else
 				{
-					var module = emulator._selectedModules[i];
-					if (module.IsConfigured())
+					string m3uNew = BigBoxUtils.GetLaunchboxM3UNewPath(m3uFile);
+					List<string> m3uFileListOriginal = BigBoxUtils.GetLaunchboxM3UContent(m3uFile);
+					string m3uFirstFile = m3uFileListOriginal.First();
+					List<string> m3uFileListNew = new List<string>();
+
+					int nbM3U = BigBoxUtils.CountFileInArg(Args, m3uFile);
+					var ArgsWithFirstFileInsteadOfM3U = BigBoxUtils.RemplaceFileInArg(Args, m3uFile, m3uFirstFile);
+					var ArgsWithFirstFileInsteadOfM3U_Copy = new string[ArgsWithFirstFileInsteadOfM3U.Length];
+					ArgsWithFirstFileInsteadOfM3U.CopyTo(ArgsWithFirstFileInsteadOfM3U_Copy, 0);
+
+					foreach (var module in emulator._selectedModules)
 					{
-						module.ExecuteAfter(Args);
+						if (module.IsConfigured() && module.UseM3UContent() == false)
+						{
+							module.ExecuteBefore(ArgsWithFirstFileInsteadOfM3U);
+							ArgsWithFirstFileInsteadOfM3U = module.ModifyReal(ArgsWithFirstFileInsteadOfM3U);
+							//Si il y a une modification du fichier passé en paramettre, on accepte pas la modif et on restaure
+							if(BigBoxUtils.CountFileInArg(ArgsWithFirstFileInsteadOfM3U,m3uFirstFile) != nbM3U)
+							{
+								ArgsWithFirstFileInsteadOfM3U = new string[ArgsWithFirstFileInsteadOfM3U_Copy.Length];
+								ArgsWithFirstFileInsteadOfM3U_Copy.CopyTo(ArgsWithFirstFileInsteadOfM3U, 0);
+							}
+
+						}
 					}
+					Args = BigBoxUtils.RemplaceFileInArg(ArgsWithFirstFileInsteadOfM3U, m3uFirstFile , m3uNew);
+
+					foreach (var fileInM3U in m3uFileListOriginal)
+					{
+						var ForgedArgList = new List<string>();
+						ForgedArgList.Add(Args[0]);
+						ForgedArgList.Add(fileInM3U);
+						if(Args.Length > 2)
+						{
+							for(int i = 1; i < Args.Length; i++)
+							{
+								if (Args[i] != m3uNew)
+								{
+									ForgedArgList.Add(Args[i]);
+								}
+							}
+						}
+						var ForgedArg = ForgedArgList.ToArray();
+
+						foreach (var module in emulator._selectedModules)
+						{
+							if (module.IsConfigured() && module.UseM3UContent() == true)
+							{
+								ForgedArg = module.ModifyReal(ForgedArg);
+							}
+						}
+						m3uFileListNew.Add(ForgedArg[1]);
+					}
+
+					string directoryPath = Path.GetDirectoryName(m3uNew);
+					if (!Directory.Exists(directoryPath))
+					{
+						Directory.CreateDirectory(directoryPath);
+					}
+					File.WriteAllLines(m3uNew, m3uFileListNew.ToArray());
+
+					Execute();
+					Thread.Sleep(1000);
+
+					File.Delete(m3uNew);
+
+					for (int i = emulator._selectedModules.Count - 1; i >= 0; i--)
+					{
+						var module = emulator._selectedModules[i];
+						if (module.IsConfigured())
+						{
+							module.ExecuteAfter(Args);
+						}
+					}
+
+
+
+					//MessageBox.Show(M3UFile);
 				}
 
+				/*
+				Si M3U
 
-				ExecutePostlaunch();
+
+				*/
+
+
+
+
 			}
+			ExecutePostlaunch();
 			
 
 			

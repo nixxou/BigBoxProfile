@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -523,6 +524,70 @@ namespace BigBoxProfile
 			return filteredArgs;
 		}
 
+		public static string HaveLaunchboxM3U(string[] args)
+		{
+			for (int i = 0; i < args.Length; i++)
+			{
+				string arg = args[i];
+				if (arg.ToLower().EndsWith(".m3u"))
+				{
+
+					string nomRepertoire = Path.GetDirectoryName(arg);
+					if (String.IsNullOrEmpty(nomRepertoire)) continue;
+					string nomSousRepertoire = Path.GetDirectoryName(nomRepertoire);
+					if (String.IsNullOrEmpty(nomSousRepertoire)) continue;
+					string nomSousSousRepertoire = Path.GetDirectoryName(nomSousRepertoire);
+					if (String.IsNullOrEmpty(nomSousSousRepertoire)) continue;
+					if (Path.GetFileName(nomSousRepertoire) != "Temp" && Path.GetFileName(nomSousSousRepertoire) != "Metadata") continue;
+					string newM3UFile = Path.Combine(nomSousSousRepertoire, "Temp2", Path.GetFileName(nomRepertoire), Path.GetFileName(arg));
+
+
+					if (arg.StartsWith(@"\\"))
+					{
+						string serverName = arg.Split('\\')[2];
+						Ping ping = new Ping();
+						PingReply reply = ping.Send(serverName);
+
+						if (reply.Status != IPStatus.Success)
+						{
+							Console.WriteLine("The server is not reachable.");
+							continue;
+						}
+					}
+					if (File.Exists(arg))
+					{
+						return arg;
+					}
+				}
+			}
+			return "";
+		}
+
+		public static List<string> GetLaunchboxM3UContent(string m3uFile)
+		{
+			List<string> m3udata = new List<string>();
+			using (StreamReader lecteur = new StreamReader(m3uFile))
+			{
+				string ligne;
+				while ((ligne = lecteur.ReadLine()) != null)
+				{
+					if (!String.IsNullOrEmpty(ligne)) m3udata.Add(ligne);
+				}
+			}
+			return m3udata;
+		}
+
+		public static string GetLaunchboxM3UNewPath(string m3uFile)
+		{
+			string nomRepertoire = Path.GetDirectoryName(m3uFile);
+			string nomSousRepertoire = Path.GetDirectoryName(nomRepertoire);
+			string nomSousSousRepertoire = Path.GetDirectoryName(nomSousRepertoire);
+			string newM3UFile = Path.Combine(nomSousSousRepertoire, "Temp2", Path.GetFileName(nomRepertoire), Path.GetFileName(m3uFile));
+			return newM3UFile;
+		}
+
+
+
 		public static string[] AddFirstElementToArg(string[] args,string argument)
 		{
 			string[] argsNonVides = Array.FindAll(args, s => !string.IsNullOrEmpty(s));
@@ -531,6 +596,33 @@ namespace BigBoxProfile
 			Array.Copy(argsNonVides, 0, newArgs, 1, argsNonVides.Length); // copier tous les éléments de args dans la nouvelle instance à partir de l'index 1
 			newArgs[0] = argument; // définir le premier élément comme étant votre nouvelle valeur
 			return newArgs;
+		}
+
+		public static string[] RemplaceFileInArg(string[] args, string searchFor, string remplace)
+		{
+			List<string> ModdedArg = new List<string>();
+			for (int i = 0; i < args.Length; i++)
+			{
+				if (args[i].ToLower().Trim() == searchFor.ToLower().Trim())
+				{
+					ModdedArg.Add(remplace);
+				}
+				else ModdedArg.Add(args[i]);
+			}
+			return ModdedArg.ToArray();
+		}
+
+		public static int CountFileInArg(string[] args, string searchFor)
+		{
+			int countMatch = 0;
+			for (int i = 0; i < args.Length; i++)
+			{
+				if (args[i].ToLower().Trim() == searchFor.ToLower().Trim())
+				{
+					countMatch++;
+				}
+			}
+			return countMatch;
 		}
 
 

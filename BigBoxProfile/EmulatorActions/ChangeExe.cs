@@ -112,5 +112,10 @@ namespace BigBoxProfile.EmulatorActions
 		{
 
 		}
+
+		public bool UseM3UContent()
+		{
+			return false;
+		}
 	}
 }

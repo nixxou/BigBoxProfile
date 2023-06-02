@@ -231,5 +231,10 @@ if !ErrorLevel  ; vérifier si la fenêtre n'a pas été trouvée
 			return replaceWith;
 		}
 
+		public bool UseM3UContent()
+		{
+			return false;
+		}
+
 	}
 }
