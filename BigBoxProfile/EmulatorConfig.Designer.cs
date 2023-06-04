@@ -68,7 +68,7 @@
 			this.groupBox3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.groupBox3.Location = new System.Drawing.Point(12, 107);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(648, 512);
+			this.groupBox3.Size = new System.Drawing.Size(847, 512);
 			this.groupBox3.TabIndex = 13;
 			this.groupBox3.TabStop = false;
 			this.groupBox3.Text = "Modify Emulators cmd";
@@ -78,7 +78,7 @@
 			// 
 			this.btn_delete.Enabled = false;
 			this.btn_delete.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btn_delete.Location = new System.Drawing.Point(556, 269);
+			this.btn_delete.Location = new System.Drawing.Point(763, 269);
 			this.btn_delete.Name = "btn_delete";
 			this.btn_delete.Size = new System.Drawing.Size(75, 21);
 			this.btn_delete.TabIndex = 5;
@@ -90,7 +90,7 @@
 			// 
 			this.btn_down.Enabled = false;
 			this.btn_down.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btn_down.Location = new System.Drawing.Point(556, 240);
+			this.btn_down.Location = new System.Drawing.Point(763, 240);
 			this.btn_down.Name = "btn_down";
 			this.btn_down.Size = new System.Drawing.Size(75, 23);
 			this.btn_down.TabIndex = 4;
@@ -102,7 +102,7 @@
 			// 
 			this.btn_up.Enabled = false;
 			this.btn_up.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btn_up.Location = new System.Drawing.Point(556, 211);
+			this.btn_up.Location = new System.Drawing.Point(763, 211);
 			this.btn_up.Name = "btn_up";
 			this.btn_up.Size = new System.Drawing.Size(75, 23);
 			this.btn_up.TabIndex = 3;
@@ -133,14 +133,14 @@
 			this.txt_exempleOut.Location = new System.Drawing.Point(155, 75);
 			this.txt_exempleOut.Name = "txt_exempleOut";
 			this.txt_exempleOut.ReadOnly = true;
-			this.txt_exempleOut.Size = new System.Drawing.Size(382, 21);
+			this.txt_exempleOut.Size = new System.Drawing.Size(602, 21);
 			this.txt_exempleOut.TabIndex = 30;
 			// 
 			// txt_exempleIn
 			// 
 			this.txt_exempleIn.Location = new System.Drawing.Point(155, 46);
 			this.txt_exempleIn.Name = "txt_exempleIn";
-			this.txt_exempleIn.Size = new System.Drawing.Size(382, 21);
+			this.txt_exempleIn.Size = new System.Drawing.Size(602, 21);
 			this.txt_exempleIn.TabIndex = 2;
 			this.txt_exempleIn.TextChanged += new System.EventHandler(this.txt_exempleIn_TextChanged);
 			// 
@@ -151,7 +151,7 @@
 			this.lv_selectedActions.HideSelection = false;
 			this.lv_selectedActions.Location = new System.Drawing.Point(22, 98);
 			this.lv_selectedActions.Name = "lv_selectedActions";
-			this.lv_selectedActions.Size = new System.Drawing.Size(528, 394);
+			this.lv_selectedActions.Size = new System.Drawing.Size(735, 394);
 			this.lv_selectedActions.TabIndex = 6;
 			this.lv_selectedActions.UseCompatibleStateImageBehavior = false;
 			this.lv_selectedActions.View = System.Windows.Forms.View.Details;
@@ -165,7 +165,7 @@
 			// btn_save
 			// 
 			this.btn_save.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btn_save.Location = new System.Drawing.Point(556, 466);
+			this.btn_save.Location = new System.Drawing.Point(763, 466);
 			this.btn_save.Name = "btn_save";
 			this.btn_save.Size = new System.Drawing.Size(86, 26);
 			this.btn_save.TabIndex = 6;
@@ -256,7 +256,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(669, 625);
+			this.ClientSize = new System.Drawing.Size(871, 625);
 			this.Controls.Add(this.chk_ApplyWithoutLaunchbox);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);

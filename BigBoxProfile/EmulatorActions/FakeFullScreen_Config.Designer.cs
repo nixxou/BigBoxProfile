@@ -53,6 +53,7 @@
 			this.label3.Size = new System.Drawing.Size(128, 13);
 			this.label3.TabIndex = 25;
 			this.label3.Text = "Only if cmdLine contains :";
+			this.label3.Click += new System.EventHandler(this.label3_Click);
 			// 
 			// txt_filter
 			// 
@@ -60,6 +61,7 @@
 			this.txt_filter.Name = "txt_filter";
 			this.txt_filter.Size = new System.Drawing.Size(348, 20);
 			this.txt_filter.TabIndex = 24;
+			this.txt_filter.TextChanged += new System.EventHandler(this.txt_filter_TextChanged);
 			// 
 			// btn_cancel
 			// 
@@ -97,6 +99,7 @@
 			this.txt_target.Name = "txt_target";
 			this.txt_target.Size = new System.Drawing.Size(348, 20);
 			this.txt_target.TabIndex = 26;
+			this.txt_target.TextChanged += new System.EventHandler(this.txt_target_TextChanged);
 			// 
 			// num_timeout
 			// 
@@ -104,6 +107,7 @@
 			this.num_timeout.Name = "num_timeout";
 			this.num_timeout.Size = new System.Drawing.Size(120, 20);
 			this.num_timeout.TabIndex = 28;
+			this.num_timeout.ValueChanged += new System.EventHandler(this.num_timeout_ValueChanged);
 			// 
 			// label2
 			// 
@@ -113,6 +117,7 @@
 			this.label2.Size = new System.Drawing.Size(53, 13);
 			this.label2.TabIndex = 29;
 			this.label2.Text = "TimeOut :";
+			this.label2.Click += new System.EventHandler(this.label2_Click);
 			// 
 			// label4
 			// 
@@ -122,6 +127,7 @@
 			this.label4.Size = new System.Drawing.Size(114, 13);
 			this.label4.TabIndex = 31;
 			this.label4.Text = "Wait before Maximise :";
+			this.label4.Click += new System.EventHandler(this.label4_Click);
 			// 
 			// num_waitbefore
 			// 
@@ -129,6 +135,7 @@
 			this.num_waitbefore.Name = "num_waitbefore";
 			this.num_waitbefore.Size = new System.Drawing.Size(120, 20);
 			this.num_waitbefore.TabIndex = 30;
+			this.num_waitbefore.ValueChanged += new System.EventHandler(this.num_waitbefore_ValueChanged);
 			// 
 			// cmb_targetType
 			// 
@@ -151,6 +158,7 @@
 			this.label5.Size = new System.Drawing.Size(44, 13);
 			this.label5.TabIndex = 34;
 			this.label5.Text = "Regex :";
+			this.label5.Click += new System.EventHandler(this.label5_Click);
 			// 
 			// txt_regex
 			// 
@@ -158,6 +166,7 @@
 			this.txt_regex.Name = "txt_regex";
 			this.txt_regex.Size = new System.Drawing.Size(348, 20);
 			this.txt_regex.TabIndex = 33;
+			this.txt_regex.TextChanged += new System.EventHandler(this.txt_regex_TextChanged);
 			// 
 			// FakeFullScreen_Config
 			// 

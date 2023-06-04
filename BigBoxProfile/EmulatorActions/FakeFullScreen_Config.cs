@@ -116,5 +116,50 @@ namespace BigBoxProfile.EmulatorActions
 				return false;
 			}
 		}
+
+		private void num_timeout_ValueChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void num_waitbefore_ValueChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void txt_filter_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void label3_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void label4_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void label2_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void txt_target_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void label5_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void txt_regex_TextChanged(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

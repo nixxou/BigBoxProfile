@@ -545,13 +545,20 @@ namespace BigBoxProfile
 					if (arg.StartsWith(@"\\"))
 					{
 						string serverName = arg.Split('\\')[2];
-						Ping ping = new Ping();
-						PingReply reply = ping.Send(serverName);
-
-						if (reply.Status != IPStatus.Success)
+						try
 						{
-							Console.WriteLine("The server is not reachable.");
-							continue;
+							Ping ping = new Ping();
+							PingReply reply = ping.Send(serverName);
+
+							if (reply.Status != IPStatus.Success)
+							{
+								Console.WriteLine("The server is not reachable.");
+								continue;
+							}
+						}
+						catch (PingException)
+						{
+
 						}
 					}
 					if (File.Exists(arg))

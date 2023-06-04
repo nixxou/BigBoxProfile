@@ -100,6 +100,14 @@ namespace BigBoxProfile.EmulatorActions
 							filteredArgs[index] = before + Path.Combine(potentialPath, after.TrimStart('\\'));
 							break;
 						}
+						string newPathWithoutSubdir = Path.Combine(potentialPath, Path.GetFileName(elem.Trim()));
+						if (NetworkPathExists(newPathWithoutSubdir))
+						{
+							found = true;
+							filteredArgs[index] = before + newPathWithoutSubdir;
+							break;
+						}
+
 					}
 
 					if (!found)
@@ -116,6 +124,13 @@ namespace BigBoxProfile.EmulatorActions
 								{
 									found = true;
 									filteredArgs[index] = before + Path.Combine(potentialPath, after.TrimStart('\\'));
+									break;
+								}
+								string newPathWithoutSubdir = Path.Combine(potentialPath, Path.GetFileName(elem.Trim()));
+								if (NetworkPathExists(newPathWithoutSubdir))
+								{
+									found = true;
+									filteredArgs[index] = before + newPathWithoutSubdir;
 									break;
 								}
 							}
@@ -169,13 +184,20 @@ namespace BigBoxProfile.EmulatorActions
 			if (path.StartsWith(@"\\"))
 			{
 				string serverName = path.Split('\\')[2];
-				Ping ping = new Ping();
-				PingReply reply = ping.Send(serverName);
-
-				if (reply.Status != IPStatus.Success)
+				try
 				{
-					Console.WriteLine("The server is not reachable.");
-					return false;
+					Ping ping = new Ping();
+					PingReply reply = ping.Send(serverName);
+
+					if (reply.Status != IPStatus.Success)
+					{
+						Console.WriteLine("The server is not reachable.");
+						return false;
+					}
+				}
+				catch (PingException)
+				{
+
 				}
 			}
 

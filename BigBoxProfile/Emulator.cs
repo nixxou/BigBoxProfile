@@ -40,11 +40,13 @@ namespace BigBoxProfile
 			//_modules.Add(new ChangeDisposition());
 			_modules.Add(new UseFileContent());
 			_modules.Add(new ChangeRomPath());
+			_modules.Add(new CopyFile());
+
 			_modules.Add(new ChangeDisposition());
 			_modules.Add(new FakeFullScreen());
 			_modules.Add(new RunAsAdminTask());
 
-
+			
 
 			List<ConfigurationData> loadedModules = ConfigurationData.LoadConfigurationDataList(FileNameConfig);
 			foreach (var module in loadedModules)
@@ -105,6 +107,14 @@ namespace BigBoxProfile
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
+
+				if (module.name == "CopyFile")
+				{
+					var obj = new CopyFile();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+
 				if (module.name == "FixRetroarchMonitor")
 				{
 					var obj = new FixRetroarchMonitor();
