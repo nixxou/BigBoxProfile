@@ -16,11 +16,17 @@ namespace BigBoxProfile.EmulatorActions
 	{
 		private static int _instanceCount = 0;
 		private int _instanceId;
+		List<RamDiskLauncher> _RamDisks;
+		List<string> _FileToDelete;
+		List<string> _FileCached;
 
 		public CopyFile()
 		{
 			_instanceCount++;
 			_instanceId = _instanceCount;
+			_RamDisks = new List<RamDiskLauncher>();
+			_FileToDelete = new List<string>();
+			_FileCached = new List<string>();
 		}
 
 		public string ModuleName => "CopyFile";
@@ -139,15 +145,20 @@ namespace BigBoxProfile.EmulatorActions
 					{
 						found = true;
 						string outfile = Path.Combine(_targetDir, Path.GetFileName(elem));
+						foreach(var fileCached in _FileCached)
+						{
+							if(Path.GetFileName(fileCached) == Path.GetFileName(elem))
+							{
+								outfile = fileCached;
+							}
+						}
 						Console.WriteLine($"Copy {elem} to {outfile}");
 						filteredArgs[index] = outfile;
 					}
 				}
 				index++;
 			}
-
 			args = BigBoxUtils.AddFirstElementToArg(filteredArgs, exeArg);
-
 			return args;
 		}
 
@@ -169,7 +180,6 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void ExecuteBefore(string[] args)
 		{
-
 			string exeArg = args[0];
 			var filteredArgs = BigBoxUtils.ArgsWithoutFirstElement(args);
 			foreach (var elem in filteredArgs)
@@ -179,11 +189,16 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					if (File.Exists(elem))
 					{
+						
 						found = true;
 						string outfile = Path.Combine(_targetDir, Path.GetFileName(elem));
 						Console.WriteLine($"Copy {elem} to {outfile}");
-						var frm = new CopyFile_Task(elem,outfile);
+						int maxsize = 0;
+						int.TryParse(_maxSize, out maxsize );
 
+						RamDiskLauncher ramDisk = new RamDiskLauncher();
+						_RamDisks.Add(ramDisk);
+						var frm = new CopyFile_Task(elem,outfile,_useRamDisk,_deleteOnExit, maxsize, ramDisk);
 						var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
 						if(targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
 						if (targetProcess != null)
@@ -199,8 +214,13 @@ namespace BigBoxProfile.EmulatorActions
 						frm.TopMost = true; // Affiche la fenêtre devant toutes les autres
 						frm.ShowDialog();
 						frm.Focus(); // Donne le focus à la fenêtre
-					
-						//frm.CopyFileWithProgress(elem, outfile);
+
+						//_targetDir = Path.GetDirectoryName(frm.outPath);
+						_FileCached.Add(frm.outPath);
+						if (ramDisk.RamDriveLetter == '\0')
+						{
+							if (_deleteOnExit) _FileToDelete.Add(frm.outPath);
+						}
 					}
 				}
 			}
@@ -210,12 +230,23 @@ namespace BigBoxProfile.EmulatorActions
 		}
 		public void ExecuteAfter(string[] args)
 		{
+			foreach(var ramDisk in _RamDisks)
+			{
+				ramDisk.UnMount();
 
+			}
+			foreach(var fileToDelete in _FileToDelete) { 
+				if(File.Exists(fileToDelete))
+				{
+					File.Delete(fileToDelete);
+				}
+			}
+			
 		}
 
 		public bool UseM3UContent()
 		{
-			return false;
+			return true;
 		}
 	}
 }

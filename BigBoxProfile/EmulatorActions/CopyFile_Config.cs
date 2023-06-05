@@ -1,8 +1,10 @@
-﻿using System;
+﻿using BigBoxProfile.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +34,7 @@ namespace BigBoxProfile.EmulatorActions
 
 
 			InitializeComponent();
+			UpdateInstalled();
 
 			txt_sourceDir.Text = sourceDir;
 			txt_targetDir.Text = targetDir;
@@ -94,6 +97,49 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					txt_targetDir.Text = fbd.SelectedPath;
 				}
+			}
+		}
+
+		private void timer1_Tick(object sender, EventArgs e)
+		{
+			UpdateInstalled();
+		}
+
+		private void UpdateInstalled()
+		{
+			if (RamDiskLauncher.isDriverInstalled())
+			{
+				label_Imdisk_false.Visible = false;
+				label_Imdisk_true.Visible = true;
+				chk_useRamDisk.Enabled= true;
+				num_maxSize.Enabled= true;
+			}
+			else
+			{
+				label_Imdisk_false.Visible = true;
+				label_Imdisk_true.Visible = false;
+				chk_useRamDisk.Enabled = false;
+				num_maxSize.Enabled = false;
+			}
+		}
+
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			var linkLabel = (LinkLabel)sender;
+			System.Diagnostics.Process.Start(linkLabel.Text);
+		}
+
+		private void chk_useRamDisk_CheckedChanged(object sender, EventArgs e)
+		{
+			if (chk_useRamDisk.Checked)
+			{
+				chk_deleteOnExit.Checked = true;
+				chk_deleteOnExit.Enabled= false;
+
+			}
+			else
+			{
+				chk_deleteOnExit.Enabled = true;
 			}
 		}
 	}

@@ -229,6 +229,7 @@ namespace BigBoxProfile
 
 					foreach (var fileInM3U in m3uFileListOriginal)
 					{
+						MessageBox.Show("fileInM3U : " + fileInM3U);
 						var ForgedArgList = new List<string>();
 						ForgedArgList.Add(Args[0]);
 						ForgedArgList.Add(fileInM3U);
@@ -248,6 +249,7 @@ namespace BigBoxProfile
 						{
 							if (module.IsConfigured() && module.UseM3UContent() == true)
 							{
+								module.ExecuteBefore(ForgedArg);
 								ForgedArg = module.ModifyReal(ForgedArg);
 							}
 						}

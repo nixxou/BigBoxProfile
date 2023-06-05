@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,22 +16,32 @@ namespace BigBoxProfile.EmulatorActions
 	public partial class CopyFile_Task : Form
 	{
 		string inPath;
-		string outPath;
+		public string outPath;
 		private DateTime startTime;
 		private bool copyCompleted = false;
 		private bool copyStart = false;
 		long fileSize = 0;
 		long totalBytesRead = 0;
 
+		bool useRamDisk = false;
+		bool deleteOnExit = false;
+		int maxSize = 0;
+		RamDiskLauncher RamDisk = null;
 
-		public CopyFile_Task(string inPath, string outPath)
+		public CopyFile_Task(string inPath, string outPath, bool useRamDisk, bool deleteOnExit, int maxSize, RamDiskLauncher ramDisk)
 		{
+			this.RamDisk = ramDisk;
 			this.inPath = inPath;
 			this.outPath = outPath;
 			copyCompleted = false;
 			copyStart = false;
 			fileSize = 0;
 			totalBytesRead = 0;
+
+			this.useRamDisk = useRamDisk;
+			this.deleteOnExit = deleteOnExit;
+			this.maxSize= maxSize;
+
 			InitializeComponent();
 			lbl_file.Text = Path.GetFileName(inPath);
 			lbl_source.Text = $"Source : {inPath}";
@@ -51,10 +62,10 @@ namespace BigBoxProfile.EmulatorActions
 				MessageBox.Show("Le fichier d'entrée n'existe pas.");
 				return;
 			}
-
+			var fileSizeIn = new FileInfo(inPath).Length;
 			if (File.Exists(outPath))
 			{
-				var fileSizeIn = new FileInfo(inPath).Length;
+				
 				var fileSizeOut = new FileInfo(outPath).Length;
 				if(fileSizeIn == fileSizeOut)
 				{
@@ -69,85 +80,45 @@ namespace BigBoxProfile.EmulatorActions
 					File.Delete(outPath);
 				}
 			}
+
+			if(useRamDisk)
+			{
+
+				int fileSizeMB = (int)((fileSizeIn / 1024 / 1024)*1.03);
+				fileSizeMB += 30;
+				fileSizeMB = GetDiskSize(fileSizeMB);
+				
+				if (fileSizeMB < maxSize)
+				{
+					bool resMount = RamDisk.Mount(fileSizeMB);
+					if (resMount)
+					{
+						outPath = Path.Combine(RamDisk.RamDriveLetter + ":\\", Path.GetFileName(inPath));
+						lbl_dest.Text = $"Destination : {outPath}";
+					}
+				}
+				
+			}
+
 			Thread displayThread = new Thread(UpdateDisplay);
 			displayThread.Start();
-			// Démarrer le thread de copie de fichier
+
 			Thread copyThread = new Thread(() => CopyFileWithProgress(inPath, outPath));
 			copyThread.Start();
 
-			// Démarrer le thread d'affichage
+		}
 
+		public static int GetDiskSize(long desiredSizeMB)
+		{
+			const long NTFSOverheadBytes = 12_582_912; // Espace réservé par NTFS en octets
+			const long ClusterSizeBytes = 4_096; // Taille d'un cluster en octets
 
-			//CopyFileWithProgress(inPath, outPath);
-			/*
-			// Démarrer une tâche en arrière-plan pour augmenter le pourcentage
-			ThreadPool.QueueUserWorkItem((state) =>
-			{
-				int progress = 0;
-				while (progress <= 100)
-				{
-					// Mettre à jour la ProgressBar sur le thread de l'interface utilisateur
-					Invoke(new Action(() =>
-					{
-						progressBar1.Value = progress;
-					}));
+			long usableSizeBytes = desiredSizeMB * 1_048_576; // Conversion de Mo en octets
+			long usableClusters = usableSizeBytes / ClusterSizeBytes;
+			long totalClusters = usableClusters + NTFSOverheadBytes / ClusterSizeBytes;
+			long diskSizeBytes = totalClusters * ClusterSizeBytes;
 
-					progress++;
-
-					// Attendre 50 millisecondes avant la prochaine mise à jour
-					Thread.Sleep(50);
-				}
-			});
-			*/
-
-			/*
-			ThreadPool.QueueUserWorkItem((state) =>
-			{
-				long fileSize = new FileInfo(inPath).Length;
-				long totalBytesRead = 0;
-
-				using (FileStream inFile = new FileStream(inPath, FileMode.Open, FileAccess.Read))
-				{
-					using (FileStream outFile = new FileStream(outPath, FileMode.Create, FileAccess.Write))
-					{
-						byte[] buffer = new byte[40096]; // Taille du tampon pour la copie du fichier
-						int bytesRead;
-
-						while ((bytesRead = inFile.Read(buffer, 0, buffer.Length)) > 0)
-						{
-							outFile.Write(buffer, 0, bytesRead);
-							totalBytesRead += bytesRead;
-
-							// Calculer la progression en pourcentage
-							int progress = (int)((totalBytesRead * 100) / fileSize);
-
-							// Mettre à jour la ProgressBar sur le thread de l'interface utilisateur
-							progressBar1.Invoke(new Action(() =>
-							{
-								progressBar1.Value = progress;
-							}));
-
-							// Mettre à jour le label avec le pourcentage de progression et le nombre de Mo copiés
-							double copiedSizeMB = (double)totalBytesRead / (1024 * 1024);
-							double totalSizeMB = (double)fileSize / (1024 * 1024);
-							lbl_progress.Invoke(new Action(() =>
-							{
-								lbl_progress.Text = $"Progression : {progress}% ({copiedSizeMB:F2} MB / {totalSizeMB:F2} MB)";
-							}));
-						}
-
-						Invoke(new Action(() =>
-						{
-							Close();
-						}));
-
-
-					}
-				}
-			});
-			*/
-
-
+			return (int)(diskSizeBytes/1024/1024);
 		}
 
 		private void CopyFileWithProgress(string inPath, string outPath)
@@ -204,8 +175,6 @@ namespace BigBoxProfile.EmulatorActions
 					break;
 				}
 				
-				
-
 				// Calculer la progression en pourcentage
 				int progress = (int)((progressBar1.Maximum * totalBytesRead) / fileSize);
 				
@@ -234,24 +203,20 @@ namespace BigBoxProfile.EmulatorActions
 
 					}
 					
-					
-
-
 					double copiedSizeMB = (double)totalBytesRead / (1024 * 1024);
 					double totalSizeMB = (double)fileSize / (1024 * 1024);
 					lbl_progress.Text = $"Progression : {progress}% ({copiedSizeMB:F2} MB / {totalSizeMB:F2} MB) {transferSpeed:F2} Mo/s";
 
-
 				}));
 
-				
 				Thread.Sleep(100); // Attendre 500 millisecondes avant la prochaine mise à jour de l'affichage
 			}
 			
 		}
 
-
-
-
+		private void progressBar1_Click(object sender, EventArgs e)
+		{
+			 
+		}
 	}
 }

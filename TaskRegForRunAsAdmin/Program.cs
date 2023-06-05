@@ -16,6 +16,11 @@ namespace TaskRegForRunAsAdmin
 			var filteredArgs = ArgsWithoutFirstElement(args);
 
 			string cmd = ArgsToCommandLine(filteredArgs);
+			var UsersRights = TaskLogonType.InteractiveToken;
+			if (cmd.Contains("RamDiskManager.exe"))
+			{
+				UsersRights = TaskLogonType.S4U;
+			}
 			Console.WriteLine("CMD=" + cmd);
 
 			string taskName = "";
@@ -26,7 +31,7 @@ namespace TaskRegForRunAsAdmin
 				byte[] hashBytes = md5.ComputeHash(inputBytes);
 				string hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
 
-				
+
 
 				taskName = "RunAdmin_" + hashString;
 				Console.WriteLine("Task=" + taskName);
@@ -41,19 +46,19 @@ namespace TaskRegForRunAsAdmin
 					td.RegistrationInfo.Description = "Task as admin";
 
 					td.Principal.RunLevel = TaskRunLevel.Highest;
-					td.Principal.LogonType = TaskLogonType.InteractiveToken;
+					td.Principal.LogonType = UsersRights;
 
 					// Create an action that will launch Notepad whenever the trigger fires
 					td.Actions.Add(JustRunExe, cmd, null);
 
 					// Register the task in the root folder
-					ts.RootFolder.RegisterTaskDefinition(taskName, td, TaskCreation.CreateOrUpdate, Environment.GetEnvironmentVariable("USERNAME"), null, TaskLogonType.InteractiveToken, null);
+					ts.RootFolder.RegisterTaskDefinition(taskName, td, TaskCreation.CreateOrUpdate, Environment.GetEnvironmentVariable("USERNAME"), null, UsersRights, null);
 
 				}
 
 			}
 
-			
+
 			//Console.ReadLine();
 
 		}

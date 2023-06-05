@@ -1,21 +1,11 @@
-﻿using AudioDeviceCmdlets;
-using CoreAudioApi;
-using Microsoft.VisualBasic;
+﻿using Microsoft.VisualBasic;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Media;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MonitorSwitcherGUI;
 using System.IO;
-using BigBoxProfile.EmulatorActions;
+
 
 namespace BigBoxProfile
 {
