@@ -1,5 +1,7 @@
 ﻿using BigBoxProfile.EmulatorActions;
+using CliWrap;
 using Microsoft.Win32;
+using Microsoft.Win32.TaskScheduler;
 using MonitorSwitcherGUI;
 using System;
 using System.Collections.Generic;
@@ -11,8 +13,10 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -679,6 +683,137 @@ namespace BigBoxProfile
 			}
 			return null;
 		}
+
+		public static string GetTaskName(string[] args)
+		{
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			//MessageBox.Show(cmd);
+			string taskName = "";
+			using (MD5 md5 = MD5.Create())
+			{
+				byte[] inputBytes = Encoding.UTF8.GetBytes(cmd);
+				byte[] hashBytes = md5.ComputeHash(inputBytes);
+				string hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+				taskName = "RunAdmin_" + hashString;
+			}
+			return taskName;
+		}
+
+		public static string GetTaskName(string cmd)
+		{
+			return GetTaskName(BigBoxUtils.CommandLineToArgs(cmd));
+
+		}
+
+		public static bool CheckTaskExist(string taskName)
+		{
+			using (TaskService taskService = new TaskService())
+			{
+				if (taskService.GetTask(taskName) == null)
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+		}
+
+		public static bool CheckTaskExist(string[] args)
+		{
+			return CheckTaskExist(GetTaskName(args));
+		}
+
+		public static void RegisterTask(string[] args,string optionTask = "")
+		{
+			//var _ramDiskManager = new RamDiskManager(1000);
+			string RamDiskManagerExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "RamDiskManager.exe");
+			string taskName = GetTaskName(args);
+
+			using (TaskService taskService = new TaskService())
+			{
+				if (taskService.GetTask(taskName) == null)
+				{
+					string JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
+
+					if (optionTask != "TaskRunNormal" && optionTask != "TaskRunHidden") optionTask = JustRunExe;
+
+					List<string> arguments = new List<string>();
+					arguments.Add(optionTask);
+					arguments.AddRange(args);
+
+
+					//string taskRegExe = @"C:\Users\Mehdi\source\repos\BigBoxProfile\TaskRegForRunAsAdmin\bin\Debug\TaskRegForRunAsAdmin.exe";
+					string taskRegExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "TaskRegForRunAsAdmin.exe");
+					//MessageBox.Show(taskRegExe);
+					//string exePath = Assembly.GetEntryAssembly().Location;
+					string exePath = taskRegExe;
+					string exeDir = Path.GetDirectoryName(exePath);
+					ProcessStartInfo startInfo = new ProcessStartInfo();
+					startInfo.FileName = exePath;
+					startInfo.Arguments = BigBoxUtils.ArgsToCommandLine(arguments.ToArray());
+					startInfo.WorkingDirectory = exeDir;
+					startInfo.Verb = "runas";
+					//Process.Start(startInfo);
+					var TaskProcess = System.Threading.Tasks.Task.Run(() => Process.Start(startInfo));
+					TaskProcess.Wait();
+
+
+				}
+			}
+		}
+
+		public static void RegisterTask(string cmd, string optionTask = "")
+		{
+			var args = BigBoxUtils.CommandLineToArgs(cmd);
+			RegisterTask(args, optionTask);
+		}
+
+		public static void ExecuteTask(string taskName,int delay=1000)
+		{
+			string new_cmd = $@" /run /tn ""{taskName}""";
+			var args = BigBoxUtils.CommandLineToArgs(new_cmd, false);
+
+			var TaskRun = System.Threading.Tasks.Task.Run(() =>
+			Cli.Wrap("schtasks")
+			.WithArguments(args)
+			.WithValidation(CommandResultValidation.None)
+			.ExecuteAsync()
+			);
+			TaskRun.Wait();
+
+			Thread.Sleep(delay);
+
+			TaskService ts = new TaskService();
+			Microsoft.Win32.TaskScheduler.Task task = ts.GetTask(taskName);
+			Microsoft.Win32.TaskScheduler.RunningTaskCollection instances = task.GetInstances();
+			while (instances.Count == 1)
+			{
+				instances = task.GetInstances();
+				Thread.Sleep(100);
+			}
+		}
+
+		public static void ExecuteTask(string[] args, int delay=1000,bool registerIfNeeded = true, string optionTask="")
+		{
+			string taskName = GetTaskName(args);
+			if (CheckTaskExist(taskName))
+			{
+				ExecuteTask(taskName, delay);
+			}
+			else
+			{
+				if (registerIfNeeded)
+				{
+					RegisterTask(args, optionTask);
+					Thread.Sleep(1000);
+					ExecuteTask(taskName, delay);
+				}
+			}
+
+		}
+
 	}
 
 }

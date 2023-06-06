@@ -46,6 +46,9 @@ namespace BigBoxProfile
 			_modules.Add(new FakeFullScreen());
 			_modules.Add(new RunAsAdminTask());
 
+			_modules.Add(new ExecutePrePostCmdAsAdmin());
+
+
 			
 
 			List<ConfigurationData> loadedModules = ConfigurationData.LoadConfigurationDataList(FileNameConfig);
@@ -144,6 +147,12 @@ namespace BigBoxProfile
 				if (module.name == "RunAsAdminTask")
 				{
 					var obj = new RunAsAdminTask();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+				if (module.name == "ExecutePrePostCmdAsAdmin")
+				{
+					var obj = new ExecutePrePostCmdAsAdmin();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}

@@ -5,7 +5,12 @@ using System.Reflection;
 using System.Windows.Forms;
 using MonitorSwitcherGUI;
 using System.IO;
-
+using CliWrap;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.Win32.TaskScheduler;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace BigBoxProfile
 {

@@ -161,6 +161,13 @@
     <Compile Include="EmulatorActions\CopyFile_Task.Designer.cs">
       <DependentUpon>CopyFile_Task.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmulatorActions\ExecutePrePostCmdAsAdmin.cs" />
+    <Compile Include="EmulatorActions\ExecutePrePostCmdAsAdmin_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\ExecutePrePostCmdAsAdmin_Config.Designer.cs">
+      <DependentUpon>ExecutePrePostCmdAsAdmin_Config.cs</DependentUpon>
+    </Compile>
     <Compile Include="EmulatorActions\FakeFullScreen.cs" />
     <Compile Include="EmulatorActions\FakeFullScreen_Config.cs">
       <SubType>Form</SubType>
@@ -257,6 +264,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\CopyFile_Task.resx">
       <DependentUpon>CopyFile_Task.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\ExecutePrePostCmdAsAdmin_Config.resx">
+      <DependentUpon>ExecutePrePostCmdAsAdmin_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\FakeFullScreen_Config.resx">
       <DependentUpon>FakeFullScreen_Config.cs</DependentUpon>

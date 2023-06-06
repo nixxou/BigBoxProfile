@@ -12,19 +12,26 @@ namespace TaskRegForRunAsAdmin
 	{
 		static void Main(string[] args)
 		{
+			var UsersRights = TaskLogonType.InteractiveToken;
+
 			string JustRunExe = args[0];
 			var filteredArgs = ArgsWithoutFirstElement(args);
 
+
 			string cmd = ArgsToCommandLine(filteredArgs);
+			if (cmd.Contains("RamDiskManager.exe"))
+			{
+				UsersRights = TaskLogonType.S4U;
+			}
+			/*
 			var UsersRights = TaskLogonType.InteractiveToken;
 			if (cmd.Contains("RamDiskManager.exe"))
 			{
 				UsersRights = TaskLogonType.S4U;
 			}
+			*/
 			Console.WriteLine("CMD=" + cmd);
-
 			string taskName = "";
-
 			using (MD5 md5 = MD5.Create())
 			{
 				byte[] inputBytes = Encoding.UTF8.GetBytes(cmd);
@@ -37,6 +44,29 @@ namespace TaskRegForRunAsAdmin
 				Console.WriteLine("Task=" + taskName);
 
 			}
+			
+
+			if (JustRunExe.Contains("TaskRunNormal"))
+			{
+				UsersRights = TaskLogonType.InteractiveToken;
+				args = filteredArgs;
+				JustRunExe = filteredArgs[0];
+				filteredArgs = ArgsWithoutFirstElement(args);
+				cmd = ArgsToCommandLine(filteredArgs);
+			}
+			if (JustRunExe.Contains("TaskRunHidden"))
+			{
+				UsersRights = TaskLogonType.S4U;
+				args = filteredArgs;
+				JustRunExe = filteredArgs[0];
+				filteredArgs = ArgsWithoutFirstElement(args);
+				cmd = ArgsToCommandLine(filteredArgs);
+			}
+
+			Console.WriteLine("Exec=" + JustRunExe);
+			Console.WriteLine("Arg=" + cmd);
+			//Console.ReadLine();
+
 
 			if (!String.IsNullOrEmpty(taskName))
 			{
