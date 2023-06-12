@@ -157,8 +157,13 @@ Args := []
 
 		public string[] ModifyExemple(string[] args)
 		{
-			return AhkExecute(args, _ahkCodeExemple);
-
+			string cmd_original = BigBoxUtils.ArgsToCommandLine(args);
+			if (_filter != "" && !cmd_original.Contains(_filter))
+			{
+				return args;
+			}
+			if(_ahkCodeExemple != "") return AhkExecute(args, _ahkCodeExemple);
+			return args;
 		}
 		public string[] Modify(string[] args)
 		{
@@ -170,9 +175,13 @@ Args := []
 
 		public string[] ModifyReal(string[] args)
 		{
-			//var newarg = AhkExecute(args, _ahkCodeReal);
-			//MessageBox.Show(BigBoxUtils.ArgsToCommandLine(newarg));
-			return AhkExecute(args, _ahkCodeReal);
+			string cmd_original = BigBoxUtils.ArgsToCommandLine(args);
+			if (_filter != "" && !cmd_original.Contains(_filter))
+			{
+				return args;
+			}
+			if (_ahkCodeReal != "") return AhkExecute(args, _ahkCodeReal);
+			return args;
 		}
 
 		private void UpdateConfig()
@@ -186,11 +195,11 @@ Args := []
 
 		public void ExecuteBefore(string[] args)
 		{
-			AhkExecute(args, _ahkCodeBefore);
+			if (_ahkCodeBefore != "") AhkExecute(args, _ahkCodeBefore);
 		}
 		public void ExecuteAfter(string[] args)
 		{
-			AhkExecute(args, _ahkCodeAfter);
+			if (_ahkCodeAfter != "") AhkExecute(args, _ahkCodeAfter);
 		}
 
 		public bool UseM3UContent()

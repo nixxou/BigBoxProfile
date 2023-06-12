@@ -32,14 +32,14 @@
 			this.txt_filter = new System.Windows.Forms.TextBox();
 			this.btn_cancel = new System.Windows.Forms.Button();
 			this.btn_ok = new System.Windows.Forms.Button();
-			this.txt_CodeExemple = new System.Windows.Forms.TextBox();
-			this.txt_CodeReal = new System.Windows.Forms.TextBox();
-			this.txt_CodeBefore = new System.Windows.Forms.TextBox();
-			this.txt_CodeAfter = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.label5 = new System.Windows.Forms.Label();
+			this.txt_CodeExemple = new System.Windows.Forms.RichTextBox();
+			this.txt_CodeBefore = new System.Windows.Forms.RichTextBox();
+			this.txt_CodeReal = new System.Windows.Forms.RichTextBox();
+			this.txt_CodeAfter = new System.Windows.Forms.RichTextBox();
 			this.SuspendLayout();
 			// 
 			// label3
@@ -79,38 +79,6 @@
 			this.btn_ok.UseVisualStyleBackColor = true;
 			this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
 			// 
-			// txt_CodeExemple
-			// 
-			this.txt_CodeExemple.Location = new System.Drawing.Point(21, 64);
-			this.txt_CodeExemple.Multiline = true;
-			this.txt_CodeExemple.Name = "txt_CodeExemple";
-			this.txt_CodeExemple.Size = new System.Drawing.Size(564, 324);
-			this.txt_CodeExemple.TabIndex = 15;
-			// 
-			// txt_CodeReal
-			// 
-			this.txt_CodeReal.Location = new System.Drawing.Point(21, 407);
-			this.txt_CodeReal.Multiline = true;
-			this.txt_CodeReal.Name = "txt_CodeReal";
-			this.txt_CodeReal.Size = new System.Drawing.Size(564, 324);
-			this.txt_CodeReal.TabIndex = 16;
-			// 
-			// txt_CodeBefore
-			// 
-			this.txt_CodeBefore.Location = new System.Drawing.Point(615, 64);
-			this.txt_CodeBefore.Multiline = true;
-			this.txt_CodeBefore.Name = "txt_CodeBefore";
-			this.txt_CodeBefore.Size = new System.Drawing.Size(564, 324);
-			this.txt_CodeBefore.TabIndex = 17;
-			// 
-			// txt_CodeAfter
-			// 
-			this.txt_CodeAfter.Location = new System.Drawing.Point(615, 407);
-			this.txt_CodeAfter.Multiline = true;
-			this.txt_CodeAfter.Name = "txt_CodeAfter";
-			this.txt_CodeAfter.Size = new System.Drawing.Size(564, 324);
-			this.txt_CodeAfter.TabIndex = 18;
-			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
@@ -147,19 +115,51 @@
 			this.label5.TabIndex = 22;
 			this.label5.Text = "Execute After :";
 			// 
+			// txt_CodeExemple
+			// 
+			this.txt_CodeExemple.Location = new System.Drawing.Point(21, 64);
+			this.txt_CodeExemple.Name = "txt_CodeExemple";
+			this.txt_CodeExemple.Size = new System.Drawing.Size(564, 324);
+			this.txt_CodeExemple.TabIndex = 23;
+			this.txt_CodeExemple.Text = "";
+			// 
+			// txt_CodeBefore
+			// 
+			this.txt_CodeBefore.Location = new System.Drawing.Point(612, 64);
+			this.txt_CodeBefore.Name = "txt_CodeBefore";
+			this.txt_CodeBefore.Size = new System.Drawing.Size(564, 324);
+			this.txt_CodeBefore.TabIndex = 24;
+			this.txt_CodeBefore.Text = "";
+			// 
+			// txt_CodeReal
+			// 
+			this.txt_CodeReal.Location = new System.Drawing.Point(21, 407);
+			this.txt_CodeReal.Name = "txt_CodeReal";
+			this.txt_CodeReal.Size = new System.Drawing.Size(564, 324);
+			this.txt_CodeReal.TabIndex = 25;
+			this.txt_CodeReal.Text = "";
+			// 
+			// txt_CodeAfter
+			// 
+			this.txt_CodeAfter.Location = new System.Drawing.Point(612, 407);
+			this.txt_CodeAfter.Name = "txt_CodeAfter";
+			this.txt_CodeAfter.Size = new System.Drawing.Size(564, 324);
+			this.txt_CodeAfter.TabIndex = 26;
+			this.txt_CodeAfter.Text = "";
+			// 
 			// ExecuteAHK_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1188, 767);
+			this.Controls.Add(this.txt_CodeAfter);
+			this.Controls.Add(this.txt_CodeReal);
+			this.Controls.Add(this.txt_CodeBefore);
+			this.Controls.Add(this.txt_CodeExemple);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.txt_CodeAfter);
-			this.Controls.Add(this.txt_CodeBefore);
-			this.Controls.Add(this.txt_CodeReal);
-			this.Controls.Add(this.txt_CodeExemple);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.txt_filter);
 			this.Controls.Add(this.btn_cancel);
@@ -178,13 +178,13 @@
 		private System.Windows.Forms.TextBox txt_filter;
 		private System.Windows.Forms.Button btn_cancel;
 		private System.Windows.Forms.Button btn_ok;
-		private System.Windows.Forms.TextBox txt_CodeExemple;
-		private System.Windows.Forms.TextBox txt_CodeReal;
-		private System.Windows.Forms.TextBox txt_CodeBefore;
-		private System.Windows.Forms.TextBox txt_CodeAfter;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.RichTextBox txt_CodeExemple;
+		private System.Windows.Forms.RichTextBox txt_CodeBefore;
+		private System.Windows.Forms.RichTextBox txt_CodeReal;
+		private System.Windows.Forms.RichTextBox txt_CodeAfter;
 	}
 }
