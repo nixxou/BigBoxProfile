@@ -45,8 +45,11 @@ namespace BigBoxProfile
 			_modules.Add(new ChangeDisposition());
 			_modules.Add(new FakeFullScreen());
 			_modules.Add(new RunAsAdminTask());
+			_modules.Add(new ExecuteAHK());
 
 			_modules.Add(new ExecutePrePostCmdAsAdmin());
+
+			_modules.Add(new RomExtractor());
 
 
 			
@@ -150,9 +153,21 @@ namespace BigBoxProfile
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
+				if (module.name == "ExecuteAHK")
+				{
+					var obj = new ExecuteAHK();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
 				if (module.name == "ExecutePrePostCmdAsAdmin")
 				{
 					var obj = new ExecutePrePostCmdAsAdmin();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+				if (module.name == "RomExtractor")
+				{
+					var obj = new RomExtractor();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
