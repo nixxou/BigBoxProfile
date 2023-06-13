@@ -70,6 +70,10 @@
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
+			// columnHeader1
+			// 
+			this.columnHeader1.Width = 370;
+			// 
 			// txt_priority
 			// 
 			this.txt_priority.Location = new System.Drawing.Point(9, 260);
@@ -177,9 +181,13 @@
 			this.list_path.Size = new System.Drawing.Size(397, 295);
 			this.list_path.TabIndex = 19;
 			this.list_path.UseCompatibleStateImageBehavior = false;
-			this.list_path.View = System.Windows.Forms.View.List;
+			this.list_path.View = System.Windows.Forms.View.Details;
 			this.list_path.SelectedIndexChanged += new System.EventHandler(this.list_path_SelectedIndexChanged);
 			this.list_path.DoubleClick += new System.EventHandler(this.list_path_DoubleClick);
+			// 
+			// valh
+			// 
+			this.valh.Width = 370;
 			// 
 			// button1
 			// 
@@ -346,7 +354,7 @@
 			this.list_priority.Size = new System.Drawing.Size(400, 295);
 			this.list_priority.TabIndex = 19;
 			this.list_priority.UseCompatibleStateImageBehavior = false;
-			this.list_priority.View = System.Windows.Forms.View.List;
+			this.list_priority.View = System.Windows.Forms.View.Details;
 			this.list_priority.SelectedIndexChanged += new System.EventHandler(this.list_priority_SelectedIndexChanged);
 			this.list_priority.DoubleClick += new System.EventHandler(this.list_priority_DoubleClick);
 			// 

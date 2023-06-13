@@ -101,6 +101,16 @@ namespace BigBoxProfile
 				else chk_maximize.Checked = false;
 
 			}
+			if (Profile.ActiveProfile.Configuration.ContainsKey("delay_emulator"))
+			{
+				if (Profile.ActiveProfile.Configuration["delay_emulator"] != "") num_delayEmulator.Value = int.Parse(Profile.ActiveProfile.Configuration["delay_emulator"]);
+				else num_delayEmulator.Value = 0;
+
+			}
+			else
+			{
+				num_delayEmulator.Value = 0;
+			}
 
 		}
 		/*
@@ -380,5 +390,9 @@ namespace BigBoxProfile
 			else Profile.ActiveProfile.SetOption("maximize_launchbox", "no");
 		}
 
+		private void num_delayEmulator_ValueChanged(object sender, EventArgs e)
+		{
+			Profile.ActiveProfile.SetOption("delay_emulator", num_delayEmulator.Value.ToString());
+		}
 	}
 }

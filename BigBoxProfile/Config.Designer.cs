@@ -53,7 +53,10 @@
 			this.btn_editEmulator = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.label7 = new System.Windows.Forms.Label();
+			this.num_delayEmulator = new System.Windows.Forms.NumericUpDown();
+			this.label8 = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_delayEmulator)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// label_status
@@ -253,7 +256,7 @@
 			this.cmb_emulatorList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_emulatorList.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.cmb_emulatorList.FormattingEnabled = true;
-			this.cmb_emulatorList.Location = new System.Drawing.Point(149, 200);
+			this.cmb_emulatorList.Location = new System.Drawing.Point(149, 238);
 			this.cmb_emulatorList.Name = "cmb_emulatorList";
 			this.cmb_emulatorList.Size = new System.Drawing.Size(144, 21);
 			this.cmb_emulatorList.TabIndex = 8;
@@ -263,7 +266,7 @@
 			// 
 			this.label6.AutoSize = true;
 			this.label6.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label6.Location = new System.Drawing.Point(13, 200);
+			this.label6.Location = new System.Drawing.Point(13, 238);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(109, 13);
 			this.label6.TabIndex = 12;
@@ -272,7 +275,7 @@
 			// btn_addEmulator
 			// 
 			this.btn_addEmulator.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addEmulator.Location = new System.Drawing.Point(299, 200);
+			this.btn_addEmulator.Location = new System.Drawing.Point(299, 238);
 			this.btn_addEmulator.Name = "btn_addEmulator";
 			this.btn_addEmulator.Size = new System.Drawing.Size(44, 24);
 			this.btn_addEmulator.TabIndex = 10;
@@ -284,7 +287,7 @@
 			// 
 			this.btn_editEmulator.Enabled = false;
 			this.btn_editEmulator.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_editEmulator.Location = new System.Drawing.Point(348, 200);
+			this.btn_editEmulator.Location = new System.Drawing.Point(348, 238);
 			this.btn_editEmulator.Name = "btn_editEmulator";
 			this.btn_editEmulator.Size = new System.Drawing.Size(44, 24);
 			this.btn_editEmulator.TabIndex = 9;
@@ -294,6 +297,8 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.label8);
+			this.groupBox1.Controls.Add(this.num_delayEmulator);
 			this.groupBox1.Controls.Add(this.label7);
 			this.groupBox1.Controls.Add(this.chk_maximize);
 			this.groupBox1.Controls.Add(this.btn_editEmulator);
@@ -314,7 +319,7 @@
 			this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.groupBox1.Location = new System.Drawing.Point(24, 85);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(394, 244);
+			this.groupBox1.Size = new System.Drawing.Size(394, 268);
 			this.groupBox1.TabIndex = 5;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "&";
@@ -323,17 +328,39 @@
 			// label7
 			// 
 			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(13, 180);
+			this.label7.Location = new System.Drawing.Point(13, 218);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(154, 13);
 			this.label7.TabIndex = 24;
 			this.label7.Text = "Hijack Emulator command line :";
 			// 
+			// num_delayEmulator
+			// 
+			this.num_delayEmulator.Location = new System.Drawing.Point(147, 173);
+			this.num_delayEmulator.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+			this.num_delayEmulator.Name = "num_delayEmulator";
+			this.num_delayEmulator.Size = new System.Drawing.Size(144, 21);
+			this.num_delayEmulator.TabIndex = 25;
+			this.num_delayEmulator.ValueChanged += new System.EventHandler(this.num_delayEmulator_ValueChanged);
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(6, 175);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(133, 13);
+			this.label8.TabIndex = 26;
+			this.label8.Text = "Delay Emulator Start (sec)";
+			// 
 			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(435, 337);
+			this.ClientSize = new System.Drawing.Size(435, 365);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.groupBox1);
@@ -349,6 +376,7 @@
 			this.Load += new System.EventHandler(this.Config_Load);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.num_delayEmulator)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -380,6 +408,8 @@
 		private System.Windows.Forms.Button btn_editEmulator;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.NumericUpDown num_delayEmulator;
 	}
 }
 

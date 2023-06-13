@@ -31,8 +31,6 @@
 			this.Texture_Label = new System.Windows.Forms.Label();
 			this.fakebrowser_txt = new System.Windows.Forms.TextBox();
 			this.fileListBox = new System.Windows.Forms.ListBox();
-			this.cancelButton = new System.Windows.Forms.Button();
-			this.okButton = new System.Windows.Forms.Button();
 			this.archiveNameLabel = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
@@ -68,38 +66,12 @@
 			this.fileListBox.FormattingEnabled = true;
 			this.fileListBox.IntegralHeight = false;
 			this.fileListBox.ItemHeight = 44;
-			this.fileListBox.Location = new System.Drawing.Point(-3, 64);
+			this.fileListBox.Location = new System.Drawing.Point(0, 64);
 			this.fileListBox.Margin = new System.Windows.Forms.Padding(0);
 			this.fileListBox.Name = "fileListBox";
 			this.fileListBox.Size = new System.Drawing.Size(794, 542);
 			this.fileListBox.TabIndex = 9;
 			this.fileListBox.SelectedIndexChanged += new System.EventHandler(this.fileListBox_SelectedIndexChanged);
-			// 
-			// cancelButton
-			// 
-			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(114, -171);
-			this.cancelButton.Name = "cancelButton";
-			this.cancelButton.Size = new System.Drawing.Size(75, 23);
-			this.cancelButton.TabIndex = 12;
-			this.cancelButton.Text = "Cancel";
-			this.cancelButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.cancelButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-			this.cancelButton.UseVisualStyleBackColor = true;
-			// 
-			// okButton
-			// 
-			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.okButton.Location = new System.Drawing.Point(33, -171);
-			this.okButton.Name = "okButton";
-			this.okButton.Size = new System.Drawing.Size(75, 23);
-			this.okButton.TabIndex = 11;
-			this.okButton.Text = "Play!";
-			this.okButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.okButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-			this.okButton.UseVisualStyleBackColor = true;
 			// 
 			// archiveNameLabel
 			// 
@@ -123,12 +95,11 @@
 			this.Controls.Add(this.Texture_Label);
 			this.Controls.Add(this.fakebrowser_txt);
 			this.Controls.Add(this.fileListBox);
-			this.Controls.Add(this.cancelButton);
-			this.Controls.Add(this.okButton);
 			this.Controls.Add(this.archiveNameLabel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "RomExtractor_BigBoxSelect";
 			this.Text = "RomExtractor_BigBoxSelect";
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RomExtractor_BigBoxSelect_FormClosing);
 			this.Load += new System.EventHandler(this.RomExtractor_BigBoxSelect_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -140,8 +111,6 @@
 		private System.Windows.Forms.Label Texture_Label;
 		private System.Windows.Forms.TextBox fakebrowser_txt;
 		private System.Windows.Forms.ListBox fileListBox;
-		private System.Windows.Forms.Button cancelButton;
-		private System.Windows.Forms.Button okButton;
 		private System.Windows.Forms.Label archiveNameLabel;
 	}
 }

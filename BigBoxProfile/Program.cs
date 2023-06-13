@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,6 +14,8 @@ namespace BigBoxProfile
 {
 	internal static class Program
 	{
+		[DllImport("user32.dll")]
+		private static extern bool SetForegroundWindow(IntPtr hWnd);
 		/// <summary>
 		/// Point d'entrée principal de l'application.
 		/// </summary>
@@ -124,6 +127,50 @@ namespace BigBoxProfile
 						{
 							var emulatorLauncher = new EmulatorLauncher(args);
 							emulatorLauncher.Exec();
+							//MessageBox.Show("ici_debug3");
+
+							int currentProcessId = Process.GetCurrentProcess().Id;
+							//MessageBox.Show("ici_debug4");
+
+
+							Process currentProcess = Process.GetCurrentProcess();
+							int parentId = GetParentProcessId(currentProcess.Id);
+							//MessageBox.Show("ici_debug5");
+							if (parentId != 0)
+							{
+								Process parentProcess = Process.GetProcessById(parentId);
+								IntPtr handle = parentProcess.MainWindowHandle;
+
+								if (handle != IntPtr.Zero)
+								{
+									SetForegroundWindow(handle);
+								}
+							}
+
+
+							// Créez un objet ProcessStartInfo pour configurer le démarrage du processus
+							ProcessStartInfo psi = new ProcessStartInfo("taskkill")
+							{
+								// Spécifiez les arguments de la commande taskkill
+								Arguments = "/F /PID " + currentProcessId,
+
+								// Masquez la fenêtre de la console
+								CreateNoWindow = true,
+								UseShellExecute = false
+							};
+
+							// Créez le processus en utilisant Process.Start avec ProcessStartInfo
+							Process process = new Process
+							{
+								StartInfo = psi
+							};
+
+							// Exécutez la commande taskkill sans afficher la fenêtre de la console
+							process.Start();
+							process.WaitForExit();
+
+
+							//Process.Start("taskkill", "/F /PID " + currentProcessId);
 
 							/*
 							MessageBox.Show("ici");
@@ -141,6 +188,23 @@ namespace BigBoxProfile
 			}
 
 
+		}
+
+		private static int GetParentProcessId(int processId)
+		{
+			using (System.Management.ManagementObjectSearcher mos = new System.Management.ManagementObjectSearcher(
+				$"SELECT ParentProcessId FROM Win32_Process WHERE ProcessId = {processId}"))
+			{
+				using (System.Management.ManagementObjectCollection moc = mos.Get())
+				{
+					foreach (System.Management.ManagementObject mo in moc)
+					{
+						return Convert.ToInt32(mo["ParentProcessId"]);
+					}
+				}
+			}
+
+			return 0;
 		}
 	}
 

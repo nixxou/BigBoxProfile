@@ -2,9 +2,11 @@
 using MonitorSwitcherGUI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,6 +25,18 @@ namespace BigBoxProfile
 		string NewExe;
 		string Dir;
 		string[] Args;
+
+		private static Form form;
+
+		[DllImport("user32.dll")]
+		private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+		private const uint SWP_NOACTIVATE = 0x0010;
+		private static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+		private static readonly IntPtr HWND_TOP = new IntPtr(0);
+		private const int SWP_NOMOVE = 0x0002;
+		private const int SWP_NOSIZE = 0x0001;
+		const int SW_SHOWMAXIMIZED = 3;
 
 
 		public EmulatorLauncher(string[] args)
@@ -169,6 +183,24 @@ namespace BigBoxProfile
 				//var argstring = BigBoxUtils.ArgsToCommandLine(Args);
 				//MessageBox.Show(argstring);
 
+				if (SelectedProfile.Configuration.ContainsKey("delay_emulator") && SelectedProfile.Configuration["delay_emulator"] != "")
+				{
+					int delay_emulator = 0;
+					int.TryParse(SelectedProfile.Configuration["delay_emulator"], out delay_emulator);
+					if(delay_emulator > 0)
+					{
+						Thread formThread = new Thread(ShowFormInBackground);
+						formThread.Start();
+						Thread.Sleep((delay_emulator*1000));
+					}
+
+				}
+
+
+
+
+
+
 				ExecutePrelaunch();
 
 				string m3uFile = BigBoxUtils.HaveLaunchboxM3U(Args);
@@ -289,13 +321,31 @@ namespace BigBoxProfile
 				*/
 
 
-
+				//MessageBox.Show("ici_debug1");
 
 			}
 			ExecutePostlaunch();
-			
 
-			
+			//MessageBox.Show("ici_debug2");
+
+		}
+
+		private static void ShowFormInBackground()
+		{
+			form = new Form
+			{
+				Width = 300,
+				Height = 200,
+				Text = "Background Form",
+				Opacity = 0, // Make the form completely transparent
+				ShowInTaskbar = false // Hide the form from the taskbar
+			};
+
+			//SetWindowPos(form.Handle, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+			// Show the form in the background
+			SetWindowPos(form.Handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOACTIVATE);
+
+			Application.Run(form);
 		}
 
 

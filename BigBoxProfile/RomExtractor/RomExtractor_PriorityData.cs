@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CliWrap;
+using Newtonsoft.Json;
 using SevenZip;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,10 @@ namespace BigBoxProfile.RomExtractorUtils
 		public List<string> filelist = new List<string>();
 		public List<string> filelist_standalone = new List<string>();
 		public List<string> filelist_metadata = new List<string>();
+
+		public List<string> topPriorityFiles = new List<string>();
+
+		static IProgress<ExtractionProgress> progress = null;
 
 
 
@@ -111,6 +116,33 @@ namespace BigBoxProfile.RomExtractorUtils
 
 			PriorityFile = find_priority_file(filelist_standalone.ToArray(), Priority);
 
+			List<string> filelist_standalone_restant = new List<string>();
+			string otherPriorityFile = PriorityFile;
+			if (PriorityFile != "")
+			{
+				topPriorityFiles.Add(PriorityFile);
+				filelist_standalone_restant.AddRange(filelist_standalone);
+				filelist_standalone_restant.Remove(PriorityFile);
+			}
+			
+			for (int i = 0; i < 4; i++)
+			{
+				if (filelist_standalone_restant.Count == 0) break;
+				if (otherPriorityFile == "") break;
+				otherPriorityFile = find_priority_file(filelist_standalone_restant.ToArray(), Priority);
+				if(otherPriorityFile != "")
+				{
+					filelist_standalone_restant.Remove(otherPriorityFile);
+					topPriorityFiles.Add(otherPriorityFile);
+				}
+			}
+
+
+			
+
+
+
+
 		}
 
 
@@ -156,6 +188,7 @@ namespace BigBoxProfile.RomExtractorUtils
 			}
 		}
 
+		/*
 		public async Task<string> ExtractArchiveWithProgressAsync(string fileToExtract, string dirOut, IProgress<ExtractionProgress> progress)
 		{
 			dirOut = Path.Combine(dirOut, Priority.CacheSubDir);
@@ -184,7 +217,9 @@ namespace BigBoxProfile.RomExtractorUtils
 
 					if (IsSmart && Priority.SmartExtract)
 					{
-						extractor.ExtractFiles(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithPath);
+						string[] solostringarray = new string[1];
+						solostringarray[0] = FileDataWithoutPath[fileToExtract].FileNameWithPath;
+						extractor.ExtractFiles(dirOut, solostringarray);
 						outFile = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithoutPath);
 					}
 					else
@@ -206,7 +241,87 @@ namespace BigBoxProfile.RomExtractorUtils
 			}
 			return outFile;
 		}
+		*/
 
+		public async Task<string> ExtractArchiveWithProgressAsync(string fileToExtract, string dirOut, IProgress<ExtractionProgress> progress)
+		{
+			RomExtractor_ArchiveFile.progress= progress;
+			dirOut = Path.Combine(dirOut, Priority.CacheSubDir);
+			if (IsSmart == false || Priority.SmartExtract == false)
+				dirOut = Path.Combine(dirOut, SignatureShort);
+			Directory.CreateDirectory(dirOut);
+
+			copyCompleted = false;
+			copyStart = false;
+			startTime = DateTime.Now;
+			percentDone = 0;
+			outFile = "";
+			try
+			{
+
+				if (IsSmart && Priority.SmartExtract)
+				{
+					var result = await Cli.Wrap(@"C:\Program Files\7-Zip-Zstandard\7z.exe")
+						.WithArguments(new[] { "e", ArchiveFilePath, FileDataWithoutPath[fileToExtract].FileNameWithPath, @"-o" + dirOut, "-bsp1", "-y" })
+						.WithStandardOutputPipe(PipeTarget.ToDelegate(handleStdOut))
+						.ExecuteAsync();
+					outFile = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithoutPath);
+				}
+				else
+				{
+					var result = await Cli.Wrap(@"C:\Program Files\7-Zip-Zstandard\7z.exe")
+						.WithArguments(new[] { "x", ArchiveFilePath, @"-o" + dirOut, "-bsp1", "-y" })
+						.WithStandardOutputPipe(PipeTarget.ToDelegate(handleStdOut))
+						.ExecuteAsync();
+					outFile = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithPath);
+				}
+
+
+
+
+
+				copyCompleted = true;
+				percentDone = 100;
+				
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+			return outFile;
+		}
+
+		Action<string> handleStdOut = delegate (string msg)
+		{
+			//Console.WriteLine("MSG= " + msg);
+			string pattern = @"([0-9]*)%";
+			string input = msg;
+
+			// Utilise la regex pour trouver les correspondances
+			Match match = Regex.Match(input, pattern);
+
+			if (match.Success)
+			{
+				// Récupère la valeur du pourcentage d'avancement
+				string percentage = match.Groups[1].Value;
+
+				// Convertit la valeur en entier si nécessaire
+				int progress = 0;
+				if (int.TryParse(percentage, out progress))
+				{
+					RomExtractor_ArchiveFile.progress.Report(new ExtractionProgress { PercentDone = progress });
+					// Affiche le pourcentage d'avancement
+					Console.WriteLine("Pourcentage d'avancement : " + progress + "%");
+				}
+			}
+			if (msg.Contains("Everything is Ok"))
+			{
+				int progress = 100;
+				RomExtractor_ArchiveFile.progress.Report(new ExtractionProgress { PercentDone = progress });
+				Console.WriteLine("Pourcentage d'avancement : " + progress + "%");
+			}
+
+		};
 
 
 		public static string[] SplitExtensions(string extensions)

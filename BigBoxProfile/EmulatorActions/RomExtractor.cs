@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -190,6 +191,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void ExecuteBefore(string[] args)
 		{
+			//Thread.Sleep(8000);
 			string cmd = BigBoxUtils.ArgsToCommandLine(args);
 			if (_filter != "" && !cmd.ToLower().Trim().Contains(_filter.ToLower().Trim()))
 			{

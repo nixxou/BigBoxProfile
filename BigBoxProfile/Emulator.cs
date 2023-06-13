@@ -49,7 +49,7 @@ namespace BigBoxProfile
 
 			_modules.Add(new ExecutePrePostCmdAsAdmin());
 
-			//_modules.Add(new RomExtractor());
+			_modules.Add(new RomExtractor());
 
 
 			
@@ -165,14 +165,12 @@ namespace BigBoxProfile
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
-				/*
 				if (module.name == "RomExtractor")
 				{
 					var obj = new RomExtractor();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
-				*/
 
 			}
 			

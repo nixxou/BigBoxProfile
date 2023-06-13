@@ -111,6 +111,8 @@ namespace BigBoxProfile
 			defaultProfile.Configuration.Add("restore", "yes");
 			defaultProfile.Configuration.Add("launchbox", "no");
 			defaultProfile.Configuration.Add("maximize_launchbox", "no");
+			defaultProfile.Configuration.Add("delay_emulator", "0");
+			
 
 			return defaultProfile;
 		}

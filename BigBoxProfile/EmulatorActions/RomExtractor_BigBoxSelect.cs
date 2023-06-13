@@ -1,16 +1,21 @@
 ﻿using BigBoxProfile.RomExtractorUtils;
 using CefSharp;
+using GlobalHotKey;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Management;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using XInput.Wrapper;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -29,7 +34,14 @@ namespace BigBoxProfile.EmulatorActions
 		public string metadataFolder = "";
 		public string colors_css = "";
 		private CefSharp.WinForms.ChromiumWebBrowser chromiumWebBrowser1;
+		public string Selected = "";
+		private HotKeyManager hotKeyManager= null;
 
+		private bool isButtonDown = false;
+		private DateTime lastCallDownTime = DateTime.MinValue;
+		private TimeSpan interval = TimeSpan.FromMilliseconds(2000); // Interval minimum de 200 millisecondes entre les appels successifs
+
+		private X.Gamepad gamepad = null;
 
 		public RomExtractor_BigBoxSelect(RomExtractor_ArchiveFile archiveFile, string cachedir)
 		{
@@ -44,7 +56,9 @@ namespace BigBoxProfile.EmulatorActions
 			fileListBox.DrawItem += lst_DrawItem;
 
 			fileListBox.Items.Clear();
-			fileListBox.Items.AddRange(_archiveFile.filelist.Except(_archiveFile.filelist_metadata).ToArray());
+			//fileListBox.Items.AddRange(_archiveFile.filelist.Except(_archiveFile.filelist_metadata).ToArray());
+			fileListBox.Items.AddRange(_archiveFile.filelist_standalone.ToArray());
+
 			if (_archiveFile.PriorityFile != string.Empty)
 			{
 				fileListBox.SelectedItem = _archiveFile.PriorityFile;
@@ -52,6 +66,10 @@ namespace BigBoxProfile.EmulatorActions
 			if (fileListBox.SelectedItems.Count == 0)
 			{
 				fileListBox.SelectedIndex = 0;
+			}
+			else
+			{
+				Selected = _archiveFile.PriorityFile;
 			}
 
 			if (_archiveFile.filelist_metadata.Count > 0)
@@ -83,9 +101,88 @@ namespace BigBoxProfile.EmulatorActions
 				Texture_Label.Visible = false;
 			}
 
+
+
+			this.TopMost = true;
+			this.Activate();
+
+			if (hotKeyManager == null)
+			{
+				hotKeyManager = new HotKeyManager();
+				var keydown = hotKeyManager.Register(System.Windows.Input.Key.Down, System.Windows.Input.ModifierKeys.None);
+				var keyup = hotKeyManager.Register(System.Windows.Input.Key.Up, System.Windows.Input.ModifierKeys.None);
+				var keyenter = hotKeyManager.Register(System.Windows.Input.Key.Enter, System.Windows.Input.ModifierKeys.None);
+				var keyesc = hotKeyManager.Register(System.Windows.Input.Key.Escape, System.Windows.Input.ModifierKeys.None);
+
+				hotKeyManager.KeyPressed += (senderKeypress, eventKeypress) =>
+				{
+					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Down)
+					{
+						if (fileListBox.SelectedIndex < fileListBox.Items.Count - 1)
+						{
+							fileListBox.SelectedIndex++;
+						}
+					}
+					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Up)
+					{
+						if (fileListBox.SelectedIndex > 0)
+						{
+							fileListBox.SelectedIndex--;
+						}
+					}
+					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Enter)
+					{
+						okButton_Click();
+					}
+					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Escape)
+					{
+						cancelButton_Click();
+					}
+				};
+
+			}
+
 			
+			if (X.IsAvailable)
+			{
+				gamepad = X.Gamepad_1;
+				gamepad.KeyDown += KeyDown;
+				gamepad.StateChanged += StateChanged;
+				X.StartPolling(gamepad);
+			}
 
+		}
 
+		private void KeyDown(object sender, EventArgs e)
+		{
+			if (gamepad.Dpad_Down_down)
+			{
+				if (fileListBox.SelectedIndex < fileListBox.Items.Count - 1)
+				{
+					fileListBox.SelectedIndex++;
+					System.Threading.Thread.Sleep(120);
+				}
+
+			}
+			if (gamepad.Dpad_Up_down)
+			{
+				if (fileListBox.SelectedIndex > 0)
+				{
+					fileListBox.SelectedIndex--;
+					System.Threading.Thread.Sleep(120);
+				}
+			}
+		}
+
+		private void StateChanged(object sender, EventArgs e)
+		{
+			if (gamepad.A_down || gamepad.Start_down)
+			{
+				if (fileListBox.SelectedIndex > 0)
+				{
+					okButton_Click();
+				}
+			}
 		}
 
 		private void lst_MeasureItem(object sender, MeasureItemEventArgs e)
@@ -182,6 +279,8 @@ namespace BigBoxProfile.EmulatorActions
 
 		void InitializeWebView(string dirpath, string archiveName)
 		{
+			CefSharpSettings.SubprocessExitIfParentProcessClosed = true;
+
 			(bool foundmeta, string Metadata_file, string Metadata_template, string Metadata_htmlfolder) = find_metadata(dirpath, archiveName);
 			this.metadataFile = Metadata_file;
 			this.metadataFolder = Metadata_htmlfolder;
@@ -299,10 +398,16 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void fileListBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			string selected_file = "";
+			if (fileListBox.SelectedIndex >= 0)
+			{
+				selected_file = fileListBox.SelectedItem.ToString();
+				Selected = selected_file;
+			}
+
+
 			if (this.useWebview && fileListBox.SelectedIndex >= 0)
 			{
-				string selected_file = fileListBox.SelectedItem.ToString();
-
 				if (this.metadataFolder != "" && File.Exists(this.metadataFolder + "\\" + selected_file + ".html"))
 				{
 					string html_data = File.ReadAllText(this.metadataFolder + "\\" + selected_file + ".html");
@@ -322,6 +427,73 @@ namespace BigBoxProfile.EmulatorActions
 					return;
 				}
 				this.chromiumWebBrowser1.LoadHtml("<html><body bgcolor=\"#2A2B34;\">No Info</body></html>");
+			}
+		}
+
+		private void okButton_Click()
+		{
+			Selected = fileListBox.SelectedItem.ToString();
+			this.DialogResult = DialogResult.OK;
+			this.Close();
+		}
+
+		private void cancelButton_Click()
+		{
+			this.DialogResult = DialogResult.Cancel;
+			this.Close();
+		}
+
+
+		private void RomExtractor_BigBoxSelect_FormClosing(object sender, FormClosingEventArgs e)
+		{
+
+			//this.chromiumWebBrowser1.Dispose();
+			//KillChildProcesses("CefSharp.BrowserSubprocess.exe");
+			//Process.Start("taskkill", "/F /IM CefSharp.BrowserSubprocess.exe");
+			gamepad.KeyDown -= KeyDown;
+			gamepad.StateChanged -= StateChanged;
+			hotKeyManager.Dispose();
+			X.StopPolling();
+		}
+
+		static void KillChildProcesses(string processName)
+		{
+			// Obtenez l'ID du processus de votre application
+			int currentProcessId = Process.GetCurrentProcess().Id;
+
+			// Obtenez tous les processus avec le nom spécifié
+			Process[] processes = Process.GetProcessesByName(processName);
+
+			// Parcourez les processus et tuez ceux dont le parent est votre application
+			foreach (Process process in processes)
+			{
+				try
+				{
+					// Obtenez l'ID du processus parent
+					int parentProcessId = GetParentProcessId(process.Id);
+
+					// Vérifiez si le parent est votre application
+					if (parentProcessId == currentProcessId)
+					{
+						// Tuez le processus
+						process.Kill();
+					}
+				}
+				catch (Exception ex)
+				{
+					// Gérez les exceptions si nécessaire
+					Console.WriteLine("Erreur lors de la tentative de tuer le processus : " + ex.Message);
+				}
+			}
+		}
+
+		// Méthode pour obtenir l'ID du processus parent
+		static int GetParentProcessId(int processId)
+		{
+			using (ManagementObject obj = new ManagementObject("win32_process.handle='" + processId + "'"))
+			{
+				obj.Get();
+				return Convert.ToInt32(obj["ParentProcessId"]);
 			}
 		}
 	}
