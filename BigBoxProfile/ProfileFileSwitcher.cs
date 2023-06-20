@@ -152,9 +152,16 @@ IntPtr lpSecurityAttributes
 		}
 		*/
 
-		public void OpenProfile(string ProfileName)
+		public void OpenProfile(string ProfileName,bool createAntiCrashRestoreFile = true)
 		{
 			if (!CanUseLink || !HasProfileDir) return;
+
+			string ProfileDir = Path.Combine(ConfigDir, "Profile_" + ProfileName);
+			if (!Directory.Exists(ProfileDir))
+			{
+				ProfileName = "Default";
+				ProfileDir = Path.Combine(ConfigDir, "Profile_" + ProfileName);
+			}
 
 			if (File.Exists(LastLaunchedFile))
 			{
@@ -163,9 +170,6 @@ IntPtr lpSecurityAttributes
 			}
 			File.WriteAllText(LastLaunchedFile, ProfileName);
 
-
-			string ProfileDir = Path.Combine(ConfigDir, "Profile_" + ProfileName);
-			if (!Directory.Exists(ProfileDir)) OpenProfile("Default");
 
 			string[] fileListActualConfig = Directory.GetFiles(ConfigDir, "*.xml", SearchOption.TopDirectoryOnly);
 			string[] fileListProfile = Directory.GetFiles(ProfileDir, "*.xml", SearchOption.TopDirectoryOnly);
@@ -264,7 +268,7 @@ IntPtr lpSecurityAttributes
 				string ConfigFileWithoutPath = Path.GetFileName(f);
 				string ProfileFileWithPath = Path.Combine(ProfileDir, ConfigFileWithoutPath);
 				string DefaultFileWithPath = Path.Combine(DefaultProfile, ConfigFileWithoutPath);
-
+				bool found = false;
 				if (FileInProfileLeft.Contains(ConfigFileWithoutPath))
 				{
 					if(!isFileLinkedToProfile(f, ProfileDir))
@@ -278,7 +282,9 @@ IntPtr lpSecurityAttributes
 						}
 						
 					}
+					FileInProfileLeft.Remove(ConfigFileWithoutPath);
 					FileInDefaultLeft.Remove(ConfigFileWithoutPath);
+					found = true;
 				}
 
 				if (FileInDefaultLeft.Contains(ConfigFileWithoutPath))
@@ -293,9 +299,18 @@ IntPtr lpSecurityAttributes
 							MakeLink(f, link);
 						}
 					}
+					FileInDefaultLeft.Remove(ConfigFileWithoutPath);
+					found = true;
 				}
 
-
+				if(!found)
+				{
+					MakeLink(f, ProfileFileWithPath);
+				}
+			}
+			foreach(var f in FileInProfileLeft)
+			{
+				File.Delete(Path.Combine(ProfileDir, f));
 			}
 
 			string[] subdir = new string[2] { "Platforms", "Playlists" };
@@ -357,6 +372,7 @@ IntPtr lpSecurityAttributes
 			{
 				File.Delete(LastLaunchedFile);
 			}
+			OpenProfile("Default", false);
 
 		}
 
