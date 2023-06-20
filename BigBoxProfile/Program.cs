@@ -105,6 +105,39 @@ namespace BigBoxProfile
 
 							*/
 
+							/*
+							ProfileFileSwitcher profileFileSwitcher = null;
+							string file = args[0];
+							string dir = Path.GetDirectoryName(file);
+							string exe = Path.GetFileName(file);
+							string coreexe = Path.Combine(dir, "Core", exe);
+							if (File.Exists(coreexe))
+							{
+								file = coreexe;
+							}
+							bool isRecovery = false;
+							var exceptRecovery = new string[2] { "-recovery", "-recoverybigbox" };
+							foreach(var arg in args)
+							{
+								if (exceptRecovery.Contains(arg)) isRecovery = true;
+							}
+							if(isRecovery == false)
+							{
+								if (BigBoxUtils.IsProcessRunning(file, exceptRecovery))
+								{
+									MessageBox.Show("Already Running");
+									return;
+								}
+								else
+								{
+									profileFileSwitcher = new ProfileFileSwitcher(args[0]);
+								}
+							}
+							*/
+							//MessageBox.Show(BigBoxUtils.ArgsToCommandLine(args));
+
+
+
 							bool directlaunch = false;
 							if(args.Length >= 2)
 							{
@@ -117,6 +150,23 @@ namespace BigBoxProfile
 							}
 							else
 							{
+								/*
+								string file = args[0];
+								string dir = Path.GetDirectoryName(file);
+								string exe = Path.GetFileName(file);
+								string coreexe = Path.Combine(dir, "Core", exe);
+								if (File.Exists(coreexe))
+								{
+									file = coreexe;
+								}
+								if (BigBoxUtils.IsLaunchboxRunning(file))
+								{
+									MessageBox.Show("BigBox/Launchbox is already Running");
+									return;
+								}
+								*/
+								
+								
 								var bigBoxLauncher = new BigBoxLauncher(args);
 								bigBoxLauncher.Exec();
 							}

@@ -65,6 +65,9 @@ namespace BigBoxProfile
 
 		public bool IsLaunchbox = false;
 
+		public bool PreventRun = false;
+		ProfileFileSwitcher profileFileSwitcher;
+
 
 		public BigBoxLauncher(string[] args)
 		{
@@ -112,6 +115,16 @@ namespace BigBoxProfile
 			FileOriginal = file;
 			FileNew = newExe;
 			FileDir = dir;
+
+			profileFileSwitcher = new ProfileFileSwitcher(file);
+			if (profileFileSwitcher.Active)
+			{
+				if (BigBoxUtils.IsLaunchboxRunning(file))
+				{
+					PreventRun = true;
+				}
+			}
+
 		}
 
 		public void ExecutePrelaunchAction()
@@ -174,139 +187,84 @@ namespace BigBoxProfile
 		{
 			try
 			{
-				if(SelectedProfile.ProfileName == "default")
-				{
+				string JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
 
-					string JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
-					/*
-					MessageBox.Show(FileOriginal);
-					JustRunExe = @"C:\LaunchBox\Emulators\SimpleFowarder.exe";
-					
-					var ResultRPCS = await Cli.Wrap(JustRunExe)
+				if(IsLaunchbox== false)
+				{
+					var ResultRPCS2 = await Cli.Wrap(JustRunExe)
 						.WithArguments(FileOriginal)
 						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
 						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
 						.WithValidation(CommandResultValidation.None)
 						.ExecuteAsync();
-					
-
-				    JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
-					*/
-					if(IsLaunchbox== false)
-					{
-						var ResultRPCS2 = await Cli.Wrap(JustRunExe)
-							.WithArguments(FileOriginal)
-							.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
-							.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
-							.WithValidation(CommandResultValidation.None)
-							.ExecuteAsync();
-
-					}
-					else
-					{
-
-						var processStartInfo = new ProcessStartInfo(JustRunExe, FileOriginal);
-						Thread.Sleep(100);
-
-						var process = Process.Start(processStartInfo);
-						while (!process.HasExited)
-						{
-							if(SelectedProfile.Configuration.ContainsKey("launchbox") && SelectedProfile.Configuration["launchbox"] == "yes")
-							{
-								var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
-								if (targetProcess != null)
-								{
-									bool didAction = false;
-
-									var screen = Screen.FromHandle(targetProcess.MainWindowHandle);
-									int screenIndex = Array.IndexOf(Screen.AllScreens, screen);
-
-									double screenBaseWidth = screen.Bounds.Width;
-									double screenBaseHeight = screen.Bounds.Height;
-
-									bool maximize = false;
-									//if (SelectedProfile.Configuration.ContainsKey("maximize_launchbox") && SelectedProfile.Configuration["maximize_launchbox"] == "yes") maximize = true;
-
-									
-
-									int MonitorToSwitch = BigBoxUtils.GetMonitorIDFromPriorityList(SelectedProfile.Configuration["monitor"]);
-									//MessageBox.Show(MonitorToSwitch.ToString());
-
-									if (screenIndex != MonitorToSwitch)
-									{
-										didAction = true;
-										if (maximize == false)
-										{
-											ShowWindow(targetProcess.MainWindowHandle, 9);
-										}
-										// Get the base size of the window at launch.
-										var rect = new RECT();
-										GetWindowRect(targetProcess.MainWindowHandle, out rect);
-										var baseWidth = rect.Width;
-										var baseHeight = rect.Height;
-
-										Console.WriteLine($"Base window size: {baseWidth} x {baseHeight}");
-
-										// Move the window to the second screen.
-										var screens = Screen.AllScreens;
-										if (MonitorToSwitch >= 0)
-										{
-											var secondScreen = screens[MonitorToSwitch];
-											var resolutionRatio = (double)secondScreen.WorkingArea.Width / screenBaseWidth; // Assuming 1920x1080 is the base resolution.
-											var newWidth = (int)(baseWidth * resolutionRatio);
-											var newHeight = (int)(baseHeight * resolutionRatio);
-											var newLocation = new Point(secondScreen.Bounds.X + 10, secondScreen.Bounds.Y + 10); // Change the values according to your needs.
-											MoveWindow(targetProcess.MainWindowHandle, newLocation.X, newLocation.Y, newWidth, newHeight, true);
-										}
-
-									}
-									/*
-									if(maximize)
-									{
-										
-										if(didAction) Thread.Sleep(2000);
-										didAction = true;
-										Thread.Sleep(1000);
-										ShowWindow(targetProcess.MainWindowHandle, 3);
-									}
-									*/
-									if (didAction) Thread.Sleep(1500);
-									SetForegroundWindow(targetProcess.MainWindowHandle);
-
-									break;
-								}
-							}
-							await Task.Delay(1000);
-						}
-
-						// Check if the process exited successfully or not.
-						if (process.ExitCode != 0)
-						{
-							Console.WriteLine($"Process exited with code {process.ExitCode}");
-						}
-					}
 
 				}
 				else
 				{
-					//MessageBox.Show("execute " + FileNew);
-					
-					BigBoxUtils.MakeLink(FileOriginal, FileNew);
 
-					//MessageBox.Show("execute " + newExe);
-					var ResultRPCS = await Cli.Wrap(FileNew)
-						.WithArguments(Args)
+					var ResultRPCS2 = Cli.Wrap(JustRunExe)
+						.WithArguments(FileOriginal)
 						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
 						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
 						.WithValidation(CommandResultValidation.None)
 						.ExecuteAsync();
 
+					bool didAction = false;
+					while (didAction == false && Process.GetProcessesByName("LaunchBox").Length > 0)
+					{
+						var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
+						if (targetProcess != null)
+						{
+							didAction = true;
 
-					File.Delete(FileNew);
-					
+							var screen = Screen.FromHandle(targetProcess.MainWindowHandle);
+							int screenIndex = Array.IndexOf(Screen.AllScreens, screen);
+
+							double screenBaseWidth = screen.Bounds.Width;
+							double screenBaseHeight = screen.Bounds.Height;
+
+							bool maximize = false;
+							//if (SelectedProfile.Configuration.ContainsKey("maximize_launchbox") && SelectedProfile.Configuration["maximize_launchbox"] == "yes") maximize = true;
+
+
+
+							int MonitorToSwitch = BigBoxUtils.GetMonitorIDFromPriorityList(SelectedProfile.Configuration["monitor"]);
+							//MessageBox.Show(MonitorToSwitch.ToString());
+
+							if (screenIndex != MonitorToSwitch)
+							{
+								if (maximize == false)
+								{
+									ShowWindow(targetProcess.MainWindowHandle, 9);
+								}
+								// Get the base size of the window at launch.
+								var rect = new RECT();
+								GetWindowRect(targetProcess.MainWindowHandle, out rect);
+								var baseWidth = rect.Width;
+								var baseHeight = rect.Height;
+
+								Console.WriteLine($"Base window size: {baseWidth} x {baseHeight}");
+
+								// Move the window to the second screen.
+								var screens = Screen.AllScreens;
+								if (MonitorToSwitch >= 0)
+								{
+									var secondScreen = screens[MonitorToSwitch];
+									var resolutionRatio = (double)secondScreen.WorkingArea.Width / screenBaseWidth; // Assuming 1920x1080 is the base resolution.
+									var newWidth = (int)(baseWidth * resolutionRatio);
+									var newHeight = (int)(baseHeight * resolutionRatio);
+									var newLocation = new Point(secondScreen.Bounds.X + 10, secondScreen.Bounds.Y + 10); // Change the values according to your needs.
+									MoveWindow(targetProcess.MainWindowHandle, newLocation.X, newLocation.Y, newWidth, newHeight, true);
+								}
+
+							}
+
+						}
+						Thread.Sleep(1000);
+					}
+					await ResultRPCS2;
 
 				}
-
 
 			}
 			catch (Exception ex)
@@ -317,9 +275,22 @@ namespace BigBoxProfile
 
 		public void Exec()
 		{
+
+			if(PreventRun)
+			{
+				MessageBox.Show("Launchbox/BigBox is already running");
+				return;
+			}
+			if (profileFileSwitcher.Active)
+			{
+				profileFileSwitcher.OpenProfile(SelectedProfile.ProfileName);
+			}
+
 			ExecutePrelaunchAction();
 			var task = ExecuteBigBox();
 			task.Wait();
+
+			profileFileSwitcher.CloseProfile(SelectedProfile.ProfileName);
 
 			if (SelectedProfile.Configuration["restore"] == "yes")
 			{
@@ -329,7 +300,8 @@ namespace BigBoxProfile
 		}
 
 		public static async Task DirectLaunch(string[] args)
-		{ 
+		{
+
 			string JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
 
 			var ResultRPCS2 = await Cli.Wrap(JustRunExe)

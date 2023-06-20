@@ -814,6 +814,58 @@ namespace BigBoxProfile
 
 		}
 
+		public static bool IsLaunchboxRunning(string executablePath)
+		{
+			var exceptArguments = new string[2] { "-recovery", "-recoverybigbox" };
+
+			string processName = System.IO.Path.GetFileNameWithoutExtension(executablePath);
+
+			Process[] processes = Process.GetProcesses();
+			foreach (Process process in processes)
+			{
+				try
+				{
+					bool isLaunchboxOrBigbox = false;
+					var executableName = Path.GetFileName(process.MainModule.FileName);
+					var executableDir = Path.GetDirectoryName(process.MainModule.FileName);
+
+					if (executableName.StartsWith("launchbox_", StringComparison.OrdinalIgnoreCase)) isLaunchboxOrBigbox = true;
+					if (string.Equals(executableName, "launchbox.exe", StringComparison.OrdinalIgnoreCase)) isLaunchboxOrBigbox = true;
+					if (executableName.StartsWith("bigbox_", StringComparison.OrdinalIgnoreCase)) isLaunchboxOrBigbox = true;
+					if (string.Equals(executableName, "bigbox.exe", StringComparison.OrdinalIgnoreCase)) isLaunchboxOrBigbox = true;
+
+					if (isLaunchboxOrBigbox && string.Equals(executableDir, Path.GetDirectoryName(executablePath), StringComparison.OrdinalIgnoreCase))
+					{
+						if (exceptArguments != null && exceptArguments.Length > 0)
+						{
+							bool shouldSkip = false;
+							foreach (string exceptArgument in exceptArguments)
+							{
+								if (process.StartInfo.Arguments.Contains(exceptArgument))
+								{
+									shouldSkip = true;
+									break;
+								}
+							}
+							if (shouldSkip)
+							{
+								continue;
+							}
+						}
+
+						return true;
+					}
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine($"Erreur lors de l'accès au processus : {ex.Message}");
+				}
+
+			}
+
+			return false;
+		}
+
 	}
 
 }
