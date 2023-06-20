@@ -14,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
 namespace BigBoxProfile
@@ -278,7 +279,13 @@ namespace BigBoxProfile
 
 			if(PreventRun)
 			{
-				MessageBox.Show("Launchbox/BigBox is already running");
+
+				var w = new Form() { Size = new Size(0, 0) };
+				Task.Delay(TimeSpan.FromSeconds(3))
+					.ContinueWith((t) => w.Close(), TaskScheduler.FromCurrentSynchronizationContext());
+
+				MessageBox.Show(w, "Launchbox/BigBox is already running");
+
 				return;
 			}
 			if (profileFileSwitcher.Active)

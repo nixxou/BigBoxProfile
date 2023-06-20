@@ -154,7 +154,6 @@ IntPtr lpSecurityAttributes
 
 		public void OpenProfile(string ProfileName)
 		{
-			MessageBox.Show("ici");
 			if (!CanUseLink || !HasProfileDir) return;
 
 			if (File.Exists(LastLaunchedFile))
