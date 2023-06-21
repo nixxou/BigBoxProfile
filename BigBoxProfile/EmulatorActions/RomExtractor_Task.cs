@@ -40,12 +40,11 @@ namespace BigBoxProfile.EmulatorActions
 		private List<string> _ShortListGame = new List<string>();
 
 
-		public RomExtractor_Task(string archiveFilePath, RomExtractor_PriorityData selectedPriority, string cachedir, int cacheMaxSize, string standaloneExtensions, string metadataExtensions)
+		public RomExtractor_Task(string archiveFilePath, RomExtractor_PriorityData selectedPriority, string cachedir, int cacheMaxSize, string standaloneExtensions, string metadataExtensions, string[] prioritySubDirFullList)
 		{
-
 			try
 			{
-				_archiveFile = new RomExtractor_ArchiveFile(archiveFilePath, metadataExtensions, standaloneExtensions, selectedPriority);
+				_archiveFile = new RomExtractor_ArchiveFile(archiveFilePath, metadataExtensions, standaloneExtensions, selectedPriority, cachedir, cacheMaxSize, prioritySubDirFullList);
 			}
 			catch(Exception ex)
 			{
@@ -224,6 +223,24 @@ namespace BigBoxProfile.EmulatorActions
 						StopCountDown();
 						LaunchGame(_SelectedGame);
 					}
+					if(eventKeypress.HotKey.Key == System.Windows.Input.Key.Down)
+					{
+						StopCountDown();
+						if (fileListBox.SelectedIndex < fileListBox.Items.Count - 1)
+						{
+							fileListBox.SelectedIndex++;
+							System.Threading.Thread.Sleep(120);
+						}
+					}
+					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Up)
+					{
+						StopCountDown();
+						if (fileListBox.SelectedIndex > 0)
+						{
+							fileListBox.SelectedIndex--;
+							System.Threading.Thread.Sleep(120);
+						}
+					}
 				};
 			}
 
@@ -300,6 +317,8 @@ namespace BigBoxProfile.EmulatorActions
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.Escape, System.Windows.Input.ModifierKeys.None));
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.F1, System.Windows.Input.ModifierKeys.None));
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.Enter, System.Windows.Input.ModifierKeys.None));
+				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.Up, System.Windows.Input.ModifierKeys.None));
+				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.Down, System.Windows.Input.ModifierKeys.None));
 			}
 			gamepad.StateChanged += Gamepad_StateChanged;
 			gamepad.KeyDown+= Gamepad_KeyDown;

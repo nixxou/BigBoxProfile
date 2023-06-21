@@ -337,6 +337,7 @@ namespace BigBoxProfile
 				Width = 300,
 				Height = 200,
 				Text = "Background Form",
+				FormBorderStyle = FormBorderStyle.None,
 				Opacity = 0, // Make the form completely transparent
 				ShowInTaskbar = false // Hide the form from the taskbar
 			};

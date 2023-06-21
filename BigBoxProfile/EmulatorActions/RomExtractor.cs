@@ -240,7 +240,13 @@ namespace BigBoxProfile.EmulatorActions
 
 			}
 
-			var frm = new RomExtractor_Task(archiveFilePath, SelectedPriority, _cachedir, _cacheMaxSize, _standaloneExtensions, _metadataExtensions);
+			List<string> PrioritySubDirFullList = new List<string>();
+			foreach(var p in _priority)
+			{
+				if (p.CacheSubDir != "" && !PrioritySubDirFullList.Contains(p.CacheSubDir)) PrioritySubDirFullList.Add(p.CacheSubDir);
+			}
+
+			var frm = new RomExtractor_Task(archiveFilePath, SelectedPriority, _cachedir, _cacheMaxSize, _standaloneExtensions, _metadataExtensions, PrioritySubDirFullList.ToArray());
 			var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess != null)
