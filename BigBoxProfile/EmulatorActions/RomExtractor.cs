@@ -21,11 +21,15 @@ namespace BigBoxProfile.EmulatorActions
 	{
 		private static int _instanceCount = 0;
 		private int _instanceId;
+		List<RamDiskLauncher> _RamDisks;
+		List<string> _FileToDelete;
 
 		public RomExtractor()
 		{
 			_instanceCount++;
 			_instanceId = _instanceCount;
+			_RamDisks = new List<RamDiskLauncher>();
+			_FileToDelete = new List<string>();
 		}
 
 		public string ModuleName => "RomExtractor";
@@ -38,6 +42,7 @@ namespace BigBoxProfile.EmulatorActions
 		private string _metadataExtensions = "nfo, txt, dat, xml, json, htc, hts";
 		private List<RomExtractor_PriorityData> _priority = new List<RomExtractor_PriorityData>();
 		private Dictionary<string,string> _extractDone= new Dictionary<string,string>();
+
 
 
 
@@ -246,7 +251,10 @@ namespace BigBoxProfile.EmulatorActions
 				if (p.CacheSubDir != "" && !PrioritySubDirFullList.Contains(p.CacheSubDir)) PrioritySubDirFullList.Add(p.CacheSubDir);
 			}
 
-			var frm = new RomExtractor_Task(archiveFilePath, SelectedPriority, _cachedir, _cacheMaxSize, _standaloneExtensions, _metadataExtensions, PrioritySubDirFullList.ToArray());
+			RamDiskLauncher ramDisk = new RamDiskLauncher();
+			_RamDisks.Add(ramDisk);
+
+			var frm = new RomExtractor_Task(archiveFilePath, SelectedPriority, _cachedir, _cacheMaxSize, _standaloneExtensions, _metadataExtensions, PrioritySubDirFullList.ToArray(), ramDisk);
 			var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess != null)
@@ -264,6 +272,10 @@ namespace BigBoxProfile.EmulatorActions
 			frm.Focus(); // Donne le focus à la fenêtre
 
 			_extractDone.Add(archiveFilePath, frm.OutFile);
+			if (SelectedPriority.DeleteOnExit && File.Exists(frm.OutFile) && frm.OutTarget != "")
+			{
+				_FileToDelete.Add(frm.OutTarget);
+			}
 
 			//MessageBox.Show($"Load {archiveFilePath} on {_cachedir} with {SelectedPriority.Serialize()}");
 
@@ -273,7 +285,23 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void ExecuteAfter(string[] args)
 		{
+			foreach (var ramDisk in _RamDisks)
+			{
+				ramDisk.UnMount();
 
+			}
+			foreach (var fileToDelete in _FileToDelete)
+			{
+				if (File.Exists(fileToDelete))
+				{
+					File.Delete(fileToDelete);
+				}
+				if(Directory.Exists(fileToDelete))
+				{
+					BigBoxUtils.EmptyFolder(fileToDelete);
+					Directory.Delete(fileToDelete);
+				}
+			}
 		}
 
 		public bool UseM3UContent()

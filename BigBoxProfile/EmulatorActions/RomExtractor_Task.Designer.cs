@@ -158,9 +158,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "RomExtractor_Task";
 			this.Text = "RomExtractor_Task";
-			this.Deactivate += new System.EventHandler(this.RomExtractor_Task_Deactivate);
 			this.Load += new System.EventHandler(this.RomExtractor_Task_Load);
-			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RomExtractor_Task_KeyDown);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

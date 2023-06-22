@@ -1,4 +1,5 @@
-﻿using CliWrap;
+﻿using CefSharp.DevTools.Audits;
+using CliWrap;
 using Newtonsoft.Json;
 using SevenZip;
 using System;
@@ -61,15 +62,18 @@ namespace BigBoxProfile.RomExtractorUtils
 
 		static IProgress<ExtractionProgress> progress = null;
 
+		RamDiskLauncher RamDisk = null;
+		public string OutTarget = "";
 
 
-		public RomExtractor_ArchiveFile(string archiveFilePath,string metadata, string standalone,RomExtractor_PriorityData priority, string cacheDir, int cacheMaxSize, string[] prioritySubDirFullList)
+		public RomExtractor_ArchiveFile(string archiveFilePath,string metadata, string standalone,RomExtractor_PriorityData priority, string cacheDir, int cacheMaxSize, string[] prioritySubDirFullList, RamDiskLauncher ramDisk)
 		{
 			if (!File.Exists(archiveFilePath)) throw (new Exception($"File {archiveFilePath} does not exist"));
 
 			CacheDir = cacheDir;
 			CacheMaxSize = cacheMaxSize;
 			PrioritySubDirFullList = prioritySubDirFullList;
+			RamDisk = ramDisk;
 
 			ArchiveFilePath = archiveFilePath;
 			ArchiveNameWithoutPath = Path.GetFileName(ArchiveFilePath);
@@ -293,6 +297,7 @@ namespace BigBoxProfile.RomExtractorUtils
 						ulong filesize = (ulong)new FileInfo(FileToExec).Length;
 						if(filesize == FileDataWithoutPath[fileToExtract].Size)
 						{
+							OutTarget = dirOut;
 							Directory.SetLastWriteTime(dirOut, DateTime.Now);
 							File.SetLastWriteTime(FileToExec, DateTime.Now);
 							outFile = FileToExec;
@@ -315,6 +320,7 @@ namespace BigBoxProfile.RomExtractorUtils
 						ulong filesize = (ulong)new FileInfo(FileToExec).Length;
 						if (filesize == FileDataWithoutPath[fileToExtract].Size)
 						{
+							OutTarget = FileToExec;
 							File.SetLastWriteTime(FileToExec, DateTime.Now);
 							outFile = FileToExec;
 							copyCompleted = true;
@@ -326,21 +332,42 @@ namespace BigBoxProfile.RomExtractorUtils
 					}
 				}
 			}
+
+			double GameInMb = 0;
+			if (IsSmart == false || Priority.SmartExtract == false)
+			{
+				GameInMb = UnpackedSize / (1024.0 * 1024.0);
+			}
+			else
+			{
+				GameInMb = FileDataWithoutPath[fileToExtract].Size / (1024.0 * 1024.0);
+			}
+
+			string RamDiskPath = "";
+			if (Priority.UseRamdisk && GameInMb < Priority.MaxSize)
+			{
+				int fileSizeMB = (int)(GameInMb * 1.03);
+				fileSizeMB += 30;
+				fileSizeMB = BigBoxUtils.GetDiskSize(fileSizeMB);
+
+				if (fileSizeMB < Priority.MaxSize)
+				{
+					bool resMount = RamDisk.Mount(fileSizeMB);
+					if (resMount)
+					{
+						RamDiskPath = Path.Combine(RamDisk.RamDriveLetter + ":\\");
+
+						dirOut = Path.Combine(RamDiskPath, Priority.CacheSubDir);
+						if (IsSmart == false || Priority.SmartExtract == false)
+							dirOut = Path.Combine(RamDiskPath, SignatureShort);
+					}
+				}
+			}
+
 			if(CacheMaxSize > 0)
 			{
 				long maxSizeCache = CacheMaxSize;
-				if (IsSmart == false || Priority.SmartExtract == false)
-				{
-					double GameInMb = UnpackedSize / (1024.0 * 1024.0);
-					maxSizeCache -= (long)(GameInMb);
-					if (maxSizeCache < 1) maxSizeCache = 1;
-				}
-				else
-				{
-					double GameInMb = FileDataWithoutPath[fileToExtract].Size / (1024.0 * 1024.0);
-					maxSizeCache -= (long)(GameInMb);
-					if (maxSizeCache < 1) maxSizeCache = 1;
-				}
+				if(RamDiskPath == "") maxSizeCache -= (long)(GameInMb);
 				List<String> RepertoireListIn = new List<String>();
 				foreach(var subdir in PrioritySubDirFullList) RepertoireListIn.Add(Path.Combine(CacheDir, subdir));
 				RomExtractor_RepertoireUtils.KeepCacheUnder(maxSizeCache, RepertoireListIn, CacheDir);
@@ -364,6 +391,7 @@ namespace BigBoxProfile.RomExtractorUtils
 						.ExecuteAsync();
 					outFile = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithoutPath);
 					File.SetLastWriteTime(outFile, DateTime.Now);
+					OutTarget = outFile;
 				}
 				else
 				{
@@ -374,7 +402,7 @@ namespace BigBoxProfile.RomExtractorUtils
 					outFile = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithPath);
 					File.SetLastWriteTime(outFile, DateTime.Now);
 					Directory.SetLastWriteTime(dirOut, DateTime.Now);
-
+					OutTarget = dirOut;
 					RomExtractor_ArchiveSizeCache DirData = new RomExtractor_ArchiveSizeCache(SignatureShort, UnpackedSize);
 					DirData.Save(CacheDir);
 				}

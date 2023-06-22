@@ -33,18 +33,19 @@ namespace BigBoxProfile.EmulatorActions
 		private CancellationTokenSource countdownCancellation;
 
 		public string OutFile = "";
+		public string OutTarget = "";
+
 		private List<HotKey> _hotkeyList = new List<HotKey>();
 		private bool _isActiveWindow = true;
 
 		private string _SelectedGame = "";
 		private List<string> _ShortListGame = new List<string>();
 
-
-		public RomExtractor_Task(string archiveFilePath, RomExtractor_PriorityData selectedPriority, string cachedir, int cacheMaxSize, string standaloneExtensions, string metadataExtensions, string[] prioritySubDirFullList)
+		public RomExtractor_Task(string archiveFilePath, RomExtractor_PriorityData selectedPriority, string cachedir, int cacheMaxSize, string standaloneExtensions, string metadataExtensions, string[] prioritySubDirFullList, RamDiskLauncher ramDisk)
 		{
 			try
 			{
-				_archiveFile = new RomExtractor_ArchiveFile(archiveFilePath, metadataExtensions, standaloneExtensions, selectedPriority, cachedir, cacheMaxSize, prioritySubDirFullList);
+				_archiveFile = new RomExtractor_ArchiveFile(archiveFilePath, metadataExtensions, standaloneExtensions, selectedPriority, cachedir, cacheMaxSize, prioritySubDirFullList, ramDisk);
 			}
 			catch(Exception ex)
 			{
@@ -58,23 +59,6 @@ namespace BigBoxProfile.EmulatorActions
 
 		private async void RomExtractor_Task_Load(object sender, EventArgs e)
 		{
-
-			/*
-			if(_archiveFile!= null && _archiveFile.PriorityFile != "")
-			{
-
-				Progress<ExtractionProgress> progress = new Progress<ExtractionProgress>(progressData =>
-				{
-					progressBar1.Value = progressData.PercentDone;
-					lbl_progress.Text = $"Progression : {progressData.PercentDone}%";
-				});
-
-				await _archiveFile.ExtractArchiveWithProgressAsync(_archiveFile.PriorityFile, _cachedir, progress);
-
-				//Close();
-
-			}
-			*/
 			this.FormClosing += (senderClosing,eventClosing) => 
 			{
 				DisableHotkey();
@@ -145,32 +129,6 @@ namespace BigBoxProfile.EmulatorActions
 				StopCountDown();
 				LaunchGame(_SelectedGame);
 			}
-			
-			/*
-			if (gamepad.RBumper_down)
-			{
-				StopCountDown();
-				int indexElement = _ShortListGame.IndexOf(_SelectedGame);
-				if (indexElement != -1 && indexElement < _ShortListGame.Count - 1)
-				{
-					string elementSuivant = _ShortListGame[indexElement + 1];
-					_SelectedGame = elementSuivant;
-					lbl_selected.Text = _SelectedGame;
-				}
-			}
-			if (gamepad.LBumper_down)
-			{
-				StopCountDown();
-				int indexElement = _ShortListGame.IndexOf(_SelectedGame);
-				if (indexElement>0)
-				{
-					string elementPrecedent = _ShortListGame[indexElement - 1];
-					_SelectedGame = elementPrecedent;
-					lbl_selected.Text = _SelectedGame;
-				}
-			}
-			*/
-
 		}
 
 		public void Gamepad_KeyDown(object sender, EventArgs e)
@@ -291,7 +249,7 @@ namespace BigBoxProfile.EmulatorActions
 			});
 
 			OutFile = await _archiveFile.ExtractArchiveWithProgressAsync(name, _cachedir, progress);
-
+			OutTarget = _archiveFile.OutTarget;
 			Close();
 		}
 		
@@ -378,102 +336,6 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			countdownCancellation.Cancel();
 			lbl_progress.Text = "";
-		}
-
-
-		void HotKeyManagerPressed(object sender, KeyPressedEventArgs e)
-		{
-			MessageBox.Show("Hot key pressed!");
-		}
-
-
-		private void UpdateDisplay()  
-		{
-
-			while (true)
-			{
-				if (_archiveFile.copyStart == false)
-				{
-					Thread.Sleep(5);
-					continue;
-				}
-				// Vérifier si la copie est terminée
-				if (_archiveFile.copyCompleted)
-				{
-					Thread.Sleep(500);
-					Invoke(new Action(() =>
-					{
-						Close();
-					}));
-					break;
-				}
-
-				// Calculer la progression en pourcentage
-				int progress = (int)_archiveFile.percentDone;
-
-				// Mettre à jour la ProgressBar et le label sur le thread de l'interface utilisateur
-				Invoke(new Action(() =>
-				{
-					progressBar1.Value = progress;
-					lbl_progress.Text = $"Progression : {progress}%";
-
-				}));
-
-				Thread.Sleep(50); // Attendre 500 millisecondes avant la prochaine mise à jour de l'affichage
-			}
-
-		}
-
-		private void RomExtractor_Task_KeyDown(object sender, KeyEventArgs e)
-		{
-			/*
-			if (e.KeyCode == Keys.Escape)
-			{
-				countdownCancellation?.Cancel();
-			}
-			if (e.KeyCode == Keys.F1)
-			{
-				UnregisterHotkey();
-				_isActiveWindow = false;
-				this.TopMost = false;
-				countdownCancellation?.Cancel();
-				lbl_progress.Text = "";
-				var frm = new RomExtractor_BigBoxSelect(_archiveFile, _cachedir);
-				var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
-				if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
-				if (targetProcess != null)
-				{
-					var screen = Screen.FromHandle(targetProcess.MainWindowHandle);
-					int x = screen.Bounds.Left + (screen.Bounds.Width - frm.Width) / 2;
-					int y = screen.Bounds.Top + (screen.Bounds.Height - frm.Height) / 2;
-					frm.StartPosition = FormStartPosition.Manual;
-					frm.Location = new Point(x, y);
-				}
-				frm.TopMost = true; // Affiche la fenêtre devant toutes les autres
-				var result = frm.ShowDialog();
-				frm.Focus(); // Donne le focus à la fenêtre
-				RegisterHotkey();
-				if (result == DialogResult.OK)
-				{
-					LaunchGame(frm.Selected);
-
-				}
-				this.TopMost = true;
-				this.Activate();
-			}
-			if (e.KeyCode == Keys.Enter)
-			{
-				countdownCancellation?.Cancel();
-				LaunchGame(_archiveFile.PriorityFile);
-			}
-			*/
-		}
-
-
-
-		private void RomExtractor_Task_Deactivate(object sender, EventArgs e)
-		{
-			//if(_isActiveWindow) this.Focus();
 		}
 
 		private void fileListBox_SelectedIndexChanged(object sender, EventArgs e)

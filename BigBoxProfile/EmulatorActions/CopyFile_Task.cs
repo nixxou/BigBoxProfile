@@ -86,7 +86,7 @@ namespace BigBoxProfile.EmulatorActions
 
 				int fileSizeMB = (int)((fileSizeIn / 1024 / 1024)*1.03);
 				fileSizeMB += 30;
-				fileSizeMB = GetDiskSize(fileSizeMB);
+				fileSizeMB = BigBoxUtils.GetDiskSize(fileSizeMB);
 				
 				if (fileSizeMB < maxSize)
 				{
@@ -108,18 +108,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
-		public static int GetDiskSize(long desiredSizeMB)
-		{
-			const long NTFSOverheadBytes = 12_582_912; // Espace réservé par NTFS en octets
-			const long ClusterSizeBytes = 4_096; // Taille d'un cluster en octets
 
-			long usableSizeBytes = desiredSizeMB * 1_048_576; // Conversion de Mo en octets
-			long usableClusters = usableSizeBytes / ClusterSizeBytes;
-			long totalClusters = usableClusters + NTFSOverheadBytes / ClusterSizeBytes;
-			long diskSizeBytes = totalClusters * ClusterSizeBytes;
-
-			return (int)(diskSizeBytes/1024/1024);
-		}
 
 		private void CopyFileWithProgress(string inPath, string outPath)
 		{
