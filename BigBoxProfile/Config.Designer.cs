@@ -52,9 +52,11 @@
 			this.btn_addEmulator = new System.Windows.Forms.Button();
 			this.btn_editEmulator = new System.Windows.Forms.Button();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.label7 = new System.Windows.Forms.Label();
-			this.num_delayEmulator = new System.Windows.Forms.NumericUpDown();
 			this.label8 = new System.Windows.Forms.Label();
+			this.num_delayEmulator = new System.Windows.Forms.NumericUpDown();
+			this.label7 = new System.Windows.Forms.Label();
+			this.cmb_DispositionList = new System.Windows.Forms.ComboBox();
+			this.label9 = new System.Windows.Forms.Label();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_delayEmulator)).BeginInit();
 			this.SuspendLayout();
@@ -325,14 +327,14 @@
 			this.groupBox1.Text = "&";
 			this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
 			// 
-			// label7
+			// label8
 			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(13, 218);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(154, 13);
-			this.label7.TabIndex = 24;
-			this.label7.Text = "Hijack Emulator command line :";
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(6, 175);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(133, 13);
+			this.label8.TabIndex = 26;
+			this.label8.Text = "Delay Emulator Start (sec)";
 			// 
 			// num_delayEmulator
 			// 
@@ -347,20 +349,41 @@
 			this.num_delayEmulator.TabIndex = 25;
 			this.num_delayEmulator.ValueChanged += new System.EventHandler(this.num_delayEmulator_ValueChanged);
 			// 
-			// label8
+			// label7
 			// 
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(6, 175);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(133, 13);
-			this.label8.TabIndex = 26;
-			this.label8.Text = "Delay Emulator Start (sec)";
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(13, 218);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(154, 13);
+			this.label7.TabIndex = 24;
+			this.label7.Text = "Hijack Emulator command line :";
+			// 
+			// cmb_DispositionList
+			// 
+			this.cmb_DispositionList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_DispositionList.FormattingEnabled = true;
+			this.cmb_DispositionList.Location = new System.Drawing.Point(199, 363);
+			this.cmb_DispositionList.Name = "cmb_DispositionList";
+			this.cmb_DispositionList.Size = new System.Drawing.Size(224, 21);
+			this.cmb_DispositionList.TabIndex = 13;
+			this.cmb_DispositionList.SelectedIndexChanged += new System.EventHandler(this.cmb_DispositionList_SelectedIndexChanged);
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(25, 366);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(168, 13);
+			this.label9.TabIndex = 14;
+			this.label9.Text = "Quick Monitor Disposition Switch :";
 			// 
 			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(435, 365);
+			this.ClientSize = new System.Drawing.Size(435, 396);
+			this.Controls.Add(this.label9);
+			this.Controls.Add(this.cmb_DispositionList);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.groupBox1);
@@ -410,6 +433,8 @@
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.NumericUpDown num_delayEmulator;
+		private System.Windows.Forms.ComboBox cmb_DispositionList;
+		private System.Windows.Forms.Label label9;
 	}
 }
 

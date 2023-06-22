@@ -35,6 +35,20 @@ namespace BigBoxProfile
 			Profile.ProfileListChanged += Profile_ProfileListChanged;
 			Profile.ConfigurationChanged += Profile_ConfigurationChanged;
 
+			ReloadDispositionCmb();
+
+		}
+
+		private void ReloadDispositionCmb()
+		{
+			cmb_DispositionList.Items.Clear();
+			foreach (var disposition in Directory.GetFiles(Profile.PathMainProfileDir, "disposition_*.xml"))
+			{
+				string disposition_name = Path.GetFileNameWithoutExtension(disposition);
+				disposition_name = disposition_name.Remove(0, 12);
+
+				cmb_DispositionList.Items.Add($"{disposition_name}");
+			}
 		}
 
 		private void UpdateCmbEmulatorList()
@@ -276,6 +290,7 @@ namespace BigBoxProfile
 			if (result == DialogResult.OK)
 			{
 				Profile.ActiveProfile.SetOption("monitorswitch", frm.result);
+				ReloadDispositionCmb();
 			}
 		}
 
@@ -393,6 +408,15 @@ namespace BigBoxProfile
 		private void num_delayEmulator_ValueChanged(object sender, EventArgs e)
 		{
 			Profile.ActiveProfile.SetOption("delay_emulator", num_delayEmulator.Value.ToString());
+		}
+
+		private void cmb_DispositionList_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if(cmb_DispositionList.SelectedIndex >= 0)
+			{
+				BigBoxUtils.UseMonitorDisposition(cmb_DispositionList.SelectedItem.ToString());
+				ReloadDispositionCmb();
+			}
 		}
 	}
 }
