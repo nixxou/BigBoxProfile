@@ -26,6 +26,13 @@ namespace BigBoxProfile
 {
 	internal class BigBoxUtils
 	{
+		[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+		private static extern bool CreateSymbolicLink(string symlinkFileName, string targetFileName, int flags);
+
+		// Constante pour le type de lien symbolique
+		private const int SYMBOLIC_LINK_FLAG_FILE = 0x0;
+		private const int SYMBOLIC_LINK_FLAG_DIRECTORY = 0x1;
+
 
 		[DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
 		//static extern bool CreateSymbolicLink(string lpSymlinkFileName, string lpTargetFileName, int dwFlags);
@@ -50,6 +57,51 @@ namespace BigBoxProfile
 
 			CreateHardLink(target, source, IntPtr.Zero);
 		}
+
+		public static bool CreateSoftlink(string sourceFilePath, string targetFilePath)
+		{
+			// Vérifier si le fichier source existe
+			if (!File.Exists(sourceFilePath))
+			{
+				return false;
+			}
+
+			// Créer le lien symbolique
+			try
+			{
+				if (File.Exists(targetFilePath))
+				{
+					// Supprimer le fichier existant s'il existe déjà
+					File.Delete(targetFilePath);
+				}
+
+				// Appeler la fonction CreateSymbolicLink pour créer le lien symbolique
+				bool success = CreateSymbolicLink(targetFilePath, sourceFilePath, SYMBOLIC_LINK_FLAG_FILE);
+
+				return success;
+			}
+			catch (Exception)
+			{
+				// Gérer les erreurs éventuelles lors de la création du lien symbolique
+				return false;
+			}
+		}
+
+		public static bool IsSoftlink(string filePath)
+		{
+			// Vérifier si le fichier existe
+			if (!File.Exists(filePath))
+			{
+				return false;
+			}
+
+			// Obtenir les attributs du fichier
+			FileAttributes attributes = File.GetAttributes(filePath);
+
+			// Vérifier si le fichier est un lien symbolique
+			return (attributes & FileAttributes.ReparsePoint) == FileAttributes.ReparsePoint;
+		}
+
 
 		public static void RegisterApp()
 		{

@@ -86,14 +86,13 @@
 			this.MenuItem_filterRH = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItem_clearFilters = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.MenuItem_SetFavorite = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItem_saveCopy = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItem_loadSaveState0 = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItem_loadSaveState1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.archiveNameLabel = new System.Windows.Forms.Label();
 			this.cancelButton = new System.Windows.Forms.Button();
 			this.okButton = new System.Windows.Forms.Button();
-			this.MenuItem_SetFavorite = new System.Windows.Forms.ToolStripMenuItem();
-			this.button1 = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.FListView_Texture)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
@@ -110,42 +109,42 @@
 			// MenuItem_loadSaveState4
 			// 
 			this.MenuItem_loadSaveState4.Name = "MenuItem_loadSaveState4";
-			this.MenuItem_loadSaveState4.Size = new System.Drawing.Size(180, 22);
+			this.MenuItem_loadSaveState4.Size = new System.Drawing.Size(103, 22);
 			this.MenuItem_loadSaveState4.Text = "Slot 4";
 			this.MenuItem_loadSaveState4.Click += new System.EventHandler(this.MenuItem_loadSaveState_Click);
 			// 
 			// MenuItem_loadSaveState5
 			// 
 			this.MenuItem_loadSaveState5.Name = "MenuItem_loadSaveState5";
-			this.MenuItem_loadSaveState5.Size = new System.Drawing.Size(180, 22);
+			this.MenuItem_loadSaveState5.Size = new System.Drawing.Size(103, 22);
 			this.MenuItem_loadSaveState5.Text = "Slot 5";
 			this.MenuItem_loadSaveState5.Click += new System.EventHandler(this.MenuItem_loadSaveState_Click);
 			// 
 			// MenuItem_loadSaveState6
 			// 
 			this.MenuItem_loadSaveState6.Name = "MenuItem_loadSaveState6";
-			this.MenuItem_loadSaveState6.Size = new System.Drawing.Size(180, 22);
+			this.MenuItem_loadSaveState6.Size = new System.Drawing.Size(103, 22);
 			this.MenuItem_loadSaveState6.Text = "Slot 6";
 			this.MenuItem_loadSaveState6.Click += new System.EventHandler(this.MenuItem_loadSaveState_Click);
 			// 
 			// MenuItem_loadSaveState7
 			// 
 			this.MenuItem_loadSaveState7.Name = "MenuItem_loadSaveState7";
-			this.MenuItem_loadSaveState7.Size = new System.Drawing.Size(180, 22);
+			this.MenuItem_loadSaveState7.Size = new System.Drawing.Size(103, 22);
 			this.MenuItem_loadSaveState7.Text = "Slot 7";
 			this.MenuItem_loadSaveState7.Click += new System.EventHandler(this.MenuItem_loadSaveState_Click);
 			// 
 			// MenuItem_loadSaveState8
 			// 
 			this.MenuItem_loadSaveState8.Name = "MenuItem_loadSaveState8";
-			this.MenuItem_loadSaveState8.Size = new System.Drawing.Size(180, 22);
+			this.MenuItem_loadSaveState8.Size = new System.Drawing.Size(103, 22);
 			this.MenuItem_loadSaveState8.Text = "Slot 8";
 			this.MenuItem_loadSaveState8.Click += new System.EventHandler(this.MenuItem_loadSaveState_Click);
 			// 
 			// MenuItem_loadSaveState9
 			// 
 			this.MenuItem_loadSaveState9.Name = "MenuItem_loadSaveState9";
-			this.MenuItem_loadSaveState9.Size = new System.Drawing.Size(180, 22);
+			this.MenuItem_loadSaveState9.Size = new System.Drawing.Size(103, 22);
 			this.MenuItem_loadSaveState9.Text = "Slot 9";
 			this.MenuItem_loadSaveState9.Click += new System.EventHandler(this.MenuItem_loadSaveState_Click);
 			// 
@@ -239,7 +238,7 @@
 			// MenuItem_loadSaveState3
 			// 
 			this.MenuItem_loadSaveState3.Name = "MenuItem_loadSaveState3";
-			this.MenuItem_loadSaveState3.Size = new System.Drawing.Size(180, 22);
+			this.MenuItem_loadSaveState3.Size = new System.Drawing.Size(103, 22);
 			this.MenuItem_loadSaveState3.Text = "Slot 3";
 			this.MenuItem_loadSaveState3.Click += new System.EventHandler(this.MenuItem_loadSaveState_Click);
 			// 
@@ -295,8 +294,8 @@
 			this.RemoveTexture_btn.Size = new System.Drawing.Size(109, 29);
 			this.RemoveTexture_btn.TabIndex = 4;
 			this.RemoveTexture_btn.Text = "Remove Texture";
-			this.RemoveTexture_btn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.RemoveTexture_btn.UseVisualStyleBackColor = true;
+			this.RemoveTexture_btn.Click += new System.EventHandler(this.RemoveTexture_btn_Click);
 			// 
 			// InstallTexture_btn
 			// 
@@ -307,7 +306,6 @@
 			this.InstallTexture_btn.Size = new System.Drawing.Size(104, 30);
 			this.InstallTexture_btn.TabIndex = 3;
 			this.InstallTexture_btn.Text = "Install Texture";
-			this.InstallTexture_btn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.InstallTexture_btn.UseVisualStyleBackColor = true;
 			this.InstallTexture_btn.Click += new System.EventHandler(this.InstallTexture_btn_Click);
 			// 
@@ -355,8 +353,8 @@
 			this.TexturePath_btn.Size = new System.Drawing.Size(92, 20);
 			this.TexturePath_btn.TabIndex = 1;
 			this.TexturePath_btn.Text = "Choose Dir";
-			this.TexturePath_btn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.TexturePath_btn.UseVisualStyleBackColor = true;
+			this.TexturePath_btn.Click += new System.EventHandler(this.TexturePath_btn_Click);
 			// 
 			// fakebrowser_txt
 			// 
@@ -371,7 +369,7 @@
 			// MenuItem_loadSaveState2
 			// 
 			this.MenuItem_loadSaveState2.Name = "MenuItem_loadSaveState2";
-			this.MenuItem_loadSaveState2.Size = new System.Drawing.Size(180, 22);
+			this.MenuItem_loadSaveState2.Size = new System.Drawing.Size(103, 22);
 			this.MenuItem_loadSaveState2.Text = "Slot 2";
 			this.MenuItem_loadSaveState2.Click += new System.EventHandler(this.MenuItem_loadSaveState_Click);
 			// 
@@ -412,7 +410,7 @@
 			this.fastObjectListView1.ShowGroups = false;
 			this.fastObjectListView1.Size = new System.Drawing.Size(667, 448);
 			this.fastObjectListView1.SmallImageList = this.imageList1;
-			this.fastObjectListView1.TabIndex = 15;
+			this.fastObjectListView1.TabIndex = 0;
 			this.fastObjectListView1.UseCompatibleStateImageBehavior = false;
 			this.fastObjectListView1.UseFilterIndicator = true;
 			this.fastObjectListView1.UseFiltering = true;
@@ -583,6 +581,13 @@
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(207, 6);
 			// 
+			// MenuItem_SetFavorite
+			// 
+			this.MenuItem_SetFavorite.Name = "MenuItem_SetFavorite";
+			this.MenuItem_SetFavorite.Size = new System.Drawing.Size(210, 22);
+			this.MenuItem_SetFavorite.Text = "Set As Favorite";
+			this.MenuItem_SetFavorite.Click += new System.EventHandler(this.MenuItem_SetFavorite_Click);
+			// 
 			// MenuItem_saveCopy
 			// 
 			this.MenuItem_saveCopy.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -603,14 +608,14 @@
 			// MenuItem_loadSaveState0
 			// 
 			this.MenuItem_loadSaveState0.Name = "MenuItem_loadSaveState0";
-			this.MenuItem_loadSaveState0.Size = new System.Drawing.Size(180, 22);
+			this.MenuItem_loadSaveState0.Size = new System.Drawing.Size(103, 22);
 			this.MenuItem_loadSaveState0.Text = "Slot 0";
 			this.MenuItem_loadSaveState0.Click += new System.EventHandler(this.MenuItem_loadSaveState_Click);
 			// 
 			// MenuItem_loadSaveState1
 			// 
 			this.MenuItem_loadSaveState1.Name = "MenuItem_loadSaveState1";
-			this.MenuItem_loadSaveState1.Size = new System.Drawing.Size(180, 22);
+			this.MenuItem_loadSaveState1.Size = new System.Drawing.Size(103, 22);
 			this.MenuItem_loadSaveState1.Text = "Slot 1";
 			this.MenuItem_loadSaveState1.Click += new System.EventHandler(this.MenuItem_loadSaveState_Click);
 			// 
@@ -633,9 +638,9 @@
 			this.cancelButton.Size = new System.Drawing.Size(75, 28);
 			this.cancelButton.TabIndex = 11;
 			this.cancelButton.Text = "Cancel";
-			this.cancelButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.cancelButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.cancelButton.UseVisualStyleBackColor = true;
+			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
 			// 
 			// okButton
 			// 
@@ -646,33 +651,15 @@
 			this.okButton.Size = new System.Drawing.Size(75, 28);
 			this.okButton.TabIndex = 10;
 			this.okButton.Text = "Play!";
-			this.okButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.okButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
 			this.okButton.UseVisualStyleBackColor = true;
-			// 
-			// MenuItem_SetFavorite
-			// 
-			this.MenuItem_SetFavorite.Name = "MenuItem_SetFavorite";
-			this.MenuItem_SetFavorite.Size = new System.Drawing.Size(210, 22);
-			this.MenuItem_SetFavorite.Text = "Set As Favorite";
-			this.MenuItem_SetFavorite.Click += new System.EventHandler(this.MenuItem_SetFavorite_Click);
-			// 
-			// button1
-			// 
-			this.button1.Location = new System.Drawing.Point(731, 10);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(120, 21);
-			this.button1.TabIndex = 18;
-			this.button1.Text = "button1";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.okButton.Click += new System.EventHandler(this.okButton_Click);
 			// 
 			// RomExtractor_DesktopSelect
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1460, 731);
-			this.Controls.Add(this.button1);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.fakebrowser_txt);
 			this.Controls.Add(this.fastObjectListView1);
@@ -760,6 +747,5 @@
 		private System.Windows.Forms.Button okButton;
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_filterStar;
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_SetFavorite;
-		private System.Windows.Forms.Button button1;
 	}
 }

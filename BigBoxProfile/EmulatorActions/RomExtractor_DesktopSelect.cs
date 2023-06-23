@@ -25,7 +25,7 @@ namespace BigBoxProfile.EmulatorActions
 		string _cachedir;
 
 
-		public string SelectedFile;
+		public string Selected;
 		public int EmulatorIndex;
 		public bool TagsActive = false; //Show extra tags columns
 
@@ -69,23 +69,14 @@ namespace BigBoxProfile.EmulatorActions
 			_archiveFile = archiveFile;
 			_cachedir = cachedir;
 
-
-
-			
-
 			//Clear variables
-			SelectedFile = "";
+			Selected = "";
 			TagsActive = false; //Show extra tags columns
 			filter_text = "";
 			filter_french = false;
 			filter_english = false;
 			filter_romhacker = false;
-			//base_launchbox_dir = "";
 			buffer_savestatefile = "";
-			//ArchiveDir = "";
-			//ArchiveName = "";
-			//Emulator_selected = "";
-			path_texture_set = false;
 			path_texture_name = "";
 			SaveStatePathList.Clear();
 			Rom.ClearRom();
@@ -131,7 +122,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (_archiveFile.PriorityFile != string.Empty)
 			{
-				SelectedFile = _archiveFile.PriorityFile;
+				Selected = _archiveFile.PriorityFile;
 			}
 
 			InitializeComponent();
@@ -147,24 +138,6 @@ namespace BigBoxProfile.EmulatorActions
 			*/
 
 			archiveNameLabel.Text = _archiveFile.ArchiveNameWithoutPath;
-			/*
-			//Generate the emulator combo list
-			emulatorComboBox.Items.Clear();
-			if (emulatorList.Count() > 0)
-			{
-				emulatorComboBox.Items.AddRange(emulatorList);
-				emulatorComboBox.SelectedIndex = 0;
-				EmulatorIndex = emulatorComboBox.SelectedIndex;
-				emulatorComboBox.Enabled = true;
-			}
-			else
-			{
-				emulatorComboBox.Enabled = false;
-			}
-
-			//We search for installed texture pack and retroarch savestate dir
-			EmulatorSelectedUpdate();
-			*/
 
 			int i = 0;
 			int selected_index = -1;
@@ -180,7 +153,7 @@ namespace BigBoxProfile.EmulatorActions
 				//if (fl == priority_file) icon_img = "star_yellow";
 				//if (fl == selection) icon_img = "star_blue";
 				Rom.AddRom(fl.ToString(), (long)_archiveFile.FileDataWithPath[fl].Size, icon_img, isLastPlayed, isFavorite);
-				if (SelectedFile != string.Empty && fl.ToString() == SelectedFile) selected_index = i;
+				if (Selected != string.Empty && fl.ToString() == Selected) selected_index = i;
 				i++;
 			}
 
@@ -204,17 +177,6 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
-			/*
-			if (TexturePath != "")
-			{
-
-
-			}
-			*/
-
-
-
-
 			this.FListView_Texture.SetObjects(Texture.GetTextures());
 			//And set the fastObjectListView1 to use that list
 			this.fastObjectListView1.SetObjects(Rom.GetRoms());
@@ -230,80 +192,11 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				EmulatorSelectedUpdate();
 				groupBox1.Visible = true;
-				//if (TexturePath != "") InstallTexture_btn.Enabled = true;
 			}
-
-			//By default, we hide extra tags
-			HideTags();
-
-			//Some option of additional fiters on context menu appears only if there is at least one match
-			if (Rom.have_french) MenuItem_filterFrench.Visible = true;
-			else MenuItem_filterFrench.Visible = false;
-
-			if (Rom.have_english) MenuItem_filterEnglish.Visible = true;
-			else MenuItem_filterEnglish.Visible = false;
-
-			if (Rom.have_romhackernet) MenuItem_filterRH.Visible = true;
-			else MenuItem_filterRH.Visible = false;
-
-			/*
-			//We search the priority file if any :
-			string priority_file = find_priority_file(emulator, plateform, fileList);
-
-			//fill the Rom List (a static list within the Rom class) with Roms.
-			int i = 0;
-			int selected_index = -1;
-			foreach (string fl in fileList)
-			{
-
-				if (Path.GetExtension(fl).ToLower() == ".htc" || Path.GetExtension(fl).ToLower() == ".hts")
-				{
-					string icon_img = "";
-					if (path_texture_set)
-					{
-
-						string true_file = fl.Split(']')[1];
-						path_texture_name = Path.GetFileNameWithoutExtension(true_file);
-						string potential_out = TexturePath_txt.Text + @"\" + true_file;
-						string true_out = "";
-						if (File.Exists(potential_out + ".htc")) true_out = potential_out + ".htc";
-						if (File.Exists(potential_out + ".hts")) true_out = potential_out + ".hts";
-						if (File.Exists(true_out))
-						{
-							FileInfo fi = new FileInfo(true_out);
-							if (fi.Length == sizeList[i]) icon_img = "star_yellow";
-						}
-
-					}
-					Texture.AddTexture(fl.ToString(), sizeList[i], icon_img);
-				}
-				else
-				{
-					string icon_img = "";
-					if (fl == priority_file) icon_img = "star_yellow";
-					if (fl == selection) icon_img = "star_blue";
-					Rom.AddRom(fl.ToString(), sizeList[i], icon_img);
-					if (selection != string.Empty && fl.ToString() == selection) selected_index = i;
-				}
-				i++;
-			}
-
-			this.FListView_Texture.SetObjects(Texture.GetTextures());
-			//And set the fastObjectListView1 to use that list
-			this.fastObjectListView1.SetObjects(Rom.GetRoms());
-			if (Texture.GetTextures().Count == 0)
-			{
-				groupBox1.Visible = false;
-				fastObjectListView1.Height = fastObjectListView1.Height + groupBox1.Height + 10;
-
-			}
-			else groupBox1.Visible = true;
-
-			if (selection != string.Empty && selected_index != -1)
+			if (Selected != string.Empty && selected_index != -1)
 			{
 				fastObjectListView1.SelectedIndex = selected_index;
 			}
-			SelectedFile = string.Empty;
 
 			//By default, we hide extra tags
 			HideTags();
@@ -318,8 +211,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (Rom.have_romhackernet) MenuItem_filterRH.Visible = true;
 			else MenuItem_filterRH.Visible = false;
 
-			EmulatorSelectedUpdate();
-			*/
+			fastObjectListView1.Focus();
 		}
 
 		void InitializeWebView(string dirpath, string archiveName)
@@ -424,7 +316,7 @@ namespace BigBoxProfile.EmulatorActions
 				this.Controls.Remove(this.fakebrowser_txt);
 				this.Controls.Add(this.chromiumWebBrowser1);
 
-				this.chromiumWebBrowser1.LoadHtml("<html><body bgcolor=\"#2A2B34;\">No Info</body></html>");
+				this.chromiumWebBrowser1.LoadHtml(@"<html><head></head><body bgcolor=""#2A2B34""><h1>No Info</h1></body></html>");
 				chromiumWebBrowser1.LifeSpanHandler = new MyCustomLifeSpanHandler();
 				
 			}
@@ -499,13 +391,26 @@ namespace BigBoxProfile.EmulatorActions
 				return String.Format("{0} bytes", size); ;
 			};
 			//To register the double click or enter in the list
-			//fastObjectListView1.ItemActivate += new System.EventHandler(this.fastObjectListView1_ItemActivate);
+			fastObjectListView1.ItemActivate += new System.EventHandler(this.fastObjectListView1_ItemActivate);
 			//To execute this function before loading the context menu, usefull to hide some option if no rom is selected
 			contextMenuStrip1.Opened += new System.EventHandler(this.contextMenuStrip1_Opened);
 			//For the search textbox filter, to validate a new filter text, since there is no "ok" button
 			MenuItem_textBoxFilter.LostFocus += new System.EventHandler(this.MenuItem_textBoxFilter_Leave);
 			MenuItem_textBoxFilter.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MenuItem_textBoxFilter_CheckEnterKeyPress);
 
+		}
+
+		private void fastObjectListView1_ItemActivate(object sender, EventArgs e)
+		{
+			if (fastObjectListView1.SelectedIndex >= 0)
+			{
+
+				Rom myrom = (Rom)this.fastObjectListView1.SelectedObject;
+				Selected = myrom.Title;
+				this.DialogResult = DialogResult.OK;
+				this.Close();
+
+			}
 		}
 
 		//Executed before the context menu open
@@ -975,72 +880,6 @@ namespace BigBoxProfile.EmulatorActions
 				frm.TopMost = true; // Affiche la fenêtre devant toutes les autres
 				var result = frm.ShowDialog();
 				frm.Focus(); // Donne le focus à la fenêtre
-
-				/*
-				string[] includelist = new string[1];
-				includelist[0] = myrom.Title;
-
-				string dir_out = Path.GetDirectoryName(saveFileDialog_extractTo.FileName);
-				string file_out = Path.GetFileName(saveFileDialog_extractTo.FileName);
-				string temp_out = dir_out + "\\" + myrom.Title;
-
-				//Check free space
-				ulong FreeBytesAvailable;
-				ulong TotalNumberOfBytes;
-				ulong TotalNumberOfFreeBytes;
-				bool success = BigBoxUtils.GetDiskFreeSpaceEx(dir_out, out FreeBytesAvailable, out TotalNumberOfBytes, out TotalNumberOfFreeBytes);
-				if (!success) throw new System.ComponentModel.Win32Exception();
-				if (FreeBytesAvailable < (ulong)myrom.SizeInBytes)
-				{
-					MessageBox.Show("Not enought free space");
-					return;
-				}
-
-				if (file_out == myrom.Title)
-				{
-					if (File.Exists(saveFileDialog_extractTo.FileName))
-					{
-						File.Delete(saveFileDialog_extractTo.FileName);
-					}
-					//new ArchiveCacheManager.Zip().Extract(this.ArchiveDir + "\\" + this.ArchiveName, dir_out, includelist, null);
-					var TaskProcess = System.Threading.Tasks.Task.Run(() => _archiveFile.ExtractFileFromArchive(myrom.Title, dir_out));
-					TaskProcess.Wait();
-				}
-				else
-				{
-					//Ok, so to extract and rename a file with a single command line, maybe something like this would be better :   7z e my-compressed-file.7z -so readme.txt > new-filename.txt
-					//But i don't want to bother and just use the Zip class, so i will use Rename & Move
-					if (File.Exists(saveFileDialog_extractTo.FileName))
-					{
-						File.Delete(saveFileDialog_extractTo.FileName);
-					}
-
-					//If the temp file already exist, we rename it, and we will restore it after
-					string restore_file = "";
-					if (File.Exists(temp_out))
-					{
-						int i = 0;
-						restore_file = temp_out + ".bak" + i.ToString();
-						while (File.Exists(restore_file))
-						{
-							i++;
-							restore_file = temp_out + ".bak" + i.ToString();
-						}
-						File.Move(temp_out, restore_file);
-					}
-
-					var TaskProcess = System.Threading.Tasks.Task.Run(() => _archiveFile.ExtractFileFromArchive(myrom.Title, dir_out));
-					TaskProcess.Wait();
-					File.Move(temp_out, saveFileDialog_extractTo.FileName);
-
-					if (restore_file != "")
-					{
-						File.Move(restore_file, temp_out);
-					}
-
-				}
-				MessageBox.Show("Done !");
-				*/
 			}
 			
 		}
@@ -1057,6 +896,8 @@ namespace BigBoxProfile.EmulatorActions
 
 			Texture selected_texture = (Texture)FListView_Texture.SelectedObject;
 
+
+
 			//Check free space
 			ulong FreeBytesAvailable;
 			ulong TotalNumberOfBytes;
@@ -1070,63 +911,23 @@ namespace BigBoxProfile.EmulatorActions
 			}
 
 
+
 			string potential_out = TexturePath_txt.Text + @"\" + path_texture_name;
 			if (File.Exists(potential_out + ".htc")) File.Delete(potential_out + ".htc");
 			if (File.Exists(potential_out + ".hts")) File.Delete(potential_out + ".hts");
 
 
-			InstallTexture_btn.Enabled = false;
-			RemoveTexture_btn.Enabled = false;
-			TexturePath_btn.Enabled = false;
-			FListView_Texture.Enabled = false;
-			MessageBox.Show("Install Texture : Please wait until the confirmation popup, it could take some time");
-
-			string[] includelist = new string[1];
-			includelist[0] = selected_texture.Title;
 
 			string true_file = selected_texture.Title.Split(']')[1];
 			string true_out = TexturePath_txt.Text + @"\" + true_file;
-			string temp_out = TexturePath_txt.Text + @"\" + selected_texture.Title;
 
-
-			//Ok, so to extract and rename a file with a single command line, maybe something like this would be better :   7z e my-compressed-file.7z -so readme.txt > new-filename.txt
-			//But i don't want to bother and just use the Zip class, so i will use Rename & Move
-			if (File.Exists(true_out))
-			{
-				File.Delete(true_out);
-			}
-
-			//If the temp file already exist, we rename it, and we will restore it after
-			string restore_file = "";
-			if (File.Exists(temp_out))
-			{
-				int i = 0;
-				restore_file = temp_out + ".bak" + i.ToString();
-				while (File.Exists(restore_file))
-				{
-					i++;
-					restore_file = temp_out + ".bak" + i.ToString();
-				}
-				File.Move(temp_out, restore_file);
-			}
-
-			var TaskProcess = System.Threading.Tasks.Task.Run(() => _archiveFile.ExtractFileFromArchive(selected_texture.Title, TexturePath_txt.Text));
-			TaskProcess.Wait();
-
-			File.Move(temp_out, true_out);
-
-			if (restore_file != "")
-			{
-				File.Move(restore_file, temp_out);
-			}
+			var frm = new RomExtractor_PopupExtract(_archiveFile, selected_texture.Title, true_out, selected_texture.SizeInBytes);
+			frm.TopMost = true; // Affiche la fenêtre devant toutes les autres
+			var result = frm.ShowDialog();
+			frm.Focus(); // Donne le focus à la fenêtre
 
 			selected_texture.IconImg = "star_yellow";
-
-
 			EmulatorSelectedUpdate();
-			TexturePath_btn.Enabled = true;
-			FListView_Texture.Enabled = true;
-			MessageBox.Show("Done ! Texture Saved in " + true_out);
 			
 		}
 
@@ -1189,30 +990,18 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void TexturePath_btn_Click(object sender, EventArgs e)
 		{
-			/*
+			
 			using (var fbd = new FolderBrowserDialog())
 			{
-				string base_dir = Directory.GetParent(Path.GetDirectoryName(Application.ExecutablePath)).FullName;
-				base_dir = base_dir + @"\Emulators";
-				fbd.RootFolder = Environment.SpecialFolder.DesktopDirectory;
-				fbd.SelectedPath = base_dir;
 
 				DialogResult result = fbd.ShowDialog();
 				if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath) && Directory.Exists(fbd.SelectedPath))
 				{
 					TexturePath_txt.Text = fbd.SelectedPath;
-					var config = Config.GetAllEmulatorPlatformConfigByRef();
-					string key = Config.EmulatorPlatformKey(Emulator_selected, Plateform);
-					var cfg = Config.GetEmulatorPlatformConfig(key);
-					cfg.TexturePath = fbd.SelectedPath;
-					config[key] = cfg;
-					Config.Save();
-					//InstallTexture_btn.Enabled = true;
-					path_texture_set = true;
 				}
 			}
 			EmulatorSelectedUpdate();
-			*/
+			
 		}
 
 		private void FListView_Texture_SelectedIndexChanged(object sender, EventArgs e)
@@ -1240,7 +1029,7 @@ namespace BigBoxProfile.EmulatorActions
 					this.chromiumWebBrowser1.Visible = true;
 					return;
 				}
-				this.chromiumWebBrowser1.LoadHtml("<html><body bgcolor=\"#2A2B34;\">No Info</body></html>");
+				this.chromiumWebBrowser1.LoadHtml(@"<html><head></head><body bgcolor=""#2A2B34""><h1>No Info</h1></body></html>");
 			}
 			else InstallTexture_btn.Enabled = false;
 
@@ -1248,12 +1037,12 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void RemoveTexture_btn_Click(object sender, EventArgs e)
 		{
-			/*
+			
 			string potential_out = TexturePath_txt.Text + @"\" + path_texture_name;
 			if (File.Exists(potential_out + ".htc")) File.Delete(potential_out + ".htc");
 			if (File.Exists(potential_out + ".hts")) File.Delete(potential_out + ".hts");
 			EmulatorSelectedUpdate();
-			*/
+			
 		}
 
 		private (bool foundmeta, string Metadata_file, string Metadata_template, string Metadata_folder) find_metadata(string dirpath, string archiveName)
@@ -1356,7 +1145,7 @@ namespace BigBoxProfile.EmulatorActions
 					this.chromiumWebBrowser1.Visible = true;
 					return;
 				}
-				this.chromiumWebBrowser1.LoadHtml("<html><body bgcolor=\"#2A2B34;\">No Info</body></html>");
+				this.chromiumWebBrowser1.LoadHtml(@"<html><head></head><body bgcolor=""#2A2B34""><h1>No Info</h1></body></html>");
 				
 			}
 		}
@@ -1373,19 +1162,6 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
-		private void FListView_Texture_SelectedIndexChanged_1(object sender, EventArgs e)
-		{
-
-		}
-
-		private void button1_Click(object sender, EventArgs e)
-		{
-			for (int x = 0; x < imageList1.Images.Count; ++x)
-			{
-				Image temp = imageList1.Images[x];
-				temp.Save(@"E:\image" + x + ".bmp");
-			}
-		}
 
 		private void MenuItem_SetFavorite_Click(object sender, EventArgs e)
 		{
@@ -1422,6 +1198,41 @@ namespace BigBoxProfile.EmulatorActions
 				}
 
 			}
+
+		}
+
+		private void RemoveTexture_btn_Click_1(object sender, EventArgs e)
+		{
+
+		}
+
+		private void okButton_Click(object sender, EventArgs e)
+		{
+			if (fastObjectListView1.SelectedIndex >= 0)
+			{
+
+				Rom myrom = (Rom)this.fastObjectListView1.SelectedObject;
+				Selected = myrom.Title;
+				this.DialogResult = DialogResult.OK;
+				this.Close();
+
+			}
+			else
+			{
+				MessageBox.Show("No Game selected");
+			}
+		}
+
+		private void cancelButton_Click(object sender, EventArgs e)
+		{
+
+				Selected = "";
+				this.DialogResult = DialogResult.Cancel;
+				this.Close();
+		}
+
+		private void TexturePath_btn_Click_1(object sender, EventArgs e)
+		{
 
 		}
 	}

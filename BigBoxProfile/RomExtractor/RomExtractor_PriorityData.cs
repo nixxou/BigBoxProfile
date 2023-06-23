@@ -67,6 +67,8 @@ namespace BigBoxProfile.RomExtractorUtils
 		RamDiskLauncher RamDisk = null;
 		public string OutTarget = "";
 
+		string SevenZipExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "7z.exe");
+		string SevenZipDll = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "7z.dll");
 
 		public RomExtractor_ArchiveFile(string archiveFilePath,string metadata, string standalone,RomExtractor_PriorityData priority, string cacheDir, int cacheMaxSize, string[] prioritySubDirFullList, RamDiskLauncher ramDisk)
 		{
@@ -83,7 +85,7 @@ namespace BigBoxProfile.RomExtractorUtils
 			StandaloneList = SplitExtensions(standalone).ToList();
 			MetadataList = SplitExtensions(metadata).ToList();
 
-			SevenZipExtractor.SetLibraryPath(@"C:\Program Files\7-Zip-Zstandard\7z.dll");
+			SevenZipExtractor.SetLibraryPath(SevenZipDll);
 			//sevenZipExtractor = new SevenZipExtractor(archiveFilePath);
 
 			string signature_data = Path.GetFileName(archiveFilePath).ToLower() + "_";
@@ -241,64 +243,10 @@ namespace BigBoxProfile.RomExtractorUtils
 			}
 		}
 
-		/*
-		public async Task<string> ExtractArchiveWithProgressAsync(string fileToExtract, string dirOut, IProgress<ExtractionProgress> progress)
-		{
-			dirOut = Path.Combine(dirOut, Priority.CacheSubDir);
-			if (IsSmart == false || Priority.SmartExtract == false)
-				dirOut = Path.Combine(dirOut, SignatureShort);
-			Directory.CreateDirectory(dirOut);
-
-			copyCompleted = false;
-			copyStart = false;
-			startTime = DateTime.Now;
-			percentDone = 0;
-			outFile = "";
-			try
-			{
-				SevenZipExtractor.SetLibraryPath(@"C:\Program Files\7-Zip-Zstandard\7z.dll");
-				using (var extractor = new SevenZipExtractor(ArchiveFilePath))
-				{
-					extractor.PreserveDirectoryStructure = (IsSmart && Priority.SmartExtract) ? false : true;
-					copyStart = true;
-
-					extractor.Extracting += (senderExtractor, eExtractor) =>
-					{
-						percentDone = eExtractor.PercentDone;
-						progress.Report(new ExtractionProgress { PercentDone = eExtractor.PercentDone });
-					};
-
-					if (IsSmart && Priority.SmartExtract)
-					{
-						string[] solostringarray = new string[1];
-						solostringarray[0] = FileDataWithoutPath[fileToExtract].FileNameWithPath;
-						extractor.ExtractFiles(dirOut, solostringarray);
-						outFile = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithoutPath);
-					}
-					else
-					{
-						extractor.ExtractArchive(dirOut);
-						outFile = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithPath);
-					}
-					
-						
-
-
-					copyCompleted = true;
-					percentDone = 100;
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message);
-			}
-			return outFile;
-		}
-		*/
 
 		public async Task<string> ExtractFileFromArchive(string fileToExtract, string dirOut)
 		{
-			var result = await Cli.Wrap(@"C:\Program Files\7-Zip-Zstandard\7z.exe")
+			var result = await Cli.Wrap(SevenZipExe)
 				.WithArguments(new[] { "e", ArchiveFilePath, FileDataWithoutPath[fileToExtract].FileNameWithPath, @"-o" + dirOut, "-bsp1", "-y" })
 				.ExecuteAsync();
 			outFile = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithoutPath);
@@ -311,7 +259,7 @@ namespace BigBoxProfile.RomExtractorUtils
 			string outFileResult = "";
 			try
 			{
-				var result = await Cli.Wrap(@"C:\Program Files\7-Zip-Zstandard\7z.exe")
+				var result = await Cli.Wrap(SevenZipExe)
 					.WithArguments(new[] { "e", ArchiveFilePath, FileDataWithoutPath[fileToExtract].FileNameWithPath, @"-o" + dirOut, "-bsp1", "-y" })
 					.WithStandardOutputPipe(PipeTarget.ToDelegate(handleStdOut))
 					.ExecuteAsync();
@@ -432,7 +380,7 @@ namespace BigBoxProfile.RomExtractorUtils
 
 				if (IsSmart && Priority.SmartExtract)
 				{
-					var result = await Cli.Wrap(@"C:\Program Files\7-Zip-Zstandard\7z.exe")
+					var result = await Cli.Wrap(SevenZipExe)
 						.WithArguments(new[] { "e", ArchiveFilePath, FileDataWithoutPath[fileToExtract].FileNameWithPath, @"-o" + dirOut, "-bsp1", "-y" })
 						.WithStandardOutputPipe(PipeTarget.ToDelegate(handleStdOut))
 						.ExecuteAsync();
@@ -442,7 +390,7 @@ namespace BigBoxProfile.RomExtractorUtils
 				}
 				else
 				{
-					var result = await Cli.Wrap(@"C:\Program Files\7-Zip-Zstandard\7z.exe")
+					var result = await Cli.Wrap(SevenZipExe)
 						.WithArguments(new[] { "x", ArchiveFilePath, @"-o" + dirOut, "-bsp1", "-y" })
 						.WithStandardOutputPipe(PipeTarget.ToDelegate(handleStdOut))
 						.ExecuteAsync();
@@ -526,6 +474,48 @@ namespace BigBoxProfile.RomExtractorUtils
 
 			}
 			return "";
+		}
+
+		public static void fix_bezel(string retroarchdir, string coredll, string archiveName, string extractedfile)
+		{
+			string corematchFile = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "corematch.json");
+			Dictionary<string, string> corematch = new Dictionary<string, string>();
+			string jsonData = File.ReadAllText(corematchFile);
+			corematch = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonData);
+			if(corematch.ContainsKey(coredll))
+			{
+				string coredir = Path.Combine(retroarchdir, "config", corematch[coredll]);
+				if(Directory.Exists(coredir))
+				{
+					string cfg_source = Path.Combine(coredir, Path.GetFileNameWithoutExtension(archiveName) + ".cfg");
+					string cfg_dest = Path.Combine(coredir, Path.GetFileNameWithoutExtension(extractedfile) + ".cfg");
+					if(File.Exists(cfg_source))
+					{
+						bool valid_dest = true;
+						if(File.Exists(cfg_dest))
+						{
+							if (!BigBoxUtils.IsSoftlink(cfg_dest))
+							{
+								valid_dest = false;
+							}
+							else
+							{
+								File.Delete(cfg_dest);
+							}
+						}
+
+						if(valid_dest)
+						{
+							BigBoxUtils.CreateSoftlink(cfg_source, cfg_dest);
+						}
+						
+					}
+
+				}
+			}
+			
+
+
 		}
 	}
 

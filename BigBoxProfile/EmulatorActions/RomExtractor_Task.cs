@@ -42,10 +42,41 @@ namespace BigBoxProfile.EmulatorActions
 		private List<string> _ShortListGame = new List<string>();
 
 		List<string> Args = new List<string>();
+		public string RetroarchDir = "";
+		public string RetroarchCore = "";
 
 		public RomExtractor_Task(List<string> args, string archiveFilePath, RomExtractor_PriorityData selectedPriority, string cachedir, int cacheMaxSize, string standaloneExtensions, string metadataExtensions, string[] prioritySubDirFullList, RamDiskLauncher ramDisk)
 		{
 			Args = args;
+
+			string executableWithPath = args[0];
+			string executableExe = Path.GetFileName(executableWithPath);
+			if (executableExe.ToLower() == "retroarch.exe")
+			{
+				string retroarchDir = Path.GetDirectoryName(executableWithPath);
+				RetroarchDir = retroarchDir;
+				int i = 0;
+				string core = "";
+				foreach(var arg in args)
+				{
+					if(arg.ToLower() == "-l")
+					{
+						if(args.Count() > i + 1)
+						{
+							core = args[i + 1];
+							break;
+						}
+					}
+					i++;
+				}
+				if(core != "")
+				{
+					core = Path.GetFileName(core);
+					RetroarchCore = core;
+				}
+			}
+
+
 			try
 			{
 				_archiveFile = new RomExtractor_ArchiveFile(archiveFilePath, metadataExtensions, standaloneExtensions, selectedPriority, cachedir, cacheMaxSize, prioritySubDirFullList, ramDisk);
@@ -269,10 +300,10 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (result == DialogResult.OK)
 			{
-				//_SelectedGame = frm.Selected;
-				//lbl_selected.Text = _SelectedGame;
+				_SelectedGame = frm.Selected;
+				lbl_selected.Text = _SelectedGame;
 
-				//LaunchGame(frm.Selected);
+				LaunchGame(frm.Selected);
 
 			}
 
@@ -289,6 +320,11 @@ namespace BigBoxProfile.EmulatorActions
 
 			OutFile = await _archiveFile.ExtractArchiveWithProgressAsync(name, _cachedir, progress);
 			OutTarget = _archiveFile.OutTarget;
+
+			if(RetroarchCore != "" && RetroarchDir != "")
+			{
+				RomExtractor_ArchiveFile.fix_bezel(RetroarchDir, RetroarchCore, _archiveFile.ArchiveNameWithoutPath, Path.GetFileName(OutFile));
+			}
 			Close();
 		}
 		
