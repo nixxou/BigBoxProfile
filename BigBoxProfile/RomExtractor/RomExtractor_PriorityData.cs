@@ -46,6 +46,7 @@ namespace BigBoxProfile.RomExtractorUtils
 		public string Signature = "";
 		public string SignatureShort = "";
 		public string PriorityFile = "";
+		public string TruePriorityFile = "";
 
 		public DateTime startTime;
 		public bool copyStart = false;
@@ -59,6 +60,7 @@ namespace BigBoxProfile.RomExtractorUtils
 		public List<string> filelist_metadata = new List<string>();
 
 		public List<string> topPriorityFiles = new List<string>();
+		public List<string> topPriorityOnlyFiles = new List<string>();
 
 		static IProgress<ExtractionProgress> progress = null;
 
@@ -138,6 +140,7 @@ namespace BigBoxProfile.RomExtractorUtils
 			else
 			{
 				PriorityFile = find_priority_file(filelist_standalone.ToArray(), Priority);
+				TruePriorityFile = PriorityFile;
 				nb_extra_favorite = 4;
 			}
 			
@@ -158,6 +161,7 @@ namespace BigBoxProfile.RomExtractorUtils
 				otherPriorityFile = find_priority_file(filelist_standalone_restant.ToArray(), Priority);
 				if(otherPriorityFile != "")
 				{
+					if (TruePriorityFile == "") TruePriorityFile = otherPriorityFile;
 					filelist_standalone_restant.Remove(otherPriorityFile);
 					topPriorityFiles.Add(otherPriorityFile);
 				}
@@ -178,6 +182,19 @@ namespace BigBoxProfile.RomExtractorUtils
 					topPriorityFiles.Add(f);
 				}
 			}
+
+			filelist_standalone_restant.Clear();
+			filelist_standalone_restant.AddRange(filelist_standalone);
+			for (int i = 0; i < 5; i++)
+			{
+				otherPriorityFile = find_priority_file(filelist_standalone_restant.ToArray(), Priority);
+				if (otherPriorityFile != "")
+				{
+					filelist_standalone_restant.Remove(otherPriorityFile);
+					topPriorityOnlyFiles.Add(otherPriorityFile);
+				}
+			}
+
 
 		}
 
@@ -279,7 +296,37 @@ namespace BigBoxProfile.RomExtractorUtils
 		}
 		*/
 
-		public async Task<string> ExtractArchiveWithProgressAsync(string fileToExtract, string dirOut, IProgress<ExtractionProgress> progress)
+		public async Task<string> ExtractFileFromArchive(string fileToExtract, string dirOut)
+		{
+			var result = await Cli.Wrap(@"C:\Program Files\7-Zip-Zstandard\7z.exe")
+				.WithArguments(new[] { "e", ArchiveFilePath, FileDataWithoutPath[fileToExtract].FileNameWithPath, @"-o" + dirOut, "-bsp1", "-y" })
+				.ExecuteAsync();
+			outFile = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithoutPath);
+			return outFile;
+		}
+
+		public async Task<string> SimpleExtractArchiveWithProgressAsync(string fileToExtract, string dirOut, IProgress<ExtractionProgress> progress)
+		{
+			RomExtractor_ArchiveFile.progress = progress;
+			string outFileResult = "";
+			try
+			{
+				var result = await Cli.Wrap(@"C:\Program Files\7-Zip-Zstandard\7z.exe")
+					.WithArguments(new[] { "e", ArchiveFilePath, FileDataWithoutPath[fileToExtract].FileNameWithPath, @"-o" + dirOut, "-bsp1", "-y" })
+					.WithStandardOutputPipe(PipeTarget.ToDelegate(handleStdOut))
+					.ExecuteAsync();
+				outFileResult = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithoutPath);
+				File.SetLastWriteTime(outFileResult, DateTime.Now);
+				
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+			return outFileResult;
+		}
+
+		public async Task<string> ExtractArchiveWithProgressAsync(string fileToExtract, string dirOut, IProgress<ExtractionProgress> progress, bool forcedirect=false)
 		{
 			RomExtractor_ArchiveFile.progress= progress;
 			dirOut = Path.Combine(dirOut, Priority.CacheSubDir);
@@ -304,7 +351,7 @@ namespace BigBoxProfile.RomExtractorUtils
 							copyCompleted = true;
 							percentDone = 100;
 							archiveMetaData.AddGameToLastPlayed(fileToExtract);
-							archiveMetaData.Save(CacheDir);
+							archiveMetaData.Save();
 							return outFile;
 						}
 					}
@@ -326,7 +373,7 @@ namespace BigBoxProfile.RomExtractorUtils
 							copyCompleted = true;
 							percentDone = 100;
 							archiveMetaData.AddGameToLastPlayed(fileToExtract);
-							archiveMetaData.Save(CacheDir);
+							archiveMetaData.Save();
 							return outFile;
 						}
 					}
@@ -414,7 +461,7 @@ namespace BigBoxProfile.RomExtractorUtils
 				copyCompleted = true;
 				percentDone = 100;
 				archiveMetaData.AddGameToLastPlayed(fileToExtract);
-				archiveMetaData.Save(CacheDir);
+				archiveMetaData.Save();
 				
 
 
@@ -523,6 +570,7 @@ namespace BigBoxProfile.RomExtractorUtils
 		public string SignatureLong;
 		public List<string> LastGamesPlayed = new List<string>(5);
 		public HashSet<string> FavoritesGames = new HashSet<string>();
+		public string CacheDir;
 
 		public RomExtractor_ArchiveFileMetaData(string archiveName, string signatureShort, string signatureLong)
 		{
@@ -533,6 +581,7 @@ namespace BigBoxProfile.RomExtractorUtils
 
 		public bool Load(string directory)
 		{
+			CacheDir = directory;
 			if (Directory.Exists(directory))
 			{
 				if(!Directory.Exists(Path.Combine(directory, ".romextractor"))) Directory.CreateDirectory(Path.Combine(directory, ".romextractor"));
@@ -548,8 +597,10 @@ namespace BigBoxProfile.RomExtractorUtils
 			return false;
 		}
 
-		public void Save(string directory)
+		public void Save()
 		{
+			if (CacheDir == "") return;
+			string directory = CacheDir;
 			if (!Directory.Exists(directory))
 			{
 				Directory.CreateDirectory(directory);

@@ -22,7 +22,8 @@ namespace BigBoxProfile
 		[STAThread]
 		public static void Main(string[] args)
 		{
-			
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
 			/*
 			var forceArg = new string[1];
 			forceArg[0] = @"C:\LaunchBox\BigBox.exe";

@@ -41,8 +41,11 @@ namespace BigBoxProfile.EmulatorActions
 		private string _SelectedGame = "";
 		private List<string> _ShortListGame = new List<string>();
 
-		public RomExtractor_Task(string archiveFilePath, RomExtractor_PriorityData selectedPriority, string cachedir, int cacheMaxSize, string standaloneExtensions, string metadataExtensions, string[] prioritySubDirFullList, RamDiskLauncher ramDisk)
+		List<string> Args = new List<string>();
+
+		public RomExtractor_Task(List<string> args, string archiveFilePath, RomExtractor_PriorityData selectedPriority, string cachedir, int cacheMaxSize, string standaloneExtensions, string metadataExtensions, string[] prioritySubDirFullList, RamDiskLauncher ramDisk)
 		{
+			Args = args;
 			try
 			{
 				_archiveFile = new RomExtractor_ArchiveFile(archiveFilePath, metadataExtensions, standaloneExtensions, selectedPriority, cachedir, cacheMaxSize, prioritySubDirFullList, ramDisk);
@@ -176,6 +179,10 @@ namespace BigBoxProfile.EmulatorActions
 					{
 						LaunchBigBoxSelect();
 					}
+					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.F2)
+					{
+						LaunchDesktopSelect();
+					}
 					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Enter)
 					{
 						StopCountDown();
@@ -239,6 +246,38 @@ namespace BigBoxProfile.EmulatorActions
 			
 		}
 
+		private void LaunchDesktopSelect()
+		{
+			UnregisterHotkey();
+			StopCountDown();
+			lbl_progress.Text = "";
+			var frm = new RomExtractor_DesktopSelect(Args,_archiveFile, _cachedir);
+			var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
+			if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
+			if (targetProcess != null)
+			{
+				var screen = Screen.FromHandle(targetProcess.MainWindowHandle);
+				int x = screen.Bounds.Left + (screen.Bounds.Width - frm.Width) / 2;
+				int y = screen.Bounds.Top + (screen.Bounds.Height - frm.Height) / 2;
+				frm.StartPosition = FormStartPosition.Manual;
+				frm.Location = new Point(x, y);
+			}
+			frm.TopMost = true; // Affiche la fenêtre devant toutes les autres
+			var result = frm.ShowDialog();
+			frm.Focus(); // Donne le focus à la fenêtre
+			RegisterHotkey();
+
+			if (result == DialogResult.OK)
+			{
+				//_SelectedGame = frm.Selected;
+				//lbl_selected.Text = _SelectedGame;
+
+				//LaunchGame(frm.Selected);
+
+			}
+
+		}
+
 		private async void LaunchGame(string name)
 		{
 			if (name == "") return;
@@ -274,6 +313,7 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.Escape, System.Windows.Input.ModifierKeys.None));
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.F1, System.Windows.Input.ModifierKeys.None));
+				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.F2, System.Windows.Input.ModifierKeys.None));
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.Enter, System.Windows.Input.ModifierKeys.None));
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.Up, System.Windows.Input.ModifierKeys.None));
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.Down, System.Windows.Input.ModifierKeys.None));

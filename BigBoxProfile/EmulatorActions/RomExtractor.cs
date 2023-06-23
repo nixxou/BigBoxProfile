@@ -254,7 +254,10 @@ namespace BigBoxProfile.EmulatorActions
 			RamDiskLauncher ramDisk = new RamDiskLauncher();
 			_RamDisks.Add(ramDisk);
 
-			var frm = new RomExtractor_Task(archiveFilePath, SelectedPriority, _cachedir, _cacheMaxSize, _standaloneExtensions, _metadataExtensions, PrioritySubDirFullList.ToArray(), ramDisk);
+			List<string> args_copy = new List<string>();
+			args_copy.AddRange(args);
+
+			var frm = new RomExtractor_Task(args_copy, archiveFilePath, SelectedPriority, _cachedir, _cacheMaxSize, _standaloneExtensions, _metadataExtensions, PrioritySubDirFullList.ToArray(), ramDisk);
 			var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess != null)
