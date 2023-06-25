@@ -28,36 +28,38 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MonitorDispositionConfig));
-			this.btn_cancel = new System.Windows.Forms.Button();
-			this.btn_ok = new System.Windows.Forms.Button();
-			this.cmb_DispositionList = new System.Windows.Forms.ComboBox();
-			this.button1 = new System.Windows.Forms.Button();
+			this.btn_cancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.cmb_DispositionList = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
+			this.button1 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
+			((System.ComponentModel.ISupportInitialize)(this.cmb_DispositionList)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// btn_cancel
 			// 
 			this.btn_cancel.Location = new System.Drawing.Point(349, 12);
 			this.btn_cancel.Name = "btn_cancel";
-			this.btn_cancel.Size = new System.Drawing.Size(75, 23);
+			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 5;
-			this.btn_cancel.Text = "Cancel";
-			this.btn_cancel.UseVisualStyleBackColor = true;
+			this.btn_cancel.Values.Text = "Cancel";
 			this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
 			// 
 			// btn_ok
 			// 
 			this.btn_ok.Location = new System.Drawing.Point(430, 12);
 			this.btn_ok.Name = "btn_ok";
-			this.btn_ok.Size = new System.Drawing.Size(75, 23);
+			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 4;
-			this.btn_ok.Text = "Save";
-			this.btn_ok.UseVisualStyleBackColor = true;
+			this.btn_ok.Values.Text = "Save";
 			this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
 			// 
 			// cmb_DispositionList
 			// 
 			this.cmb_DispositionList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_DispositionList.DropDownWidth = 331;
 			this.cmb_DispositionList.FormattingEnabled = true;
 			this.cmb_DispositionList.Location = new System.Drawing.Point(12, 14);
 			this.cmb_DispositionList.Name = "cmb_DispositionList";
@@ -70,8 +72,7 @@
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(493, 31);
 			this.button1.TabIndex = 6;
-			this.button1.Text = "Create new Screen Disposition based on your current monitor Setup";
-			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Values.Text = "Create new Screen Disposition based on your current monitor Setup";
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// MonitorDispositionConfig
@@ -90,15 +91,17 @@
 			this.Name = "MonitorDispositionConfig";
 			this.Text = "Monitor Disposition : Select or Register Monitor Layouts";
 			this.Load += new System.EventHandler(this.MonitorDispositionConfig_Load);
+			((System.ComponentModel.ISupportInitialize)(this.cmb_DispositionList)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.Button btn_cancel;
-		private System.Windows.Forms.Button btn_ok;
-		private System.Windows.Forms.ComboBox cmb_DispositionList;
-		private System.Windows.Forms.Button button1;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_cancel;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_ok;
+		private ComponentFactory.Krypton.Toolkit.KryptonComboBox cmb_DispositionList;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton button1;
+		private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
 	}
 }

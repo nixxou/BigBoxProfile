@@ -10,10 +10,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
 {
-	public partial class MonitorDispositionConfig : Form
+	public partial class MonitorDispositionConfig : KryptonForm
 	{
 		public string result = Profile.ActiveProfile.Configuration["monitorswitch"];
 		public MonitorDispositionConfig()
