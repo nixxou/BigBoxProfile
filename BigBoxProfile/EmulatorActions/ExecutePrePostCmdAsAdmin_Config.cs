@@ -1,16 +1,9 @@
-﻿using System;
+﻿using ComponentFactory.Krypton.Toolkit;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using ListView = System.Windows.Forms.ListView;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -40,7 +33,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void radio_start_CheckedChanged(object sender, EventArgs e)
 		{
-			if(radio_start.Checked)
+			if (radio_start.Checked)
 			{
 				radio_exit.Checked = false;
 			}
@@ -147,7 +140,7 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					MessageBox.Show("Register task for : " + cmd);
 					BigBoxUtils.RegisterTask(cmd, "TaskRunNormal");
-				} 
+				}
 			}
 			var res = ConcatenateListViewItems(list_cmd);
 			MessageBox.Show(res);
@@ -203,9 +196,9 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			list_cmd.Items.Clear();
 			var cmdlist = BigBoxUtils.explode(commandList, "|||");
-			foreach ( var cmd in cmdlist )
+			foreach (var cmd in cmdlist)
 			{
-				if(!String.IsNullOrEmpty(cmd.Trim())) list_cmd.Items.Add(cmd);
+				if (!String.IsNullOrEmpty(cmd.Trim())) list_cmd.Items.Add(cmd);
 			}
 			txt_filter.Text = filter;
 			txt_exclude.Text = exclude;
@@ -255,8 +248,8 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 			commandList = ConcatenateListViewItems(list_cmd);
-			if(radio_start.Checked) onStart= true;
-			else onStart= false;
+			if (radio_start.Checked) onStart = true;
+			else onStart = false;
 			filter = txt_filter.Text;
 			exclude = txt_exclude.Text;
 			commaFilter = chk_filter_comma.Checked;

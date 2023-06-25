@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using ComponentFactory.Krypton.Toolkit;
+using System;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
 {
@@ -49,7 +42,7 @@ namespace BigBoxProfile
 			foreach (var item in liste_array)
 			{
 				var path_elem = item.Trim();
-				if(path_elem != "")
+				if (path_elem != "")
 				{
 
 					listview.Items.Add(path_elem);

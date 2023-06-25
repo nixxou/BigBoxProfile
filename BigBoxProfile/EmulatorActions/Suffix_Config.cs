@@ -1,17 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	
+
 	public partial class Suffix_Config : Form
 	{
 		public string result = "";
@@ -53,10 +46,10 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
-			
+
 			filter = txt_filter.Text;
 			asArg = false;
-			if(radio_arg.Checked) asArg= true;
+			if (radio_arg.Checked) asArg = true;
 
 			result = txt_option.Text;
 			if (asArg) result = result.Trim();

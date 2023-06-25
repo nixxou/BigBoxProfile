@@ -1,14 +1,9 @@
-﻿using System;
+﻿using ComponentFactory.Krypton.Toolkit;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -39,7 +34,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (hight_priority != "")
 			{
 				var arr = BigBoxUtils.explode(hight_priority, "|||");
-				foreach(var item in arr )
+				foreach (var item in arr)
 				{
 					list_hightpriority.Items.Add(item);
 				}

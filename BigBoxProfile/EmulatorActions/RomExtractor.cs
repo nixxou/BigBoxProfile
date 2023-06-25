@@ -1,19 +1,11 @@
 ﻿using BigBoxProfile.RomExtractorUtils;
-using Microsoft.VisualBasic;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
-using Formatting = Newtonsoft.Json.Formatting;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -41,7 +33,7 @@ namespace BigBoxProfile.EmulatorActions
 		private string _standaloneExtensions = "gb, gbc, gba, agb, nes, fds, smc, sfc, n64, z64, v64, ndd, md, smd, gen, iso, chd, gg, gcm, 32x, bin";
 		private string _metadataExtensions = "nfo, txt, dat, xml, json, htc, hts";
 		private List<RomExtractor_PriorityData> _priority = new List<RomExtractor_PriorityData>();
-		private Dictionary<string,string> _extractDone= new Dictionary<string,string>();
+		private Dictionary<string, string> _extractDone = new Dictionary<string, string>();
 
 		private bool _commaFilter = false;
 		private bool _commaExclude = false;
@@ -79,7 +71,7 @@ namespace BigBoxProfile.EmulatorActions
 
 				UpdateConfig();
 			}
-			
+
 
 
 		}
@@ -189,7 +181,7 @@ namespace BigBoxProfile.EmulatorActions
 				int.TryParse(Options["cacheMaxSize"], out cacheMaxSize);
 			}
 			catch { }
-			_cacheMaxSize= cacheMaxSize;
+			_cacheMaxSize = cacheMaxSize;
 			_filter = Options["filter"];
 			_excludeFilter = Options["excludeFilter"];
 			_standaloneExtensions = Options["standaloneExtensions"];
@@ -201,7 +193,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (!String.IsNullOrEmpty(Options["priority"]))
 			{
 				var priority_arr = BigBoxUtils.explode(Options["priority"], "|||");
-				foreach(var p in priority_arr)
+				foreach (var p in priority_arr)
 				{
 					//var pObj = new RomExtractor_PriorityData(p);
 					_priority.Add(new RomExtractor_PriorityData(p));
@@ -280,12 +272,12 @@ namespace BigBoxProfile.EmulatorActions
 			string archiveFilePath = "";
 			foreach (var elem in filteredArgs)
 			{
-				if (elem.Contains(_filter) && archiveFilePath=="")
+				if (elem.Contains(_filter) && archiveFilePath == "")
 				{
 					if (File.Exists(elem))
 					{
 						string ext = Path.GetExtension(elem).ToLower();
-						if(ext == ".rar" || ext == ".zip" || ext == ".7z")
+						if (ext == ".rar" || ext == ".zip" || ext == ".7z")
 						{
 							archiveFilePath = elem;
 						}
@@ -295,10 +287,10 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (archiveFilePath == "") return;
 			RomExtractor_PriorityData SelectedPriority = _priority.First();
-			foreach(var p in _priority)
+			foreach (var p in _priority)
 			{
 				if (p.Paths[0] == "Default Options") continue;
-				foreach(var path in p.Paths)
+				foreach (var path in p.Paths)
 				{
 					if (archiveFilePath.Contains(path))
 					{
@@ -310,7 +302,7 @@ namespace BigBoxProfile.EmulatorActions
 			}
 
 			List<string> PrioritySubDirFullList = new List<string>();
-			foreach(var p in _priority)
+			foreach (var p in _priority)
 			{
 				if (p.CacheSubDir != "" && !PrioritySubDirFullList.Contains(p.CacheSubDir)) PrioritySubDirFullList.Add(p.CacheSubDir);
 			}
@@ -363,7 +355,7 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					File.Delete(fileToDelete);
 				}
-				if(Directory.Exists(fileToDelete))
+				if (Directory.Exists(fileToDelete))
 				{
 					BigBoxUtils.EmptyFolder(fileToDelete);
 					Directory.Delete(fileToDelete);

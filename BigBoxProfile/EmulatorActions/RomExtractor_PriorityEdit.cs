@@ -2,15 +2,9 @@
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.XPath;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -27,7 +21,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public RomExtractor_PriorityEdit(RomExtractor_PriorityData priorityData, bool RamDiskPossible)
 		{
-			this.RamDiskPossible= RamDiskPossible;
+			this.RamDiskPossible = RamDiskPossible;
 			if (priorityData == null)
 			{
 				this.priorityData = new RomExtractor_PriorityData();
@@ -74,7 +68,7 @@ namespace BigBoxProfile.EmulatorActions
 			chk_deleteOnExit.Checked = priorityData.DeleteOnExit;
 			num_maxSize.Value = priorityData.MaxSize;
 			chk_SmartExtract.Checked = priorityData.SmartExtract;
-			foreach(var item in priorityData.Paths)
+			foreach (var item in priorityData.Paths)
 			{
 				list_path.Items.Add(item);
 			}

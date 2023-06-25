@@ -1,14 +1,8 @@
-﻿using System;
+﻿using ComponentFactory.Krypton.Toolkit;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -62,7 +56,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
-			if(txt_regex.Text != "" && !IsValidRegex(txt_regex.Text))
+			if (txt_regex.Text != "" && !IsValidRegex(txt_regex.Text))
 			{
 				MessageBox.Show("Invalid Regex");
 				return;
@@ -72,7 +66,7 @@ namespace BigBoxProfile.EmulatorActions
 			filter = txt_filter.Text;
 			targetType = cmb_targetType.SelectedItem.ToString();
 			target = txt_target.Text;
-			regex= txt_regex.Text;
+			regex = txt_regex.Text;
 			timeout = num_timeout.Text;
 			wait = num_waitbefore.Text;
 
@@ -103,10 +97,10 @@ namespace BigBoxProfile.EmulatorActions
 		private void cmb_targetType_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string selectedType = cmb_targetType.SelectedItem.ToString();
-			if(selectedType == "Emulator Exe")
+			if (selectedType == "Emulator Exe")
 			{
-				txt_target.Enabled= false;
-				txt_regex.Enabled= false;
+				txt_target.Enabled = false;
+				txt_regex.Enabled = false;
 			}
 			if (selectedType == "Custom Exe")
 			{

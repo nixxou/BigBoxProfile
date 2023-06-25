@@ -1,18 +1,10 @@
-﻿using CefSharp;
+﻿using ComponentFactory.Krypton.Toolkit;
 using Microsoft.VisualBasic;
 using MonitorSwitcherGUI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.WebRequestMethods;
-using ComponentFactory.Krypton.Toolkit;
 
 
 namespace BigBoxProfile.EmulatorActions
@@ -96,7 +88,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
-			if(cmb_DispositionList.SelectedIndex == -1)
+			if (cmb_DispositionList.SelectedIndex == -1)
 			{
 				MessageBox.Show("You should select a monitor disposition in the combo box");
 				return;

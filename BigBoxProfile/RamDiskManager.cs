@@ -4,15 +4,12 @@ using Microsoft.Win32.TaskScheduler;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace BigBoxProfile
 {
@@ -139,7 +136,7 @@ namespace BigBoxProfile
 			else return false;
 		}
 
-		public void setConfigFile(int sizeInMb,  string driveLetter, string volumeLabel, bool cleanRam)
+		public void setConfigFile(int sizeInMb, string driveLetter, string volumeLabel, bool cleanRam)
 		{
 			// Création du contenu du fichier INI
 			string iniContent = $"SizeInMb={sizeInMb}\n";

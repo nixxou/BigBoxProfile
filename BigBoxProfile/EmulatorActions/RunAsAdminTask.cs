@@ -1,17 +1,13 @@
-﻿using System;
+﻿using Microsoft.Win32.TaskScheduler;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Win32.TaskScheduler;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 
 namespace BigBoxProfile.EmulatorActions
@@ -244,7 +240,7 @@ namespace BigBoxProfile.EmulatorActions
 				string new_cmd = $@"schtasks /run /tn ""{taskName}""";
 				args = BigBoxUtils.CommandLineToArgs(new_cmd, true);
 			}
-			
+
 
 			return args;
 		}
@@ -348,7 +344,7 @@ namespace BigBoxProfile.EmulatorActions
 						if (arg.Contains("="))
 						{
 							var exploded = BigBoxUtils.explode(arg, "=");
-							if(exploded.Count() > 1)
+							if (exploded.Count() > 1)
 							{
 								string argFromEqual = exploded[1];
 								isFilePath = BigBoxUtils.IsValidPath(argFromEqual);
@@ -382,8 +378,8 @@ namespace BigBoxProfile.EmulatorActions
 				byte[] inputBytes = Encoding.UTF8.GetBytes(cmd);
 				byte[] hashBytes = md5.ComputeHash(inputBytes);
 				string hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
-				
-				
+
+
 
 				string taskName = "RunAdmin_" + hashString;
 				using (TaskService taskService = new TaskService())
@@ -395,8 +391,8 @@ namespace BigBoxProfile.EmulatorActions
 						List<string> arguments = new List<string>();
 						arguments.Add(JustRunExe);
 						arguments.AddRange(args);
-						
-						
+
+
 						//string taskRegExe = @"C:\Users\Mehdi\source\repos\BigBoxProfile\TaskRegForRunAsAdmin\bin\Debug\TaskRegForRunAsAdmin.exe";
 						string taskRegExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "TaskRegForRunAsAdmin.exe");
 						//MessageBox.Show(taskRegExe);
@@ -445,7 +441,7 @@ namespace BigBoxProfile.EmulatorActions
 					instances = task.GetInstances();
 					Thread.Sleep(100);
 				}
-				_isTaskRunning= false;
+				_isTaskRunning = false;
 			}
 		}
 

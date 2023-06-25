@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.NetworkInformation;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
@@ -89,9 +85,9 @@ namespace BigBoxProfile.EmulatorActions
 					after = after.TrimEnd('"');
 
 					var hight_priority_array = BigBoxUtils.explode(_hight_priority, "|||");
-					foreach(var potentialPath in hight_priority_array)
+					foreach (var potentialPath in hight_priority_array)
 					{
-						
+
 						string newPath = potentialPath;
 						if (!String.IsNullOrEmpty(after.TrimStart('\\'))) newPath = Path.Combine(potentialPath, after.TrimStart('\\'));
 						if (NetworkPathExists(newPath))
@@ -113,7 +109,7 @@ namespace BigBoxProfile.EmulatorActions
 					if (!found)
 					{
 						bool elem_exist = NetworkPathExists(Path.Combine(_filter, after));
-						if(elem_exist == false)
+						if (elem_exist == false)
 						{
 							var low_priority_array = BigBoxUtils.explode(_low_priority, "|||");
 							foreach (var potentialPath in low_priority_array)

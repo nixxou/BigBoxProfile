@@ -4,16 +4,10 @@ using GlobalHotKey;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Management;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using XInput.Wrapper;
 
@@ -35,7 +29,7 @@ namespace BigBoxProfile.EmulatorActions
 		public string colors_css = "";
 		private CefSharp.WinForms.ChromiumWebBrowser chromiumWebBrowser1;
 		public string Selected = "";
-		private HotKeyManager hotKeyManager= null;
+		private HotKeyManager hotKeyManager = null;
 
 		private bool isButtonDown = false;
 		private DateTime lastCallDownTime = DateTime.MinValue;
@@ -75,7 +69,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (_archiveFile.filelist_metadata.Count > 0)
 			{
 				var fileHiddenType = new Dictionary<string, int>();
-				foreach(var metadatafile in _archiveFile.filelist_metadata)
+				foreach (var metadatafile in _archiveFile.filelist_metadata)
 				{
 					var extension = Path.GetExtension(metadatafile).ToLower().Trim().Trim('.').Trim();
 					if (fileHiddenType.ContainsKey(extension)) fileHiddenType[extension] += 1;
@@ -142,7 +136,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			}
 
-			
+
 			if (X.IsAvailable)
 			{
 				gamepad = X.Gamepad_1;
@@ -242,7 +236,7 @@ namespace BigBoxProfile.EmulatorActions
 				}
 				if (valid_meta) return (true, res_Metadata_file, res_Metadata_template, res_Metadata_htmlfolder);
 			}
-			Metadata_folder = Path.Combine(_cachedir,"metadata",dinfo.Name);
+			Metadata_folder = Path.Combine(_cachedir, "metadata", dinfo.Name);
 
 			if (Directory.Exists(Metadata_folder))
 			{

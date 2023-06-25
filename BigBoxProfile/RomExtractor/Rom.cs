@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
 using System.IO;
-using System.Windows.Forms;
-
-using System.Diagnostics;
-using System.Threading;
+using System.Text.RegularExpressions;
 
 
 namespace BigBoxProfile.RomExtractorUtils
@@ -238,9 +231,9 @@ namespace BigBoxProfile.RomExtractorUtils
 				validTagColumns[z] = false;
 			}
 		}
-		static internal void AddRom(string title, long sizeInBytes, string iconImg = "", bool isLastPlayed=false, bool isFavorite=false)
+		static internal void AddRom(string title, long sizeInBytes, string iconImg = "", bool isLastPlayed = false, bool isFavorite = false)
 		{
-			AllRoms.Add(new Rom(title, sizeInBytes, iconImg,isLastPlayed,isFavorite));
+			AllRoms.Add(new Rom(title, sizeInBytes, iconImg, isLastPlayed, isFavorite));
 		}
 		static internal List<Rom> GetRoms()
 		{

@@ -1,11 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using MonitorSwitcherGUI;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using MonitorSwitcherGUI;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -21,7 +18,7 @@ namespace BigBoxProfile.EmulatorActions
 		private bool _commaFilter = false;
 		private bool _commaExclude = false;
 
-	
+
 
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
@@ -95,7 +92,7 @@ namespace BigBoxProfile.EmulatorActions
 				description = $"Change disposition to {_disposition}";
 				if (_filter != "") description += $" [Only if command line contains {_filter}]";
 				if (_filterInsideFile != "") description += $" [Only if file in arg contains {_filterInsideFile}]";
-				if(_exclude != "") description += $" [Exclude {_exclude}]";
+				if (_exclude != "") description += $" [Exclude {_exclude}]";
 			}
 			else
 			{
@@ -126,7 +123,7 @@ namespace BigBoxProfile.EmulatorActions
 			}
 			string cmd = BigBoxUtils.ArgsToCommandLine(args);
 			string cmdlower = cmd.ToLower();
-			if(_filter != "")
+			if (_filter != "")
 			{
 				if (_commaFilter)
 				{

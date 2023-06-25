@@ -1,20 +1,15 @@
 ﻿using CliWrap;
-using Microsoft.VisualBasic.ApplicationServices;
 using MonitorSwitcherGUI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 
 namespace BigBoxProfile
@@ -110,7 +105,7 @@ namespace BigBoxProfile
 			}
 			string exeWithoutFilename = Path.GetFileNameWithoutExtension(file);
 
-			if(exeWithoutFilename.ToLower()=="launchbox") IsLaunchbox= true;
+			if (exeWithoutFilename.ToLower() == "launchbox") IsLaunchbox = true;
 
 			string newExe = Path.Combine(dir, exeWithoutFilename + "_" + SelectedProfile.ProfileName + ".exe");
 			FileOriginal = file;
@@ -131,7 +126,7 @@ namespace BigBoxProfile
 		public void ExecutePrelaunchAction()
 		{
 
-			if (IsLaunchbox==false || (IsLaunchbox && SelectedProfile.Configuration.ContainsKey("launchbox") && SelectedProfile.Configuration["launchbox"] == "yes") )
+			if (IsLaunchbox == false || (IsLaunchbox && SelectedProfile.Configuration.ContainsKey("launchbox") && SelectedProfile.Configuration["launchbox"] == "yes"))
 			{
 				if (SelectedProfile.Configuration["monitorswitch"] != "<none>")
 				{
@@ -162,7 +157,7 @@ namespace BigBoxProfile
 				int MonitorToSwitch = BigBoxUtils.GetMonitorIDFromPriorityList(SelectedProfile.Configuration["monitor"]);
 				BigBoxUtils.ModifierParametrePrimaryMonitorIndex(BigBoxSettingsFile, MonitorToSwitch);
 			}
-			
+
 		}
 
 		public void ExecuteRestoreActions()
@@ -190,7 +185,7 @@ namespace BigBoxProfile
 			{
 				string JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
 
-				if(IsLaunchbox== false)
+				if (IsLaunchbox == false)
 				{
 					var ResultRPCS2 = await Cli.Wrap(JustRunExe)
 						.WithArguments(FileOriginal)
@@ -277,7 +272,7 @@ namespace BigBoxProfile
 		public void Exec()
 		{
 
-			if(PreventRun)
+			if (PreventRun)
 			{
 
 				var w = new Form() { Size = new Size(0, 0) };
@@ -333,7 +328,7 @@ namespace BigBoxProfile
 
 				BigBoxUtils.MakeLink(FileName, newExe);
 
-				
+
 				string[] newArgs = new string[args.Length - 1];
 				Array.Copy(args, 1, newArgs, 0, args.Length - 1);
 

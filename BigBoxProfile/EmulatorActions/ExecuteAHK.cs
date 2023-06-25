@@ -1,12 +1,5 @@
-﻿using AutoHotkey.Interop;
-using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
@@ -45,7 +38,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void Configure()
 		{
-			
+
 			var frm = new ExecuteAHK_Config(this.Options);
 			var result = frm.ShowDialog();
 
@@ -67,7 +60,7 @@ namespace BigBoxProfile.EmulatorActions
 
 				UpdateConfig();
 			}
-			
+
 
 		}
 
@@ -116,7 +109,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
-		private string[] AhkExecute(string[] args,string code)
+		private string[] AhkExecute(string[] args, string code)
 		{
 			var ahk = new AutoHotkey.Interop.AutoHotkeyEngine();
 

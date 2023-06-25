@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BigBoxProfile
 {
@@ -15,14 +11,14 @@ namespace BigBoxProfile
 		public ConfigurationChangedEventArgs(string key, string value)
 		{
 			Key = key;
-			Value = value;	
+			Value = value;
 		}
 	}
 
 	public class Profile
 	{
 		public static string PathMainProfileDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BigBoxProfile");
-		public static string PathMainProfile = Path.Combine(PathMainProfileDir,"main.xml");
+		public static string PathMainProfile = Path.Combine(PathMainProfileDir, "main.xml");
 
 
 		private static Dictionary<string, Profile> _profileList;
@@ -70,7 +66,7 @@ namespace BigBoxProfile
 
 
 		public string ProfileName { get; private set; }
-		public Dictionary<string,string> Configuration { get; private set; }
+		public Dictionary<string, string> Configuration { get; private set; }
 
 		static Profile()
 		{
@@ -112,7 +108,7 @@ namespace BigBoxProfile
 			defaultProfile.Configuration.Add("launchbox", "no");
 			defaultProfile.Configuration.Add("maximize_launchbox", "no");
 			defaultProfile.Configuration.Add("delay_emulator", "0");
-			
+
 
 			return defaultProfile;
 		}
@@ -124,7 +120,7 @@ namespace BigBoxProfile
 			if (File.Exists(PathMainProfile))
 			{
 				var data = ConfigurationData.LoadConfigurationDataList(PathMainProfile);
-				foreach(var d in data)
+				foreach (var d in data)
 				{
 					var newProfile = new Profile(d.name);
 					newProfile.Configuration = d.Options;
@@ -151,7 +147,7 @@ namespace BigBoxProfile
 		{
 			Profile newProfile = CreateDefaultProfile(name);
 			newProfile.AddProfileToList(true);
-			
+
 
 			return newProfile.ProfileName;
 
@@ -176,14 +172,14 @@ namespace BigBoxProfile
 		{
 			if (ProfileList.ContainsKey(key))
 			{
-				ActiveProfile= ProfileList[key];
+				ActiveProfile = ProfileList[key];
 				return new List<string>(ProfileList.Keys).IndexOf(key);
 			}
 			return -1;
 		}
 
 
-		
+
 		public Profile(string profileName)
 		{
 			profileName = BigBoxUtils.FilterFileName(profileName);
@@ -215,7 +211,7 @@ namespace BigBoxProfile
 			}
 		}
 
-		private void AddProfileToList(bool save=false)
+		private void AddProfileToList(bool save = false)
 		{
 			ProfileList.Add(this.ProfileName, this);
 			OnProfileListChanged();
@@ -227,7 +223,7 @@ namespace BigBoxProfile
 
 		private void RemoveProfileToList(bool save = false)
 		{
-			if(this.ProfileName == "default") throw new Exception("Can't remove default profile !");
+			if (this.ProfileName == "default") throw new Exception("Can't remove default profile !");
 			ProfileList.Remove(this.ProfileName);
 			OnProfileListChanged();
 			if (save)

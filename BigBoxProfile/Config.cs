@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualBasic;
+﻿using ComponentFactory.Krypton.Toolkit;
+using Microsoft.VisualBasic;
 using System;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
-using System.IO;
-using System.Drawing;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
 {
@@ -59,7 +59,7 @@ namespace BigBoxProfile
 		{
 			cmb_emulatorList.Items.Clear();
 			var liste_dir = Directory.GetDirectories(Profile.PathMainProfileDir);
-			foreach(var dir in liste_dir)
+			foreach (var dir in liste_dir)
 			{
 				if (dir.ToLower().EndsWith(".exe"))
 				{
@@ -71,9 +71,9 @@ namespace BigBoxProfile
 		private void Profile_ConfigurationChanged(object sender, ConfigurationChangedEventArgs e)
 		{
 			Debug.WriteLine("ConfigurationChanged");
-			if (e.Key == "monitor")			 txt_monitorpriority.Text = e.Value.ToString();
-			if (e.Key == "monitorswitch")	 txt_monitorswitch.Text = e.Value.ToString();
-			if (e.Key == "soundcard")		 txt_soundcard.Text = e.Value.ToString();
+			if (e.Key == "monitor") txt_monitorpriority.Text = e.Value.ToString();
+			if (e.Key == "monitorswitch") txt_monitorswitch.Text = e.Value.ToString();
+			if (e.Key == "soundcard") txt_soundcard.Text = e.Value.ToString();
 		}
 
 		private void Profile_ProfileListChanged(object sender, EventArgs e)
@@ -146,7 +146,7 @@ namespace BigBoxProfile
 
 		public void UpdateRegisterStatus()
 		{
-			
+
 			if (BigBoxUtils.IsAppRegistered())
 			{
 				label_status.Text = "Active !";
@@ -157,7 +157,7 @@ namespace BigBoxProfile
 				label_status.Text = "Inactive !";
 				//btn_register.Text = "Enable";
 			}
-			
+
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -173,7 +173,7 @@ namespace BigBoxProfile
 		private void button2_Click(object sender, EventArgs e)
 		{
 			var selectedTxt = Profile.ActiveProfile.ProfileName;
-			if(selectedTxt == "default")
+			if (selectedTxt == "default")
 			{
 				MessageBox.Show("Can't remove Default profile !");
 				return;
@@ -186,7 +186,7 @@ namespace BigBoxProfile
 		private void cmb_listProfiles_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			string selected = cmb_listProfiles.GetItemText(cmb_listProfiles.SelectedItem);
-			if(selected != Profile.ActiveProfile.ProfileName)
+			if (selected != Profile.ActiveProfile.ProfileName)
 			{
 				Profile.SetActive(selected);
 			}
@@ -233,17 +233,17 @@ namespace BigBoxProfile
 
 		private void chk_restore_CheckedChanged(object sender, EventArgs e)
 		{
-			if(chk_restore.Checked) Profile.ActiveProfile.SetOption("restore", "yes");
+			if (chk_restore.Checked) Profile.ActiveProfile.SetOption("restore", "yes");
 			else Profile.ActiveProfile.SetOption("restore", "no");
 		}
 
 		private void button3_Click(object sender, EventArgs e)
 		{
 			string name = Interaction.InputBox("Name of the exe file :", "Exe Name", "");
-			if(!string.IsNullOrEmpty(name.Trim()) && name.IndexOfAny(Path.GetInvalidFileNameChars())<0 && name.ToLower().EndsWith(".exe"))
+			if (!string.IsNullOrEmpty(name.Trim()) && name.IndexOfAny(Path.GetInvalidFileNameChars()) < 0 && name.ToLower().EndsWith(".exe"))
 			{
 
-				Directory.CreateDirectory(Path.Combine(Profile.PathMainProfileDir,name));
+				Directory.CreateDirectory(Path.Combine(Profile.PathMainProfileDir, name));
 
 				var registeryManager = new RegisteryManager(Profile.PathMainProfileDir, Assembly.GetEntryAssembly().Location);
 				if (registeryManager.CheckIfActionIsNeeded())
@@ -274,7 +274,7 @@ namespace BigBoxProfile
 
 		private void cmb_emulatorList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if(cmb_emulatorList.SelectedIndex== -1)
+			if (cmb_emulatorList.SelectedIndex == -1)
 			{
 				btn_editEmulator.Enabled = false;
 			}
@@ -303,7 +303,7 @@ namespace BigBoxProfile
 
 		private void cmb_DispositionList_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if(cmb_DispositionList.SelectedIndex >= 0)
+			if (cmb_DispositionList.SelectedIndex >= 0)
 			{
 				BigBoxUtils.UseMonitorDisposition(cmb_DispositionList.SelectedItem.ToString());
 				ReloadDispositionCmb();

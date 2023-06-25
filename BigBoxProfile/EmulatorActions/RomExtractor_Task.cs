@@ -1,19 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-using BigBoxProfile.EmulatorActions;
-using BigBoxProfile.RomExtractorUtils;
-using System.Threading;
-using System.Windows.Input;
+﻿using BigBoxProfile.RomExtractorUtils;
 using GlobalHotKey;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Drawing.Text;
-using System.Xml.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using XInput.Wrapper;
 
 namespace BigBoxProfile.EmulatorActions
@@ -57,11 +52,11 @@ namespace BigBoxProfile.EmulatorActions
 				RetroarchDir = retroarchDir;
 				int i = 0;
 				string core = "";
-				foreach(var arg in args)
+				foreach (var arg in args)
 				{
-					if(arg.ToLower() == "-l")
+					if (arg.ToLower() == "-l")
 					{
-						if(args.Count() > i + 1)
+						if (args.Count() > i + 1)
 						{
 							core = args[i + 1];
 							break;
@@ -69,7 +64,7 @@ namespace BigBoxProfile.EmulatorActions
 					}
 					i++;
 				}
-				if(core != "")
+				if (core != "")
 				{
 					core = Path.GetFileName(core);
 					RetroarchCore = core;
@@ -81,7 +76,7 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				_archiveFile = new RomExtractor_ArchiveFile(archiveFilePath, metadataExtensions, standaloneExtensions, selectedPriority, cachedir, cacheMaxSize, prioritySubDirFullList, ramDisk);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show("Error loading archive : " + ex);
 
@@ -93,7 +88,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private async void RomExtractor_Task_Load(object sender, EventArgs e)
 		{
-			this.FormClosing += (senderClosing,eventClosing) => 
+			this.FormClosing += (senderClosing, eventClosing) =>
 			{
 				DisableHotkey();
 			};
@@ -219,7 +214,7 @@ namespace BigBoxProfile.EmulatorActions
 						StopCountDown();
 						LaunchGame(_SelectedGame);
 					}
-					if(eventKeypress.HotKey.Key == System.Windows.Input.Key.Down)
+					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Down)
 					{
 						StopCountDown();
 						if (fileListBox.SelectedIndex < fileListBox.Items.Count - 1)
@@ -242,7 +237,7 @@ namespace BigBoxProfile.EmulatorActions
 
 
 
-			
+
 		}
 
 		private void LaunchBigBoxSelect()
@@ -265,7 +260,7 @@ namespace BigBoxProfile.EmulatorActions
 			var result = frm.ShowDialog();
 			frm.Focus(); // Donne le focus à la fenêtre
 			RegisterHotkey();
-			
+
 			if (result == DialogResult.OK)
 			{
 				_SelectedGame = frm.Selected;
@@ -274,7 +269,7 @@ namespace BigBoxProfile.EmulatorActions
 				LaunchGame(frm.Selected);
 
 			}
-			
+
 		}
 
 		private void LaunchDesktopSelect()
@@ -282,7 +277,7 @@ namespace BigBoxProfile.EmulatorActions
 			UnregisterHotkey();
 			StopCountDown();
 			lbl_progress.Text = "";
-			var frm = new RomExtractor_DesktopSelect(Args,_archiveFile, _cachedir);
+			var frm = new RomExtractor_DesktopSelect(Args, _archiveFile, _cachedir);
 			var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess != null)
@@ -321,31 +316,31 @@ namespace BigBoxProfile.EmulatorActions
 			OutFile = await _archiveFile.ExtractArchiveWithProgressAsync(name, _cachedir, progress);
 			OutTarget = _archiveFile.OutTarget;
 
-			if(RetroarchCore != "" && RetroarchDir != "")
+			if (RetroarchCore != "" && RetroarchDir != "")
 			{
 				RomExtractor_ArchiveFile.fix_bezel(RetroarchDir, RetroarchCore, _archiveFile.ArchiveNameWithoutPath, Path.GetFileName(OutFile));
 			}
 			Close();
 		}
-		
+
 
 		private void DisableHotkey()
 		{
-			
-			if(hotKeyManager!= null)
+
+			if (hotKeyManager != null)
 			{
 				hotKeyManager.Dispose();
 				hotKeyManager = null;
 			}
 			if (gamepad != null)
 				X.StopPolling();
-			
+
 		}
 
 		private void RegisterHotkey()
 		{
-			
-			if(hotKeyManager != null && _hotkeyList.Count == 0)
+
+			if (hotKeyManager != null && _hotkeyList.Count == 0)
 			{
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.Escape, System.Windows.Input.ModifierKeys.None));
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.F1, System.Windows.Input.ModifierKeys.None));
@@ -355,14 +350,14 @@ namespace BigBoxProfile.EmulatorActions
 				_hotkeyList.Add(hotKeyManager.Register(System.Windows.Input.Key.Down, System.Windows.Input.ModifierKeys.None));
 			}
 			gamepad.StateChanged += Gamepad_StateChanged;
-			gamepad.KeyDown+= Gamepad_KeyDown;
+			gamepad.KeyDown += Gamepad_KeyDown;
 
 		}
 
 		private void UnregisterHotkey()
 		{
-			
-			if(hotKeyManager != null)
+
+			if (hotKeyManager != null)
 			{
 				foreach (var hotkey in _hotkeyList)
 				{

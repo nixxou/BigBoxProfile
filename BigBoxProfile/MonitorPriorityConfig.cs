@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using ComponentFactory.Krypton.Toolkit;
+using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
 {
@@ -37,7 +29,7 @@ namespace BigBoxProfile
 			listView_monitor.Items.Clear();
 			listView_monitor.Columns[0].Width = listView_monitor.Width;
 			string ActualConfig = Profile.ActiveProfile.Configuration["monitor"];
-			var exploded = BigBoxUtils.explode(ActualConfig,",");
+			var exploded = BigBoxUtils.explode(ActualConfig, ",");
 
 			foreach (string exp in exploded)
 			{

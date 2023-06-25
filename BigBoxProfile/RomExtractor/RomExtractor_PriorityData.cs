@@ -1,5 +1,4 @@
-﻿using CefSharp.DevTools.Audits;
-using CliWrap;
+﻿using CliWrap;
 using Newtonsoft.Json;
 using SevenZip;
 using System;
@@ -7,13 +6,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace BigBoxProfile.RomExtractorUtils
 {
@@ -70,7 +67,7 @@ namespace BigBoxProfile.RomExtractorUtils
 		string SevenZipExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "7z.exe");
 		string SevenZipDll = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "7z.dll");
 
-		public RomExtractor_ArchiveFile(string archiveFilePath,string metadata, string standalone,RomExtractor_PriorityData priority, string cacheDir, int cacheMaxSize, string[] prioritySubDirFullList, RamDiskLauncher ramDisk)
+		public RomExtractor_ArchiveFile(string archiveFilePath, string metadata, string standalone, RomExtractor_PriorityData priority, string cacheDir, int cacheMaxSize, string[] prioritySubDirFullList, RamDiskLauncher ramDisk)
 		{
 			if (!File.Exists(archiveFilePath)) throw (new Exception($"File {archiveFilePath} does not exist"));
 
@@ -109,8 +106,8 @@ namespace BigBoxProfile.RomExtractorUtils
 						{
 							filelist.Add(archiveFile.FileNameWithoutPath);
 							FileDataWithoutPath.Add(archiveFile.FileNameWithoutPath, archiveFile);
-							if(archiveFile.IsMetadata) filelist_metadata.Add(archiveFile.FileNameWithoutPath);
-							if(archiveFile.IsStandalone) filelist_standalone.Add(archiveFile.FileNameWithoutPath);
+							if (archiveFile.IsMetadata) filelist_metadata.Add(archiveFile.FileNameWithoutPath);
+							if (archiveFile.IsStandalone) filelist_standalone.Add(archiveFile.FileNameWithoutPath);
 						}
 					}
 				}
@@ -125,7 +122,7 @@ namespace BigBoxProfile.RomExtractorUtils
 				hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
 
 			}
-			Signature= hashString;
+			Signature = hashString;
 
 			string cleanedString = Regex.Replace(ArchiveNameWithoutPath, "[^A-Za-z0-9_ ]", "");
 			cleanedString = cleanedString.Trim().Trim('_').Trim();
@@ -135,7 +132,7 @@ namespace BigBoxProfile.RomExtractorUtils
 			archiveMetaData.Load(cacheDir);
 
 			int nb_extra_favorite = 5;
-			if(archiveMetaData.GetMostRecentGame() != null)
+			if (archiveMetaData.GetMostRecentGame() != null)
 			{
 				PriorityFile = archiveMetaData.GetMostRecentGame();
 			}
@@ -145,7 +142,7 @@ namespace BigBoxProfile.RomExtractorUtils
 				TruePriorityFile = PriorityFile;
 				nb_extra_favorite = 4;
 			}
-			
+
 
 			List<string> filelist_standalone_restant = new List<string>();
 			string otherPriorityFile = PriorityFile;
@@ -155,13 +152,13 @@ namespace BigBoxProfile.RomExtractorUtils
 				filelist_standalone_restant.AddRange(filelist_standalone);
 				filelist_standalone_restant.Remove(PriorityFile);
 			}
-			
+
 			for (int i = 0; i < nb_extra_favorite; i++)
 			{
 				if (filelist_standalone_restant.Count == 0) break;
 				if (otherPriorityFile == "") break;
 				otherPriorityFile = find_priority_file(filelist_standalone_restant.ToArray(), Priority);
-				if(otherPriorityFile != "")
+				if (otherPriorityFile != "")
 				{
 					if (TruePriorityFile == "") TruePriorityFile = otherPriorityFile;
 					filelist_standalone_restant.Remove(otherPriorityFile);
@@ -205,7 +202,7 @@ namespace BigBoxProfile.RomExtractorUtils
 		{
 
 			dirOut = Path.Combine(dirOut, Priority.CacheSubDir);
-			if (IsSmart==false || Priority.SmartExtract == false) dirOut = Path.Combine(dirOut, SignatureShort);
+			if (IsSmart == false || Priority.SmartExtract == false) dirOut = Path.Combine(dirOut, SignatureShort);
 			Directory.CreateDirectory(dirOut);
 
 			copyCompleted = false;
@@ -265,7 +262,7 @@ namespace BigBoxProfile.RomExtractorUtils
 					.ExecuteAsync();
 				outFileResult = Path.Combine(dirOut, FileDataWithoutPath[fileToExtract].FileNameWithoutPath);
 				File.SetLastWriteTime(outFileResult, DateTime.Now);
-				
+
 			}
 			catch (Exception ex)
 			{
@@ -274,15 +271,15 @@ namespace BigBoxProfile.RomExtractorUtils
 			return outFileResult;
 		}
 
-		public async Task<string> ExtractArchiveWithProgressAsync(string fileToExtract, string dirOut, IProgress<ExtractionProgress> progress, bool forcedirect=false)
+		public async Task<string> ExtractArchiveWithProgressAsync(string fileToExtract, string dirOut, IProgress<ExtractionProgress> progress, bool forcedirect = false)
 		{
-			RomExtractor_ArchiveFile.progress= progress;
+			RomExtractor_ArchiveFile.progress = progress;
 			dirOut = Path.Combine(dirOut, Priority.CacheSubDir);
 			if (IsSmart == false || Priority.SmartExtract == false)
 				dirOut = Path.Combine(dirOut, SignatureShort);
 
 			//Launch direct if file exist
-			if(IsSmart == false || Priority.SmartExtract == false)
+			if (IsSmart == false || Priority.SmartExtract == false)
 			{
 				if (Directory.Exists(dirOut))
 				{
@@ -290,7 +287,7 @@ namespace BigBoxProfile.RomExtractorUtils
 					if (File.Exists(FileToExec))
 					{
 						ulong filesize = (ulong)new FileInfo(FileToExec).Length;
-						if(filesize == FileDataWithoutPath[fileToExtract].Size)
+						if (filesize == FileDataWithoutPath[fileToExtract].Size)
 						{
 							OutTarget = dirOut;
 							Directory.SetLastWriteTime(dirOut, DateTime.Now);
@@ -359,15 +356,15 @@ namespace BigBoxProfile.RomExtractorUtils
 				}
 			}
 
-			if(CacheMaxSize > 0)
+			if (CacheMaxSize > 0)
 			{
 				long maxSizeCache = CacheMaxSize;
-				if(RamDiskPath == "") maxSizeCache -= (long)(GameInMb);
+				if (RamDiskPath == "") maxSizeCache -= (long)(GameInMb);
 				List<String> RepertoireListIn = new List<String>();
-				foreach(var subdir in PrioritySubDirFullList) RepertoireListIn.Add(Path.Combine(CacheDir, subdir));
+				foreach (var subdir in PrioritySubDirFullList) RepertoireListIn.Add(Path.Combine(CacheDir, subdir));
 				RomExtractor_RepertoireUtils.KeepCacheUnder(maxSizeCache, RepertoireListIn, CacheDir);
 			}
-			
+
 			Directory.CreateDirectory(dirOut);
 
 			copyCompleted = false;
@@ -410,7 +407,7 @@ namespace BigBoxProfile.RomExtractorUtils
 				percentDone = 100;
 				archiveMetaData.AddGameToLastPlayed(fileToExtract);
 				archiveMetaData.Save();
-				
+
 
 
 			}
@@ -482,17 +479,17 @@ namespace BigBoxProfile.RomExtractorUtils
 			Dictionary<string, string> corematch = new Dictionary<string, string>();
 			string jsonData = File.ReadAllText(corematchFile);
 			corematch = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonData);
-			if(corematch.ContainsKey(coredll))
+			if (corematch.ContainsKey(coredll))
 			{
 				string coredir = Path.Combine(retroarchdir, "config", corematch[coredll]);
-				if(Directory.Exists(coredir))
+				if (Directory.Exists(coredir))
 				{
 					string cfg_source = Path.Combine(coredir, Path.GetFileNameWithoutExtension(archiveName) + ".cfg");
 					string cfg_dest = Path.Combine(coredir, Path.GetFileNameWithoutExtension(extractedfile) + ".cfg");
-					if(File.Exists(cfg_source))
+					if (File.Exists(cfg_source))
 					{
 						bool valid_dest = true;
-						if(File.Exists(cfg_dest))
+						if (File.Exists(cfg_dest))
 						{
 							if (!BigBoxUtils.IsSoftlink(cfg_dest))
 							{
@@ -504,16 +501,16 @@ namespace BigBoxProfile.RomExtractorUtils
 							}
 						}
 
-						if(valid_dest)
+						if (valid_dest)
 						{
 							BigBoxUtils.CreateSoftlink(cfg_source, cfg_dest);
 						}
-						
+
 					}
 
 				}
 			}
-			
+
 
 
 		}
@@ -574,8 +571,8 @@ namespace BigBoxProfile.RomExtractorUtils
 			CacheDir = directory;
 			if (Directory.Exists(directory))
 			{
-				if(!Directory.Exists(Path.Combine(directory, ".romextractor"))) Directory.CreateDirectory(Path.Combine(directory, ".romextractor"));
-				string jsonFile = Path.Combine(directory,".romextractor", SignatureShort + ".json");
+				if (!Directory.Exists(Path.Combine(directory, ".romextractor"))) Directory.CreateDirectory(Path.Combine(directory, ".romextractor"));
+				string jsonFile = Path.Combine(directory, ".romextractor", SignatureShort + ".json");
 				if (File.Exists(jsonFile))
 				{
 					string jsonData = File.ReadAllText(jsonFile);
@@ -641,7 +638,7 @@ namespace BigBoxProfile.RomExtractorUtils
 	{
 		public string DirName;
 		public long Size;
-		
+
 		public RomExtractor_ArchiveSizeCache(string dirName, long size)
 		{
 			DirName = dirName;
@@ -661,7 +658,7 @@ namespace BigBoxProfile.RomExtractorUtils
 
 		public void Save(string cacheDir)
 		{
-			if (!Directory.Exists(Path.Combine(cacheDir, ".romextractor", "DirCache"))) Directory.CreateDirectory(Path.Combine(cacheDir, ".romextractor","DirCache"));
+			if (!Directory.Exists(Path.Combine(cacheDir, ".romextractor", "DirCache"))) Directory.CreateDirectory(Path.Combine(cacheDir, ".romextractor", "DirCache"));
 			string jsonFile = Path.Combine(cacheDir, ".romextractor", "DirCache", DirName + ".json");
 			File.WriteAllText(jsonFile, Serialize());
 		}
@@ -777,7 +774,7 @@ namespace BigBoxProfile.RomExtractorUtils
 							if (Directory.Exists(elem.Nom)) Directory.Delete(elem.Nom);
 						}
 						catch { }
-						
+
 
 					}
 					currentSize -= elem.Taille;
@@ -794,7 +791,7 @@ namespace BigBoxProfile.RomExtractorUtils
 			if (File.Exists(JsonFile))
 			{
 				var Data = RomExtractor_ArchiveSizeCache.Load(JsonFile);
-				if(Data.Size > 0) return Data.Size;
+				if (Data.Size > 0) return Data.Size;
 			}
 
 			FileInfo[] fichiers = directoryInfo.GetFiles("*", SearchOption.AllDirectories);

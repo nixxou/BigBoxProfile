@@ -1,15 +1,8 @@
-﻿using System;
+﻿using ComponentFactory.Krypton.Toolkit;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
 {
@@ -20,12 +13,12 @@ namespace BigBoxProfile
 		{
 			_emulator = new Emulator(profileName, emulatorExe);
 			InitializeComponent();
-			
+
 		}
 
 		private void EmulatorConfig_Load(object sender, EventArgs e)
 		{
-			this.NameModule.Width = this.lv_selectedActions.Width-5;
+			this.NameModule.Width = this.lv_selectedActions.Width - 5;
 
 			txt_profileName.StateActive.Back.Color1 = Color.FromArgb(255, 240, 240, 240);
 			txt_emulatorExe.StateActive.Back.Color1 = Color.FromArgb(255, 240, 240, 240);
@@ -34,11 +27,11 @@ namespace BigBoxProfile
 			txt_emulatorExe.Text = _emulator.FileNameEmulator;
 			txt_profileName.Text = _emulator.ProfileName;
 
-			if(_emulator.ProfileName.ToLower() != "default") chk_ApplyWithoutLaunchbox.Visible= false;
+			if (_emulator.ProfileName.ToLower() != "default") chk_ApplyWithoutLaunchbox.Visible = false;
 			else
 			{
 				if (_emulator.ApplyWithoutLaunchbox) chk_ApplyWithoutLaunchbox.Checked = true;
-				else chk_ApplyWithoutLaunchbox.Checked= false;
+				else chk_ApplyWithoutLaunchbox.Checked = false;
 			}
 
 
@@ -70,7 +63,7 @@ namespace BigBoxProfile
 			foreach (ListViewItem lvitem in lv_selectedActions.Items)
 			{
 				var module = (IEmulatorAction)lvitem.Tag;
-				if(module.IsConfigured()) args = module.ModifyExemple(args);
+				if (module.IsConfigured()) args = module.ModifyExemple(args);
 			}
 			string outCmd = BigBoxUtils.ArgsToCommandLine(args);
 			txt_exempleOut.Text = outCmd;
@@ -130,7 +123,7 @@ namespace BigBoxProfile
 		private void button8_Click(object sender, EventArgs e)
 		{
 			var options = new List<ConfigurationData>();
-			foreach(ListViewItem lvitem in lv_selectedActions.Items)
+			foreach (ListViewItem lvitem in lv_selectedActions.Items)
 			{
 				var module = (IEmulatorAction)lvitem.Tag;
 				var emulationActionOption = new ConfigurationData();

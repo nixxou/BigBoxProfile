@@ -1,9 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
@@ -78,7 +74,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public bool IsConfigured()
 		{
-			if (Options.ContainsKey("suffix")==false || Options["suffix"] == "")
+			if (Options.ContainsKey("suffix") == false || Options["suffix"] == "")
 			{
 				return false;
 			}
@@ -187,10 +183,10 @@ namespace BigBoxProfile.EmulatorActions
 			}
 			else
 			{
-				cmd =  cmd + _suffix;
+				cmd = cmd + _suffix;
 				args = BigBoxUtils.CommandLineToArgs(cmd);
 			}
-			
+
 
 
 			return args;

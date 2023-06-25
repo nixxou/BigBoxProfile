@@ -1,15 +1,10 @@
 ﻿using BigBoxProfile.RomExtractorUtils;
+using ComponentFactory.Krypton.Toolkit;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -39,7 +34,7 @@ namespace BigBoxProfile.EmulatorActions
 			metadataExtensions = Options.ContainsKey("metadataExtensions") ? Options["metadataExtensions"] : "nfo, txt, dat, xml, json, htc, hts";
 
 			priority = Options.ContainsKey("priority") ? Options["priority"] : "";
-			if (Options.ContainsKey("priority") && !String.IsNullOrEmpty(Options["priority"]) )
+			if (Options.ContainsKey("priority") && !String.IsNullOrEmpty(Options["priority"]))
 			{
 				var priority_arr = BigBoxUtils.explode(Options["priority"], "|||");
 				foreach (var p in priority_arr)
@@ -77,7 +72,7 @@ namespace BigBoxProfile.EmulatorActions
 				priorityList.Add(DefaultPriority);
 			}
 
-			foreach(var p in priorityList)
+			foreach (var p in priorityList)
 			{
 				ListViewItem item = new ListViewItem(p.ToStringArray());
 				lv_priority.Items.Add(item);
@@ -119,7 +114,8 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			cachedir = txt_cachedir.Text;
 
-			if (String.IsNullOrEmpty(cachedir)){
+			if (String.IsNullOrEmpty(cachedir))
+			{
 				MessageBox.Show("You must define cache directory");
 				return;
 			}
@@ -149,9 +145,9 @@ namespace BigBoxProfile.EmulatorActions
 
 			}
 			priority = priority.Trim('|').Trim('|').Trim('|').Trim('|').Trim('|').Trim('|');
-			
 
-			
+
+
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
@@ -201,7 +197,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_up_priority_Click(object sender, EventArgs e)
 		{
-			if (lv_priority.SelectedItems.Count ==1 && lv_priority.SelectedItems[0].Index > 1)
+			if (lv_priority.SelectedItems.Count == 1 && lv_priority.SelectedItems[0].Index > 1)
 			{
 				int index = lv_priority.SelectedItems[0].Index;
 				ListViewItem item = lv_priority.SelectedItems[0];
@@ -263,7 +259,7 @@ namespace BigBoxProfile.EmulatorActions
 
 				var frm = new RomExtractor_PriorityEdit(priorityData, RamDiskPossible);
 				var result = frm.ShowDialog();
-				
+
 				if (result == DialogResult.OK)
 				{
 					var priorityDataArray = frm.priorityData.ToStringArray();

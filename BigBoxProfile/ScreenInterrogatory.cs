@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile
@@ -289,7 +287,7 @@ namespace BigBoxProfile
 			var error = GetDisplayConfigBufferSizes(QUERY_DEVICE_CONFIG_FLAGS.QDC_ONLY_ACTIVE_PATHS, out pathCount, out modeCount);
 			if (error != ERROR_SUCCESS)
 				throw new Win32Exception(error);
-			
+
 			var xxx = Screen.AllScreens;
 
 			var displayPaths = new DISPLAYCONFIG_PATH_INFO[pathCount];
@@ -301,7 +299,7 @@ namespace BigBoxProfile
 
 			var screen_val = xxx[1];
 			var hash = screen_val.DeviceName.GetHashCode();
-			
+
 			var path_val = displayPaths[2];
 			var hash2 = path_val.targetInfo.adapterId.LowPart;
 			var adapt = displayModes[2].adapterId;
@@ -339,9 +337,9 @@ namespace BigBoxProfile
 			for (var i = 0; i < modeCount; i++)
 				if (displayModes[i].infoType == DISPLAYCONFIG_MODE_INFO_TYPE.DISPLAYCONFIG_MODE_INFO_TYPE_TARGET)
 					tIds.Add(displayModes[i].id);
-			
+
 			return tIds.ToArray();
-			
+
 		}
 
 

@@ -1,10 +1,5 @@
 ﻿using CoreAudioApi;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace BigBoxProfile
@@ -58,7 +53,7 @@ namespace BigBoxProfile
 			{
 				var soundDevice = DeviceCollection[i];
 
-				if(soundDevice.DataFlow.ToString() == "eRender")
+				if (soundDevice.DataFlow.ToString() == "eRender")
 				{
 					soundCards.Add(soundDevice.FriendlyName);
 				}

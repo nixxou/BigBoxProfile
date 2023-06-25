@@ -1,13 +1,9 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
@@ -52,7 +48,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void Configure()
 		{
-			
+
 			var frm = new CopyFile_Config(this.Options);
 			var result = frm.ShowDialog();
 
@@ -77,7 +73,7 @@ namespace BigBoxProfile.EmulatorActions
 
 				UpdateConfig();
 			}
-			
+
 
 		}
 
@@ -118,7 +114,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (IsConfigured())
 			{
 				description = $"Copy from {_sourceDir} to {_targetDir}";
-				if(_useRamDisk) description += $" [Ramdisk if size < {_maxSize} MB]";
+				if (_useRamDisk) description += $" [Ramdisk if size < {_maxSize} MB]";
 				if (_filter != "") description += $" [Only if command line contains {_filter}]";
 				if (_exclude != "") description += $" [Exclude {_exclude}]";
 				if (_deleteOnExit == false) description += $" [DELETE=NO]";
@@ -217,9 +213,9 @@ namespace BigBoxProfile.EmulatorActions
 					{
 						found = true;
 						string outfile = Path.Combine(_targetDir, Path.GetFileName(elem));
-						foreach(var fileCached in _FileCached)
+						foreach (var fileCached in _FileCached)
 						{
-							if(Path.GetFileName(fileCached) == Path.GetFileName(elem))
+							if (Path.GetFileName(fileCached) == Path.GetFileName(elem))
 							{
 								outfile = fileCached;
 							}
@@ -321,18 +317,18 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					if (File.Exists(elem))
 					{
-						
+
 						found = true;
 						string outfile = Path.Combine(_targetDir, Path.GetFileName(elem));
 						Console.WriteLine($"Copy {elem} to {outfile}");
 						int maxsize = 0;
-						int.TryParse(_maxSize, out maxsize );
+						int.TryParse(_maxSize, out maxsize);
 
 						RamDiskLauncher ramDisk = new RamDiskLauncher();
 						_RamDisks.Add(ramDisk);
-						var frm = new CopyFile_Task(elem,outfile,_useRamDisk,_deleteOnExit, maxsize, ramDisk);
+						var frm = new CopyFile_Task(elem, outfile, _useRamDisk, _deleteOnExit, maxsize, ramDisk);
 						var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
-						if(targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
+						if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
 						if (targetProcess != null)
 						{
 							var screen = Screen.FromHandle(targetProcess.MainWindowHandle);
@@ -362,18 +358,19 @@ namespace BigBoxProfile.EmulatorActions
 		}
 		public void ExecuteAfter(string[] args)
 		{
-			foreach(var ramDisk in _RamDisks)
+			foreach (var ramDisk in _RamDisks)
 			{
 				ramDisk.UnMount();
 
 			}
-			foreach(var fileToDelete in _FileToDelete) { 
-				if(File.Exists(fileToDelete))
+			foreach (var fileToDelete in _FileToDelete)
+			{
+				if (File.Exists(fileToDelete))
 				{
 					File.Delete(fileToDelete);
 				}
 			}
-			
+
 		}
 
 		public bool UseM3UContent()

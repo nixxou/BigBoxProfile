@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
@@ -40,7 +32,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			this.useRamDisk = useRamDisk;
 			this.deleteOnExit = deleteOnExit;
-			this.maxSize= maxSize;
+			this.maxSize = maxSize;
 
 			InitializeComponent();
 			lbl_file.Text = Path.GetFileName(inPath);
@@ -54,7 +46,7 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			lbl_progress.Text = "";
 			lbl_progressETA.Text = "";
-			
+
 
 			// Vérifier si les chemins d'entrée et de sortie sont valides
 			if (!File.Exists(inPath))
@@ -65,9 +57,9 @@ namespace BigBoxProfile.EmulatorActions
 			var fileSizeIn = new FileInfo(inPath).Length;
 			if (File.Exists(outPath))
 			{
-				
+
 				var fileSizeOut = new FileInfo(outPath).Length;
-				if(fileSizeIn == fileSizeOut)
+				if (fileSizeIn == fileSizeOut)
 				{
 					Invoke(new Action(() =>
 					{
@@ -81,13 +73,13 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
-			if(useRamDisk)
+			if (useRamDisk)
 			{
 
-				int fileSizeMB = (int)((fileSizeIn / 1024 / 1024)*1.03);
+				int fileSizeMB = (int)((fileSizeIn / 1024 / 1024) * 1.03);
 				fileSizeMB += 30;
 				fileSizeMB = BigBoxUtils.GetDiskSize(fileSizeMB);
-				
+
 				if (fileSizeMB < maxSize)
 				{
 					bool resMount = RamDisk.Mount(fileSizeMB);
@@ -97,7 +89,7 @@ namespace BigBoxProfile.EmulatorActions
 						lbl_dest.Text = $"Destination : {outPath}";
 					}
 				}
-				
+
 			}
 
 			Thread displayThread = new Thread(UpdateDisplay);
@@ -135,7 +127,7 @@ namespace BigBoxProfile.EmulatorActions
 				}
 				copyCompleted = true;
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
 			}
@@ -145,10 +137,10 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void UpdateDisplay()
 		{
-			
+
 			while (true)
 			{
-				if(copyStart == false || fileSize == 0)
+				if (copyStart == false || fileSize == 0)
 				{
 					Thread.Sleep(50);
 					continue;
@@ -163,10 +155,10 @@ namespace BigBoxProfile.EmulatorActions
 					}));
 					break;
 				}
-				
+
 				// Calculer la progression en pourcentage
 				int progress = (int)((progressBar1.Maximum * totalBytesRead) / fileSize);
-				
+
 				// Mettre à jour la ProgressBar et le label sur le thread de l'interface utilisateur
 				Invoke(new Action(() =>
 				{
@@ -174,7 +166,7 @@ namespace BigBoxProfile.EmulatorActions
 					double elapsedSeconds = (DateTime.Now - startTime).TotalSeconds;
 					if (progress > 0)
 					{
-						
+
 						double remainingSeconds = (elapsedSeconds / progress) * (100 - progress);
 						TimeSpan remainingTime = TimeSpan.FromSeconds(remainingSeconds);
 						lbl_progressETA.Text = $"Temps restant : {remainingTime.Minutes:D2}:{remainingTime.Seconds:D2}";
@@ -191,7 +183,7 @@ namespace BigBoxProfile.EmulatorActions
 						transferSpeed = totalBytesRead / (1024 * 1024 * elapsedSeconds); // Convertir les octets en Mo
 
 					}
-					
+
 					double copiedSizeMB = (double)totalBytesRead / (1024 * 1024);
 					double totalSizeMB = (double)fileSize / (1024 * 1024);
 					lbl_progress.Text = $"Progression : {progress}% ({copiedSizeMB:F2} MB / {totalSizeMB:F2} MB) {transferSpeed:F2} Mo/s";
@@ -200,12 +192,12 @@ namespace BigBoxProfile.EmulatorActions
 
 				Thread.Sleep(100); // Attendre 500 millisecondes avant la prochaine mise à jour de l'affichage
 			}
-			
+
 		}
 
 		private void progressBar1_Click(object sender, EventArgs e)
 		{
-			 
+
 		}
 	}
 }

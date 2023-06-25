@@ -1,11 +1,6 @@
 ﻿using BigBoxProfile.EmulatorActions;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace BigBoxProfile
 {
@@ -23,10 +18,10 @@ namespace BigBoxProfile
 
 		public Dictionary<string, string> OptionsEmulator { get; set; } = new Dictionary<string, string>();
 
-		public Emulator(string profileName,string fileNameEmulator)
+		public Emulator(string profileName, string fileNameEmulator)
 		{
 			ProfileName = profileName;
-			FileNameEmulator= fileNameEmulator;
+			FileNameEmulator = fileNameEmulator;
 			FileNameConfig = Path.Combine(Profile.PathMainProfileDir, FileNameEmulator, ProfileName + ".xml");
 
 
@@ -52,12 +47,12 @@ namespace BigBoxProfile
 			_modules.Add(new RomExtractor());
 
 
-			
+
 
 			List<ConfigurationData> loadedModules = ConfigurationData.LoadConfigurationDataList(FileNameConfig);
 			foreach (var module in loadedModules)
 			{
-				
+
 				if (module.name == "OptionsEmulator")
 				{
 					OptionsEmulator = module.Options;
@@ -73,7 +68,7 @@ namespace BigBoxProfile
 					var obj = new Prefix();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
-					
+
 				}
 				if (module.name == "Suffix")
 				{
@@ -173,17 +168,17 @@ namespace BigBoxProfile
 				}
 
 			}
-			
+
 		}
 
 		public static bool Exist(string profileName, string fileNameEmulator)
 		{
 			if (Profile.ProfileList.ContainsKey(profileName))
 			{
-				string pathFn = Path.Combine(Profile.PathMainProfileDir,fileNameEmulator);
+				string pathFn = Path.Combine(Profile.PathMainProfileDir, fileNameEmulator);
 				if (Directory.Exists(pathFn))
 				{
-					if(File.Exists(Path.Combine(pathFn,profileName + ".xml")))
+					if (File.Exists(Path.Combine(pathFn, profileName + ".xml")))
 					{
 						return true;
 					}

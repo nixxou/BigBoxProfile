@@ -1,21 +1,14 @@
 ﻿using BigBoxProfile.RomExtractorUtils;
 using BrightIdeasSoftware;
 using CefSharp;
+using ComponentFactory.Krypton.Toolkit;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -64,7 +57,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private CefSharp.WinForms.ChromiumWebBrowser chromiumWebBrowser1;
 
-		public RomExtractor_DesktopSelect(List<string> args,RomExtractor_ArchiveFile archiveFile, string cachedir)
+		public RomExtractor_DesktopSelect(List<string> args, RomExtractor_ArchiveFile archiveFile, string cachedir)
 		{
 			Args = args;
 			_archiveFile = archiveFile;
@@ -97,14 +90,14 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					Rom.retroarch_savestatedir = savestatedir;
 				}
-				if(Directory.Exists(savedir))
+				if (Directory.Exists(savedir))
 				{
 					Rom.retroarch_savedir = savedir;
 				}
 				string fullcmd = BigBoxUtils.ArgsToCommandLine(args.ToArray());
 				if (fullcmd.Contains("mupen64plus"))
 				{
-					if(Directory.Exists(Path.Combine(retroarchDir, "system", "Mupen64plus")))
+					if (Directory.Exists(Path.Combine(retroarchDir, "system", "Mupen64plus")))
 					{
 						TexturePath = Path.Combine(retroarchDir, "system", "Mupen64plus", "cache");
 						if (!Directory.Exists(TexturePath)) Directory.CreateDirectory(TexturePath);
@@ -147,7 +140,7 @@ namespace BigBoxProfile.EmulatorActions
 				bool isLastPlayed = _archiveFile.archiveMetaData.LastGamesPlayed.Contains(fl);
 				bool isFavorite = _archiveFile.archiveMetaData.FavoritesGames.Contains(fl);
 				string icon_img = "";
-				if(fl == _archiveFile.TruePriorityFile && icon_img == "") icon_img = "star_yellow";
+				if (fl == _archiveFile.TruePriorityFile && icon_img == "") icon_img = "star_yellow";
 				if (isFavorite && icon_img == "") icon_img = "star_red";
 				if (_archiveFile.topPriorityOnlyFiles.Contains(fl) && icon_img == "") icon_img = "star_blue";
 
@@ -186,7 +179,7 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				groupBox1.Visible = false;
 				fastObjectListView1.Height = fastObjectListView1.Height + groupBox1.Height + 10;
-				
+
 
 			}
 			else
@@ -301,7 +294,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (this.useWebview)
 			{
-				
+
 				this.chromiumWebBrowser1 = new CefSharp.WinForms.ChromiumWebBrowser();
 				this.chromiumWebBrowser1.ActivateBrowserOnCreation = false;
 				//this.chromiumWebBrowser1.Visible = false;
@@ -319,7 +312,7 @@ namespace BigBoxProfile.EmulatorActions
 
 				this.chromiumWebBrowser1.LoadHtml(@"<html><head></head><body bgcolor=""#2A2B34""><h1>No Info</h1></body></html>");
 				chromiumWebBrowser1.LifeSpanHandler = new MyCustomLifeSpanHandler();
-				
+
 			}
 			else
 			{
@@ -342,7 +335,7 @@ namespace BigBoxProfile.EmulatorActions
 					e.Item.ForeColor = Color.DarkRed;
 					e.Item.BackColor = Color.WhiteSmoke;
 				}
-				if(s.IconImg != "")
+				if (s.IconImg != "")
 				{
 					e.Item.BackColor = Color.WhiteSmoke;
 				}
@@ -350,13 +343,15 @@ namespace BigBoxProfile.EmulatorActions
 
 
 			//Delegate to show the star image before the Title text
-			this.titleColumnF.ImageGetter = delegate (object rowObject) {
+			this.titleColumnF.ImageGetter = delegate (object rowObject)
+			{
 				Rom s = (Rom)rowObject;
 				return s.IconImg;
 			};
 
 			//Delegate to show the size in human readable form, but still keep it internaly as bytes (usefull for sorting)
-			this.sizeColumnF.AspectToStringConverter = delegate (object x) {
+			this.sizeColumnF.AspectToStringConverter = delegate (object x)
+			{
 				long size = (long)x;
 				int[] limits = new int[] { 1024 * 1024 * 1024, 1024 * 1024, 1024 };
 				string[] units = new string[] { "GB", "MB", "KB" };
@@ -372,13 +367,15 @@ namespace BigBoxProfile.EmulatorActions
 
 
 			//Delegate to show the star image before the Title text
-			this.Texture_Col_File.ImageGetter = delegate (object rowObject) {
+			this.Texture_Col_File.ImageGetter = delegate (object rowObject)
+			{
 				Texture s = (Texture)rowObject;
 				return s.IconImg;
 			};
 
 			//Delegate to show the size in human readable form, but still keep it internaly as bytes (usefull for sorting)
-			this.Texture_Col_Size.AspectToStringConverter = delegate (object x) {
+			this.Texture_Col_Size.AspectToStringConverter = delegate (object x)
+			{
 				long size = (long)x;
 				int[] limits = new int[] { 1024 * 1024 * 1024, 1024 * 1024, 1024 };
 				string[] units = new string[] { "GB", "MB", "KB" };
@@ -638,7 +635,8 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				if (this.filter_text.Contains("*") || this.filter_text.Contains("?"))
 				{
-					filter_list.Add(new ModelFilter(delegate (object x) {
+					filter_list.Add(new ModelFilter(delegate (object x)
+					{
 						return ((Rom)x).Match(this.filter_text);
 					}));
 				}
@@ -652,7 +650,8 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (this.filter_stars)
 			{
-				filter_list.Add(new ModelFilter(delegate (object x) {
+				filter_list.Add(new ModelFilter(delegate (object x)
+				{
 					if (((Rom)x).IconImg != "" || ((Rom)x).IsLastPlayed) return true;
 					//if (_archiveFile.archiveMetaData.LastGamesPlayed.Contains(((Rom)x).Title)) return true;
 					return false;
@@ -663,7 +662,8 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (this.filter_french)
 			{
-				filter_list.Add(new ModelFilter(delegate (object x) {
+				filter_list.Add(new ModelFilter(delegate (object x)
+				{
 					return ((Rom)x).is_french;
 				}));
 				MenuItem_filterFrench.BackColor = Color.Yellow;
@@ -672,7 +672,8 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (this.filter_english)
 			{
-				filter_list.Add(new ModelFilter(delegate (object x) {
+				filter_list.Add(new ModelFilter(delegate (object x)
+				{
 					return ((Rom)x).is_english;
 				}));
 				MenuItem_filterEnglish.BackColor = Color.Yellow;
@@ -681,7 +682,8 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (this.filter_romhacker)
 			{
-				filter_list.Add(new ModelFilter(delegate (object x) {
+				filter_list.Add(new ModelFilter(delegate (object x)
+				{
 					return ((Rom)x).is_romhackernet;
 				}));
 				MenuItem_filterRH.BackColor = Color.Yellow;
@@ -872,7 +874,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void saveFileDialog_extractTo_FileOk(object sender, CancelEventArgs e)
 		{
-			
+
 			if (fastObjectListView1.SelectedIndex >= 0)
 			{
 				Rom myrom = (Rom)this.fastObjectListView1.SelectedObject;
@@ -882,12 +884,12 @@ namespace BigBoxProfile.EmulatorActions
 				var result = frm.ShowDialog();
 				frm.Focus(); // Donne le focus à la fenêtre
 			}
-			
+
 		}
 
 		private void InstallTexture_btn_Click(object sender, EventArgs e)
 		{
-			
+
 			//I don't think that should trigger, this condition must be check before enabling the button, but in case of...
 			if (Directory.Exists(TexturePath_txt.Text) == false)
 			{
@@ -929,7 +931,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			selected_texture.IconImg = "star_yellow";
 			EmulatorSelectedUpdate();
-			
+
 		}
 
 		private void EmulatorSelectedUpdate()
@@ -991,7 +993,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void TexturePath_btn_Click(object sender, EventArgs e)
 		{
-			
+
 			using (var fbd = new FolderBrowserDialog())
 			{
 
@@ -1002,7 +1004,7 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 			EmulatorSelectedUpdate();
-			
+
 		}
 
 		private void FListView_Texture_SelectedIndexChanged(object sender, EventArgs e)
@@ -1038,12 +1040,12 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void RemoveTexture_btn_Click(object sender, EventArgs e)
 		{
-			
+
 			string potential_out = TexturePath_txt.Text + @"\" + path_texture_name;
 			if (File.Exists(potential_out + ".htc")) File.Delete(potential_out + ".htc");
 			if (File.Exists(potential_out + ".hts")) File.Delete(potential_out + ".hts");
 			EmulatorSelectedUpdate();
-			
+
 		}
 
 		private (bool foundmeta, string Metadata_file, string Metadata_template, string Metadata_folder) find_metadata(string dirpath, string archiveName)
@@ -1125,7 +1127,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (this.useWebview && fastObjectListView1.SelectedIndex >= 0)
 			{
 				Rom myrom = (Rom)this.fastObjectListView1.SelectedObject;
-				
+
 				if (this.metadataFolder != "" && File.Exists(this.metadataFolder + "\\" + myrom.Title + ".html"))
 				{
 					string html_data = File.ReadAllText(this.metadataFolder + "\\" + myrom.Title + ".html");
@@ -1147,7 +1149,7 @@ namespace BigBoxProfile.EmulatorActions
 					return;
 				}
 				this.chromiumWebBrowser1.LoadHtml(@"<html><head></head><body bgcolor=""#2A2B34""><h1>No Info</h1></body></html>");
-				
+
 			}
 		}
 
@@ -1227,9 +1229,9 @@ namespace BigBoxProfile.EmulatorActions
 		private void cancelButton_Click(object sender, EventArgs e)
 		{
 
-				Selected = "";
-				this.DialogResult = DialogResult.Cancel;
-				this.Close();
+			Selected = "";
+			this.DialogResult = DialogResult.Cancel;
+			this.Close();
 		}
 
 		private void TexturePath_btn_Click_1(object sender, EventArgs e)

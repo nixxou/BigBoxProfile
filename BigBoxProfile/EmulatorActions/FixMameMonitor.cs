@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
@@ -89,7 +86,7 @@ namespace BigBoxProfile.EmulatorActions
 					if (screen.Primary)
 					{
 						main_monitor_number = i + 1;
-						DeviceNameMain= screen.DeviceName;
+						DeviceNameMain = screen.DeviceName;
 					}
 				}
 

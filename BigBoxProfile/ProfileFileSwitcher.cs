@@ -1,15 +1,7 @@
-﻿using CefSharp.DevTools.Target;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.LinkLabel;
 
 namespace BigBoxProfile
 {
@@ -152,7 +144,7 @@ IntPtr lpSecurityAttributes
 		}
 		*/
 
-		public void OpenProfile(string ProfileName,bool createAntiCrashRestoreFile = true)
+		public void OpenProfile(string ProfileName, bool createAntiCrashRestoreFile = true)
 		{
 			if (!CanUseLink || !HasProfileDir) return;
 
@@ -184,9 +176,9 @@ IntPtr lpSecurityAttributes
 			{
 				File.Delete(f);
 			}
-			foreach(var f in FileInProfileLeft)
+			foreach (var f in FileInProfileLeft)
 			{
-				MakeLink(Path.Combine(ProfileDir,f), Path.Combine(ConfigDir, f));
+				MakeLink(Path.Combine(ProfileDir, f), Path.Combine(ConfigDir, f));
 				FileInDefaultLeft.Remove(f);
 			}
 			foreach (var f in fileListDefault)
@@ -195,7 +187,7 @@ IntPtr lpSecurityAttributes
 			}
 
 			string[] subdir = new string[2] { "Platforms", "Playlists" };
-			foreach(var dir in subdir)
+			foreach (var dir in subdir)
 			{
 				var ConfigSubFolder = Path.Combine(ConfigDir, dir);
 				var ProfileSubFolder = Path.Combine(ProfileDir, dir);
@@ -271,16 +263,16 @@ IntPtr lpSecurityAttributes
 				bool found = false;
 				if (FileInProfileLeft.Contains(ConfigFileWithoutPath))
 				{
-					if(!isFileLinkedToProfile(f, ProfileDir))
+					if (!isFileLinkedToProfile(f, ProfileDir))
 					{
 						var hardlinks = GetHardLinks(f);
 						if (!hardlinks.Contains(ProfileFileWithPath)) hardlinks.Add(ProfileFileWithPath);
-						foreach(var link in hardlinks)
+						foreach (var link in hardlinks)
 						{
 							File.Delete(link);
 							MakeLink(f, link);
 						}
-						
+
 					}
 					FileInProfileLeft.Remove(ConfigFileWithoutPath);
 					FileInDefaultLeft.Remove(ConfigFileWithoutPath);
@@ -303,12 +295,12 @@ IntPtr lpSecurityAttributes
 					found = true;
 				}
 
-				if(!found)
+				if (!found)
 				{
 					MakeLink(f, ProfileFileWithPath);
 				}
 			}
-			foreach(var f in FileInProfileLeft)
+			foreach (var f in FileInProfileLeft)
 			{
 				File.Delete(Path.Combine(ProfileDir, f));
 			}
@@ -330,7 +322,7 @@ IntPtr lpSecurityAttributes
 					targetDir = DefaultSubFolder;
 				}
 
-				if(targetDir != "")
+				if (targetDir != "")
 				{
 					string[] fileListActualSubDir = Directory.GetFiles(ConfigSubFolder, "*.xml", SearchOption.TopDirectoryOnly);
 					string[] fileListProfileSubDir = Directory.GetFiles(targetDir, "*.xml", SearchOption.TopDirectoryOnly);
@@ -361,7 +353,7 @@ IntPtr lpSecurityAttributes
 						}
 						FileInProfileSubDirLeft.Remove(ConfigFileSubDirWithoutPath);
 					}
-					foreach(var f in FileInProfileSubDirLeft)
+					foreach (var f in FileInProfileSubDirLeft)
 					{
 						File.Delete(Path.Combine(targetDir, f));
 					}
@@ -380,14 +372,14 @@ IntPtr lpSecurityAttributes
 		public void CloneDirectory(string source, string destination, string include, string exclude)
 		{
 			//MessageBox.Show("ici");
-			if(!Directory.Exists(destination)) Directory.CreateDirectory(destination);
+			if (!Directory.Exists(destination)) Directory.CreateDirectory(destination);
 			string[] fileList = Directory.GetFiles(source, include, SearchOption.TopDirectoryOnly);
-			foreach(var f in fileList)
+			foreach (var f in fileList)
 			{
-				if (!Path.GetFileName(f).Contains(exclude)) MakeLink(f,Path.Combine(destination, Path.GetFileName(f)));
+				if (!Path.GetFileName(f).Contains(exclude)) MakeLink(f, Path.Combine(destination, Path.GetFileName(f)));
 			}
 			string[] directoryList = Directory.GetDirectories(source, "*", SearchOption.TopDirectoryOnly);
-			foreach(var d in directoryList)
+			foreach (var d in directoryList)
 			{
 				DirectoryInfo directoryInfo = new DirectoryInfo(d);
 				string dernierRepertoire = directoryInfo.Name;

@@ -1,16 +1,9 @@
-﻿using Microsoft.VisualBasic;
+﻿using ComponentFactory.Krypton.Toolkit;
+using Microsoft.VisualBasic;
 using MonitorSwitcherGUI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
 {
@@ -63,7 +56,7 @@ namespace BigBoxProfile
 			string name = Interaction.InputBox("Disposition Name :", "Name", "");
 
 			string truename = BigBoxUtils.FilterFileName(name);
-			string filename = Path.Combine(Profile.PathMainProfileDir,"disposition_" + truename + ".xml");
+			string filename = Path.Combine(Profile.PathMainProfileDir, "disposition_" + truename + ".xml");
 			if (File.Exists(filename))
 			{
 				MessageBox.Show("Name already exist");

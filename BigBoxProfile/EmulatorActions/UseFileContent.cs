@@ -1,10 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
@@ -143,7 +138,7 @@ namespace BigBoxProfile.EmulatorActions
 						if (!Path.IsPathRooted(content))
 						{
 							string path = "";
-							if(_usefile) path = Path.GetDirectoryName(args[i]);
+							if (_usefile) path = Path.GetDirectoryName(args[i]);
 							else path = Directory.GetCurrentDirectory();
 							content = Path.Combine(path, content);
 						}

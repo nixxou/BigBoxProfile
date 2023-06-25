@@ -1,14 +1,8 @@
-﻿using System;
+﻿using ComponentFactory.Krypton.Toolkit;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -90,9 +84,9 @@ namespace BigBoxProfile.EmulatorActions
 			if (radio_arg.Checked) asArg = true;
 
 			search = txt_search.Text;
-			replacewith= txt_replacewith.Text;
-			useregex=chk_useregex.Checked;
-			casesensitive= chk_casesensitive.Checked;
+			replacewith = txt_replacewith.Text;
+			useregex = chk_useregex.Checked;
+			casesensitive = chk_casesensitive.Checked;
 
 			exclude = txt_exclude.Text;
 			commaFilter = chk_filter_comma.Checked;

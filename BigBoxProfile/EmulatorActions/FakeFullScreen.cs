@@ -1,10 +1,6 @@
 ﻿using AutoHotkey.Interop;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -95,7 +91,7 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			string description = "Maximize ";
 			description += _targetType.Trim();
-			if(_targetType == "Custom Exe") description += " : " + _target.Trim();
+			if (_targetType == "Custom Exe") description += " : " + _target.Trim();
 			if (_targetType == "Regex") description += " : " + _regex.Trim();
 
 			description += $"[ Timeout={_timeout}, Wait={_wait} ]";
@@ -138,7 +134,7 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			_filter = Options["filter"];
 			_targetType = Options["targetType"];
-			_target= Options["target"];
+			_target = Options["target"];
 			_regex = Options["regex"];
 			_timeout = Options["timeout"];
 			_wait = Options["wait"];
@@ -208,15 +204,15 @@ namespace BigBoxProfile.EmulatorActions
 			}
 
 			string executable = "";
-			if(_targetType == "Emulator Exe")
+			if (_targetType == "Emulator Exe")
 			{
 				executable = Path.GetFileName(args[0]);
 			}
-			if(_targetType == "Custom Exe")
+			if (_targetType == "Custom Exe")
 			{
 				executable = _target;
 			}
-			if(_targetType == "Regex")
+			if (_targetType == "Regex")
 			{
 				var filteredArgs = BigBoxUtils.ArgsWithoutFirstElement(args);
 				foreach (var elem in filteredArgs)
@@ -225,9 +221,9 @@ namespace BigBoxProfile.EmulatorActions
 					options |= RegexOptions.IgnoreCase;
 					Regex regex = new Regex(_regex, options);
 					string result = regex.Replace(elem, MatchEvaluator);
-					if(result != elem)
+					if (result != elem)
 					{
-						executable= result;
+						executable = result;
 						break;
 					}
 				}

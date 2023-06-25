@@ -1,15 +1,7 @@
-﻿using BigBoxProfile.Properties;
+﻿using ComponentFactory.Krypton.Toolkit;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -129,8 +121,8 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				label_Imdisk_false.Visible = false;
 				label_Imdisk_true.Visible = true;
-				chk_useRamDisk.Enabled= true;
-				num_maxSize.Enabled= true;
+				chk_useRamDisk.Enabled = true;
+				num_maxSize.Enabled = true;
 			}
 			else
 			{
@@ -152,7 +144,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (chk_useRamDisk.Checked)
 			{
 				chk_deleteOnExit.Checked = true;
-				chk_deleteOnExit.Enabled= false;
+				chk_deleteOnExit.Enabled = false;
 
 			}
 			else

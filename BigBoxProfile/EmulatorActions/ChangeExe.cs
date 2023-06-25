@@ -1,10 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
@@ -145,9 +140,9 @@ namespace BigBoxProfile.EmulatorActions
 			}
 			else
 			{
-				args[0] = Path.Combine(Path.GetDirectoryName(args[0]),_newexe);
+				args[0] = Path.Combine(Path.GetDirectoryName(args[0]), _newexe);
 			}
-			
+
 			return args;
 		}
 
@@ -164,7 +159,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (IsConfigured())
 			{
-				 description = $"Change Exe to {_newexe}";
+				description = $"Change Exe to {_newexe}";
 				if (_filter != "") description += $" [Only if command line contains {_filter}]";
 				if (_exclude != "") description += $" [Exclude {_exclude}]";
 

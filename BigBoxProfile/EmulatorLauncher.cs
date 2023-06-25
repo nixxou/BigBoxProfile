@@ -1,17 +1,12 @@
 ﻿using CliWrap;
-using MonitorSwitcherGUI;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.LinkLabel;
 
 namespace BigBoxProfile
 {
@@ -45,16 +40,16 @@ namespace BigBoxProfile
 			if (p != null)
 			{
 				string process_name = p.ProcessName;
-				var exp = BigBoxUtils.explode(process_name,"_");
+				var exp = BigBoxUtils.explode(process_name, "_");
 				//foreach(var x in exp) { MessageBox.Show(x); }
 
 
-				if(exp != null && exp.Length == 2 && (exp[0].ToLower() == "bigbox" || exp[0].ToLower() == "launchbox"))
+				if (exp != null && exp.Length == 2 && (exp[0].ToLower() == "bigbox" || exp[0].ToLower() == "launchbox"))
 				{
 
 					if (Profile.ProfileList.ContainsKey(exp[1]))
 					{
-						SelectedProfile= Profile.ProfileList[exp[1]];
+						SelectedProfile = Profile.ProfileList[exp[1]];
 					}
 				}
 				else
@@ -88,7 +83,7 @@ namespace BigBoxProfile
 
 		public void ExecutePrelaunch()
 		{
-			
+
 		}
 
 		public void ExecutePostlaunch()
@@ -187,11 +182,11 @@ namespace BigBoxProfile
 				{
 					int delay_emulator = 0;
 					int.TryParse(SelectedProfile.Configuration["delay_emulator"], out delay_emulator);
-					if(delay_emulator > 0)
+					if (delay_emulator > 0)
 					{
 						Thread formThread = new Thread(ShowFormInBackground);
 						formThread.Start();
-						Thread.Sleep((delay_emulator*1000));
+						Thread.Sleep((delay_emulator * 1000));
 					}
 
 				}
@@ -216,7 +211,7 @@ namespace BigBoxProfile
 						}
 
 					}
-					
+
 					Execute();
 					Thread.Sleep(1000);
 
@@ -249,7 +244,7 @@ namespace BigBoxProfile
 							module.ExecuteBefore(ArgsWithFirstFileInsteadOfM3U);
 							ArgsWithFirstFileInsteadOfM3U = module.ModifyReal(ArgsWithFirstFileInsteadOfM3U);
 							//Si il y a une modification du fichier passé en paramettre, on accepte pas la modif et on restaure
-							if(BigBoxUtils.CountFileInArg(ArgsWithFirstFileInsteadOfM3U,m3uFirstFile) != nbM3U)
+							if (BigBoxUtils.CountFileInArg(ArgsWithFirstFileInsteadOfM3U, m3uFirstFile) != nbM3U)
 							{
 								ArgsWithFirstFileInsteadOfM3U = new string[ArgsWithFirstFileInsteadOfM3U_Copy.Length];
 								ArgsWithFirstFileInsteadOfM3U_Copy.CopyTo(ArgsWithFirstFileInsteadOfM3U, 0);
@@ -257,7 +252,7 @@ namespace BigBoxProfile
 
 						}
 					}
-					Args = BigBoxUtils.RemplaceFileInArg(ArgsWithFirstFileInsteadOfM3U, m3uFirstFile , m3uNew);
+					Args = BigBoxUtils.RemplaceFileInArg(ArgsWithFirstFileInsteadOfM3U, m3uFirstFile, m3uNew);
 
 					foreach (var fileInM3U in m3uFileListOriginal)
 					{
@@ -265,9 +260,9 @@ namespace BigBoxProfile
 						var ForgedArgList = new List<string>();
 						ForgedArgList.Add(Args[0]);
 						ForgedArgList.Add(fileInM3U);
-						if(Args.Length > 2)
+						if (Args.Length > 2)
 						{
-							for(int i = 1; i < Args.Length; i++)
+							for (int i = 1; i < Args.Length; i++)
 							{
 								if (Args[i] != m3uNew)
 								{

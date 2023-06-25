@@ -1,10 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
@@ -44,7 +39,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void Configure()
 		{
-			
+
 			var frm = new Replace_Config(this.Options);
 			var result = frm.ShowDialog();
 
@@ -54,7 +49,7 @@ namespace BigBoxProfile.EmulatorActions
 				else Options["as_arg"] = "no";
 
 				Options["search"] = frm.search;
-				Options["replacewith"]= frm.replacewith;
+				Options["replacewith"] = frm.replacewith;
 
 				if (frm.useregex) Options["useregex"] = "yes";
 				else Options["useregex"] = "no";
@@ -73,7 +68,7 @@ namespace BigBoxProfile.EmulatorActions
 				else Options["commaExclude"] = "no";
 				UpdateConfig();
 			}
-			
+
 
 		}
 
@@ -95,7 +90,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public bool IsConfigured()
 		{
-			if (Options.ContainsKey("search") ==false || Options["search"] == "")
+			if (Options.ContainsKey("search") == false || Options["search"] == "")
 			{
 				return false;
 			}
@@ -284,8 +279,8 @@ namespace BigBoxProfile.EmulatorActions
 		private void UpdateConfig()
 		{
 			_search = Options["search"];
-			_replacewith= Options["replacewith"];
-			_useregex= Options["useregex"] == "yes" ? true : false;
+			_replacewith = Options["replacewith"];
+			_useregex = Options["useregex"] == "yes" ? true : false;
 			_casesensitive = Options["casesensitive"] == "yes" ? true : false;
 			_filter = Options["filter"];
 			_asArg = Options["as_arg"] == "yes" ? true : false;

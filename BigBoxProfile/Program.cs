@@ -1,13 +1,9 @@
-﻿using CliWrap;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile
@@ -30,7 +26,7 @@ namespace BigBoxProfile
 			args = forceArg;
 			*/
 
-			if (args.Length== 0)
+			if (args.Length == 0)
 			{
 
 				/*
@@ -47,7 +43,7 @@ namespace BigBoxProfile
 					MessageBox.Show("You need Admin right to register the App or Games");
 					BigBoxUtils.RegisterExec();
 				}
-				
+
 
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
@@ -55,7 +51,7 @@ namespace BigBoxProfile
 			}
 			else
 			{
-				if(args.Length== 1 && args[0] == "--register")
+				if (args.Length == 1 && args[0] == "--register")
 				{
 					bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
 					if (isAdmin)
@@ -140,9 +136,9 @@ namespace BigBoxProfile
 
 
 							bool directlaunch = false;
-							if(args.Length >= 2)
+							if (args.Length >= 2)
 							{
-								if (args[1].Contains("--profile=")==false) directlaunch= true;
+								if (args[1].Contains("--profile=") == false) directlaunch = true;
 							}
 							if (directlaunch)
 							{
@@ -166,8 +162,8 @@ namespace BigBoxProfile
 									return;
 								}
 								*/
-								
-								
+
+
 								var bigBoxLauncher = new BigBoxLauncher(args);
 								bigBoxLauncher.Exec();
 							}
@@ -235,7 +231,7 @@ namespace BigBoxProfile
 				}
 
 
-				
+
 			}
 
 

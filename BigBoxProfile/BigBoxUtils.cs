@@ -1,5 +1,4 @@
-﻿using BigBoxProfile.EmulatorActions;
-using CliWrap;
+﻿using CliWrap;
 using Microsoft.Win32;
 using Microsoft.Win32.TaskScheduler;
 using MonitorSwitcherGUI;
@@ -7,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -17,10 +15,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace BigBoxProfile
 {
@@ -480,8 +476,9 @@ namespace BigBoxProfile
 			{
 				string fullpath = Path.GetFullPath(path);
 			}
-			catch {
-				return false;			
+			catch
+			{
+				return false;
 			}
 			return true;
 		}
@@ -513,7 +510,7 @@ namespace BigBoxProfile
 					{
 						arg = filePath;
 					}
-					
+
 				}
 				newArgs.Add(arg);
 			}
@@ -525,7 +522,7 @@ namespace BigBoxProfile
 		public static string[] CommandLineToArgs(string commandLine, bool addfakeexe = true)
 		{
 			string executableName;
-			return CommandLineToArgs(commandLine, out executableName,addfakeexe);
+			return CommandLineToArgs(commandLine, out executableName, addfakeexe);
 		}
 		public static string[] CommandLineToArgs(string commandLine, out string executableName, bool addfakeexe = true)
 		{
@@ -654,7 +651,7 @@ namespace BigBoxProfile
 
 
 
-		public static string[] AddFirstElementToArg(string[] args,string argument)
+		public static string[] AddFirstElementToArg(string[] args, string argument)
 		{
 			string[] argsNonVides = Array.FindAll(args, s => !string.IsNullOrEmpty(s));
 
@@ -780,7 +777,7 @@ namespace BigBoxProfile
 			return CheckTaskExist(GetTaskName(args));
 		}
 
-		public static void RegisterTask(string[] args,string optionTask = "")
+		public static void RegisterTask(string[] args, string optionTask = "")
 		{
 			//var _ramDiskManager = new RamDiskManager(1000);
 			string RamDiskManagerExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "RamDiskManager.exe");
@@ -825,7 +822,7 @@ namespace BigBoxProfile
 			RegisterTask(args, optionTask);
 		}
 
-		public static void ExecuteTask(string taskName,int delay=1000)
+		public static void ExecuteTask(string taskName, int delay = 1000)
 		{
 			string new_cmd = $@" /run /tn ""{taskName}""";
 			var args = BigBoxUtils.CommandLineToArgs(new_cmd, false);
@@ -850,7 +847,7 @@ namespace BigBoxProfile
 			}
 		}
 
-		public static void ExecuteTask(string[] args, int delay=1000,bool registerIfNeeded = true, string optionTask="")
+		public static void ExecuteTask(string[] args, int delay = 1000, bool registerIfNeeded = true, string optionTask = "")
 		{
 			string taskName = GetTaskName(args);
 			if (CheckTaskExist(taskName))
