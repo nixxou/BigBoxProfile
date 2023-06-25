@@ -29,6 +29,10 @@ namespace BigBoxProfile.EmulatorActions
 		private bool _asArg = false;
 		private string _filter = "";
 
+		private string _exclude = "";
+		private bool _commaFilter = false;
+		private bool _commaExclude = false;
+
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
@@ -59,6 +63,14 @@ namespace BigBoxProfile.EmulatorActions
 				else Options["casesensitive"] = "no";
 
 				Options["filter"] = frm.filter.Trim();
+
+				Options["exclude"] = frm.exclude.Trim();
+
+				if (frm.commaFilter) Options["commaFilter"] = "yes";
+				else Options["commaFilter"] = "no";
+
+				if (frm.commaExclude) Options["commaExclude"] = "yes";
+				else Options["commaExclude"] = "no";
 				UpdateConfig();
 			}
 			
@@ -74,6 +86,9 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("casesensitive") == false) Options["casesensitive"] = "no";
 			if (Options.ContainsKey("filter") == false) Options["filter"] = "";
 			if (Options.ContainsKey("as_arg") == false) Options["as_arg"] = "yes";
+			if (Options.ContainsKey("exclude") == false) Options["exclude"] = "";
+			if (Options.ContainsKey("commaFilter") == false) Options["commaFilter"] = "no";
+			if (Options.ContainsKey("commaExclude") == false) Options["commaExclude"] = "no";
 			UpdateConfig();
 
 		}
@@ -100,6 +115,7 @@ namespace BigBoxProfile.EmulatorActions
 				if (_useregex) description += " [regex=on]";
 				if (_casesensitive) description += " [casesensitive=on]";
 				if (_filter != "") description += $" [Only if command line contains {_filter}]";
+				if (_exclude != "") description += $" [Exclude {_exclude}]";
 
 			}
 			else
@@ -164,7 +180,62 @@ namespace BigBoxProfile.EmulatorActions
 		public string[] ModifyExemple(string[] args)
 		{
 
+			if (IsConfigured() == false)
+			{
+				return args;
+			}
 			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
+			{
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return args;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return args;
+					}
+				}
+			}
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return args;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return args;
+					}
+				}
+			}
+
 			string exeArg = args[0];
 			var filteredArgs = BigBoxUtils.ArgsWithoutFirstElement(args);
 			var filteredCmd = BigBoxUtils.ArgsToCommandLine(filteredArgs);
@@ -218,6 +289,9 @@ namespace BigBoxProfile.EmulatorActions
 			_casesensitive = Options["casesensitive"] == "yes" ? true : false;
 			_filter = Options["filter"];
 			_asArg = Options["as_arg"] == "yes" ? true : false;
+			_exclude = Options["exclude"];
+			_commaFilter = Options["commaFilter"] == "yes" ? true : false;
+			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
 		}
 
 		private string MatchEvaluator(Match match)

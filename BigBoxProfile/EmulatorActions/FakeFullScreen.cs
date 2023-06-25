@@ -32,6 +32,10 @@ namespace BigBoxProfile.EmulatorActions
 		private string _timeout = "";
 		private string _wait = "";
 
+		private string _exclude = "";
+		private bool _commaFilter = false;
+		private bool _commaExclude = false;
+
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
 		public IEmulatorAction CreateNewInstance()
@@ -54,6 +58,14 @@ namespace BigBoxProfile.EmulatorActions
 				Options["wait"] = frm.wait.Trim();
 				Options["target"] = frm.target.Trim();
 
+				Options["exclude"] = frm.exclude.Trim();
+
+				if (frm.commaFilter) Options["commaFilter"] = "yes";
+				else Options["commaFilter"] = "no";
+
+				if (frm.commaExclude) Options["commaExclude"] = "yes";
+				else Options["commaExclude"] = "no";
+
 				UpdateConfig();
 			}
 		}
@@ -67,6 +79,10 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("timeout") == false) Options["timeout"] = "5";
 			if (Options.ContainsKey("wait") == false) Options["wait"] = "1";
 			if (Options.ContainsKey("filter") == false) Options["filter"] = "";
+
+			if (Options.ContainsKey("exclude") == false) Options["exclude"] = "";
+			if (Options.ContainsKey("commaFilter") == false) Options["commaFilter"] = "no";
+			if (Options.ContainsKey("commaExclude") == false) Options["commaExclude"] = "no";
 			UpdateConfig();
 		}
 
@@ -85,6 +101,8 @@ namespace BigBoxProfile.EmulatorActions
 			description += $"[ Timeout={_timeout}, Wait={_wait} ]";
 
 			if (_filter != "") description += $" [Only if command line contains {_filter}]";
+			if (_exclude != "") description += $" [Exclude {_exclude}]";
+
 			return $"{ModuleName} => {description}";
 
 
@@ -124,16 +142,69 @@ namespace BigBoxProfile.EmulatorActions
 			_regex = Options["regex"];
 			_timeout = Options["timeout"];
 			_wait = Options["wait"];
+			_exclude = Options["exclude"];
+			_commaFilter = Options["commaFilter"] == "yes" ? true : false;
+			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
 
 		}
 
 		public void ExecuteBefore(string[] args)
 		{
 
-			string cmd = BigBoxUtils.ArgsToCommandLine(args);
-			if (_filter != "" && !cmd.Contains(_filter))
+			if (IsConfigured() == false)
 			{
 				return;
+			}
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
+			{
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return;
+					}
+				}
 			}
 
 			string executable = "";

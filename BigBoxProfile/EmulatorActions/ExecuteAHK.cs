@@ -30,6 +30,10 @@ namespace BigBoxProfile.EmulatorActions
 		private string _ahkCodeBefore = "";
 		private string _ahkCodeAfter = "";
 
+		private string _exclude = "";
+		private bool _commaFilter = false;
+		private bool _commaExclude = false;
+
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
 		//public Dictionary<string, string> Options = new Dictionary<string, string>();
@@ -53,6 +57,14 @@ namespace BigBoxProfile.EmulatorActions
 				Options["ahkCodeBefore"] = frm.ahkCodeBefore.Trim();
 				Options["ahkCodeAfter"] = frm.ahkCodeAfter.Trim();
 
+				Options["exclude"] = frm.exclude.Trim();
+
+				if (frm.commaFilter) Options["commaFilter"] = "yes";
+				else Options["commaFilter"] = "no";
+
+				if (frm.commaExclude) Options["commaExclude"] = "yes";
+				else Options["commaExclude"] = "no";
+
 				UpdateConfig();
 			}
 			
@@ -68,6 +80,9 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("ahkCodeAfter") == false) Options["ahkCodeAfter"] = "";
 
 			if (Options.ContainsKey("filter") == false) Options["filter"] = "";
+			if (Options.ContainsKey("exclude") == false) Options["exclude"] = "";
+			if (Options.ContainsKey("commaFilter") == false) Options["commaFilter"] = "no";
+			if (Options.ContainsKey("commaExclude") == false) Options["commaExclude"] = "no";
 			UpdateConfig();
 
 		}
@@ -86,6 +101,7 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				description = "Execute user definited ahk code";
 				if (_filter != "") description += $" [Only if command line contains {_filter}]";
+				if (_exclude != "") description += $" [Exclude {_exclude}]";
 
 			}
 			else
@@ -157,12 +173,60 @@ Args := []
 
 		public string[] ModifyExemple(string[] args)
 		{
-			string cmd_original = BigBoxUtils.ArgsToCommandLine(args);
-			if (_filter != "" && !cmd_original.Contains(_filter))
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
 			{
-				return args;
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return args;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return args;
+					}
+				}
 			}
-			if(_ahkCodeExemple != "") return AhkExecute(args, _ahkCodeExemple);
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return args;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return args;
+					}
+				}
+			}
+
+
+			if (_ahkCodeExemple != "") return AhkExecute(args, _ahkCodeExemple);
 			return args;
 		}
 		public string[] Modify(string[] args)
@@ -175,11 +239,58 @@ Args := []
 
 		public string[] ModifyReal(string[] args)
 		{
-			string cmd_original = BigBoxUtils.ArgsToCommandLine(args);
-			if (_filter != "" && !cmd_original.Contains(_filter))
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
 			{
-				return args;
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return args;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return args;
+					}
+				}
 			}
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return args;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return args;
+					}
+				}
+			}
+
 			if (_ahkCodeReal != "") return AhkExecute(args, _ahkCodeReal);
 			return args;
 		}
@@ -191,14 +302,121 @@ Args := []
 			_ahkCodeReal = Options["ahkCodeReal"];
 			_ahkCodeBefore = Options["ahkCodeBefore"];
 			_ahkCodeAfter = Options["ahkCodeAfter"];
+			_exclude = Options["exclude"];
+			_commaFilter = Options["commaFilter"] == "yes" ? true : false;
+			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
 		}
 
 		public void ExecuteBefore(string[] args)
 		{
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
+			{
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+
 			if (_ahkCodeBefore != "") AhkExecute(args, _ahkCodeBefore);
 		}
 		public void ExecuteAfter(string[] args)
 		{
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
+			{
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+
 			if (_ahkCodeAfter != "") AhkExecute(args, _ahkCodeAfter);
 		}
 

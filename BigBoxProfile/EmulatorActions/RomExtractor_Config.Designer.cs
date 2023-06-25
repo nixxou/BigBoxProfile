@@ -61,6 +61,10 @@
 			this.num_cacheMaxSize = new System.Windows.Forms.NumericUpDown();
 			this.label6 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
+			this.btn_manage_filter = new System.Windows.Forms.Button();
+			this.chk_filter_comma = new System.Windows.Forms.CheckBox();
+			this.btn_manage_exclude = new System.Windows.Forms.Button();
+			this.chk_exclude_comma = new System.Windows.Forms.CheckBox();
 			this.groupBox3.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.num_cacheMaxSize)).BeginInit();
 			this.SuspendLayout();
@@ -68,7 +72,7 @@
 			// btn_delete_priority
 			// 
 			this.btn_delete_priority.Enabled = false;
-			this.btn_delete_priority.Location = new System.Drawing.Point(981, 354);
+			this.btn_delete_priority.Location = new System.Drawing.Point(981, 413);
 			this.btn_delete_priority.Name = "btn_delete_priority";
 			this.btn_delete_priority.Size = new System.Drawing.Size(75, 23);
 			this.btn_delete_priority.TabIndex = 64;
@@ -79,7 +83,7 @@
 			// btn_up_priority
 			// 
 			this.btn_up_priority.Enabled = false;
-			this.btn_up_priority.Location = new System.Drawing.Point(981, 296);
+			this.btn_up_priority.Location = new System.Drawing.Point(981, 355);
 			this.btn_up_priority.Name = "btn_up_priority";
 			this.btn_up_priority.Size = new System.Drawing.Size(75, 23);
 			this.btn_up_priority.TabIndex = 62;
@@ -103,7 +107,7 @@
 			// 
 			// btn_add
 			// 
-			this.btn_add.Location = new System.Drawing.Point(981, 168);
+			this.btn_add.Location = new System.Drawing.Point(981, 227);
 			this.btn_add.Name = "btn_add";
 			this.btn_add.Size = new System.Drawing.Size(75, 23);
 			this.btn_add.TabIndex = 61;
@@ -124,7 +128,7 @@
 			// btn_down_priority
 			// 
 			this.btn_down_priority.Enabled = false;
-			this.btn_down_priority.Location = new System.Drawing.Point(981, 325);
+			this.btn_down_priority.Location = new System.Drawing.Point(981, 384);
 			this.btn_down_priority.Name = "btn_down_priority";
 			this.btn_down_priority.Size = new System.Drawing.Size(75, 23);
 			this.btn_down_priority.TabIndex = 63;
@@ -149,7 +153,7 @@
             this.SmartExtract});
 			this.lv_priority.FullRowSelect = true;
 			this.lv_priority.HideSelection = false;
-			this.lv_priority.Location = new System.Drawing.Point(9, 168);
+			this.lv_priority.Location = new System.Drawing.Point(9, 227);
 			this.lv_priority.MultiSelect = false;
 			this.lv_priority.Name = "lv_priority";
 			this.lv_priority.Size = new System.Drawing.Size(966, 422);
@@ -167,7 +171,7 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(6, 145);
+			this.label4.Location = new System.Drawing.Point(6, 204);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(107, 13);
 			this.label4.TabIndex = 59;
@@ -175,7 +179,7 @@
 			// 
 			// txt_metadataExtensions
 			// 
-			this.txt_metadataExtensions.Location = new System.Drawing.Point(154, 142);
+			this.txt_metadataExtensions.Location = new System.Drawing.Point(154, 201);
 			this.txt_metadataExtensions.Name = "txt_metadataExtensions";
 			this.txt_metadataExtensions.Size = new System.Drawing.Size(554, 20);
 			this.txt_metadataExtensions.TabIndex = 58;
@@ -183,7 +187,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(6, 119);
+			this.label2.Location = new System.Drawing.Point(6, 178);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(142, 13);
 			this.label2.TabIndex = 57;
@@ -191,7 +195,7 @@
 			// 
 			// txt_standaloneExtensions
 			// 
-			this.txt_standaloneExtensions.Location = new System.Drawing.Point(154, 116);
+			this.txt_standaloneExtensions.Location = new System.Drawing.Point(154, 175);
 			this.txt_standaloneExtensions.Name = "txt_standaloneExtensions";
 			this.txt_standaloneExtensions.Size = new System.Drawing.Size(554, 20);
 			this.txt_standaloneExtensions.TabIndex = 56;
@@ -199,7 +203,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(6, 93);
+			this.label1.Location = new System.Drawing.Point(6, 122);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(145, 13);
 			this.label1.TabIndex = 55;
@@ -207,7 +211,7 @@
 			// 
 			// txt_excludeFilter
 			// 
-			this.txt_excludeFilter.Location = new System.Drawing.Point(154, 90);
+			this.txt_excludeFilter.Location = new System.Drawing.Point(154, 119);
 			this.txt_excludeFilter.Name = "txt_excludeFilter";
 			this.txt_excludeFilter.Size = new System.Drawing.Size(554, 20);
 			this.txt_excludeFilter.TabIndex = 54;
@@ -234,7 +238,7 @@
 			this.groupBox3.Controls.Add(this.label_Imdisk_true);
 			this.groupBox3.Controls.Add(this.linkLabel1);
 			this.groupBox3.Controls.Add(this.label8);
-			this.groupBox3.Location = new System.Drawing.Point(27, 596);
+			this.groupBox3.Location = new System.Drawing.Point(27, 655);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(377, 88);
 			this.groupBox3.TabIndex = 67;
@@ -285,7 +289,7 @@
 			// 
 			// btn_cancel
 			// 
-			this.btn_cancel.Location = new System.Drawing.Point(803, 661);
+			this.btn_cancel.Location = new System.Drawing.Point(803, 720);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 23);
 			this.btn_cancel.TabIndex = 66;
@@ -295,7 +299,7 @@
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(900, 661);
+			this.btn_ok.Location = new System.Drawing.Point(900, 720);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 23);
 			this.btn_ok.TabIndex = 65;
@@ -354,11 +358,57 @@
 			this.label7.TabIndex = 73;
 			this.label7.Text = "( 0 = Unlimited )";
 			// 
+			// btn_manage_filter
+			// 
+			this.btn_manage_filter.Location = new System.Drawing.Point(617, 88);
+			this.btn_manage_filter.Name = "btn_manage_filter";
+			this.btn_manage_filter.Size = new System.Drawing.Size(91, 23);
+			this.btn_manage_filter.TabIndex = 88;
+			this.btn_manage_filter.Text = "Manage Items";
+			this.btn_manage_filter.UseVisualStyleBackColor = true;
+			this.btn_manage_filter.Click += new System.EventHandler(this.btn_manage_filter_Click);
+			// 
+			// chk_filter_comma
+			// 
+			this.chk_filter_comma.AutoSize = true;
+			this.chk_filter_comma.Location = new System.Drawing.Point(154, 90);
+			this.chk_filter_comma.Name = "chk_filter_comma";
+			this.chk_filter_comma.Size = new System.Drawing.Size(226, 17);
+			this.chk_filter_comma.TabIndex = 87;
+			this.chk_filter_comma.Text = "Enable Multiple Entries, Comma Separated";
+			this.chk_filter_comma.UseVisualStyleBackColor = true;
+			this.chk_filter_comma.CheckedChanged += new System.EventHandler(this.chk_filter_comma_CheckedChanged);
+			// 
+			// btn_manage_exclude
+			// 
+			this.btn_manage_exclude.Location = new System.Drawing.Point(617, 142);
+			this.btn_manage_exclude.Name = "btn_manage_exclude";
+			this.btn_manage_exclude.Size = new System.Drawing.Size(91, 23);
+			this.btn_manage_exclude.TabIndex = 92;
+			this.btn_manage_exclude.Text = "Manage Items";
+			this.btn_manage_exclude.UseVisualStyleBackColor = true;
+			this.btn_manage_exclude.Click += new System.EventHandler(this.btn_manage_exclude_Click);
+			// 
+			// chk_exclude_comma
+			// 
+			this.chk_exclude_comma.AutoSize = true;
+			this.chk_exclude_comma.Location = new System.Drawing.Point(154, 146);
+			this.chk_exclude_comma.Name = "chk_exclude_comma";
+			this.chk_exclude_comma.Size = new System.Drawing.Size(226, 17);
+			this.chk_exclude_comma.TabIndex = 91;
+			this.chk_exclude_comma.Text = "Enable Multiple Entries, Comma Separated";
+			this.chk_exclude_comma.UseVisualStyleBackColor = true;
+			this.chk_exclude_comma.CheckedChanged += new System.EventHandler(this.chk_exclude_comma_CheckedChanged);
+			// 
 			// RomExtractor_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1068, 711);
+			this.ClientSize = new System.Drawing.Size(1068, 768);
+			this.Controls.Add(this.btn_manage_exclude);
+			this.Controls.Add(this.chk_exclude_comma);
+			this.Controls.Add(this.btn_manage_filter);
+			this.Controls.Add(this.chk_filter_comma);
 			this.Controls.Add(this.label7);
 			this.Controls.Add(this.label6);
 			this.Controls.Add(this.num_cacheMaxSize);
@@ -427,5 +477,9 @@
 		private System.Windows.Forms.NumericUpDown num_cacheMaxSize;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.Button btn_manage_filter;
+		private System.Windows.Forms.CheckBox chk_filter_comma;
+		private System.Windows.Forms.Button btn_manage_exclude;
+		private System.Windows.Forms.CheckBox chk_exclude_comma;
 	}
 }

@@ -10,51 +10,32 @@ using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class RunAsAdminTask_Config : Form
+	public partial class ChangeExe_Config : Form
 	{
+		public string newexe = "";
 		public string filter = "";
-		public string filterInsideFile = "";
 		public string exclude = "";
 		public bool commaFilter = false;
 		public bool commaExclude = false;
-		public RunAsAdminTask_Config(Dictionary<string, string> Options)
+
+		public ChangeExe_Config(Dictionary<string, string> Options)
 		{
-
+			newexe = Options.ContainsKey("newexe") ? Options["newexe"] : "";
 			filter = Options.ContainsKey("filter") ? Options["filter"] : "";
-			filterInsideFile = Options.ContainsKey("filterInsideFile") ? Options["filterInsideFile"] : "";
-
 			exclude = Options.ContainsKey("exclude") ? Options["exclude"] : "";
 
 			if (Options.ContainsKey("commaFilter") && Options["commaFilter"] == "yes") commaFilter = true;
 			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
 
+
 			InitializeComponent();
+			txt_option.Text = newexe;
 			txt_filter.Text = filter;
-			txt_filter_inside_file.Text = filterInsideFile;
 			txt_exclude.Text = exclude;
 			chk_exclude_comma.Checked = commaExclude;
 			chk_filter_comma.Checked = commaFilter;
 			btn_manage_filter.Enabled = commaFilter;
 			btn_manage_exclude.Enabled = commaExclude;
-		}
-
-		private void btn_ok_Click(object sender, EventArgs e)
-		{
-			filter = txt_filter.Text;
-			filterInsideFile = txt_filter_inside_file.Text;
-
-			exclude = txt_exclude.Text;
-			commaFilter = chk_filter_comma.Checked;
-			commaExclude = chk_exclude_comma.Checked;
-
-			this.DialogResult = DialogResult.OK;
-			this.Close();
-		}
-
-		private void btn_cancel_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			this.Close();
 		}
 
 		private void btn_manage_filter_Click(object sender, EventArgs e)
@@ -75,6 +56,34 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				txt_exclude.Text = frm.TxtValue;
 			}
+		}
+
+		private void btn_cancel_Click(object sender, EventArgs e)
+		{
+			this.DialogResult = DialogResult.Cancel;
+			this.Close();
+		}
+
+		private void btn_ok_Click(object sender, EventArgs e)
+		{
+			if (txt_option.Text == "")
+			{
+				MessageBox.Show("You have to enter a new exe name");
+				return;
+			}
+			newexe = txt_option.Text;
+			filter = txt_filter.Text;
+			exclude = txt_exclude.Text;
+			commaFilter = chk_filter_comma.Checked;
+			commaExclude = chk_exclude_comma.Checked;
+
+			this.DialogResult = DialogResult.OK;
+			this.Close();
+		}
+
+		private void ChangeExe_Config_Load(object sender, EventArgs e)
+		{
+
 		}
 
 		private void chk_filter_comma_CheckedChanged(object sender, EventArgs e)

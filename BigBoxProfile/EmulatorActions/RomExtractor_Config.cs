@@ -24,6 +24,9 @@ namespace BigBoxProfile.EmulatorActions
 		public string priority = "";
 		public bool RamDiskPossible = false;
 
+		public bool commaFilter = false;
+		public bool commaExclude = false;
+
 		public RomExtractor_Config(Dictionary<string, string> Options)
 		{
 			cachedir = Options.ContainsKey("cachedir") ? Options["cachedir"] : "";
@@ -45,6 +48,9 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
+			if (Options.ContainsKey("commaFilter") && Options["commaFilter"] == "yes") commaFilter = true;
+			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
+
 			InitializeComponent();
 		}
 
@@ -56,6 +62,11 @@ namespace BigBoxProfile.EmulatorActions
 			txt_excludeFilter.Text = excludeFilter;
 			txt_standaloneExtensions.Text = standaloneExtensions;
 			txt_metadataExtensions.Text = metadataExtensions;
+
+			chk_exclude_comma.Checked = commaExclude;
+			chk_filter_comma.Checked = commaFilter;
+			btn_manage_filter.Enabled = commaFilter;
+			btn_manage_exclude.Enabled = commaExclude;
 
 			lv_priority.Items.Clear();
 			if (priorityList.Count() == 0)
@@ -124,6 +135,9 @@ namespace BigBoxProfile.EmulatorActions
 			excludeFilter = txt_excludeFilter.Text;
 			standaloneExtensions = txt_standaloneExtensions.Text;
 			metadataExtensions = txt_metadataExtensions.Text;
+
+			commaFilter = chk_filter_comma.Checked;
+			commaExclude = chk_exclude_comma.Checked;
 
 			priorityList = new List<RomExtractor_PriorityData> { new RomExtractor_PriorityData() };
 			priority = "";
@@ -260,6 +274,36 @@ namespace BigBoxProfile.EmulatorActions
 						}
 					}
 				}
+			}
+		}
+
+		private void chk_filter_comma_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void chk_exclude_comma_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btn_manage_filter_Click(object sender, EventArgs e)
+		{
+			var frm = new Manage_Items(txt_filter.Text);
+			var result = frm.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				txt_filter.Text = frm.TxtValue;
+			}
+		}
+
+		private void btn_manage_exclude_Click(object sender, EventArgs e)
+		{
+			var frm = new Manage_Items(txt_excludeFilter.Text);
+			var result = frm.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				txt_excludeFilter.Text = frm.TxtValue;
 			}
 		}
 	}

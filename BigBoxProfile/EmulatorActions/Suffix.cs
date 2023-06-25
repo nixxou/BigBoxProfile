@@ -25,6 +25,10 @@ namespace BigBoxProfile.EmulatorActions
 		private bool _asArg = false;
 		private string _filter = "";
 
+		private string _exclude = "";
+		private bool _commaFilter = false;
+		private bool _commaExclude = false;
+
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
 		//public Dictionary<string, string> Options = new Dictionary<string, string>();
@@ -45,6 +49,15 @@ namespace BigBoxProfile.EmulatorActions
 				else Options["as_arg"] = "no";
 				Options["suffix"] = frm.result;
 				Options["filter"] = frm.filter.Trim();
+
+				Options["exclude"] = frm.exclude.Trim();
+
+				if (frm.commaFilter) Options["commaFilter"] = "yes";
+				else Options["commaFilter"] = "no";
+
+				if (frm.commaExclude) Options["commaExclude"] = "yes";
+				else Options["commaExclude"] = "no";
+
 				UpdateConfig();
 			}
 
@@ -56,6 +69,9 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("suffix") == false) Options["suffix"] = "";
 			if (Options.ContainsKey("filter") == false) Options["filter"] = "";
 			if (Options.ContainsKey("as_arg") == false) Options["as_arg"] = "yes";
+			if (Options.ContainsKey("exclude") == false) Options["exclude"] = "";
+			if (Options.ContainsKey("commaFilter") == false) Options["commaFilter"] = "no";
+			if (Options.ContainsKey("commaExclude") == false) Options["commaExclude"] = "no";
 			UpdateConfig();
 
 		}
@@ -80,6 +96,7 @@ namespace BigBoxProfile.EmulatorActions
 				else description = "suffix this to the command line : ";
 				description += Options["suffix"].ToString();
 				if (_filter != "") description += $" [Only if command line contains {_filter}]";
+				if (_exclude != "") description += $" [Exclude {_exclude}]";
 
 			}
 			else
@@ -107,20 +124,73 @@ namespace BigBoxProfile.EmulatorActions
 		}
 		public string[] Modify(string[] args)
 		{
-			string cmd = BigBoxUtils.ArgsToCommandLine(args);
-			if (_filter == "" || cmd.Contains(_filter))
+			if (IsConfigured() == false)
 			{
-				if (_asArg)
+				return args;
+			}
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
+			{
+				if (_commaFilter)
 				{
-					Array.Resize(ref args, args.Length + 1); // augmenter la taille du tableau de 1
-					args[args.Length - 1] = _suffix;
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return args;
 				}
 				else
 				{
-					cmd =  cmd + _suffix;
-					args = BigBoxUtils.CommandLineToArgs(cmd);
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return args;
+					}
 				}
 			}
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return args;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return args;
+					}
+				}
+			}
+
+			if (_asArg)
+			{
+				Array.Resize(ref args, args.Length + 1); // augmenter la taille du tableau de 1
+				args[args.Length - 1] = _suffix;
+			}
+			else
+			{
+				cmd =  cmd + _suffix;
+				args = BigBoxUtils.CommandLineToArgs(cmd);
+			}
+			
 
 
 			return args;
@@ -140,6 +210,9 @@ namespace BigBoxProfile.EmulatorActions
 			_suffix = Options["suffix"];
 			_filter = Options["filter"];
 			_asArg = Options["as_arg"] == "yes" ? true : false;
+			_exclude = Options["exclude"];
+			_commaFilter = Options["commaFilter"] == "yes" ? true : false;
+			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
 		}
 
 		public void ExecuteBefore(string[] args)

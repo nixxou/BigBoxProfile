@@ -37,6 +37,9 @@ namespace BigBoxProfile.EmulatorActions
 		private string _maxSize = "0";
 		private string _filter = "";
 		private bool _deleteOnExit = false;
+		private string _exclude = "";
+		private bool _commaFilter = false;
+		private bool _commaExclude = false;
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
@@ -65,6 +68,13 @@ namespace BigBoxProfile.EmulatorActions
 				Options["sourceDir"] = frm.sourceDir.Trim();
 				Options["targetDir"] = frm.targetDir.Trim();
 				Options["maxSize"] = frm.maxSize.Trim();
+
+				Options["exclude"] = frm.exclude.Trim();
+				if (frm.commaFilter) Options["commaFilter"] = "yes";
+				else Options["commaFilter"] = "no";
+				if (frm.commaExclude) Options["commaExclude"] = "yes";
+				else Options["commaExclude"] = "no";
+
 				UpdateConfig();
 			}
 			
@@ -80,6 +90,9 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("useRamDisk") == false) Options["useRamDisk"] = "no";
 			if (Options.ContainsKey("maxSize") == false) Options["maxSize"] = "0";
 			if (Options.ContainsKey("deleteOnExit") == false) Options["deleteOnExit"] = "no";
+			if (Options.ContainsKey("exclude") == false) Options["exclude"] = "";
+			if (Options.ContainsKey("commaFilter") == false) Options["commaFilter"] = "no";
+			if (Options.ContainsKey("commaExclude") == false) Options["commaExclude"] = "no";
 			UpdateConfig();
 
 		}
@@ -107,6 +120,7 @@ namespace BigBoxProfile.EmulatorActions
 				description = $"Copy from {_sourceDir} to {_targetDir}";
 				if(_useRamDisk) description += $" [Ramdisk if size < {_maxSize} MB]";
 				if (_filter != "") description += $" [Only if command line contains {_filter}]";
+				if (_exclude != "") description += $" [Exclude {_exclude}]";
 				if (_deleteOnExit == false) description += $" [DELETE=NO]";
 
 			}
@@ -132,6 +146,64 @@ namespace BigBoxProfile.EmulatorActions
 
 		public string[] Modify(string[] args)
 		{
+
+			if (IsConfigured() == false)
+			{
+				return args;
+			}
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
+			{
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return args;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return args;
+					}
+				}
+			}
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return args;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return args;
+					}
+				}
+			}
+
+
 			string exeArg = args[0];
 			var filteredArgs = BigBoxUtils.ArgsWithoutFirstElement(args);
 
@@ -176,10 +248,70 @@ namespace BigBoxProfile.EmulatorActions
 			_useRamDisk = Options["useRamDisk"] == "yes" ? true : false;
 			_maxSize = Options["maxSize"];
 			_deleteOnExit = Options["deleteOnExit"] == "yes" ? true : false;
+			_exclude = Options["exclude"];
+			_commaFilter = Options["commaFilter"] == "yes" ? true : false;
+			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
 		}
 
 		public void ExecuteBefore(string[] args)
 		{
+
+			if (IsConfigured() == false)
+			{
+				return;
+			}
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
+			{
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+
 			string exeArg = args[0];
 			var filteredArgs = BigBoxUtils.ArgsWithoutFirstElement(args);
 			foreach (var elem in filteredArgs)

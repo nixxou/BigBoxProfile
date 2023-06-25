@@ -18,30 +18,43 @@ namespace BigBoxProfile.EmulatorActions
 		public string targetDir = "";
 		public bool useRamDisk = false;
 		public string maxSize = "0";
-		public string filter = "";
 		public bool deleteOnExit = false;
+
+		public string filter = "";
+		public string exclude = "";
+		public bool commaFilter = false;
+		public bool commaExclude = false;
 
 		public CopyFile_Config(Dictionary<string, string> Options)
 		{
 			sourceDir = Options.ContainsKey("sourceDir") ? Options["sourceDir"] : "";
 			targetDir = Options.ContainsKey("targetDir") ? Options["targetDir"] : "";
-			filter = Options.ContainsKey("filter") ? Options["filter"] : "";
 			maxSize = Options.ContainsKey("maxSize") ? Options["maxSize"] : "0";
 
 			if (Options.ContainsKey("useRamDisk") && Options["useRamDisk"] == "yes") useRamDisk = true;
 			if (Options.ContainsKey("deleteOnExit") && Options["deleteOnExit"] == "yes") deleteOnExit = true;
 
 
+			filter = Options.ContainsKey("filter") ? Options["filter"] : "";
+			exclude = Options.ContainsKey("exclude") ? Options["exclude"] : "";
+			if (Options.ContainsKey("commaFilter") && Options["commaFilter"] == "yes") commaFilter = true;
+			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
 
 			InitializeComponent();
 			UpdateInstalled();
 
 			txt_sourceDir.Text = sourceDir;
 			txt_targetDir.Text = targetDir;
-			txt_filter.Text = filter;
 			num_maxSize.Text = maxSize;
 			chk_deleteOnExit.Checked = deleteOnExit;
 			chk_useRamDisk.Checked = useRamDisk;
+
+			txt_filter.Text = filter;
+			txt_exclude.Text = exclude;
+			chk_exclude_comma.Checked = commaExclude;
+			chk_filter_comma.Checked = commaFilter;
+			btn_manage_filter.Enabled = commaFilter;
+			btn_manage_exclude.Enabled = commaExclude;
 		}
 
 
@@ -55,8 +68,12 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			sourceDir = txt_sourceDir.Text;
 			targetDir = txt_targetDir.Text;
-			filter= txt_filter.Text;
 			maxSize = num_maxSize.Value.ToString();
+
+			filter = txt_filter.Text;
+			exclude = txt_exclude.Text;
+			commaFilter = chk_filter_comma.Checked;
+			commaExclude = chk_exclude_comma.Checked;
 
 			useRamDisk = false;
 			if (chk_useRamDisk.Checked) useRamDisk = true;
@@ -141,6 +158,38 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				chk_deleteOnExit.Enabled = true;
 			}
+		}
+
+		private void btn_manage_filter_Click(object sender, EventArgs e)
+		{
+			var frm = new Manage_Items(txt_filter.Text);
+			var result = frm.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				txt_filter.Text = frm.TxtValue;
+			}
+		}
+
+		private void btn_manage_exclude_Click(object sender, EventArgs e)
+		{
+			var frm = new Manage_Items(txt_exclude.Text);
+			var result = frm.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				txt_exclude.Text = frm.TxtValue;
+			}
+		}
+
+		private void chk_filter_comma_CheckedChanged(object sender, EventArgs e)
+		{
+			commaFilter = chk_filter_comma.Checked;
+			btn_manage_filter.Enabled = commaFilter;
+		}
+
+		private void chk_exclude_comma_CheckedChanged(object sender, EventArgs e)
+		{
+			commaExclude = chk_exclude_comma.Checked;
+			btn_manage_exclude.Enabled = commaExclude;
 		}
 	}
 }

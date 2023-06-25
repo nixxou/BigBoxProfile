@@ -21,6 +21,9 @@ namespace BigBoxProfile.EmulatorActions
 		public string regex = "";
 		public string timeout = "0";
 		public string wait = "0";
+		public string exclude = "";
+		public bool commaFilter = false;
+		public bool commaExclude = false;
 
 
 		public FakeFullScreen_Config(Dictionary<string, string> Options)
@@ -33,6 +36,9 @@ namespace BigBoxProfile.EmulatorActions
 			timeout = Options.ContainsKey("timeout") ? Options["timeout"] : "5";
 			wait = Options.ContainsKey("wait") ? Options["wait"] : "0";
 
+			exclude = Options.ContainsKey("exclude") ? Options["exclude"] : "";
+			if (Options.ContainsKey("commaFilter") && Options["commaFilter"] == "yes") commaFilter = true;
+			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
 
 			InitializeComponent();
 
@@ -41,6 +47,12 @@ namespace BigBoxProfile.EmulatorActions
 			txt_regex.Text = regex;
 			num_timeout.Text = timeout;
 			num_waitbefore.Text = wait;
+
+			txt_exclude.Text = exclude;
+			chk_exclude_comma.Checked = commaExclude;
+			chk_filter_comma.Checked = commaFilter;
+			btn_manage_filter.Enabled = commaFilter;
+			btn_manage_exclude.Enabled = commaExclude;
 
 			var index = cmb_targetType.Items.IndexOf(targetType);
 			if (index >= 0) cmb_targetType.SelectedIndex = index;
@@ -62,6 +74,10 @@ namespace BigBoxProfile.EmulatorActions
 			regex= txt_regex.Text;
 			timeout = num_timeout.Text;
 			wait = num_waitbefore.Text;
+
+			exclude = txt_exclude.Text;
+			commaFilter = chk_filter_comma.Checked;
+			commaExclude = chk_exclude_comma.Checked;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
@@ -160,6 +176,38 @@ namespace BigBoxProfile.EmulatorActions
 		private void txt_regex_TextChanged(object sender, EventArgs e)
 		{
 
+		}
+
+		private void btn_manage_filter_Click(object sender, EventArgs e)
+		{
+			var frm = new Manage_Items(txt_filter.Text);
+			var result = frm.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				txt_filter.Text = frm.TxtValue;
+			}
+		}
+
+		private void btn_manage_exclude_Click(object sender, EventArgs e)
+		{
+			var frm = new Manage_Items(txt_exclude.Text);
+			var result = frm.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				txt_exclude.Text = frm.TxtValue;
+			}
+		}
+
+		private void chk_filter_comma_CheckedChanged(object sender, EventArgs e)
+		{
+			commaFilter = chk_filter_comma.Checked;
+			btn_manage_filter.Enabled = commaFilter;
+		}
+
+		private void chk_exclude_comma_CheckedChanged(object sender, EventArgs e)
+		{
+			commaExclude = chk_exclude_comma.Checked;
+			btn_manage_exclude.Enabled = commaExclude;
 		}
 	}
 }

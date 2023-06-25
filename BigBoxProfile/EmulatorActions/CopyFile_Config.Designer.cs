@@ -49,6 +49,13 @@
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
 			this.label8 = new System.Windows.Forms.Label();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
+			this.btn_manage_exclude = new System.Windows.Forms.Button();
+			this.chk_exclude_comma = new System.Windows.Forms.CheckBox();
+			this.label6 = new System.Windows.Forms.Label();
+			this.txt_exclude = new System.Windows.Forms.TextBox();
+			this.btn_manage_filter = new System.Windows.Forms.Button();
+			this.chk_filter_comma = new System.Windows.Forms.CheckBox();
+			this.label5 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.num_maxSize)).BeginInit();
 			this.groupBox3.SuspendLayout();
 			this.SuspendLayout();
@@ -90,7 +97,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(-1, 174);
+			this.label2.Location = new System.Drawing.Point(-1, 225);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(173, 13);
 			this.label2.TabIndex = 31;
@@ -98,7 +105,7 @@
 			// 
 			// num_maxSize
 			// 
-			this.num_maxSize.Location = new System.Drawing.Point(176, 172);
+			this.num_maxSize.Location = new System.Drawing.Point(176, 223);
 			this.num_maxSize.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -120,7 +127,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(18, 48);
+			this.label3.Location = new System.Drawing.Point(15, 48);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(89, 13);
 			this.label3.TabIndex = 33;
@@ -145,7 +152,7 @@
 			// chk_useRamDisk
 			// 
 			this.chk_useRamDisk.AutoSize = true;
-			this.chk_useRamDisk.Location = new System.Drawing.Point(176, 149);
+			this.chk_useRamDisk.Location = new System.Drawing.Point(176, 188);
 			this.chk_useRamDisk.Name = "chk_useRamDisk";
 			this.chk_useRamDisk.Size = new System.Drawing.Size(175, 17);
 			this.chk_useRamDisk.TabIndex = 36;
@@ -156,7 +163,7 @@
 			// chk_deleteOnExit
 			// 
 			this.chk_deleteOnExit.AutoSize = true;
-			this.chk_deleteOnExit.Location = new System.Drawing.Point(178, 103);
+			this.chk_deleteOnExit.Location = new System.Drawing.Point(368, 188);
 			this.chk_deleteOnExit.Name = "chk_deleteOnExit";
 			this.chk_deleteOnExit.Size = new System.Drawing.Size(152, 17);
 			this.chk_deleteOnExit.TabIndex = 37;
@@ -165,7 +172,7 @@
 			// 
 			// btn_cancel
 			// 
-			this.btn_cancel.Location = new System.Drawing.Point(405, 275);
+			this.btn_cancel.Location = new System.Drawing.Point(404, 340);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 23);
 			this.btn_cancel.TabIndex = 39;
@@ -175,7 +182,7 @@
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(486, 275);
+			this.btn_ok.Location = new System.Drawing.Point(484, 340);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 23);
 			this.btn_ok.TabIndex = 38;
@@ -189,7 +196,7 @@
 			this.groupBox3.Controls.Add(this.label_Imdisk_true);
 			this.groupBox3.Controls.Add(this.linkLabel1);
 			this.groupBox3.Controls.Add(this.label8);
-			this.groupBox3.Location = new System.Drawing.Point(12, 210);
+			this.groupBox3.Location = new System.Drawing.Point(12, 275);
 			this.groupBox3.Name = "groupBox3";
 			this.groupBox3.Size = new System.Drawing.Size(377, 88);
 			this.groupBox3.TabIndex = 40;
@@ -245,11 +252,85 @@
 			this.timer1.Interval = 3000;
 			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
 			// 
+			// btn_manage_exclude
+			// 
+			this.btn_manage_exclude.Location = new System.Drawing.Point(429, 141);
+			this.btn_manage_exclude.Name = "btn_manage_exclude";
+			this.btn_manage_exclude.Size = new System.Drawing.Size(91, 23);
+			this.btn_manage_exclude.TabIndex = 47;
+			this.btn_manage_exclude.Text = "Manage Items";
+			this.btn_manage_exclude.UseVisualStyleBackColor = true;
+			this.btn_manage_exclude.Click += new System.EventHandler(this.btn_manage_exclude_Click);
+			// 
+			// chk_exclude_comma
+			// 
+			this.chk_exclude_comma.AutoSize = true;
+			this.chk_exclude_comma.Location = new System.Drawing.Point(176, 143);
+			this.chk_exclude_comma.Name = "chk_exclude_comma";
+			this.chk_exclude_comma.Size = new System.Drawing.Size(226, 17);
+			this.chk_exclude_comma.TabIndex = 46;
+			this.chk_exclude_comma.Text = "Enable Multiple Entries, Comma Separated";
+			this.chk_exclude_comma.UseVisualStyleBackColor = true;
+			this.chk_exclude_comma.CheckedChanged += new System.EventHandler(this.chk_exclude_comma_CheckedChanged);
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Location = new System.Drawing.Point(15, 122);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(145, 13);
+			this.label6.TabIndex = 45;
+			this.label6.Text = "Exclude if cmdLine contains :";
+			// 
+			// txt_exclude
+			// 
+			this.txt_exclude.Location = new System.Drawing.Point(176, 115);
+			this.txt_exclude.Name = "txt_exclude";
+			this.txt_exclude.Size = new System.Drawing.Size(344, 20);
+			this.txt_exclude.TabIndex = 44;
+			// 
+			// btn_manage_filter
+			// 
+			this.btn_manage_filter.Location = new System.Drawing.Point(429, 90);
+			this.btn_manage_filter.Name = "btn_manage_filter";
+			this.btn_manage_filter.Size = new System.Drawing.Size(91, 23);
+			this.btn_manage_filter.TabIndex = 43;
+			this.btn_manage_filter.Text = "Manage Items";
+			this.btn_manage_filter.UseVisualStyleBackColor = true;
+			this.btn_manage_filter.Click += new System.EventHandler(this.btn_manage_filter_Click);
+			// 
+			// chk_filter_comma
+			// 
+			this.chk_filter_comma.AutoSize = true;
+			this.chk_filter_comma.Location = new System.Drawing.Point(176, 92);
+			this.chk_filter_comma.Name = "chk_filter_comma";
+			this.chk_filter_comma.Size = new System.Drawing.Size(226, 17);
+			this.chk_filter_comma.TabIndex = 42;
+			this.chk_filter_comma.Text = "Enable Multiple Entries, Comma Separated";
+			this.chk_filter_comma.UseVisualStyleBackColor = true;
+			this.chk_filter_comma.CheckedChanged += new System.EventHandler(this.chk_filter_comma_CheckedChanged);
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(29, 73);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(128, 13);
+			this.label5.TabIndex = 41;
+			this.label5.Text = "Only if cmdLine contains :";
+			// 
 			// CopyFile_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(574, 307);
+			this.ClientSize = new System.Drawing.Size(571, 373);
+			this.Controls.Add(this.btn_manage_exclude);
+			this.Controls.Add(this.chk_exclude_comma);
+			this.Controls.Add(this.label6);
+			this.Controls.Add(this.txt_exclude);
+			this.Controls.Add(this.btn_manage_filter);
+			this.Controls.Add(this.chk_filter_comma);
+			this.Controls.Add(this.label5);
 			this.Controls.Add(this.groupBox3);
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
@@ -298,5 +379,12 @@
 		private System.Windows.Forms.LinkLabel linkLabel1;
 		private System.Windows.Forms.Label label8;
 		private System.Windows.Forms.Timer timer1;
+		private System.Windows.Forms.Button btn_manage_exclude;
+		private System.Windows.Forms.CheckBox chk_exclude_comma;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.TextBox txt_exclude;
+		private System.Windows.Forms.Button btn_manage_filter;
+		private System.Windows.Forms.CheckBox chk_filter_comma;
+		private System.Windows.Forms.Label label5;
 	}
 }

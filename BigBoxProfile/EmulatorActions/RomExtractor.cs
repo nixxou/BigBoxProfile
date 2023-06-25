@@ -43,7 +43,8 @@ namespace BigBoxProfile.EmulatorActions
 		private List<RomExtractor_PriorityData> _priority = new List<RomExtractor_PriorityData>();
 		private Dictionary<string,string> _extractDone= new Dictionary<string,string>();
 
-
+		private bool _commaFilter = false;
+		private bool _commaExclude = false;
 
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
@@ -69,6 +70,13 @@ namespace BigBoxProfile.EmulatorActions
 				Options["standaloneExtensions"] = frm.standaloneExtensions.Trim();
 				Options["metadataExtensions"] = frm.metadataExtensions.Trim();
 				Options["priority"] = frm.priority.Trim();
+
+				if (frm.commaFilter) Options["commaFilter"] = "yes";
+				else Options["commaFilter"] = "no";
+
+				if (frm.commaExclude) Options["commaExclude"] = "yes";
+				else Options["commaExclude"] = "no";
+
 				UpdateConfig();
 			}
 			
@@ -86,6 +94,9 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("standaloneExtensions") == false) Options["standaloneExtensions"] = "gb, gbc, gba, agb, nes, fds, smc, sfc, n64, z64, v64, ndd, md, smd, gen, iso, chd, gg, gcm, 32x, bin";
 			if (Options.ContainsKey("metadataExtensions") == false) Options["metadataExtensions"] = "nfo, txt, dat, xml, json, htc, hts";
 			if (Options.ContainsKey("priority") == false) Options["priority"] = "";
+
+			if (Options.ContainsKey("commaFilter") == false) Options["commaFilter"] = "no";
+			if (Options.ContainsKey("commaExclude") == false) Options["commaExclude"] = "no";
 			UpdateConfig();
 
 
@@ -112,6 +123,8 @@ namespace BigBoxProfile.EmulatorActions
 			if (IsConfigured())
 			{
 				description = $"Extract to {_cachedir}";
+				if (_filter != "") description += $" [Only if command line contains {_filter}]";
+				if (_excludeFilter != "") description += $" [Exclude {_excludeFilter}]";
 
 			}
 			else
@@ -182,6 +195,9 @@ namespace BigBoxProfile.EmulatorActions
 			_standaloneExtensions = Options["standaloneExtensions"];
 			_metadataExtensions = Options["metadataExtensions"];
 
+			_commaFilter = Options["commaFilter"] == "yes" ? true : false;
+			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
+
 			if (!String.IsNullOrEmpty(Options["priority"]))
 			{
 				var priority_arr = BigBoxUtils.explode(Options["priority"], "|||");
@@ -197,16 +213,64 @@ namespace BigBoxProfile.EmulatorActions
 		public void ExecuteBefore(string[] args)
 		{
 			//Thread.Sleep(8000);
+
+			if (IsConfigured() == false)
+			{
+				return;
+			}
 			string cmd = BigBoxUtils.ArgsToCommandLine(args);
-			if (_filter != "" && !cmd.ToLower().Trim().Contains(_filter.ToLower().Trim()))
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
 			{
-				return;
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return;
+					}
+				}
 			}
-			if(_excludeFilter != "" && cmd.ToLower().Trim().Contains(_excludeFilter.ToLower().Trim()))
+
+			if (_excludeFilter != "")
 			{
-				return;
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_excludeFilter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return;
+				}
+				else
+				{
+					if (cmdlower.Contains(_excludeFilter.ToLower()))
+					{
+						return;
+					}
+				}
 			}
-			if(!Directory.Exists(_cachedir))
+
+			if (!Directory.Exists(_cachedir))
 			{
 				return;
 			}
