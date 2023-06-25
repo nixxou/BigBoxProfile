@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
 	
 
-	public partial class ExecuteAHK_Config : Form
+	public partial class ExecuteAHK_Config : KryptonForm
 	{
 		public string filter = "";
 		public string ahkCodeExemple = "";

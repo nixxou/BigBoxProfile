@@ -8,10 +8,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class FakeFullScreen_Config : Form
+	public partial class FakeFullScreen_Config : KryptonForm
 	{
 
 		//public string result = "";

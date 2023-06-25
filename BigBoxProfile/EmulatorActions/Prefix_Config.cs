@@ -8,11 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
 	
-	public partial class Prefix_Config : Form
+	public partial class Prefix_Config : KryptonForm
 	{
 		public string result = "";
 		public string filter = "";

@@ -9,10 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class RomExtractor_Config : Form
+	public partial class RomExtractor_Config : KryptonForm
 	{
 		public string cachedir = "";
 		public string cacheMaxSize = "0";
@@ -305,6 +306,17 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				txt_excludeFilter.Text = frm.TxtValue;
 			}
+		}
+
+		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+
+		}
+
+		private void kryptonLinkLabel1_LinkClicked(object sender, EventArgs e)
+		{
+			var linkLabel = (KryptonLinkLabel)sender;
+			System.Diagnostics.Process.Start(linkLabel.Text);
 		}
 	}
 }

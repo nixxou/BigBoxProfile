@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class ChangeExe_Config : Form
+	public partial class ChangeExe_Config : KryptonForm
 	{
 		public string newexe = "";
 		public string filter = "";

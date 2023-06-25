@@ -9,10 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class CopyFile_Config : Form
+	public partial class CopyFile_Config : KryptonForm
 	{
 		public string sourceDir = "";
 		public string targetDir = "";
@@ -190,6 +191,12 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			commaExclude = chk_exclude_comma.Checked;
 			btn_manage_exclude.Enabled = commaExclude;
+		}
+
+		private void kryptonLinkLabel1_LinkClicked(object sender, EventArgs e)
+		{
+			var linkLabel = (KryptonLinkLabel)sender;
+			System.Diagnostics.Process.Start(linkLabel.Text);
 		}
 	}
 }

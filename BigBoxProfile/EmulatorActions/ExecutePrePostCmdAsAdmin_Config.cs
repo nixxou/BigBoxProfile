@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using ListView = System.Windows.Forms.ListView;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class ExecutePrePostCmdAsAdmin_Config : Form
+	public partial class ExecutePrePostCmdAsAdmin_Config : KryptonForm
 	{
 		public string filter = "";
 		public string commandList = "";

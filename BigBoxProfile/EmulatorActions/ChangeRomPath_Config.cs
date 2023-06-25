@@ -8,10 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class ChangeRomPath_Config : Form
+	public partial class ChangeRomPath_Config : KryptonForm
 	{
 		public string hight_priority = "";
 		public string low_priority = "";
@@ -324,6 +325,11 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			this.DialogResult = DialogResult.Cancel;
 			this.Close();
+		}
+
+		private void groupBox1_Panel_Paint(object sender, PaintEventArgs e)
+		{
+
 		}
 	}
 }

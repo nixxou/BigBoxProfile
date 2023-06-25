@@ -12,10 +12,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.WebRequestMethods;
+using ComponentFactory.Krypton.Toolkit;
+
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class ChangeDisposition_Config : Form
+	public partial class ChangeDisposition_Config : KryptonForm
 	{
 
 		public string result = "";
