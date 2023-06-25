@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
 {
-	public partial class Manage_Items : Form
+	public partial class Manage_Items : KryptonForm
 	{
 		public string TxtValue = "";
 		public Manage_Items(string value)

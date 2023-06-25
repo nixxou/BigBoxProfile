@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
+using ComponentFactory.Krypton.Toolkit;
+
 namespace BigBoxProfile
 {
-	public partial class SoundCardConfig : Form
+	public partial class SoundCardConfig : KryptonForm
 	{
 		public string result = Profile.ActiveProfile.Configuration["soundcard"];
 		public SoundCardConfig()

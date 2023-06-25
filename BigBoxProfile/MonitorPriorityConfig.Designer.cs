@@ -28,18 +28,21 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MonitorPriorityConfig));
 			this.listView_monitor = new System.Windows.Forms.ListView();
 			this.val = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.cmb_add = new System.Windows.Forms.ComboBox();
-			this.btn_add = new System.Windows.Forms.Button();
-			this.txt_result = new System.Windows.Forms.TextBox();
-			this.btn_up = new System.Windows.Forms.Button();
-			this.btn_down = new System.Windows.Forms.Button();
-			this.btn_delete = new System.Windows.Forms.Button();
-			this.label7 = new System.Windows.Forms.Label();
-			this.btn_save = new System.Windows.Forms.Button();
-			this.btn_cancel = new System.Windows.Forms.Button();
+			this.cmb_add = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
+			this.btn_add = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.txt_result = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.btn_up = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_down = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_delete = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.label7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.btn_save = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_cancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
+			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// listView_monitor
@@ -63,6 +66,7 @@
 			// cmb_add
 			// 
 			this.cmb_add.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_add.DropDownWidth = 363;
 			this.cmb_add.FormattingEnabled = true;
 			this.cmb_add.Location = new System.Drawing.Point(29, 12);
 			this.cmb_add.Name = "cmb_add";
@@ -73,10 +77,9 @@
 			// 
 			this.btn_add.Location = new System.Drawing.Point(398, 12);
 			this.btn_add.Name = "btn_add";
-			this.btn_add.Size = new System.Drawing.Size(75, 23);
+			this.btn_add.Size = new System.Drawing.Size(75, 24);
 			this.btn_add.TabIndex = 20;
-			this.btn_add.Text = "Add";
-			this.btn_add.UseVisualStyleBackColor = true;
+			this.btn_add.Values.Text = "Add";
 			this.btn_add.Click += new System.EventHandler(this.btn_add_Click);
 			// 
 			// txt_result
@@ -84,7 +87,7 @@
 			this.txt_result.Location = new System.Drawing.Point(71, 221);
 			this.txt_result.Name = "txt_result";
 			this.txt_result.ReadOnly = true;
-			this.txt_result.Size = new System.Drawing.Size(235, 20);
+			this.txt_result.Size = new System.Drawing.Size(235, 23);
 			this.txt_result.TabIndex = 21;
 			// 
 			// btn_up
@@ -92,10 +95,9 @@
 			this.btn_up.Enabled = false;
 			this.btn_up.Location = new System.Drawing.Point(398, 51);
 			this.btn_up.Name = "btn_up";
-			this.btn_up.Size = new System.Drawing.Size(75, 23);
+			this.btn_up.Size = new System.Drawing.Size(75, 24);
 			this.btn_up.TabIndex = 22;
-			this.btn_up.Text = "Up";
-			this.btn_up.UseVisualStyleBackColor = true;
+			this.btn_up.Values.Text = "Up";
 			this.btn_up.Click += new System.EventHandler(this.btn_up_Click);
 			// 
 			// btn_down
@@ -103,10 +105,9 @@
 			this.btn_down.Enabled = false;
 			this.btn_down.Location = new System.Drawing.Point(398, 80);
 			this.btn_down.Name = "btn_down";
-			this.btn_down.Size = new System.Drawing.Size(75, 23);
+			this.btn_down.Size = new System.Drawing.Size(75, 24);
 			this.btn_down.TabIndex = 23;
-			this.btn_down.Text = "Down";
-			this.btn_down.UseVisualStyleBackColor = true;
+			this.btn_down.Values.Text = "Down";
 			this.btn_down.Click += new System.EventHandler(this.btn_down_Click);
 			// 
 			// btn_delete
@@ -114,39 +115,35 @@
 			this.btn_delete.Enabled = false;
 			this.btn_delete.Location = new System.Drawing.Point(398, 109);
 			this.btn_delete.Name = "btn_delete";
-			this.btn_delete.Size = new System.Drawing.Size(75, 23);
+			this.btn_delete.Size = new System.Drawing.Size(75, 24);
 			this.btn_delete.TabIndex = 24;
-			this.btn_delete.Text = "Delete";
-			this.btn_delete.UseVisualStyleBackColor = true;
+			this.btn_delete.Values.Text = "Delete";
 			this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
 			// 
 			// label7
 			// 
-			this.label7.AutoSize = true;
 			this.label7.Location = new System.Drawing.Point(24, 224);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(43, 13);
+			this.label7.Size = new System.Drawing.Size(50, 20);
 			this.label7.TabIndex = 25;
-			this.label7.Text = "Result :";
+			this.label7.Values.Text = "Result :";
 			// 
 			// btn_save
 			// 
 			this.btn_save.Location = new System.Drawing.Point(397, 219);
 			this.btn_save.Name = "btn_save";
-			this.btn_save.Size = new System.Drawing.Size(75, 23);
+			this.btn_save.Size = new System.Drawing.Size(75, 24);
 			this.btn_save.TabIndex = 26;
-			this.btn_save.Text = "Save";
-			this.btn_save.UseVisualStyleBackColor = true;
+			this.btn_save.Values.Text = "Save";
 			this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
 			// 
 			// btn_cancel
 			// 
 			this.btn_cancel.Location = new System.Drawing.Point(312, 219);
 			this.btn_cancel.Name = "btn_cancel";
-			this.btn_cancel.Size = new System.Drawing.Size(75, 23);
+			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 27;
-			this.btn_cancel.Text = "Cancel";
-			this.btn_cancel.UseVisualStyleBackColor = true;
+			this.btn_cancel.Values.Text = "Cancel";
 			this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
 			// 
 			// MonitorPriorityConfig
@@ -171,6 +168,7 @@
 			this.Name = "MonitorPriorityConfig";
 			this.Text = "Monitor Priority Configuration";
 			this.Load += new System.EventHandler(this.HelpMonitor_Load);
+			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -178,15 +176,16 @@
 
 		#endregion
 		private System.Windows.Forms.ListView listView_monitor;
-		private System.Windows.Forms.ComboBox cmb_add;
-		private System.Windows.Forms.Button btn_add;
-		private System.Windows.Forms.TextBox txt_result;
-		private System.Windows.Forms.Button btn_up;
-		private System.Windows.Forms.Button btn_down;
-		private System.Windows.Forms.Button btn_delete;
+		private ComponentFactory.Krypton.Toolkit.KryptonComboBox cmb_add;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_add;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_result;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_up;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_down;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_delete;
 		private System.Windows.Forms.ColumnHeader val;
-		private System.Windows.Forms.Label label7;
-		private System.Windows.Forms.Button btn_save;
-		private System.Windows.Forms.Button btn_cancel;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel label7;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_save;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_cancel;
+		private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
 	}
 }

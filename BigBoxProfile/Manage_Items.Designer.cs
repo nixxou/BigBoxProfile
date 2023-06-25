@@ -28,15 +28,17 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.list_path = new System.Windows.Forms.ListView();
 			this.valh = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.txt_path = new System.Windows.Forms.TextBox();
-			this.btn_delete_path = new System.Windows.Forms.Button();
-			this.btn_add_path = new System.Windows.Forms.Button();
-			this.btn_down_path = new System.Windows.Forms.Button();
-			this.btn_up_path = new System.Windows.Forms.Button();
-			this.btn_ok = new System.Windows.Forms.Button();
-			this.btn_cancel = new System.Windows.Forms.Button();
+			this.txt_path = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.btn_delete_path = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_add_path = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_down_path = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_up_path = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_cancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
 			this.SuspendLayout();
 			// 
 			// list_path
@@ -69,20 +71,18 @@
 			this.btn_delete_path.Enabled = false;
 			this.btn_delete_path.Location = new System.Drawing.Point(635, 173);
 			this.btn_delete_path.Name = "btn_delete_path";
-			this.btn_delete_path.Size = new System.Drawing.Size(46, 23);
+			this.btn_delete_path.Size = new System.Drawing.Size(46, 24);
 			this.btn_delete_path.TabIndex = 33;
 			this.btn_delete_path.Text = "Delete";
-			this.btn_delete_path.UseVisualStyleBackColor = true;
 			this.btn_delete_path.Click += new System.EventHandler(this.btn_delete_path_Click);
 			// 
 			// btn_add_path
 			// 
 			this.btn_add_path.Location = new System.Drawing.Point(635, 3);
 			this.btn_add_path.Name = "btn_add_path";
-			this.btn_add_path.Size = new System.Drawing.Size(46, 23);
+			this.btn_add_path.Size = new System.Drawing.Size(46, 24);
 			this.btn_add_path.TabIndex = 30;
 			this.btn_add_path.Text = "Add";
-			this.btn_add_path.UseVisualStyleBackColor = true;
 			this.btn_add_path.Click += new System.EventHandler(this.btn_add_path_Click);
 			// 
 			// btn_down_path
@@ -90,10 +90,9 @@
 			this.btn_down_path.Enabled = false;
 			this.btn_down_path.Location = new System.Drawing.Point(635, 144);
 			this.btn_down_path.Name = "btn_down_path";
-			this.btn_down_path.Size = new System.Drawing.Size(46, 23);
+			this.btn_down_path.Size = new System.Drawing.Size(46, 24);
 			this.btn_down_path.TabIndex = 32;
 			this.btn_down_path.Text = "Down";
-			this.btn_down_path.UseVisualStyleBackColor = true;
 			this.btn_down_path.Click += new System.EventHandler(this.btn_down_path_Click);
 			// 
 			// btn_up_path
@@ -101,20 +100,18 @@
 			this.btn_up_path.Enabled = false;
 			this.btn_up_path.Location = new System.Drawing.Point(635, 115);
 			this.btn_up_path.Name = "btn_up_path";
-			this.btn_up_path.Size = new System.Drawing.Size(46, 23);
+			this.btn_up_path.Size = new System.Drawing.Size(46, 24);
 			this.btn_up_path.TabIndex = 31;
 			this.btn_up_path.Text = "Up";
-			this.btn_up_path.UseVisualStyleBackColor = true;
 			this.btn_up_path.Click += new System.EventHandler(this.btn_up_path_Click);
 			// 
 			// btn_ok
 			// 
 			this.btn_ok.Location = new System.Drawing.Point(554, 558);
 			this.btn_ok.Name = "btn_ok";
-			this.btn_ok.Size = new System.Drawing.Size(75, 23);
+			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 44;
 			this.btn_ok.Text = "Save";
-			this.btn_ok.UseVisualStyleBackColor = true;
 			this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
 			// 
 			// btn_cancel
@@ -122,10 +119,9 @@
 			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.btn_cancel.Location = new System.Drawing.Point(473, 558);
 			this.btn_cancel.Name = "btn_cancel";
-			this.btn_cancel.Size = new System.Drawing.Size(75, 23);
+			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 45;
 			this.btn_cancel.Text = "Cancel";
-			this.btn_cancel.UseVisualStyleBackColor = true;
 			this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
 			// 
 			// Manage_Items
@@ -155,12 +151,13 @@
 
 		private System.Windows.Forms.ListView list_path;
 		private System.Windows.Forms.ColumnHeader valh;
-		private System.Windows.Forms.TextBox txt_path;
-		private System.Windows.Forms.Button btn_delete_path;
-		private System.Windows.Forms.Button btn_add_path;
-		private System.Windows.Forms.Button btn_down_path;
-		private System.Windows.Forms.Button btn_up_path;
-		private System.Windows.Forms.Button btn_ok;
-		private System.Windows.Forms.Button btn_cancel;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_path;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_delete_path;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_add_path;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_down_path;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_up_path;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_ok;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_cancel;
+		private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
 	}
 }

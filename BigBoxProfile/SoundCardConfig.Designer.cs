@@ -29,14 +29,16 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SoundCardConfig));
-			this.cmb_SoundCardList = new System.Windows.Forms.ComboBox();
-			this.btn_ok = new System.Windows.Forms.Button();
-			this.btn_cancel = new System.Windows.Forms.Button();
+			this.cmb_SoundCardList = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
+			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_cancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			((System.ComponentModel.ISupportInitialize)(this.cmb_SoundCardList)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// cmb_SoundCardList
 			// 
 			this.cmb_SoundCardList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_SoundCardList.DropDownWidth = 331;
 			this.cmb_SoundCardList.FormattingEnabled = true;
 			this.cmb_SoundCardList.Location = new System.Drawing.Point(12, 12);
 			this.cmb_SoundCardList.Name = "cmb_SoundCardList";
@@ -47,20 +49,18 @@
 			// 
 			this.btn_ok.Location = new System.Drawing.Point(430, 10);
 			this.btn_ok.Name = "btn_ok";
-			this.btn_ok.Size = new System.Drawing.Size(75, 23);
+			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 1;
-			this.btn_ok.Text = "Save";
-			this.btn_ok.UseVisualStyleBackColor = true;
+			this.btn_ok.Values.Text = "Save";
 			this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
 			// 
 			// btn_cancel
 			// 
 			this.btn_cancel.Location = new System.Drawing.Point(349, 10);
 			this.btn_cancel.Name = "btn_cancel";
-			this.btn_cancel.Size = new System.Drawing.Size(75, 23);
+			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 2;
-			this.btn_cancel.Text = "Cancel";
-			this.btn_cancel.UseVisualStyleBackColor = true;
+			this.btn_cancel.Values.Text = "Cancel";
 			this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
 			// 
 			// SoundCardConfig
@@ -78,14 +78,15 @@
 			this.Name = "SoundCardConfig";
 			this.Text = "Select Sound Card to use as Main Soundcard";
 			this.Load += new System.EventHandler(this.SoundCardConfig_Load);
+			((System.ComponentModel.ISupportInitialize)(this.cmb_SoundCardList)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.ComboBox cmb_SoundCardList;
-		private System.Windows.Forms.Button btn_ok;
-		private System.Windows.Forms.Button btn_cancel;
+		private ComponentFactory.Krypton.Toolkit.KryptonComboBox cmb_SoundCardList;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_ok;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_cancel;
 	}
 }

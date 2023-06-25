@@ -10,10 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
 {
-	public partial class MonitorPriorityConfig : Form
+	public partial class MonitorPriorityConfig : KryptonForm
 	{
 
 		[DllImport("SetDpi.dll", EntryPoint = "dpi_GetMonitorDPI", CallingConvention = CallingConvention.StdCall)]
