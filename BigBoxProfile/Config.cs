@@ -11,10 +11,11 @@ using System.Text;
 using Microsoft.Win32.TaskScheduler;
 using System.Collections.Generic;
 using System.Threading;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
 {
-	public partial class Config : Form
+	public partial class Config : KryptonForm
 	{
 		public Config()
 		{
@@ -127,32 +128,7 @@ namespace BigBoxProfile
 			}
 
 		}
-		/*
-		public void InitializeCmbSoundCard()
-		{
-			cmb_primarysoundcard.Items.Clear();
-			cmb_primarysoundcard.Items.Add("<dontchange>");
-			foreach(var soundcard in SoundCardUtils.GetSoundCards())
-			{
-				cmb_primarysoundcard.Items.Add($"{soundcard}");
-			}
-			string selected = Profile.ActiveProfile.Configuration["soundcard"];
-			var index = cmb_primarysoundcard.Items.IndexOf(selected);
-			if(index >= 0) cmb_primarysoundcard.SelectedIndex = index;
-		}
 
-		public void InitializeCmbMonitorSwitch()
-		{
-			cmb_monitorswitch.Items.Clear();
-			cmb_monitorswitch.Items.Add("<none>");
-
-
-			string selected = Profile.ActiveProfile.Configuration["monitorswitch"];
-			var index = cmb_monitorswitch.Items.IndexOf(selected);
-			if (index >= 0) cmb_monitorswitch.SelectedIndex = index;
-
-		}
-		*/
 		public void UpdateCmbListProfile()
 		{
 			cmb_listProfiles.Items.Clear();
@@ -163,18 +139,6 @@ namespace BigBoxProfile
 			string selected = Profile.ActiveProfile.ProfileName;
 			var index = cmb_listProfiles.Items.IndexOf(selected);
 			if (index >= 0) cmb_listProfiles.SelectedIndex = index;
-		}
-
-		public void UpdateProfileConfiguration()
-		{
-			var config = Profile.ActiveProfile.Configuration;
-			if (config != null)
-			{
-				if (config["monitor"] != txt_monitorpriority.Text) txt_monitorpriority.Text = config["monitor"];
-			}
-
-
-
 		}
 
 		public void UpdateRegisterStatus()
@@ -190,22 +154,6 @@ namespace BigBoxProfile
 				label_status.Text = "Inactive !";
 				//btn_register.Text = "Enable";
 			}
-			
-		}
-
-		private void btn_register_Click(object sender, EventArgs e)
-		{
-			
-			if (BigBoxUtils.IsAppRegistered())
-			{
-				BigBoxUtils.UnregisterExec();
-			}
-			else
-			{
-				BigBoxUtils.RegisterExec();
-			}
-			MessageBox.Show("Done !");
-			UpdateRegisterStatus();
 			
 		}
 
@@ -228,25 +176,6 @@ namespace BigBoxProfile
 				return;
 			}
 			Profile.RemoveProfile(selectedTxt);
-
-
-		}
-
-		private void button9_Click(object sender, EventArgs e)
-		{
-			Screen[] screens = Screen.AllScreens;
-			Debug.WriteLine($"Nombre d'écrans : {screens.Length}");
-			for (int i = 0; i < screens.Length; i++)
-			{
-				Screen screen = screens[i];
-				Debug.WriteLine($"Écran {i + 1}");
-				Debug.WriteLine($"Device Name : {screen.DeviceName}");
-				Debug.WriteLine($"Working Area : {screen.WorkingArea}");
-				Debug.WriteLine($"Bounds : {screen.Bounds}");
-				Debug.WriteLine($"Primary : {screen.Primary}");
-				Debug.WriteLine($"TrueName : {ScreenInterrogatory.DeviceFriendlyName(screen)}");
-
-			}
 
 
 		}
@@ -294,30 +223,7 @@ namespace BigBoxProfile
 			}
 		}
 
-
-
-		private void button5_Click(object sender, EventArgs e)
-		{
-			//SoundCardUtils.SetDefaultMic(cmb_primarysoundcard.GetItemText(cmb_primarysoundcard.SelectedItem));
-
-		}
-
 		private void groupBox1_Enter(object sender, EventArgs e)
-		{
-
-		}
-
-		private void button4_Click(object sender, EventArgs e)
-		{
-			MonitorSwitcher.SaveDisplaySettings("zog.xml");
-		}
-
-		private void button10_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void button4_Click_1(object sender, EventArgs e)
 		{
 
 		}
@@ -342,14 +248,6 @@ namespace BigBoxProfile
 					MessageBox.Show("You need Admin right to register the Games");
 					BigBoxUtils.RegisterExec();
 				}
-
-				/*
-				if (!BigBoxUtils.IsAppRegistered() || !BigBoxUtils.IsGamesRegistered())
-				{
-					MessageBox.Show("You need Admin right to register the game");
-					BigBoxUtils.RegisterExec();
-				}
-				*/
 
 			}
 			else
@@ -383,16 +281,6 @@ namespace BigBoxProfile
 			}
 		}
 
-		private void label_status_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void label1_Click(object sender, EventArgs e)
-		{
-
-		}
-
 		private void chk_launchbox_CheckedChanged(object sender, EventArgs e)
 		{
 			if (chk_launchbox.Checked) Profile.ActiveProfile.SetOption("launchbox", "yes");
@@ -418,5 +306,8 @@ namespace BigBoxProfile
 				ReloadDispositionCmb();
 			}
 		}
+
+
+
 	}
 }
