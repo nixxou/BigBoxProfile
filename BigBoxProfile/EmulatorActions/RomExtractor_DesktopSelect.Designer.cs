@@ -30,7 +30,7 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RomExtractor_DesktopSelect));
-			this.TexturePath_txt = new System.Windows.Forms.TextBox();
+			this.TexturePath_txt = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.MenuItem_loadSaveState4 = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItem_loadSaveState5 = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItem_loadSaveState6 = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,15 +52,15 @@
 			this.MenuItem_extractTo = new System.Windows.Forms.ToolStripMenuItem();
 			this.imageList1 = new System.Windows.Forms.ImageList(this.components);
 			this.saveFileDialog_extractTo = new System.Windows.Forms.SaveFileDialog();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.lbl_installed_texture = new System.Windows.Forms.Label();
-			this.RemoveTexture_btn = new System.Windows.Forms.Button();
-			this.InstallTexture_btn = new System.Windows.Forms.Button();
+			this.groupBox1 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+			this.lbl_installed_texture = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.RemoveTexture_btn = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.InstallTexture_btn = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.FListView_Texture = new BrightIdeasSoftware.FastObjectListView();
 			this.Texture_Col_File = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
 			this.Texture_Col_Size = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-			this.TexturePath_btn = new System.Windows.Forms.Button();
-			this.fakebrowser_txt = new System.Windows.Forms.TextBox();
+			this.TexturePath_btn = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.fakebrowser_txt = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.MenuItem_loadSaveState2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
 			this.titleColumnF = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -90,9 +90,12 @@
 			this.MenuItem_saveCopy = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItem_loadSaveState0 = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuItem_loadSaveState1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.archiveNameLabel = new System.Windows.Forms.Label();
-			this.cancelButton = new System.Windows.Forms.Button();
-			this.okButton = new System.Windows.Forms.Button();
+			this.archiveNameLabel = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.cancelButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.okButton = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			((System.ComponentModel.ISupportInitialize)(this.groupBox1)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.groupBox1.Panel)).BeginInit();
+			this.groupBox1.Panel.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.FListView_Texture)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
@@ -103,7 +106,7 @@
 			// 
 			this.TexturePath_txt.Location = new System.Drawing.Point(255, 154);
 			this.TexturePath_txt.Name = "TexturePath_txt";
-			this.TexturePath_txt.Size = new System.Drawing.Size(294, 20);
+			this.TexturePath_txt.Size = new System.Drawing.Size(351, 23);
 			this.TexturePath_txt.TabIndex = 0;
 			// 
 			// MenuItem_loadSaveState4
@@ -264,49 +267,46 @@
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Controls.Add(this.lbl_installed_texture);
-			this.groupBox1.Controls.Add(this.RemoveTexture_btn);
-			this.groupBox1.Controls.Add(this.InstallTexture_btn);
-			this.groupBox1.Controls.Add(this.FListView_Texture);
-			this.groupBox1.Controls.Add(this.TexturePath_btn);
-			this.groupBox1.Controls.Add(this.TexturePath_txt);
 			this.groupBox1.Location = new System.Drawing.Point(14, 488);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(665, 201);
+			// 
+			// groupBox1.Panel
+			// 
+			this.groupBox1.Panel.Controls.Add(this.lbl_installed_texture);
+			this.groupBox1.Panel.Controls.Add(this.RemoveTexture_btn);
+			this.groupBox1.Panel.Controls.Add(this.InstallTexture_btn);
+			this.groupBox1.Panel.Controls.Add(this.FListView_Texture);
+			this.groupBox1.Panel.Controls.Add(this.TexturePath_btn);
+			this.groupBox1.Panel.Controls.Add(this.TexturePath_txt);
+			this.groupBox1.Size = new System.Drawing.Size(665, 232);
 			this.groupBox1.TabIndex = 16;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Hi Res Texture Selection";
+			this.groupBox1.Values.Heading = "Hi Res Texture Selection";
 			// 
 			// lbl_installed_texture
 			// 
-			this.lbl_installed_texture.AutoSize = true;
-			this.lbl_installed_texture.Location = new System.Drawing.Point(252, 177);
+			this.lbl_installed_texture.Location = new System.Drawing.Point(255, 183);
 			this.lbl_installed_texture.Name = "lbl_installed_texture";
-			this.lbl_installed_texture.Size = new System.Drawing.Size(91, 13);
+			this.lbl_installed_texture.Size = new System.Drawing.Size(106, 20);
 			this.lbl_installed_texture.TabIndex = 5;
-			this.lbl_installed_texture.Text = "Installed Texture :";
+			this.lbl_installed_texture.Values.Text = "Installed Texture :";
 			// 
 			// RemoveTexture_btn
 			// 
-			this.RemoveTexture_btn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.RemoveTexture_btn.Location = new System.Drawing.Point(116, 156);
 			this.RemoveTexture_btn.Name = "RemoveTexture_btn";
 			this.RemoveTexture_btn.Size = new System.Drawing.Size(109, 29);
 			this.RemoveTexture_btn.TabIndex = 4;
-			this.RemoveTexture_btn.Text = "Remove Texture";
-			this.RemoveTexture_btn.UseVisualStyleBackColor = true;
+			this.RemoveTexture_btn.Values.Text = "Remove Texture";
 			this.RemoveTexture_btn.Click += new System.EventHandler(this.RemoveTexture_btn_Click);
 			// 
 			// InstallTexture_btn
 			// 
 			this.InstallTexture_btn.Enabled = false;
-			this.InstallTexture_btn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.InstallTexture_btn.Location = new System.Drawing.Point(6, 155);
 			this.InstallTexture_btn.Name = "InstallTexture_btn";
 			this.InstallTexture_btn.Size = new System.Drawing.Size(104, 30);
 			this.InstallTexture_btn.TabIndex = 3;
-			this.InstallTexture_btn.Text = "Install Texture";
-			this.InstallTexture_btn.UseVisualStyleBackColor = true;
+			this.InstallTexture_btn.Values.Text = "Install Texture";
 			this.InstallTexture_btn.Click += new System.EventHandler(this.InstallTexture_btn_Click);
 			// 
 			// FListView_Texture
@@ -347,13 +347,11 @@
 			// 
 			// TexturePath_btn
 			// 
-			this.TexturePath_btn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.TexturePath_btn.Location = new System.Drawing.Point(555, 154);
+			this.TexturePath_btn.Location = new System.Drawing.Point(612, 154);
 			this.TexturePath_btn.Name = "TexturePath_btn";
-			this.TexturePath_btn.Size = new System.Drawing.Size(92, 20);
+			this.TexturePath_btn.Size = new System.Drawing.Size(35, 24);
 			this.TexturePath_btn.TabIndex = 1;
-			this.TexturePath_btn.Text = "Choose Dir";
-			this.TexturePath_btn.UseVisualStyleBackColor = true;
+			this.TexturePath_btn.Values.Text = "...";
 			this.TexturePath_btn.Click += new System.EventHandler(this.TexturePath_btn_Click);
 			// 
 			// fakebrowser_txt
@@ -624,42 +622,37 @@
 			this.archiveNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.archiveNameLabel.Location = new System.Drawing.Point(11, 10);
 			this.archiveNameLabel.Name = "archiveNameLabel";
-			this.archiveNameLabel.Size = new System.Drawing.Size(522, 21);
+			this.archiveNameLabel.Size = new System.Drawing.Size(61, 20);
 			this.archiveNameLabel.TabIndex = 12;
-			this.archiveNameLabel.Text = "Game.zip";
-			this.archiveNameLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+			this.archiveNameLabel.Values.Text = "Game.zip";
 			// 
 			// cancelButton
 			// 
 			this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancelButton.Location = new System.Drawing.Point(95, 692);
+			this.cancelButton.Location = new System.Drawing.Point(95, 726);
 			this.cancelButton.Name = "cancelButton";
 			this.cancelButton.Size = new System.Drawing.Size(75, 28);
 			this.cancelButton.TabIndex = 11;
-			this.cancelButton.Text = "Cancel";
-			this.cancelButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-			this.cancelButton.UseVisualStyleBackColor = true;
+			this.cancelButton.Values.Text = "Cancel";
 			this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
 			// 
 			// okButton
 			// 
 			this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.okButton.Location = new System.Drawing.Point(14, 692);
+			this.okButton.Location = new System.Drawing.Point(14, 725);
 			this.okButton.Name = "okButton";
 			this.okButton.Size = new System.Drawing.Size(75, 28);
 			this.okButton.TabIndex = 10;
-			this.okButton.Text = "Play!";
-			this.okButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-			this.okButton.UseVisualStyleBackColor = true;
+			this.okButton.Values.Text = "Play!";
 			this.okButton.Click += new System.EventHandler(this.okButton_Click);
 			// 
 			// RomExtractor_DesktopSelect
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1460, 731);
+			this.ClientSize = new System.Drawing.Size(1472, 764);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.fakebrowser_txt);
 			this.Controls.Add(this.fastObjectListView1);
@@ -667,12 +660,18 @@
 			this.Controls.Add(this.cancelButton);
 			this.Controls.Add(this.okButton);
 			this.DoubleBuffered = true;
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "RomExtractor_DesktopSelect";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "RomExtractor_DesktopSelect";
+			this.Text = "RomExtractor : Rom Selector";
 			this.Load += new System.EventHandler(this.RomExtractor_DesktopSelect_Load);
+			((System.ComponentModel.ISupportInitialize)(this.groupBox1.Panel)).EndInit();
+			this.groupBox1.Panel.ResumeLayout(false);
+			this.groupBox1.Panel.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.groupBox1)).EndInit();
 			this.groupBox1.ResumeLayout(false);
-			this.groupBox1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.FListView_Texture)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).EndInit();
 			this.contextMenuStrip1.ResumeLayout(false);
@@ -684,7 +683,7 @@
 
 		#endregion
 
-		private System.Windows.Forms.TextBox TexturePath_txt;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox TexturePath_txt;
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_loadSaveState4;
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_loadSaveState5;
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_loadSaveState6;
@@ -706,15 +705,15 @@
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_extractTo;
 		private System.Windows.Forms.ImageList imageList1;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog_extractTo;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Label lbl_installed_texture;
-		private System.Windows.Forms.Button RemoveTexture_btn;
-		private System.Windows.Forms.Button InstallTexture_btn;
+		private ComponentFactory.Krypton.Toolkit.KryptonGroupBox groupBox1;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel lbl_installed_texture;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton RemoveTexture_btn;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton InstallTexture_btn;
 		private BrightIdeasSoftware.FastObjectListView FListView_Texture;
 		private BrightIdeasSoftware.OLVColumn Texture_Col_File;
 		private BrightIdeasSoftware.OLVColumn Texture_Col_Size;
-		private System.Windows.Forms.Button TexturePath_btn;
-		private System.Windows.Forms.TextBox fakebrowser_txt;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton TexturePath_btn;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox fakebrowser_txt;
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_loadSaveState2;
 		private BrightIdeasSoftware.FastObjectListView fastObjectListView1;
 		private BrightIdeasSoftware.OLVColumn titleColumnF;
@@ -742,9 +741,9 @@
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_saveCopy;
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_loadSaveState0;
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_loadSaveState1;
-		private System.Windows.Forms.Label archiveNameLabel;
-		private System.Windows.Forms.Button cancelButton;
-		private System.Windows.Forms.Button okButton;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel archiveNameLabel;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton cancelButton;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton okButton;
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_filterStar;
 		private System.Windows.Forms.ToolStripMenuItem MenuItem_SetFavorite;
 	}

@@ -15,10 +15,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class RomExtractor_DesktopSelect : Form
+	public partial class RomExtractor_DesktopSelect : KryptonForm
 	{
 
 		RomExtractor_ArchiveFile _archiveFile;
