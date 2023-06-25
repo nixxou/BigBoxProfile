@@ -3,14 +3,8 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
-using MonitorSwitcherGUI;
 using System.IO;
-using CliWrap;
-using System.Security.Cryptography;
-using System.Text;
-using Microsoft.Win32.TaskScheduler;
-using System.Collections.Generic;
-using System.Threading;
+using System.Drawing;
 using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
@@ -19,11 +13,18 @@ namespace BigBoxProfile
 	{
 		public Config()
 		{
+
 			InitializeComponent();
+			txt_monitorpriority.StateActive.Back.Color1 = Color.FromArgb(255, 235, 235, 235);
+			txt_monitorswitch.StateActive.Back.Color1 = Color.FromArgb(255, 235, 235, 235);
+			txt_soundcard.StateActive.Back.Color1 = Color.FromArgb(255, 235, 235, 235);
+
 		}
 
 		private void Config_Load(object sender, EventArgs e)
 		{
+
+
 			UpdateCmbEmulatorList();
 			UpdateRegisterStatus();
 			UpdateCmbListProfile();
@@ -37,6 +38,8 @@ namespace BigBoxProfile
 			Profile.ConfigurationChanged += Profile_ConfigurationChanged;
 
 			ReloadDispositionCmb();
+
+
 
 		}
 

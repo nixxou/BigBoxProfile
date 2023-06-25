@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile
 {
-	public partial class EmulatorConfig : Form
+	public partial class EmulatorConfig : KryptonForm
 	{
 		private Emulator _emulator;
 		public EmulatorConfig(string emulatorExe, string profileName)
@@ -24,6 +25,12 @@ namespace BigBoxProfile
 
 		private void EmulatorConfig_Load(object sender, EventArgs e)
 		{
+			this.NameModule.Width = this.lv_selectedActions.Width-5;
+
+			txt_profileName.StateActive.Back.Color1 = Color.FromArgb(255, 240, 240, 240);
+			txt_emulatorExe.StateActive.Back.Color1 = Color.FromArgb(255, 240, 240, 240);
+			txt_exempleOut.StateActive.Back.Color1 = Color.FromArgb(255, 235, 235, 235);
+
 			txt_emulatorExe.Text = _emulator.FileNameEmulator;
 			txt_profileName.Text = _emulator.ProfileName;
 
@@ -213,6 +220,11 @@ namespace BigBoxProfile
 			{
 				btn_add.Enabled = true;
 			}
+		}
+
+		private void groupBox3_Panel_Paint(object sender, PaintEventArgs e)
+		{
+
 		}
 	}
 }
