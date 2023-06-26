@@ -117,17 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="infoLabel.Text" xml:space="preserve">
-    <value>Enter a comma delimited list of filenames or extensions in the Filename Priority box. Note that filenames can include the * wildcard.
+  <data name="infoLabel.Values.Text" xml:space="preserve">
+    <value>Enter a comma delimited list of filenames or extensions in the Filename Priority box.
+Note that filenames can include the * wildcard.
  
-Some example Filename Priorities:
+Some example Filename Priorities: 
 bin, iso
 - Files ending with bin, then files ending in iso, then all other files.
 
-eboot.bin
-- Files named eboot.bin, then all other files.
-
 *(*E*)*[!].*, *(*U*)*[!].*, *[!].*
-- GoodMerged style - European 'good' ROM dumps, then USA 'good' ROM dumps, then other region 'good' ROM dumps, then all other files.</value>
+- GoodMerged style - European 'good' ROM dumps, then USA 'good' ROM dumps, 
+then other region 'good' ROM dumps, then all other files.</value>
   </data>
+  <metadata name="kryptonManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

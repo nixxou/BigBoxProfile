@@ -50,6 +50,7 @@
 			this.txt_filter = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.label3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.groupBox3 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+			this.kryptonLinkLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLinkLabel();
 			this.label_Imdisk_false = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.label_Imdisk_true = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.label8 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
@@ -66,7 +67,6 @@
 			this.btn_manage_exclude = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.chk_exclude_comma = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
-			this.kryptonLinkLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLinkLabel();
 			((System.ComponentModel.ISupportInitialize)(this.groupBox3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.groupBox3.Panel)).BeginInit();
 			this.groupBox3.Panel.SuspendLayout();
@@ -243,6 +243,15 @@
 			this.groupBox3.TabIndex = 67;
 			this.groupBox3.Values.Heading = "ImDisk";
 			// 
+			// kryptonLinkLabel1
+			// 
+			this.kryptonLinkLabel1.Location = new System.Drawing.Point(6, 45);
+			this.kryptonLinkLabel1.Name = "kryptonLinkLabel1";
+			this.kryptonLinkLabel1.Size = new System.Drawing.Size(266, 20);
+			this.kryptonLinkLabel1.TabIndex = 23;
+			this.kryptonLinkLabel1.Values.Text = "http://www.ltr-data.se/opencode.html/#ImDisk";
+			this.kryptonLinkLabel1.LinkClicked += new System.EventHandler(this.kryptonLinkLabel1_LinkClicked);
+			// 
 			// label_Imdisk_false
 			// 
 			this.label_Imdisk_false.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -274,6 +283,7 @@
 			// 
 			// btn_cancel
 			// 
+			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.btn_cancel.Location = new System.Drawing.Point(905, 770);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
@@ -373,19 +383,12 @@
 			this.chk_exclude_comma.Values.Text = "Enable Multiple Entries, Comma Separated";
 			this.chk_exclude_comma.CheckedChanged += new System.EventHandler(this.chk_exclude_comma_CheckedChanged);
 			// 
-			// kryptonLinkLabel1
-			// 
-			this.kryptonLinkLabel1.Location = new System.Drawing.Point(6, 45);
-			this.kryptonLinkLabel1.Name = "kryptonLinkLabel1";
-			this.kryptonLinkLabel1.Size = new System.Drawing.Size(266, 20);
-			this.kryptonLinkLabel1.TabIndex = 23;
-			this.kryptonLinkLabel1.Values.Text = "http://www.ltr-data.se/opencode.html/#ImDisk";
-			this.kryptonLinkLabel1.LinkClicked += new System.EventHandler(this.kryptonLinkLabel1_LinkClicked);
-			// 
 			// RomExtractor_Config
 			// 
+			this.AcceptButton = this.btn_manage_filter;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btn_cancel;
 			this.ClientSize = new System.Drawing.Size(1080, 805);
 			this.Controls.Add(this.btn_manage_exclude);
 			this.Controls.Add(this.chk_exclude_comma);

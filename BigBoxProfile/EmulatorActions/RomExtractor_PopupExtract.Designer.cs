@@ -28,50 +28,49 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.lbl_file = new System.Windows.Forms.Label();
-			this.lbl_selected = new System.Windows.Forms.Label();
+			this.components = new System.ComponentModel.Container();
+			this.lbl_file = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.lbl_selected = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
-			this.btn_ok = new System.Windows.Forms.Button();
+			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.lbl_progress = new System.Windows.Forms.Label();
+			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
 			this.SuspendLayout();
 			// 
 			// lbl_file
 			// 
-			this.lbl_file.AutoSize = true;
 			this.lbl_file.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lbl_file.ForeColor = System.Drawing.Color.Black;
 			this.lbl_file.Location = new System.Drawing.Point(20, 11);
 			this.lbl_file.Name = "lbl_file";
-			this.lbl_file.Size = new System.Drawing.Size(60, 24);
+			this.lbl_file.Size = new System.Drawing.Size(43, 20);
 			this.lbl_file.TabIndex = 10;
-			this.lbl_file.Text = "label1";
+			this.lbl_file.Values.Text = "label1";
 			// 
 			// lbl_selected
 			// 
-			this.lbl_selected.AutoSize = true;
 			this.lbl_selected.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lbl_selected.ForeColor = System.Drawing.Color.Black;
-			this.lbl_selected.Location = new System.Drawing.Point(21, 52);
+			this.lbl_selected.Location = new System.Drawing.Point(20, 37);
 			this.lbl_selected.Name = "lbl_selected";
-			this.lbl_selected.Size = new System.Drawing.Size(46, 18);
+			this.lbl_selected.Size = new System.Drawing.Size(43, 20);
 			this.lbl_selected.TabIndex = 9;
-			this.lbl_selected.Text = "label1";
+			this.lbl_selected.Values.Text = "label1";
 			// 
 			// progressBar1
 			// 
-			this.progressBar1.Location = new System.Drawing.Point(12, 91);
+			this.progressBar1.Location = new System.Drawing.Point(20, 63);
 			this.progressBar1.Name = "progressBar1";
 			this.progressBar1.Size = new System.Drawing.Size(656, 36);
 			this.progressBar1.TabIndex = 8;
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(554, 156);
+			this.btn_ok.Location = new System.Drawing.Point(562, 124);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(114, 36);
 			this.btn_ok.TabIndex = 11;
-			this.btn_ok.Text = "Ok";
-			this.btn_ok.UseVisualStyleBackColor = true;
+			this.btn_ok.Values.Text = "Ok";
 			this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
 			// 
 			// lbl_progress
@@ -79,7 +78,7 @@
 			this.lbl_progress.AutoSize = true;
 			this.lbl_progress.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.lbl_progress.ForeColor = System.Drawing.Color.Black;
-			this.lbl_progress.Location = new System.Drawing.Point(12, 147);
+			this.lbl_progress.Location = new System.Drawing.Point(13, 124);
 			this.lbl_progress.Name = "lbl_progress";
 			this.lbl_progress.Size = new System.Drawing.Size(109, 39);
 			this.lbl_progress.TabIndex = 12;
@@ -87,9 +86,10 @@
 			// 
 			// RomExtractor_PopupExtract
 			// 
+			this.AcceptButton = this.btn_ok;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(686, 206);
+			this.ClientSize = new System.Drawing.Size(699, 183);
 			this.Controls.Add(this.lbl_progress);
 			this.Controls.Add(this.btn_ok);
 			this.Controls.Add(this.lbl_file);
@@ -98,7 +98,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "RomExtractor_PopupExtract";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "RomExtractor_PopupExtract";
+			this.Text = "Extract File Popup";
 			this.Load += new System.EventHandler(this.RomExtractor_PopupExtract_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -107,10 +107,11 @@
 
 		#endregion
 
-		private System.Windows.Forms.Label lbl_file;
-		private System.Windows.Forms.Label lbl_selected;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel lbl_file;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel lbl_selected;
 		private System.Windows.Forms.ProgressBar progressBar1;
-		private System.Windows.Forms.Button btn_ok;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_ok;
 		private System.Windows.Forms.Label lbl_progress;
+		private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
 	}
 }

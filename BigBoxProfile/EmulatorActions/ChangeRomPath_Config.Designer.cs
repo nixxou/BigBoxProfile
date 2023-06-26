@@ -53,9 +53,9 @@
 			this.label2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.label1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.groupBox2 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+			this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.label6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.label7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.groupBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.groupBox1.Panel)).BeginInit();
@@ -284,6 +284,14 @@
 			this.groupBox2.TabIndex = 32;
 			this.groupBox2.Values.Heading = "Low Priority Path";
 			// 
+			// kryptonLabel1
+			// 
+			this.kryptonLabel1.Location = new System.Drawing.Point(8, 60);
+			this.kryptonLabel1.Name = "kryptonLabel1";
+			this.kryptonLabel1.Size = new System.Drawing.Size(100, 20);
+			this.kryptonLabel1.TabIndex = 31;
+			this.kryptonLabel1.Values.Text = "on your network";
+			// 
 			// label6
 			// 
 			this.label6.Location = new System.Drawing.Point(6, 41);
@@ -300,18 +308,12 @@
 			this.label7.TabIndex = 3;
 			this.label7.Values.Text = "Low Priority path will replace the path, only if the normal path don\'t exist";
 			// 
-			// kryptonLabel1
-			// 
-			this.kryptonLabel1.Location = new System.Drawing.Point(8, 60);
-			this.kryptonLabel1.Name = "kryptonLabel1";
-			this.kryptonLabel1.Size = new System.Drawing.Size(100, 20);
-			this.kryptonLabel1.TabIndex = 31;
-			this.kryptonLabel1.Values.Text = "on your network";
-			// 
 			// ChangeRomPath_Config
 			// 
+			this.AcceptButton = this.btn_ok;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btn_cancel;
 			this.ClientSize = new System.Drawing.Size(877, 539);
 			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);

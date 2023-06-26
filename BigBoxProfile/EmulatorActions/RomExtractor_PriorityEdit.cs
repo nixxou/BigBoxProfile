@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class RomExtractor_PriorityEdit : Form
+	public partial class RomExtractor_PriorityEdit : KryptonForm
 	{
 		public RomExtractor_PriorityData priorityData = null;
 
@@ -111,7 +112,7 @@ namespace BigBoxProfile.EmulatorActions
 			}
 		}
 
-		private void UpdateFromTxt(TextBox textbox, ListView listview, bool updatetxt = true)
+		private void UpdateFromTxt(KryptonTextBox textbox, ListView listview, bool updatetxt = true)
 		{
 			var liste_txt = textbox.Text;
 			var liste_array = BigBoxUtils.explode(liste_txt, ",");
@@ -141,7 +142,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
-		private void UpdateFromList(TextBox textbox, ListView listview)
+		private void UpdateFromList(KryptonTextBox textbox, ListView listview)
 		{
 			string liste_txt = "";
 			foreach (ListViewItem item in listview.Items)
@@ -420,6 +421,9 @@ namespace BigBoxProfile.EmulatorActions
 			}
 		}
 
+		private void button1_Click(object sender, EventArgs e)
+		{
 
+		}
 	}
 }

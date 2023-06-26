@@ -28,153 +28,143 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UseFileContent_Config));
-			this.label3 = new System.Windows.Forms.Label();
-			this.txt_filter = new System.Windows.Forms.TextBox();
-			this.btn_cancel = new System.Windows.Forms.Button();
-			this.btn_ok = new System.Windows.Forms.Button();
-			this.label1 = new System.Windows.Forms.Label();
-			this.radio_usefile = new System.Windows.Forms.RadioButton();
-			this.radio_usedir = new System.Windows.Forms.RadioButton();
-			this.btn_manage_exclude = new System.Windows.Forms.Button();
-			this.chk_exclude_comma = new System.Windows.Forms.CheckBox();
-			this.label6 = new System.Windows.Forms.Label();
-			this.txt_exclude = new System.Windows.Forms.TextBox();
-			this.btn_manage_filter = new System.Windows.Forms.Button();
-			this.chk_filter_comma = new System.Windows.Forms.CheckBox();
+			this.label3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.txt_filter = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.btn_cancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.label1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.radio_usefile = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+			this.radio_usedir = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+			this.btn_manage_exclude = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.chk_exclude_comma = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.label6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.txt_exclude = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.btn_manage_filter = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.chk_filter_comma = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
 			this.SuspendLayout();
 			// 
 			// label3
 			// 
-			this.label3.AutoSize = true;
 			this.label3.Location = new System.Drawing.Point(12, 15);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(128, 13);
+			this.label3.Size = new System.Drawing.Size(150, 20);
 			this.label3.TabIndex = 14;
-			this.label3.Text = "Only if cmdLine contains :";
+			this.label3.Values.Text = "Only if cmdLine contains :";
 			// 
 			// txt_filter
 			// 
-			this.txt_filter.Location = new System.Drawing.Point(167, 12);
+			this.txt_filter.Location = new System.Drawing.Point(185, 12);
 			this.txt_filter.Name = "txt_filter";
-			this.txt_filter.Size = new System.Drawing.Size(431, 20);
+			this.txt_filter.Size = new System.Drawing.Size(431, 23);
 			this.txt_filter.TabIndex = 13;
 			// 
 			// btn_cancel
 			// 
 			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_cancel.Location = new System.Drawing.Point(442, 156);
+			this.btn_cancel.Location = new System.Drawing.Point(454, 162);
 			this.btn_cancel.Name = "btn_cancel";
-			this.btn_cancel.Size = new System.Drawing.Size(75, 23);
+			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 12;
-			this.btn_cancel.Text = "Cancel";
-			this.btn_cancel.UseVisualStyleBackColor = true;
+			this.btn_cancel.Values.Text = "Cancel";
 			this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(523, 156);
+			this.btn_ok.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btn_ok.Location = new System.Drawing.Point(541, 162);
 			this.btn_ok.Name = "btn_ok";
-			this.btn_ok.Size = new System.Drawing.Size(75, 23);
+			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 11;
-			this.btn_ok.Text = "Save";
-			this.btn_ok.UseVisualStyleBackColor = true;
+			this.btn_ok.Values.Text = "Save";
 			this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
 			// 
 			// label1
 			// 
-			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 133);
+			this.label1.Location = new System.Drawing.Point(12, 122);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(212, 13);
+			this.label1.Size = new System.Drawing.Size(250, 20);
 			this.label1.TabIndex = 15;
-			this.label1.Text = "If the Path within the file content is relative :";
+			this.label1.Values.Text = "If the Path within the file content is relative :";
 			// 
 			// radio_usefile
 			// 
-			this.radio_usefile.AutoSize = true;
-			this.radio_usefile.Location = new System.Drawing.Point(256, 131);
+			this.radio_usefile.Location = new System.Drawing.Point(255, 122);
 			this.radio_usefile.Name = "radio_usefile";
-			this.radio_usefile.Size = new System.Drawing.Size(159, 17);
+			this.radio_usefile.Size = new System.Drawing.Size(175, 20);
 			this.radio_usefile.TabIndex = 16;
-			this.radio_usefile.TabStop = true;
-			this.radio_usefile.Text = "Use the File path as base dir";
-			this.radio_usefile.UseVisualStyleBackColor = true;
+			this.radio_usefile.Values.Text = "Use the File path as base dir";
 			// 
 			// radio_usedir
 			// 
-			this.radio_usedir.AutoSize = true;
-			this.radio_usedir.Location = new System.Drawing.Point(432, 131);
+			this.radio_usedir.Location = new System.Drawing.Point(431, 122);
 			this.radio_usedir.Name = "radio_usedir";
-			this.radio_usedir.Size = new System.Drawing.Size(166, 17);
+			this.radio_usedir.Size = new System.Drawing.Size(185, 20);
 			this.radio_usedir.TabIndex = 17;
-			this.radio_usedir.TabStop = true;
-			this.radio_usedir.Text = "Use Emulator path as base dir";
-			this.radio_usedir.UseVisualStyleBackColor = true;
+			this.radio_usedir.Values.Text = "Use Emulator path as base dir";
 			// 
 			// btn_manage_exclude
 			// 
-			this.btn_manage_exclude.Location = new System.Drawing.Point(507, 85);
+			this.btn_manage_exclude.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btn_manage_exclude.Location = new System.Drawing.Point(525, 92);
 			this.btn_manage_exclude.Name = "btn_manage_exclude";
-			this.btn_manage_exclude.Size = new System.Drawing.Size(91, 23);
+			this.btn_manage_exclude.Size = new System.Drawing.Size(91, 24);
 			this.btn_manage_exclude.TabIndex = 90;
-			this.btn_manage_exclude.Text = "Manage Items";
-			this.btn_manage_exclude.UseVisualStyleBackColor = true;
+			this.btn_manage_exclude.Values.Text = "Manage Items";
 			this.btn_manage_exclude.Click += new System.EventHandler(this.btn_manage_exclude_Click);
 			// 
 			// chk_exclude_comma
 			// 
-			this.chk_exclude_comma.AutoSize = true;
-			this.chk_exclude_comma.Location = new System.Drawing.Point(167, 91);
+			this.chk_exclude_comma.Location = new System.Drawing.Point(185, 96);
 			this.chk_exclude_comma.Name = "chk_exclude_comma";
-			this.chk_exclude_comma.Size = new System.Drawing.Size(226, 17);
+			this.chk_exclude_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_exclude_comma.TabIndex = 89;
-			this.chk_exclude_comma.Text = "Enable Multiple Entries, Comma Separated";
-			this.chk_exclude_comma.UseVisualStyleBackColor = true;
+			this.chk_exclude_comma.Values.Text = "Enable Multiple Entries, Comma Separated";
 			this.chk_exclude_comma.CheckedChanged += new System.EventHandler(this.chk_exclude_comma_CheckedChanged);
 			// 
 			// label6
 			// 
-			this.label6.AutoSize = true;
-			this.label6.Location = new System.Drawing.Point(12, 66);
+			this.label6.Location = new System.Drawing.Point(12, 70);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(145, 13);
+			this.label6.Size = new System.Drawing.Size(167, 20);
 			this.label6.TabIndex = 88;
-			this.label6.Text = "Exclude if cmdLine contains :";
+			this.label6.Values.Text = "Exclude if cmdLine contains :";
 			// 
 			// txt_exclude
 			// 
-			this.txt_exclude.Location = new System.Drawing.Point(167, 63);
+			this.txt_exclude.Location = new System.Drawing.Point(185, 67);
 			this.txt_exclude.Name = "txt_exclude";
-			this.txt_exclude.Size = new System.Drawing.Size(431, 20);
+			this.txt_exclude.Size = new System.Drawing.Size(431, 23);
 			this.txt_exclude.TabIndex = 87;
 			// 
 			// btn_manage_filter
 			// 
-			this.btn_manage_filter.Location = new System.Drawing.Point(507, 34);
+			this.btn_manage_filter.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btn_manage_filter.Location = new System.Drawing.Point(525, 37);
 			this.btn_manage_filter.Name = "btn_manage_filter";
-			this.btn_manage_filter.Size = new System.Drawing.Size(91, 23);
+			this.btn_manage_filter.Size = new System.Drawing.Size(91, 24);
 			this.btn_manage_filter.TabIndex = 86;
-			this.btn_manage_filter.Text = "Manage Items";
-			this.btn_manage_filter.UseVisualStyleBackColor = true;
+			this.btn_manage_filter.Values.Text = "Manage Items";
 			this.btn_manage_filter.Click += new System.EventHandler(this.btn_manage_filter_Click);
 			// 
 			// chk_filter_comma
 			// 
-			this.chk_filter_comma.AutoSize = true;
-			this.chk_filter_comma.Location = new System.Drawing.Point(167, 38);
+			this.chk_filter_comma.Location = new System.Drawing.Point(185, 41);
 			this.chk_filter_comma.Name = "chk_filter_comma";
-			this.chk_filter_comma.Size = new System.Drawing.Size(226, 17);
+			this.chk_filter_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_filter_comma.TabIndex = 85;
-			this.chk_filter_comma.Text = "Enable Multiple Entries, Comma Separated";
-			this.chk_filter_comma.UseVisualStyleBackColor = true;
+			this.chk_filter_comma.Values.Text = "Enable Multiple Entries, Comma Separated";
 			this.chk_filter_comma.CheckedChanged += new System.EventHandler(this.chk_filter_comma_CheckedChanged);
 			// 
 			// UseFileContent_Config
 			// 
+			this.AcceptButton = this.btn_ok;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(610, 188);
+			this.CancelButton = this.btn_cancel;
+			this.ClientSize = new System.Drawing.Size(629, 201);
 			this.Controls.Add(this.btn_manage_exclude);
 			this.Controls.Add(this.chk_exclude_comma);
 			this.Controls.Add(this.label6);
@@ -188,9 +178,12 @@
 			this.Controls.Add(this.txt_filter);
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "UseFileContent_Config";
-			this.Text = "UseFileContent_Config";
+			this.Text = "Configuration Module : Use File Content";
 			this.Load += new System.EventHandler(this.UseFileContent_Config_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
@@ -199,18 +192,19 @@
 
 		#endregion
 
-		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.TextBox txt_filter;
-		private System.Windows.Forms.Button btn_cancel;
-		private System.Windows.Forms.Button btn_ok;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.RadioButton radio_usefile;
-		private System.Windows.Forms.RadioButton radio_usedir;
-		private System.Windows.Forms.Button btn_manage_exclude;
-		private System.Windows.Forms.CheckBox chk_exclude_comma;
-		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.TextBox txt_exclude;
-		private System.Windows.Forms.Button btn_manage_filter;
-		private System.Windows.Forms.CheckBox chk_filter_comma;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel label3;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_filter;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_cancel;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_ok;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel label1;
+		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton radio_usefile;
+		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton radio_usedir;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_manage_exclude;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_exclude_comma;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel label6;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_exclude;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_manage_filter;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_comma;
+		private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
 	}
 }

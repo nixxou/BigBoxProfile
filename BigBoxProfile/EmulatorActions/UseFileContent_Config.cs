@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
-	public partial class UseFileContent_Config : Form
+	public partial class UseFileContent_Config : KryptonForm
 	{
 		public string filter = "";
 		public bool usefile = false;

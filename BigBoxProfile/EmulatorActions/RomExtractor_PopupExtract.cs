@@ -2,11 +2,12 @@
 using System;
 using System.IO;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
 
-	public partial class RomExtractor_PopupExtract : Form
+	public partial class RomExtractor_PopupExtract : KryptonForm
 	{
 		private RomExtractor_ArchiveFile _archiveFile;
 		private string _fileToExtract;

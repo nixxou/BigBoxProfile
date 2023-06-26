@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using ComponentFactory.Krypton.Toolkit;
 
 namespace BigBoxProfile.EmulatorActions
 {
 
-	public partial class Suffix_Config : Form
+	public partial class Suffix_Config : KryptonForm
 	{
 		public string result = "";
 		public string filter = "";

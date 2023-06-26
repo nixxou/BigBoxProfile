@@ -63,7 +63,7 @@
 			// 
 			this.txt_path.Location = new System.Drawing.Point(12, 4);
 			this.txt_path.Name = "txt_path";
-			this.txt_path.Size = new System.Drawing.Size(617, 20);
+			this.txt_path.Size = new System.Drawing.Size(617, 23);
 			this.txt_path.TabIndex = 29;
 			// 
 			// btn_delete_path
@@ -73,7 +73,7 @@
 			this.btn_delete_path.Name = "btn_delete_path";
 			this.btn_delete_path.Size = new System.Drawing.Size(46, 24);
 			this.btn_delete_path.TabIndex = 33;
-			this.btn_delete_path.Text = "Delete";
+			this.btn_delete_path.Values.Text = "Delete";
 			this.btn_delete_path.Click += new System.EventHandler(this.btn_delete_path_Click);
 			// 
 			// btn_add_path
@@ -82,7 +82,7 @@
 			this.btn_add_path.Name = "btn_add_path";
 			this.btn_add_path.Size = new System.Drawing.Size(46, 24);
 			this.btn_add_path.TabIndex = 30;
-			this.btn_add_path.Text = "Add";
+			this.btn_add_path.Values.Text = "Add";
 			this.btn_add_path.Click += new System.EventHandler(this.btn_add_path_Click);
 			// 
 			// btn_down_path
@@ -92,7 +92,7 @@
 			this.btn_down_path.Name = "btn_down_path";
 			this.btn_down_path.Size = new System.Drawing.Size(46, 24);
 			this.btn_down_path.TabIndex = 32;
-			this.btn_down_path.Text = "Down";
+			this.btn_down_path.Values.Text = "Down";
 			this.btn_down_path.Click += new System.EventHandler(this.btn_down_path_Click);
 			// 
 			// btn_up_path
@@ -102,7 +102,7 @@
 			this.btn_up_path.Name = "btn_up_path";
 			this.btn_up_path.Size = new System.Drawing.Size(46, 24);
 			this.btn_up_path.TabIndex = 31;
-			this.btn_up_path.Text = "Up";
+			this.btn_up_path.Values.Text = "Up";
 			this.btn_up_path.Click += new System.EventHandler(this.btn_up_path_Click);
 			// 
 			// btn_ok
@@ -111,7 +111,7 @@
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 44;
-			this.btn_ok.Text = "Save";
+			this.btn_ok.Values.Text = "Save";
 			this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
 			// 
 			// btn_cancel
@@ -121,13 +121,15 @@
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 45;
-			this.btn_cancel.Text = "Cancel";
+			this.btn_cancel.Values.Text = "Cancel";
 			this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
 			// 
 			// Manage_Items
 			// 
+			this.AcceptButton = this.btn_ok;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.CancelButton = this.btn_cancel;
 			this.ClientSize = new System.Drawing.Size(687, 589);
 			this.Controls.Add(this.btn_ok);
 			this.Controls.Add(this.btn_cancel);
