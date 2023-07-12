@@ -92,6 +92,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "MonitorDispositionConfig";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Monitor Disposition : Select or Register Monitor Layouts";
 			this.Load += new System.EventHandler(this.MonitorDispositionConfig_Load);
 			((System.ComponentModel.ISupportInitialize)(this.cmb_DispositionList)).EndInit();

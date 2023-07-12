@@ -143,6 +143,22 @@ namespace BigBoxProfile
 				if (SelectedProfile.Configuration["soundcard"] != "<dontchange>")
 				{
 					restoreSoundCard = SoundCardUtils.GetMainCards();
+                    if (restoreSoundCard != SelectedProfile.Configuration["soundcard"] && !String.IsNullOrEmpty(restoreSoundCard))
+                    {
+                        for(int i = 0; i < 10; i++)
+						{
+							if (SoundCardUtils.GetSoundCards().Contains(restoreSoundCard))
+							{
+								break;
+							}
+							else
+							{
+								Thread.Sleep(1000);
+							}
+						}
+
+
+                    }
 					if (!SoundCardUtils.SetDefaultMic(SelectedProfile.Configuration["soundcard"]))
 					{
 						restoreSoundCard = "";

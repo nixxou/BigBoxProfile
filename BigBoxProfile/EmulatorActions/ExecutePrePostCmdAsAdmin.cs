@@ -201,7 +201,7 @@ namespace BigBoxProfile.EmulatorActions
 							Thread.Sleep(1000);
 							BigBoxUtils.ExecuteTask(taskName);
 						}
-						Thread.Sleep(1000);
+						Thread.Sleep(100);
 					}
 
 				}
@@ -286,7 +286,7 @@ namespace BigBoxProfile.EmulatorActions
 							BigBoxUtils.ExecuteTask(taskName);
 
 						}
-						Thread.Sleep(1000);
+						Thread.Sleep(100);
 					}
 
 				}

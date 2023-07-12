@@ -8,6 +8,7 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -822,10 +823,12 @@ namespace BigBoxProfile
 			RegisterTask(args, optionTask);
 		}
 
-		public static void ExecuteTask(string taskName, int delay = 1000)
+		public static void ExecuteTask(string taskName, int delay = 2000)
 		{
 			string new_cmd = $@" /run /tn ""{taskName}""";
 			var args = BigBoxUtils.CommandLineToArgs(new_cmd, false);
+
+
 
 			var TaskRun = System.Threading.Tasks.Task.Run(() =>
 			Cli.Wrap("schtasks")
@@ -834,6 +837,36 @@ namespace BigBoxProfile
 			.ExecuteAsync()
 			);
 			TaskRun.Wait();
+
+			/*
+			TaskService ts = new TaskService();
+			Microsoft.Win32.TaskScheduler.Task task = ts.GetTask(taskName);
+			Microsoft.Win32.TaskScheduler.RunningTaskCollection instances = task.GetInstances();
+
+			//Code a enlever si execution sans attente
+			int nbrun = delay / 100;
+			if(instances.Count == 0)
+			{
+				//MessageBox.Show("icil");
+				instances = task.GetInstances();
+				Thread.Sleep(100);
+				int i = 0;
+				while (instances.Count == 0)
+				{
+					i++;
+					instances = task.GetInstances();
+					Thread.Sleep(100);
+					if (i > nbrun) break;
+				}
+			}
+			while (instances.Count == 1)
+			{
+				instances = task.GetInstances();
+				Thread.Sleep(100);
+			}
+			*/
+			
+			
 
 			Thread.Sleep(delay);
 
@@ -845,6 +878,7 @@ namespace BigBoxProfile
 				instances = task.GetInstances();
 				Thread.Sleep(100);
 			}
+			
 		}
 
 		public static void ExecuteTask(string[] args, int delay = 1000, bool registerIfNeeded = true, string optionTask = "")
@@ -979,6 +1013,29 @@ namespace BigBoxProfile
 
 			return (int)(diskSizeBytes / 1024 / 1024);
 		}
+
+		public static string GetCommandLineInfo(Process process)
+		{
+			if (process is null || process.Id < 1)
+			{
+				return "";
+			}
+
+			string query =
+				$@"SELECT CommandLine
+           FROM Win32_Process
+           WHERE ProcessId = {process.Id}";
+
+			using (var searcher = new ManagementObjectSearcher(query))
+			using (var collection = searcher.Get())
+			{
+				var managementObject = collection.OfType<ManagementObject>().FirstOrDefault();
+
+				return managementObject != null ? (string)managementObject["CommandLine"] : "";
+			}
+		}
+
+
 
 	}
 

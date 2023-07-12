@@ -1,4 +1,5 @@
-﻿using CliWrap;
+﻿using CefSharp.DevTools.DOM;
+using CliWrap;
 using Microsoft.VisualBasic.Devices;
 using Microsoft.Win32.TaskScheduler;
 using System;
@@ -10,6 +11,7 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace BigBoxProfile
 {
@@ -121,11 +123,37 @@ namespace BigBoxProfile
 			);
 			TaskRun.Wait();
 
-			Thread.Sleep(1000);
+
+
+			//Thread.Sleep(1000);
 
 			TaskService ts = new TaskService();
 			Microsoft.Win32.TaskScheduler.Task task = ts.GetTask(taskName);
 			Microsoft.Win32.TaskScheduler.RunningTaskCollection instances = task.GetInstances();
+
+			/*
+			while (instances.Count == 1)
+			{
+				instances = task.GetInstances();
+				Thread.Sleep(100);
+			}
+			*/
+
+			int nbrun = 10;
+			if (instances.Count == 0)
+			{
+				//MessageBox.Show("icil");
+				instances = task.GetInstances();
+				Thread.Sleep(100);
+				int i = 0;
+				while (instances.Count == 0)
+				{
+					i++;
+					instances = task.GetInstances();
+					Thread.Sleep(100);
+					if (i > nbrun) break;
+				}
+			}
 			while (instances.Count == 1)
 			{
 				instances = task.GetInstances();
@@ -152,6 +180,8 @@ namespace BigBoxProfile
 
 		public void UnMount()
 		{
+			if (RamDriveLetter == '\0') return;
+			if (!Directory.Exists(RamDriveLetter + ":\\")) return;
 			setConfigFile(10, RamDriveLetter.ToString(), "RamdiskRemove", false);
 			ExecuteRamTask("umount");
 		}

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,39 +37,39 @@ namespace BigBoxProfile
 
 		public EmulatorLauncher(string[] args)
 		{
+			string selectedProfile = "default";
 			var p = ParentProcessUtilities.GetParentProcess();
 			if (p != null)
 			{
 				string process_name = p.ProcessName;
-				var exp = BigBoxUtils.explode(process_name, "_");
-				//foreach(var x in exp) { MessageBox.Show(x); }
-
-
-				if (exp != null && exp.Length == 2 && (exp[0].ToLower() == "bigbox" || exp[0].ToLower() == "launchbox"))
+				if (process_name.ToLower().Contains("bigbox") || process_name.ToLower().Contains("launchbox"))
 				{
+					var parentBigBoxProfileProcess = ParentProcessUtilities.GetParentProcess(p.Id);
+					if (parentBigBoxProfileProcess != null)
+					{
+						string parentCmdLine = BigBoxUtils.GetCommandLineInfo(parentBigBoxProfileProcess);
+						var parentsCmdArgs = BigBoxUtils.CommandLineToArgs(parentCmdLine);
 
-					if (Profile.ProfileList.ContainsKey(exp[1]))
-					{
-						SelectedProfile = Profile.ProfileList[exp[1]];
-					}
-				}
-				else
-				{
-					if (process_name.ToLower() == "bigbox" || process_name.ToLower() == "launchbox")
-					{
-						if (Profile.ProfileList.ContainsKey("default"))
+
+						foreach (var arg in parentsCmdArgs)
 						{
-							SelectedProfile = Profile.ProfileList["default"];
+							string prefix = "--profile=";
+							if (arg.StartsWith(prefix))
+							{
+								string profileName = arg.Substring(prefix.Length).ToLower().Trim();
+								if (Profile.ProfileList.ContainsKey(profileName))
+								{
+									selectedProfile = profileName;
+									break;
+								}
+
+							}
 						}
+
 					}
-
 				}
-
-
-
 			}
-
-			//MessageBox.Show(SelectedProfile.ProfileName);
+			SelectedProfile = Profile.ProfileList[selectedProfile];
 
 			LaunchFromDir = Environment.CurrentDirectory;
 			ExeFileFull = args[0];

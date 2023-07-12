@@ -169,6 +169,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "MonitorPriorityConfig";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Monitor Priority Configuration";
 			this.Load += new System.EventHandler(this.HelpMonitor_Load);
 			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).EndInit();

@@ -79,6 +79,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "SoundCardConfig";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Select Sound Card to use as Main Soundcard";
 			this.Load += new System.EventHandler(this.SoundCardConfig_Load);
 			((System.ComponentModel.ISupportInitialize)(this.cmb_SoundCardList)).EndInit();

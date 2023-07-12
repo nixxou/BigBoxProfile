@@ -262,6 +262,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "EmulatorConfig";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Emulator Hijacking : Edit commandline send to Emulators";
 			this.Load += new System.EventHandler(this.EmulatorConfig_Load);
 			((System.ComponentModel.ISupportInitialize)(this.groupBox3.Panel)).EndInit();
