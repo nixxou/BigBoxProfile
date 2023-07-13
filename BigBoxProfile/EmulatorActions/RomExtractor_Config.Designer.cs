@@ -417,6 +417,7 @@
 			this.Controls.Add(this.txt_filter);
 			this.Controls.Add(this.label3);
 			this.Name = "RomExtractor_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : RomExtractor";
 			this.Load += new System.EventHandler(this.RomExtractor_Config_Load);
 			((System.ComponentModel.ISupportInitialize)(this.groupBox3.Panel)).EndInit();

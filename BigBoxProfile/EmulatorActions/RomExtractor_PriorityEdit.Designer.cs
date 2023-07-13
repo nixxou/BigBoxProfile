@@ -434,6 +434,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "RomExtractor_PriorityEdit";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : RomExtractor Priority Edition";
 			this.Load += new System.EventHandler(this.RomExtractor_PriorityEdit_Load);
 			((System.ComponentModel.ISupportInitialize)(this.groupBox2.Panel)).EndInit();

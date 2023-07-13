@@ -314,6 +314,7 @@ namespace BigBoxProfile.EmulatorActions
 			args_copy.AddRange(args);
 
 			var frm = new RomExtractor_Task(args_copy, archiveFilePath, SelectedPriority, _cachedir, _cacheMaxSize, _standaloneExtensions, _metadataExtensions, PrioritySubDirFullList.ToArray(), ramDisk);
+			/*
 			var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess != null)
@@ -325,6 +326,7 @@ namespace BigBoxProfile.EmulatorActions
 				frm.StartPosition = FormStartPosition.Manual;
 				frm.Location = new Point(x, y);
 			}
+			*/
 
 			frm.TopMost = true; // Affiche la fenêtre devant toutes les autres
 			frm.ShowDialog();

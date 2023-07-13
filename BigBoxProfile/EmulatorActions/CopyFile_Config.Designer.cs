@@ -323,6 +323,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "CopyFile_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Copy File";
 			this.Load += new System.EventHandler(this.CopyFile_Config_Load);
 			((System.ComponentModel.ISupportInitialize)(this.groupBox3.Panel)).EndInit();

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -44,6 +46,34 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void CopyFile_Task_Load(object sender, EventArgs e)
 		{
+			Screen screen = Screen.FromControl(this);
+			int tailleSourceHeight = 1080;
+			double multiplicateur = (double)screen.Bounds.Height / (double)tailleSourceHeight;
+			if (multiplicateur > 0.6)
+			{
+				this.Height = (int)Math.Round((double)this.Height * multiplicateur);
+				this.Width = (int)Math.Round((double)this.Width * multiplicateur);
+				this.StartPosition = FormStartPosition.Manual;
+				this.Left = (screen.Bounds.Width - this.Width) / 2;
+				this.Top = (screen.Bounds.Height - this.Height) / 2;
+				foreach (Control control in this.Controls)
+				{
+					// Faire quelque chose avec chaque contrôle (par exemple, afficher le nom)
+					Console.WriteLine("Nom du contrôle : " + control.Name);
+					control.Height = (int)Math.Round((double)control.Height * multiplicateur);
+					control.Width = (int)Math.Round((double)control.Width * multiplicateur);
+					control.Left = (int)Math.Round((double)control.Left * multiplicateur);
+					control.Top = (int)Math.Round((double)control.Top * multiplicateur);
+
+					PropertyInfo fontProperty = control.GetType().GetProperty("Font");
+					if (fontProperty != null)
+					{
+						var f = control.Font;
+						control.Font = new Font(f.Name, f.SizeInPoints * (float)multiplicateur);
+					}
+				}
+			}
+
 			lbl_progress.Text = "";
 			lbl_progressETA.Text = "";
 

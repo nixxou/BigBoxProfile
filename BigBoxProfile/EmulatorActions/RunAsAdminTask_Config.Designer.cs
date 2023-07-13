@@ -96,6 +96,7 @@
 			// 
 			// btn_cancel
 			// 
+			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.btn_cancel.Location = new System.Drawing.Point(557, 225);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
@@ -188,6 +189,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "RunAsAdminTask_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Run As Admin";
 			this.ResumeLayout(false);
 			this.PerformLayout();

@@ -112,7 +112,7 @@ namespace BigBoxProfile
 				}
 			}
 
-			string new_cmd = $@" /run /tn ""{taskName}""";
+			string new_cmd = $@" /I /run /tn ""{taskName}""";
 			args = BigBoxUtils.CommandLineToArgs(new_cmd, false);
 
 			var TaskRun = System.Threading.Tasks.Task.Run(() =>

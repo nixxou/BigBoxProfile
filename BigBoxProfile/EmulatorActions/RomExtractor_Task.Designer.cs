@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.lbl_progress = new System.Windows.Forms.Label();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			this.lbl_shortcut1 = new System.Windows.Forms.Label();
@@ -37,6 +38,7 @@
 			this.lbl_shortcut3 = new System.Windows.Forms.Label();
 			this.lbl_shortcut4 = new System.Windows.Forms.Label();
 			this.fileListBox = new System.Windows.Forms.ListBox();
+			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.SuspendLayout();
 			// 
 			// lbl_progress
@@ -140,6 +142,11 @@
 			this.fileListBox.TabIndex = 11;
 			this.fileListBox.SelectedIndexChanged += new System.EventHandler(this.fileListBox_SelectedIndexChanged);
 			// 
+			// timer1
+			// 
+			this.timer1.Interval = 1000;
+			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+			// 
 			// RomExtractor_Task
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,6 +164,7 @@
 			this.Controls.Add(this.progressBar1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "RomExtractor_Task";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "RomExtractor_Task";
 			this.Load += new System.EventHandler(this.RomExtractor_Task_Load);
 			this.ResumeLayout(false);
@@ -174,5 +182,6 @@
 		private System.Windows.Forms.Label lbl_shortcut3;
 		private System.Windows.Forms.Label lbl_shortcut4;
 		private System.Windows.Forms.ListBox fileListBox;
+		private System.Windows.Forms.Timer timer1;
 	}
 }

@@ -295,6 +295,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ExecutePrePostCmdAsAdmin_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Execute Pre/Post Commands";
 			this.Load += new System.EventHandler(this.ExecutePrePostCmdAsAdmin_Config_Load);
 			this.ResumeLayout(false);

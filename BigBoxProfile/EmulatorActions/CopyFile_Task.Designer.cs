@@ -113,6 +113,7 @@
 			this.Controls.Add(this.progressBar1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "CopyFile_Task";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "CopyFile_Task";
 			this.Load += new System.EventHandler(this.CopyFile_Task_Load);
 			this.ResumeLayout(false);

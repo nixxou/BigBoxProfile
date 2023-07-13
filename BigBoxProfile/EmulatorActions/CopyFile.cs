@@ -326,7 +326,9 @@ namespace BigBoxProfile.EmulatorActions
 
 						RamDiskLauncher ramDisk = new RamDiskLauncher();
 						_RamDisks.Add(ramDisk);
+
 						var frm = new CopyFile_Task(elem, outfile, _useRamDisk, _deleteOnExit, maxsize, ramDisk);
+						/*
 						var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
 						if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
 						if (targetProcess != null)
@@ -338,6 +340,7 @@ namespace BigBoxProfile.EmulatorActions
 							frm.StartPosition = FormStartPosition.Manual;
 							frm.Location = new Point(x, y);
 						}
+						*/
 
 						frm.TopMost = true; // Affiche la fenêtre devant toutes les autres
 						frm.ShowDialog();

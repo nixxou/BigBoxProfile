@@ -252,6 +252,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "FakeFullScreen_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Fake FullScreen";
 			this.Load += new System.EventHandler(this.FakeFullScreen_Config_Load);
 			((System.ComponentModel.ISupportInitialize)(this.cmb_targetType)).EndInit();

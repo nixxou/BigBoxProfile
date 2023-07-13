@@ -237,7 +237,7 @@ namespace BigBoxProfile.EmulatorActions
 				byte[] hashBytes = md5.ComputeHash(inputBytes);
 				string hashString = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
 				string taskName = "RunAdmin_" + hashString;
-				string new_cmd = $@"schtasks /run /tn ""{taskName}""";
+				string new_cmd = $@"schtasks /I /run /tn ""{taskName}""";
 				args = BigBoxUtils.CommandLineToArgs(new_cmd, true);
 			}
 

@@ -22,6 +22,8 @@ namespace BigBoxProfile
 		string Dir;
 		string[] Args;
 
+		public static string BigBoxFolder = "";
+
 		private static Form form;
 
 		[DllImport("user32.dll")]
@@ -44,6 +46,7 @@ namespace BigBoxProfile
 				string process_name = p.ProcessName;
 				if (process_name.ToLower().Contains("bigbox") || process_name.ToLower().Contains("launchbox"))
 				{
+					BigBoxFolder = Path.GetDirectoryName(BigBoxUtils.GetCommandLineInfo(p));
 					var parentBigBoxProfileProcess = ParentProcessUtilities.GetParentProcess(p.Id);
 					if (parentBigBoxProfileProcess != null)
 					{

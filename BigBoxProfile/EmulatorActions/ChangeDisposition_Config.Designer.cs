@@ -214,6 +214,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ChangeDisposition_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Change Disposition";
 			this.Load += new System.EventHandler(this.ChangeDisposition_Config_Load);
 			((System.ComponentModel.ISupportInitialize)(this.cmb_DispositionList)).EndInit();

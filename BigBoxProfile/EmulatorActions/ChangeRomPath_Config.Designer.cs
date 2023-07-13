@@ -326,6 +326,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ChangeRomPath_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Change Rom Path";
 			this.Load += new System.EventHandler(this.ChangeRomPath_Config_Load);
 			((System.ComponentModel.ISupportInitialize)(this.groupBox1.Panel)).EndInit();

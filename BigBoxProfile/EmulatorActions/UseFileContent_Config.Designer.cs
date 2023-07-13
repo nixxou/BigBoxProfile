@@ -183,6 +183,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "UseFileContent_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Use File Content";
 			this.Load += new System.EventHandler(this.UseFileContent_Config_Load);
 			this.ResumeLayout(false);

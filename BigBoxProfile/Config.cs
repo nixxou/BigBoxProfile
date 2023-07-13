@@ -1,6 +1,8 @@
-﻿using ComponentFactory.Krypton.Toolkit;
+﻿using BigBoxProfile.EmulatorActions;
+using ComponentFactory.Krypton.Toolkit;
 using Microsoft.VisualBasic;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -309,8 +311,5 @@ namespace BigBoxProfile
 				ReloadDispositionCmb();
 			}
 		}
-
-
-
 	}
 }

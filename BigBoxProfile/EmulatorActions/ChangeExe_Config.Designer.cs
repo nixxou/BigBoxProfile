@@ -167,6 +167,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ChangeExe_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Change Exe";
 			this.Load += new System.EventHandler(this.ChangeExe_Config_Load);
 			this.ResumeLayout(false);

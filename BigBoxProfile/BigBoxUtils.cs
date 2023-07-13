@@ -825,7 +825,7 @@ namespace BigBoxProfile
 
 		public static void ExecuteTask(string taskName, int delay = 2000)
 		{
-			string new_cmd = $@" /run /tn ""{taskName}""";
+			string new_cmd = $@" /I /run /tn ""{taskName}""";
 			var args = BigBoxUtils.CommandLineToArgs(new_cmd, false);
 
 
@@ -838,7 +838,7 @@ namespace BigBoxProfile
 			);
 			TaskRun.Wait();
 
-			/*
+			
 			TaskService ts = new TaskService();
 			Microsoft.Win32.TaskScheduler.Task task = ts.GetTask(taskName);
 			Microsoft.Win32.TaskScheduler.RunningTaskCollection instances = task.GetInstances();
@@ -864,10 +864,10 @@ namespace BigBoxProfile
 				instances = task.GetInstances();
 				Thread.Sleep(100);
 			}
-			*/
 			
 			
-
+			
+			/*
 			Thread.Sleep(delay);
 
 			TaskService ts = new TaskService();
@@ -878,6 +878,7 @@ namespace BigBoxProfile
 				instances = task.GetInstances();
 				Thread.Sleep(100);
 			}
+			*/
 			
 		}
 

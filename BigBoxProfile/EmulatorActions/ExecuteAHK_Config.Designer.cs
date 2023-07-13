@@ -228,6 +228,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ExecuteAHK_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Execute AHK";
 			this.Load += new System.EventHandler(this.ExecuteAHK_Config_Load);
 			this.ResumeLayout(false);

@@ -1,6 +1,5 @@
 ﻿using BigBoxProfile.RomExtractorUtils;
 using CefSharp;
-using GlobalHotKey;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -8,6 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Management;
+using System.Reflection;
 using System.Windows.Forms;
 using XInput.Wrapper;
 
@@ -29,7 +29,6 @@ namespace BigBoxProfile.EmulatorActions
 		public string colors_css = "";
 		private CefSharp.WinForms.ChromiumWebBrowser chromiumWebBrowser1;
 		public string Selected = "";
-		private HotKeyManager hotKeyManager = null;
 
 		private bool isButtonDown = false;
 		private DateTime lastCallDownTime = DateTime.MinValue;
@@ -95,59 +94,45 @@ namespace BigBoxProfile.EmulatorActions
 				Texture_Label.Visible = false;
 			}
 
-
+			fileListBox.MouseDoubleClick += ok_mouseclick;
 
 			this.TopMost = true;
 			this.Activate();
 
-			if (hotKeyManager == null)
-			{
-				hotKeyManager = new HotKeyManager();
-				var keydown = hotKeyManager.Register(System.Windows.Input.Key.Down, System.Windows.Input.ModifierKeys.None);
-				var keyup = hotKeyManager.Register(System.Windows.Input.Key.Up, System.Windows.Input.ModifierKeys.None);
-				var keyenter = hotKeyManager.Register(System.Windows.Input.Key.Enter, System.Windows.Input.ModifierKeys.None);
-				var keyesc = hotKeyManager.Register(System.Windows.Input.Key.Escape, System.Windows.Input.ModifierKeys.None);
 
-				hotKeyManager.KeyPressed += (senderKeypress, eventKeypress) =>
-				{
-					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Down)
-					{
-						if (fileListBox.SelectedIndex < fileListBox.Items.Count - 1)
-						{
-							fileListBox.SelectedIndex++;
-						}
-					}
-					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Up)
-					{
-						if (fileListBox.SelectedIndex > 0)
-						{
-							fileListBox.SelectedIndex--;
-						}
-					}
-					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Enter)
-					{
-						okButton_Click();
-					}
-					if (eventKeypress.HotKey.Key == System.Windows.Input.Key.Escape)
-					{
-						cancelButton_Click();
-					}
-				};
-
-			}
+			this.KeyPreview = true;
+			this.KeyDown += new KeyEventHandler(RomExtractor_KeyDown);
 
 
 			if (X.IsAvailable)
 			{
 				gamepad = X.Gamepad_1;
-				gamepad.KeyDown += KeyDown;
-				gamepad.StateChanged += StateChanged;
+				gamepad.KeyDown += Gamepad_KeyDown;
+				gamepad.StateChanged += Gamepad_StateChanged;
 				X.StartPolling(gamepad);
 			}
 
 		}
 
-		private void KeyDown(object sender, EventArgs e)
+		private void ok_mouseclick(object sender, MouseEventArgs e)
+		{
+			okButton_Click();
+		}
+
+		private void RomExtractor_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Escape)
+			{
+				cancelButton_Click();
+			}
+			if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Space)
+			{
+				okButton_Click();
+			}
+		}
+
+
+		private void Gamepad_KeyDown(object sender, EventArgs e)
 		{
 			if (gamepad.Dpad_Down_down)
 			{
@@ -168,11 +153,11 @@ namespace BigBoxProfile.EmulatorActions
 			}
 		}
 
-		private void StateChanged(object sender, EventArgs e)
+		private void Gamepad_StateChanged(object sender, EventArgs e)
 		{
 			if (gamepad.A_down || gamepad.Start_down)
 			{
-				if (fileListBox.SelectedIndex > 0)
+				if (fileListBox.SelectedIndex >= 0)
 				{
 					okButton_Click();
 				}
@@ -236,8 +221,8 @@ namespace BigBoxProfile.EmulatorActions
 				}
 				if (valid_meta) return (true, res_Metadata_file, res_Metadata_template, res_Metadata_htmlfolder);
 			}
-			Metadata_folder = Path.Combine(_cachedir, "metadata", dinfo.Name);
 
+			Metadata_folder = Path.Combine(_cachedir, "metadata", dinfo.Name);
 			if (Directory.Exists(Metadata_folder))
 			{
 				if (Directory.Exists(Metadata_folder + "\\" + archiveName))
@@ -265,6 +250,69 @@ namespace BigBoxProfile.EmulatorActions
 					}
 				}
 				if (valid_meta) return (true, res_Metadata_file, res_Metadata_template, res_Metadata_htmlfolder);
+			}
+
+			Metadata_folder = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "metadata", dinfo.Name);
+			if (Directory.Exists(Metadata_folder))
+			{
+				if (Directory.Exists(Metadata_folder + "\\" + archiveName))
+				{
+					res_Metadata_htmlfolder = Metadata_folder + "\\" + archiveName;
+					valid_meta = true;
+				}
+
+				Metadata_file = Metadata_folder + "\\" + Path.GetFileNameWithoutExtension(archiveName) + ".json";
+				if (File.Exists(Metadata_file))
+				{
+					Metadata_template = Metadata_folder + "\\template.html";
+					if (File.Exists(Metadata_template))
+					{
+						res_Metadata_file = Metadata_file;
+						res_Metadata_template = Metadata_template;
+						valid_meta = true;
+					}
+					Metadata_template = Metadata_folder + "\\template.BB.html";
+					if (File.Exists(Metadata_template))
+					{
+						res_Metadata_file = Metadata_file;
+						res_Metadata_template = Metadata_template;
+						valid_meta = true;
+					}
+				}
+				if (valid_meta) return (true, res_Metadata_file, res_Metadata_template, res_Metadata_htmlfolder);
+			}
+
+			if(EmulatorLauncher.BigBoxFolder != "")
+			{
+				Metadata_folder = Path.Combine(EmulatorLauncher.BigBoxFolder, "metadata", dinfo.Name);
+				if (Directory.Exists(Metadata_folder))
+				{
+					if (Directory.Exists(Metadata_folder + "\\" + archiveName))
+					{
+						res_Metadata_htmlfolder = Metadata_folder + "\\" + archiveName;
+						valid_meta = true;
+					}
+
+					Metadata_file = Metadata_folder + "\\" + Path.GetFileNameWithoutExtension(archiveName) + ".json";
+					if (File.Exists(Metadata_file))
+					{
+						Metadata_template = Metadata_folder + "\\template.html";
+						if (File.Exists(Metadata_template))
+						{
+							res_Metadata_file = Metadata_file;
+							res_Metadata_template = Metadata_template;
+							valid_meta = true;
+						}
+						Metadata_template = Metadata_folder + "\\template.BB.html";
+						if (File.Exists(Metadata_template))
+						{
+							res_Metadata_file = Metadata_file;
+							res_Metadata_template = Metadata_template;
+							valid_meta = true;
+						}
+					}
+					if (valid_meta) return (true, res_Metadata_file, res_Metadata_template, res_Metadata_htmlfolder);
+				}
 			}
 
 
@@ -387,6 +435,34 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void RomExtractor_BigBoxSelect_Load(object sender, EventArgs e)
 		{
+			Screen screen = Screen.FromControl(this);
+			int tailleSourceHeight = 1080;
+			double multiplicateur = (double)screen.Bounds.Height / (double)tailleSourceHeight;
+			if (multiplicateur > 0.6)
+			{
+				this.Height = (int)Math.Round((double)this.Height * multiplicateur);
+				this.Width = (int)Math.Round((double)this.Width * multiplicateur);
+				this.StartPosition = FormStartPosition.Manual;
+				this.Left = (screen.Bounds.Width - this.Width) / 2;
+				this.Top = (screen.Bounds.Height - this.Height) / 2;
+				foreach (Control control in this.Controls)
+				{
+					// Faire quelque chose avec chaque contrôle (par exemple, afficher le nom)
+					Console.WriteLine("Nom du contrôle : " + control.Name);
+					control.Height = (int)Math.Round((double)control.Height * multiplicateur);
+					control.Width = (int)Math.Round((double)control.Width * multiplicateur);
+					control.Left = (int)Math.Round((double)control.Left * multiplicateur);
+					control.Top = (int)Math.Round((double)control.Top * multiplicateur);
+
+					PropertyInfo fontProperty = control.GetType().GetProperty("Font");
+					if (fontProperty != null)
+					{
+						var f = control.Font;
+						control.Font = new Font(f.Name, f.SizeInPoints * (float)multiplicateur);
+					}
+				}
+			}
+
 			fileListBox.Focus();
 		}
 
@@ -444,9 +520,9 @@ namespace BigBoxProfile.EmulatorActions
 			//this.chromiumWebBrowser1.Dispose();
 			//KillChildProcesses("CefSharp.BrowserSubprocess.exe");
 			//Process.Start("taskkill", "/F /IM CefSharp.BrowserSubprocess.exe");
-			gamepad.KeyDown -= KeyDown;
-			gamepad.StateChanged -= StateChanged;
-			hotKeyManager.Dispose();
+			gamepad.KeyDown -= Gamepad_KeyDown;
+			gamepad.StateChanged -= Gamepad_StateChanged;
+			//hotKeyManager.Dispose();
 			X.StopPolling();
 		}
 

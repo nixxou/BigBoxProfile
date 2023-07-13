@@ -98,6 +98,7 @@
 			this.Controls.Add(this.archiveNameLabel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "RomExtractor_BigBoxSelect";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "RomExtractor_BigBoxSelect";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.RomExtractor_BigBoxSelect_FormClosing);
 			this.Load += new System.EventHandler(this.RomExtractor_BigBoxSelect_Load);

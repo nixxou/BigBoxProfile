@@ -199,6 +199,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "Prefix_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Prefix";
 			this.Load += new System.EventHandler(this.Prefix_Config_Load);
 			this.ResumeLayout(false);

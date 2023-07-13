@@ -238,6 +238,7 @@
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "Replace_Config";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Replace";
 			this.Load += new System.EventHandler(this.Replace_Config_Load);
 			this.ResumeLayout(false);
