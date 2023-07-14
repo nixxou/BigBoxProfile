@@ -1,6 +1,7 @@
 ﻿using CliWrap;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -36,6 +37,8 @@ namespace BigBoxProfile
 		private const int SWP_NOSIZE = 0x0001;
 		const int SW_SHOWMAXIMIZED = 3;
 
+		[DllImport("user32.dll")]
+		private static extern bool SetForegroundWindow(IntPtr hWnd);
 
 		public EmulatorLauncher(string[] args)
 		{
@@ -92,7 +95,12 @@ namespace BigBoxProfile
 
 		public void ExecutePostlaunch()
 		{
-
+			var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
+			if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
+			if (targetProcess != null)
+			{
+				SetForegroundWindow(targetProcess.MainWindowHandle);
+			}
 		}
 
 		public async Task ExecuteJustRun()
