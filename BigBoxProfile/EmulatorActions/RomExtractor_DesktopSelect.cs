@@ -1087,8 +1087,8 @@ namespace BigBoxProfile.EmulatorActions
 				}
 				if (valid_meta) return (true, res_Metadata_file, res_Metadata_template, res_Metadata_htmlfolder);
 			}
-			Metadata_folder = Path.Combine(_cachedir, "metadata", dinfo.Name);
 
+			Metadata_folder = Path.Combine(_cachedir, "metadata", dinfo.Name);
 			if (Directory.Exists(Metadata_folder))
 			{
 				if (Directory.Exists(Metadata_folder + "\\" + archiveName))
@@ -1116,6 +1116,69 @@ namespace BigBoxProfile.EmulatorActions
 					}
 				}
 				if (valid_meta) return (true, res_Metadata_file, res_Metadata_template, res_Metadata_htmlfolder);
+			}
+
+			Metadata_folder = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "metadata", dinfo.Name);
+			if (Directory.Exists(Metadata_folder))
+			{
+				if (Directory.Exists(Metadata_folder + "\\" + archiveName))
+				{
+					res_Metadata_htmlfolder = Metadata_folder + "\\" + archiveName;
+					valid_meta = true;
+				}
+
+				Metadata_file = Metadata_folder + "\\" + Path.GetFileNameWithoutExtension(archiveName) + ".json";
+				if (File.Exists(Metadata_file))
+				{
+					Metadata_template = Metadata_folder + "\\template.html";
+					if (File.Exists(Metadata_template))
+					{
+						res_Metadata_file = Metadata_file;
+						res_Metadata_template = Metadata_template;
+						valid_meta = true;
+					}
+					Metadata_template = Metadata_folder + "\\template.BB.html";
+					if (File.Exists(Metadata_template))
+					{
+						res_Metadata_file = Metadata_file;
+						res_Metadata_template = Metadata_template;
+						valid_meta = true;
+					}
+				}
+				if (valid_meta) return (true, res_Metadata_file, res_Metadata_template, res_Metadata_htmlfolder);
+			}
+
+			if (EmulatorLauncher.BigBoxFolder != "")
+			{
+				Metadata_folder = Path.Combine(EmulatorLauncher.BigBoxFolder, "metadata", dinfo.Name);
+				if (Directory.Exists(Metadata_folder))
+				{
+					if (Directory.Exists(Metadata_folder + "\\" + archiveName))
+					{
+						res_Metadata_htmlfolder = Metadata_folder + "\\" + archiveName;
+						valid_meta = true;
+					}
+
+					Metadata_file = Metadata_folder + "\\" + Path.GetFileNameWithoutExtension(archiveName) + ".json";
+					if (File.Exists(Metadata_file))
+					{
+						Metadata_template = Metadata_folder + "\\template.html";
+						if (File.Exists(Metadata_template))
+						{
+							res_Metadata_file = Metadata_file;
+							res_Metadata_template = Metadata_template;
+							valid_meta = true;
+						}
+						Metadata_template = Metadata_folder + "\\template.BB.html";
+						if (File.Exists(Metadata_template))
+						{
+							res_Metadata_file = Metadata_file;
+							res_Metadata_template = Metadata_template;
+							valid_meta = true;
+						}
+					}
+					if (valid_meta) return (true, res_Metadata_file, res_Metadata_template, res_Metadata_htmlfolder);
+				}
 			}
 
 

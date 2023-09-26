@@ -327,6 +327,11 @@
 			// num_cacheMaxSize
 			// 
 			this.num_cacheMaxSize.Location = new System.Drawing.Point(187, 41);
+			this.num_cacheMaxSize.Maximum = new decimal(new int[] {
+            1316134912,
+            2328,
+            0,
+            0});
 			this.num_cacheMaxSize.Name = "num_cacheMaxSize";
 			this.num_cacheMaxSize.Size = new System.Drawing.Size(120, 22);
 			this.num_cacheMaxSize.TabIndex = 71;

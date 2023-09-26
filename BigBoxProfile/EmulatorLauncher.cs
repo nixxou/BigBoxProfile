@@ -95,8 +95,7 @@ namespace BigBoxProfile
 
 		public void ExecutePostlaunch()
 		{
-			var targetProcess = Process.GetProcessesByName("LaunchBox").FirstOrDefault(p => p.MainWindowTitle != "");
-			if (targetProcess == null) targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
+			var targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
 			if (targetProcess != null)
 			{
 				SetForegroundWindow(targetProcess.MainWindowHandle);
@@ -268,7 +267,7 @@ namespace BigBoxProfile
 
 					foreach (var fileInM3U in m3uFileListOriginal)
 					{
-						MessageBox.Show("fileInM3U : " + fileInM3U);
+						//MessageBox.Show("fileInM3U : " + fileInM3U);
 						var ForgedArgList = new List<string>();
 						ForgedArgList.Add(Args[0]);
 						ForgedArgList.Add(fileInM3U);
