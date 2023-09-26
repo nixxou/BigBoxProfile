@@ -758,17 +758,37 @@ namespace BigBoxProfile
 
 		}
 
-		public static bool CheckTaskExist(string taskName)
+		public static bool CheckTaskExist(string taskName, string ExePath = "")
 		{
 			using (TaskService taskService = new TaskService())
 			{
-				if (taskService.GetTask(taskName) == null)
+				var task = taskService.GetTask(taskName);
+				if ( task == null)
 				{
 					return false;
 				}
 				else
 				{
-					return true;
+					if(ExePath == "")
+					{
+						return true;
+					}
+					else
+					{
+						var actions = task.Definition.Actions;
+
+						foreach (var action in actions)
+						{
+							if (action is ExecAction execAction)
+							{
+								if(execAction.Path.ToLower() == ExePath.ToLower())
+								{
+									return true;
+								}
+							}
+						}
+						return false;
+					}
 				}
 			}
 		}
@@ -821,6 +841,39 @@ namespace BigBoxProfile
 		{
 			var args = BigBoxUtils.CommandLineToArgs(cmd);
 			RegisterTask(args, optionTask);
+		}
+
+		public static void DeleteTask(string taskName)
+		{
+			using (TaskService ts = new TaskService())
+			{
+				// Find the task in the root folder using its name
+				var task = ts.FindTask(taskName);
+
+				if (task != null)
+				{
+					ts.RootFolder.DeleteTask(taskName);
+				}
+			}
+		}
+
+		public static void SimpleRegisterTask(string taskName, string executable, string arguments)
+		{
+
+			var UsersRights = TaskLogonType.InteractiveToken;
+			//UsersRights = TaskLogonType.S4U;
+			using (TaskService ts = new TaskService())
+			{
+				TaskDefinition td = ts.NewTask();
+				td.RegistrationInfo.Description = "Task as admin";
+				td.Principal.RunLevel = TaskRunLevel.Highest;
+				td.Principal.LogonType = UsersRights;
+				// Create an action that will launch Notepad whenever the trigger fires
+				td.Actions.Add(executable, arguments, null);
+				// Register the task in the root folder
+				ts.RootFolder.RegisterTaskDefinition(taskName, td, TaskCreation.CreateOrUpdate, Environment.GetEnvironmentVariable("USERNAME"), null, UsersRights, null);
+			}
+
 		}
 
 		public static void ExecuteTask(string taskName, int delay = 2000)
@@ -1035,6 +1088,102 @@ namespace BigBoxProfile
 
 				return managementObject != null ? (string)managementObject["CommandLine"] : "";
 			}
+		}
+
+		// <summary>
+		/// Creates a relative path from one file or folder to another.
+		/// </summary>
+		/// <param name="fromPath">Contains the directory that defines the start of the relative path.</param>
+		/// <param name="toPath">Contains the path that defines the endpoint of the relative path.</param>
+		/// <returns>The relative path from the start directory to the end path or <c>toPath</c> if the paths are not related.</returns>
+		/// <exception cref="ArgumentNullException"></exception>
+		/// <exception cref="UriFormatException"></exception>
+		/// <exception cref="InvalidOperationException"></exception>
+		public static String MakeRelativePath(String fromPath, String toPath)
+		{
+			if (String.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
+			if (String.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+
+			Uri fromUri = new Uri(fromPath);
+			Uri toUri = new Uri(toPath);
+
+			if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
+
+			Uri relativeUri = fromUri.MakeRelativeUri(toUri);
+			String relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+			if (toUri.Scheme.Equals("file", StringComparison.InvariantCultureIgnoreCase))
+			{
+				relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+			}
+
+			return relativePath;
+		}
+
+		public static IEnumerable<String> FindAccessableFiles(string path, string file_pattern, bool recurse)
+		{
+			IEnumerable<String> emptyList = new string[0];
+
+			if (File.Exists(path))
+				return new string[] { path };
+
+			if (!Directory.Exists(path))
+				return emptyList;
+
+			var top_directory = new DirectoryInfo(path);
+
+			// Enumerate the files just in the top directory.
+			var files = top_directory.EnumerateFiles(file_pattern);
+			var filesLength = files.Count();
+			var filesList = Enumerable
+					  .Range(0, filesLength)
+					  .Select(i =>
+					  {
+						  string filename = null;
+						  try
+						  {
+							  var file = files.ElementAt(i);
+							  filename = file.FullName;
+						  }
+						  catch (UnauthorizedAccessException)
+						  {
+						  }
+						  catch (InvalidOperationException)
+						  {
+							  // ran out of entries
+						  }
+						  return filename;
+					  })
+					  .Where(i => null != i);
+
+			if (!recurse)
+				return filesList;
+
+			var dirs = top_directory.EnumerateDirectories("*");
+			var dirsLength = dirs.Count();
+			var dirsList = Enumerable
+				.Range(0, dirsLength)
+				.SelectMany(i =>
+				{
+					string dirname = null;
+					try
+					{
+						var dir = dirs.ElementAt(i);
+						dirname = dir.FullName;
+						return FindAccessableFiles(dirname, file_pattern, recurse);
+					}
+					catch (UnauthorizedAccessException)
+					{
+					}
+					catch (InvalidOperationException)
+					{
+						// ran out of entries
+					}
+
+					return emptyList;
+				});
+
+			return Enumerable.Concat(filesList, dirsList);
 		}
 
 

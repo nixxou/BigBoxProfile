@@ -1,6 +1,10 @@
 ﻿using Microsoft.Win32;
+using Microsoft.Win32.TaskScheduler;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Windows.Forms;
 
 namespace BigBoxProfile
 {
@@ -88,6 +92,13 @@ namespace BigBoxProfile
 				}
 				if (!found) return true;
 			}
+
+			string exePath = Process.GetCurrentProcess().MainModule.FileName;
+			if(!BigBoxUtils.CheckTaskExist("BigBoxPS3IsoMount", exePath) && !BigBoxUtils.CheckTaskExist("BigBoxPS3IsoUnmount", exePath))
+			{
+				return true;
+			}
+
 			return false;
 		}
 
@@ -128,6 +139,18 @@ namespace BigBoxProfile
 						}
 					}
 					if (!found) DeleteDebuggerKey(reg);
+				}
+
+				string exePath = Process.GetCurrentProcess().MainModule.FileName;
+				if (!BigBoxUtils.CheckTaskExist("BigBoxPS3IsoMount", exePath))
+				{
+					if (BigBoxUtils.CheckTaskExist("BigBoxPS3IsoMount")) BigBoxUtils.DeleteTask("BigBoxPS3IsoMount");
+					BigBoxUtils.SimpleRegisterTask("BigBoxPS3IsoMount", exePath, "--mountvhdx");
+				}
+				if (!BigBoxUtils.CheckTaskExist("BigBoxPS3IsoUnmount", exePath))
+				{
+					if (BigBoxUtils.CheckTaskExist("BigBoxPS3IsoUnmount")) BigBoxUtils.DeleteTask("BigBoxPS3IsoUnmount");
+					BigBoxUtils.SimpleRegisterTask("BigBoxPS3IsoUnmount", exePath, "--unmountvhdx");
 				}
 
 			}

@@ -109,6 +109,15 @@
     <Reference Include="ComponentFactory.Krypton.Workspace">
       <HintPath>..\..\..\..\..\..\Program Files\Microsoft Visual Studio\Krypton-master\Bin\ComponentFactory.Krypton.Workspace.dll</HintPath>
     </Reference>
+    <Reference Include="DiscUtils.Core, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\packages\DiscUtils.Core.0.16.13\lib\net45\DiscUtils.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Iso9660, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\packages\DiscUtils.Iso9660.0.16.13\lib\net45\DiscUtils.Iso9660.dll</HintPath>
+    </Reference>
+    <Reference Include="DiscUtils.Streams, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
+      <HintPath>..\packages\DiscUtils.Streams.0.16.13\lib\net45\DiscUtils.Streams.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -239,6 +248,7 @@
     </Compile>
     <Compile Include="EmulatorActions\FixMameMonitor.cs" />
     <Compile Include="EmulatorActions\FixRetroarchMonitor.cs" />
+    <Compile Include="EmulatorActions\PS3Mount.cs" />
     <Compile Include="EmulatorActions\Replace_Config.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -319,6 +329,7 @@
     </Compile>
     <Compile Include="EmulatorLauncher.cs" />
     <Compile Include="IEmulatorAction.cs" />
+    <Compile Include="JunctionPoint.cs" />
     <Compile Include="Manage_Items.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -344,6 +355,9 @@
     <Compile Include="ProfileFileSwitcher.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PS3\PARAM_SFO.cs" />
+    <Compile Include="PS3\PS3Tool.cs" />
+    <Compile Include="PS3\VHDXTool.cs" />
     <Compile Include="RamDiskManager.cs" />
     <Compile Include="RegisteryManagercs.cs" />
     <Compile Include="RomExtractor\Rom.cs" />
@@ -477,6 +491,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

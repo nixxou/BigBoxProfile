@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PS3IsoLauncher;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -25,6 +26,25 @@ namespace BigBoxProfile
 			forceArg[0] = @"C:\LaunchBox\BigBox.exe";
 			args = forceArg;
 			*/
+			if (args.Length == 1 && args[0] == "--mountvhdx")
+			{
+				bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+				if (isAdmin)
+				{
+					VHDXTool.TaskMount();
+				}
+				return;
+			}
+
+			if (args.Length == 1 && args[0] == "--unmountvhdx")
+			{
+				bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+				if (isAdmin)
+				{
+					VHDXTool.TaskUnmount();
+				}
+				return;
+			}
 
 			if (args.Length == 0)
 			{

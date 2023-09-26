@@ -46,7 +46,7 @@ namespace BigBoxProfile
 
 			_modules.Add(new RomExtractor());
 
-
+			_modules.Add(new PS3Mount());
 
 
 			List<ConfigurationData> loadedModules = ConfigurationData.LoadConfigurationDataList(FileNameConfig);
@@ -166,7 +166,12 @@ namespace BigBoxProfile
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
-
+				if (module.name == "PS3Mount")
+				{
+					var obj = new PS3Mount();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
 			}
 
 		}
