@@ -165,7 +165,14 @@ namespace BigBoxProfile.EmulatorActions
 			this.KeyPreview = true;
 			this.KeyDown += new KeyEventHandler(RomExtractor_KeyDown);
 
-			StartCountdown();
+			int dureeCountdown = 5;
+			if (_ShortListGame.Count() == 1)
+			{
+				lbl_progress.Text = "Game launch countdown : 1 seconds";
+				dureeCountdown = 1;
+			}
+
+			StartCountdown(dureeCountdown);
 
 		}
 
@@ -437,10 +444,10 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
-		private async void StartCountdown()
+		private async void StartCountdown(int duree = 5)
 		{
 			countdownCancellation = new CancellationTokenSource();
-			for (int i = 5; i >= 0; i--)
+			for (int i = duree; i >= 0; i--)
 			{
 				if (countdownCancellation.Token.IsCancellationRequested)
 				{
