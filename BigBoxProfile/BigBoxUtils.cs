@@ -18,6 +18,8 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Net.WebRequestMethods;
+using File = System.IO.File;
 
 namespace BigBoxProfile
 {
@@ -1184,6 +1186,58 @@ namespace BigBoxProfile
 				});
 
 			return Enumerable.Concat(filesList, dirsList);
+		}
+
+		/*
+		public static string[] RemoveFilter(string[] args, string filters)
+		{
+			if (filters != "")
+			{
+				List<string> newArg = new List<string>();
+				var liste_filter = BigBoxUtils.explode(filters.ToLower(), ",");
+				foreach (var arg in args)
+				{
+					bool filter_found = false;
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (arg.ToLower().Trim() == filter.Trim())
+						{
+							filter_found = true;
+							break;
+						}
+					}
+					if (!filter_found)
+					{
+						newArg.Add(arg);
+					}
+
+				}
+				return newArg.ToArray();
+			}
+			return args;
+		}
+		*/
+		
+		public static string[] MakeFilterListToRemove(string filters, bool commaFilter)
+		{
+			List<string> filterList = new List<string>();
+			if (filters != "")
+			{
+				if (commaFilter)
+				{
+					var liste_filter = BigBoxUtils.explode(filters.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						filterList.Add(filter.Trim());
+					}
+				}
+				else
+				{
+					filterList.Add(filters.ToLower().Trim());
+				}
+			}
+			return filterList.ToArray();
 		}
 
 

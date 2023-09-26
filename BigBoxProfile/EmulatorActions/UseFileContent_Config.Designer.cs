@@ -44,6 +44,7 @@
 			this.btn_manage_filter = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.chk_filter_comma = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
+			this.chk_filter_remove = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.SuspendLayout();
 			// 
 			// label3
@@ -83,7 +84,7 @@
 			// 
 			// label1
 			// 
-			this.label1.Location = new System.Drawing.Point(12, 122);
+			this.label1.Location = new System.Drawing.Point(12, 130);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(250, 20);
 			this.label1.TabIndex = 15;
@@ -91,7 +92,7 @@
 			// 
 			// radio_usefile
 			// 
-			this.radio_usefile.Location = new System.Drawing.Point(255, 122);
+			this.radio_usefile.Location = new System.Drawing.Point(255, 130);
 			this.radio_usefile.Name = "radio_usefile";
 			this.radio_usefile.Size = new System.Drawing.Size(175, 20);
 			this.radio_usefile.TabIndex = 16;
@@ -99,7 +100,7 @@
 			// 
 			// radio_usedir
 			// 
-			this.radio_usedir.Location = new System.Drawing.Point(431, 122);
+			this.radio_usedir.Location = new System.Drawing.Point(431, 130);
 			this.radio_usedir.Name = "radio_usedir";
 			this.radio_usedir.Size = new System.Drawing.Size(185, 20);
 			this.radio_usedir.TabIndex = 17;
@@ -108,7 +109,7 @@
 			// btn_manage_exclude
 			// 
 			this.btn_manage_exclude.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_manage_exclude.Location = new System.Drawing.Point(525, 92);
+			this.btn_manage_exclude.Location = new System.Drawing.Point(525, 100);
 			this.btn_manage_exclude.Name = "btn_manage_exclude";
 			this.btn_manage_exclude.Size = new System.Drawing.Size(91, 24);
 			this.btn_manage_exclude.TabIndex = 90;
@@ -117,7 +118,7 @@
 			// 
 			// chk_exclude_comma
 			// 
-			this.chk_exclude_comma.Location = new System.Drawing.Point(185, 96);
+			this.chk_exclude_comma.Location = new System.Drawing.Point(185, 104);
 			this.chk_exclude_comma.Name = "chk_exclude_comma";
 			this.chk_exclude_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_exclude_comma.TabIndex = 89;
@@ -126,7 +127,7 @@
 			// 
 			// label6
 			// 
-			this.label6.Location = new System.Drawing.Point(12, 70);
+			this.label6.Location = new System.Drawing.Point(12, 78);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(167, 20);
 			this.label6.TabIndex = 88;
@@ -134,7 +135,7 @@
 			// 
 			// txt_exclude
 			// 
-			this.txt_exclude.Location = new System.Drawing.Point(185, 67);
+			this.txt_exclude.Location = new System.Drawing.Point(185, 75);
 			this.txt_exclude.Name = "txt_exclude";
 			this.txt_exclude.Size = new System.Drawing.Size(431, 23);
 			this.txt_exclude.TabIndex = 87;
@@ -151,12 +152,20 @@
 			// 
 			// chk_filter_comma
 			// 
-			this.chk_filter_comma.Location = new System.Drawing.Point(185, 41);
+			this.chk_filter_comma.Location = new System.Drawing.Point(185, 36);
 			this.chk_filter_comma.Name = "chk_filter_comma";
 			this.chk_filter_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_filter_comma.TabIndex = 85;
 			this.chk_filter_comma.Values.Text = "Enable Multiple Entries, Comma Separated";
 			this.chk_filter_comma.CheckedChanged += new System.EventHandler(this.chk_filter_comma_CheckedChanged);
+			// 
+			// chk_filter_remove
+			// 
+			this.chk_filter_remove.Location = new System.Drawing.Point(185, 52);
+			this.chk_filter_remove.Name = "chk_filter_remove";
+			this.chk_filter_remove.Size = new System.Drawing.Size(237, 20);
+			this.chk_filter_remove.TabIndex = 97;
+			this.chk_filter_remove.Values.Text = "If match an arg, remove before execute";
 			// 
 			// UseFileContent_Config
 			// 
@@ -165,6 +174,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btn_cancel;
 			this.ClientSize = new System.Drawing.Size(629, 201);
+			this.Controls.Add(this.chk_filter_remove);
 			this.Controls.Add(this.btn_manage_exclude);
 			this.Controls.Add(this.chk_exclude_comma);
 			this.Controls.Add(this.label6);
@@ -207,5 +217,6 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_manage_filter;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_comma;
 		private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_remove;
 	}
 }

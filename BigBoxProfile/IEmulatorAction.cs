@@ -23,5 +23,6 @@ namespace BigBoxProfile
 		void ExecuteAfter(string[] args);
 
 		bool UseM3UContent();
+		string[] FiltersToRemoveOnFinalPass();
 	}
 }

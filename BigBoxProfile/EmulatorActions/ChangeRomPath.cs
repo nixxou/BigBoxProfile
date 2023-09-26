@@ -222,5 +222,11 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			return true;
 		}
+
+		public string[] FiltersToRemoveOnFinalPass()
+		{
+			List<string> emptylist = new List<string>();
+			return emptylist.ToArray();
+		}
 	}
 }

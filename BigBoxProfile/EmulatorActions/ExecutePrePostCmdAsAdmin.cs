@@ -26,6 +26,7 @@ namespace BigBoxProfile.EmulatorActions
 		private string _exclude = "";
 		private bool _commaFilter = false;
 		private bool _commaExclude = false;
+		private bool _removeFilter = false;
 
 
 
@@ -49,6 +50,8 @@ namespace BigBoxProfile.EmulatorActions
 				else Options["commaFilter"] = "no";
 				if (frm.commaExclude) Options["commaExclude"] = "yes";
 				else Options["commaExclude"] = "no";
+				if (frm.removeFilter) Options["removeFilter"] = "yes";
+				else Options["removeFilter"] = "no";
 
 
 				UpdateConfig();
@@ -79,6 +82,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("exclude") == false) Options["exclude"] = "";
 			if (Options.ContainsKey("commaFilter") == false) Options["commaFilter"] = "no";
 			if (Options.ContainsKey("commaExclude") == false) Options["commaExclude"] = "no";
+			if (Options.ContainsKey("removeFilter") == false) Options["removeFilter"] = "no";
 			UpdateConfig();
 		}
 
@@ -122,6 +126,7 @@ namespace BigBoxProfile.EmulatorActions
 			_exclude = Options["exclude"];
 			_commaFilter = Options["commaFilter"] == "yes" ? true : false;
 			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
+			_removeFilter = Options["removeFilter"] == "yes" ? true : false;
 		}
 
 
@@ -296,6 +301,16 @@ namespace BigBoxProfile.EmulatorActions
 		public bool UseM3UContent()
 		{
 			return false;
+		}
+
+		public string[] FiltersToRemoveOnFinalPass()
+		{
+			List<string> emptylist = new List<string>();
+			if (_removeFilter)
+			{
+				return BigBoxUtils.MakeFilterListToRemove(_filter, _commaFilter);
+			}
+			return emptylist.ToArray();
 		}
 
 	}

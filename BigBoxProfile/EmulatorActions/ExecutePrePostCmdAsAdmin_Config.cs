@@ -15,6 +15,7 @@ namespace BigBoxProfile.EmulatorActions
 		public string exclude = "";
 		public bool commaFilter = false;
 		public bool commaExclude = false;
+		public bool removeFilter = false;
 
 		public ExecutePrePostCmdAsAdmin_Config(Dictionary<string, string> Options)
 		{
@@ -27,6 +28,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (Options.ContainsKey("commaFilter") && Options["commaFilter"] == "yes") commaFilter = true;
 			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
+			if (Options.ContainsKey("removeFilter") && Options["removeFilter"] == "yes") removeFilter = true;
 
 			InitializeComponent();
 		}
@@ -206,6 +208,7 @@ namespace BigBoxProfile.EmulatorActions
 			chk_filter_comma.Checked = commaFilter;
 			btn_manage_filter.Enabled = commaFilter;
 			btn_manage_exclude.Enabled = commaExclude;
+			chk_filter_remove.Checked = removeFilter;
 
 			if (onStart)
 			{
@@ -254,6 +257,7 @@ namespace BigBoxProfile.EmulatorActions
 			exclude = txt_exclude.Text;
 			commaFilter = chk_filter_comma.Checked;
 			commaExclude = chk_exclude_comma.Checked;
+			removeFilter = chk_filter_remove.Checked;
 			this.DialogResult = DialogResult.OK;
 			this.Close();
 		}

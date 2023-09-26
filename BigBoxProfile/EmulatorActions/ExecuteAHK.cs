@@ -26,6 +26,7 @@ namespace BigBoxProfile.EmulatorActions
 		private string _exclude = "";
 		private bool _commaFilter = false;
 		private bool _commaExclude = false;
+		private bool _removeFilter = false;
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
@@ -57,6 +58,9 @@ namespace BigBoxProfile.EmulatorActions
 
 				if (frm.commaExclude) Options["commaExclude"] = "yes";
 				else Options["commaExclude"] = "no";
+
+				if (frm.removeFilter) Options["removeFilter"] = "yes";
+				else Options["removeFilter"] = "no";
 
 				UpdateConfig();
 			}
@@ -298,6 +302,7 @@ Args := []
 			_exclude = Options["exclude"];
 			_commaFilter = Options["commaFilter"] == "yes" ? true : false;
 			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
+			_removeFilter = Options["removeFilter"] == "yes" ? true : false;
 		}
 
 		public void ExecuteBefore(string[] args)
@@ -416,6 +421,16 @@ Args := []
 		public bool UseM3UContent()
 		{
 			return false;
+		}
+
+		public string[] FiltersToRemoveOnFinalPass()
+		{
+			List<string> emptylist = new List<string>();
+			if (_removeFilter)
+			{
+				return BigBoxUtils.MakeFilterListToRemove(_filter, _commaFilter);
+			}
+			return emptylist.ToArray();
 		}
 	}
 }

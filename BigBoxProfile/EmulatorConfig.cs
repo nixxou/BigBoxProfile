@@ -60,11 +60,31 @@ namespace BigBoxProfile
 			string[] args = BigBoxUtils.CommandLineToArgs(initial_cmd, out ExeName, false);
 			args = BigBoxUtils.AddFirstElementToArg(args, ExeName);
 
+			List<string> FilterToRemove = new List<string>();
 			foreach (ListViewItem lvitem in lv_selectedActions.Items)
 			{
 				var module = (IEmulatorAction)lvitem.Tag;
-				if (module.IsConfigured()) args = module.ModifyExemple(args);
+				if (module.IsConfigured())
+				{
+					args = module.ModifyExemple(args);
+					foreach(var f in module.FiltersToRemoveOnFinalPass())
+					{
+						FilterToRemove.Add(f);
+					}
+				}
 			}
+
+
+			List<string> finalFilteredArg = new List<string>();
+			foreach(var arg in args)
+			{
+				if (!FilterToRemove.Contains(arg.ToLower().Trim()))
+				{
+					finalFilteredArg.Add(arg.ToLower().Trim());
+				}
+			}
+			args = finalFilteredArg.ToArray();
+
 			string outCmd = BigBoxUtils.ArgsToCommandLine(args);
 			txt_exempleOut.Text = outCmd;
 		}

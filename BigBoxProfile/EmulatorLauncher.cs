@@ -212,19 +212,37 @@ namespace BigBoxProfile
 				string m3uFile = BigBoxUtils.HaveLaunchboxM3U(Args);
 				if (String.IsNullOrEmpty(m3uFile))
 				{
+					List<string> FilterToRemove = new List<string>();
 					foreach (var module in emulator._selectedModules)
 					{
 						if (module.IsConfigured())
 						{
 							module.ExecuteBefore(Args);
 							Args = module.ModifyReal(Args);
+							foreach (var f in module.FiltersToRemoveOnFinalPass())
+							{
+								FilterToRemove.Add(f);
+							}
 
 						}
 
 					}
 
+
+					var OriginalArg = Args;
+					List<string> finalFilteredArg = new List<string>();
+					foreach (var arg in Args)
+					{
+						if (!FilterToRemove.Contains(arg.ToLower().Trim()))
+						{
+							finalFilteredArg.Add(arg.ToLower().Trim());
+						}
+					}
+					Args = finalFilteredArg.ToArray();
+
 					Execute();
 					Thread.Sleep(1000);
+					Args = OriginalArg;
 
 					for (int i = emulator._selectedModules.Count - 1; i >= 0; i--)
 					{
@@ -248,6 +266,18 @@ namespace BigBoxProfile
 					var ArgsWithFirstFileInsteadOfM3U_Copy = new string[ArgsWithFirstFileInsteadOfM3U.Length];
 					ArgsWithFirstFileInsteadOfM3U.CopyTo(ArgsWithFirstFileInsteadOfM3U_Copy, 0);
 
+					List<string> FilterToRemove = new List<string>();
+					foreach (var module in emulator._selectedModules)
+					{
+						if (module.IsConfigured())
+						{
+							foreach (var f in module.FiltersToRemoveOnFinalPass())
+							{
+								FilterToRemove.Add(f);
+							}
+						}
+					}
+
 					foreach (var module in emulator._selectedModules)
 					{
 						if (module.IsConfigured() && module.UseM3UContent() == false)
@@ -260,7 +290,6 @@ namespace BigBoxProfile
 								ArgsWithFirstFileInsteadOfM3U = new string[ArgsWithFirstFileInsteadOfM3U_Copy.Length];
 								ArgsWithFirstFileInsteadOfM3U_Copy.CopyTo(ArgsWithFirstFileInsteadOfM3U, 0);
 							}
-
 						}
 					}
 					Args = BigBoxUtils.RemplaceFileInArg(ArgsWithFirstFileInsteadOfM3U, m3uFirstFile, m3uNew);
@@ -301,8 +330,19 @@ namespace BigBoxProfile
 					}
 					File.WriteAllLines(m3uNew, m3uFileListNew.ToArray());
 
+					var OriginalArg = Args;
+					List<string> finalFilteredArg = new List<string>();
+					foreach (var arg in Args)
+					{
+						if (!FilterToRemove.Contains(arg.ToLower().Trim()))
+						{
+							finalFilteredArg.Add(arg.ToLower().Trim());
+						}
+					}
+					Args = finalFilteredArg.ToArray();
 					Execute();
 					Thread.Sleep(1000);
+					Args = OriginalArg;
 
 					File.Delete(m3uNew);
 
