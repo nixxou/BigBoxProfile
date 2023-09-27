@@ -204,7 +204,7 @@ namespace BigBoxProfile
 
 
 
-
+				//MessageBox.Show("Debug new");
 
 
 				ExecutePrelaunch();
@@ -235,7 +235,7 @@ namespace BigBoxProfile
 					{
 						if (!FilterToRemove.Contains(arg.ToLower().Trim()))
 						{
-							finalFilteredArg.Add(arg.ToLower().Trim());
+							finalFilteredArg.Add(arg);
 						}
 					}
 					Args = finalFilteredArg.ToArray();
@@ -336,7 +336,7 @@ namespace BigBoxProfile
 					{
 						if (!FilterToRemove.Contains(arg.ToLower().Trim()))
 						{
-							finalFilteredArg.Add(arg.ToLower().Trim());
+							finalFilteredArg.Add(arg);
 						}
 					}
 					Args = finalFilteredArg.ToArray();

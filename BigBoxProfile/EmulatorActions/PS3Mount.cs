@@ -95,7 +95,6 @@ namespace BigBoxProfile.EmulatorActions
 
 		public string[] ModifyReal(string[] args)
 		{
-			MessageBox.Show("debug PS3");
 			string isopath = "";
 			string vhdxpath = "";
 			bool mountvhdxasreadonly = false;

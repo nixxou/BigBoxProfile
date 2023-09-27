@@ -80,7 +80,7 @@ namespace BigBoxProfile
 			{
 				if (!FilterToRemove.Contains(arg.ToLower().Trim()))
 				{
-					finalFilteredArg.Add(arg.ToLower().Trim());
+					finalFilteredArg.Add(arg);
 				}
 			}
 			args = finalFilteredArg.ToArray();

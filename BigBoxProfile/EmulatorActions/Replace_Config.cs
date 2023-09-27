@@ -15,6 +15,8 @@ namespace BigBoxProfile.EmulatorActions
 
 		public string filter = "";
 		public bool asArg = false;
+		public bool asFile = false;
+		public string selectedFile = "";
 
 		public string exclude = "";
 		public bool commaFilter = false;
@@ -48,9 +50,16 @@ namespace BigBoxProfile.EmulatorActions
 			}
 			else asArg = true;
 
+			if (Options.ContainsKey("as_file"))
+			{
+				if (Options["as_file"] == "yes") asFile = true;
+				else asFile = false;
+			}
+			else asFile = true;
 
 			filter = Options.ContainsKey("filter") ? Options["filter"] : "";
 			exclude = Options.ContainsKey("exclude") ? Options["exclude"] : "";
+			selectedFile = Options.ContainsKey("selectedFile") ? Options["selectedFile"] : "";
 
 			if (Options.ContainsKey("commaFilter") && Options["commaFilter"] == "yes") commaFilter = true;
 			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
@@ -63,8 +72,30 @@ namespace BigBoxProfile.EmulatorActions
 			chk_useregex.Checked = useregex;
 
 			txt_filter.Text = filter;
-			if (asArg) radio_arg.Checked = true;
-			else radio_cmd.Checked = true;
+			if (asArg)
+			{
+				radio_arg.Checked = true;
+				radio_cmd.Checked = false;
+				radio_file.Checked = false;
+			}
+			else
+			{
+				if (asFile)
+				{
+					radio_arg.Checked = false;
+					radio_cmd.Checked = false;
+					radio_file.Checked = true;
+				}
+				else
+				{
+					radio_arg.Checked = false;
+					radio_cmd.Checked = true;
+					radio_file.Checked = false;
+				}
+			}
+			txt_file.Enabled = radio_file.Checked;
+			btn_file.Enabled = radio_file.Checked;
+			txt_file.Text = selectedFile;
 
 			txt_exclude.Text = exclude;
 			chk_exclude_comma.Checked = commaExclude;
@@ -76,6 +107,21 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
+			try
+			{
+				string fileContent = txt_textin.Text;
+				RegexOptions options = RegexOptions.Multiline;
+				if (!chk_casesensitive.Checked) options |= RegexOptions.IgnoreCase;
+				Regex regex = chk_useregex.Checked ? new Regex(txt_search.Text, options) : null;
+				fileContent = chk_useregex.Checked ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(txt_search.Text), txt_replacewith.Text, options);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+				return;
+			}
+
+
 			if (chk_useregex.Checked && !IsValidRegex(txt_search.Text))
 			{
 				MessageBox.Show("Invalid Regex !");
@@ -85,6 +131,11 @@ namespace BigBoxProfile.EmulatorActions
 			filter = txt_filter.Text;
 			asArg = false;
 			if (radio_arg.Checked) asArg = true;
+
+			asFile = false;
+			if (radio_file.Checked) asArg = true;
+
+			selectedFile = txt_file.Text;
 
 			search = txt_search.Text;
 			replacewith = txt_replacewith.Text;
@@ -157,6 +208,58 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			commaExclude = chk_exclude_comma.Checked;
 			btn_manage_exclude.Enabled = commaExclude;
+		}
+
+		private void radio_file_CheckedChanged(object sender, EventArgs e)
+		{
+			txt_file.Enabled = radio_file.Checked;
+			btn_file.Enabled = radio_file.Checked;
+		}
+
+		private void btn_file_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					// Obtenez le chemin complet du fichier sélectionné
+					txt_file.Text = openFileDialog.FileName;
+
+				}
+			}
+		}
+
+		private void btn_testReplace_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				string fileContent = txt_textin.Text;
+				RegexOptions options = RegexOptions.Multiline;
+				if (!chk_casesensitive.Checked) options |= RegexOptions.IgnoreCase;
+				Regex regex = chk_useregex.Checked ? new Regex(txt_search.Text, options) : null;
+				fileContent = chk_useregex.Checked ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(txt_search.Text), txt_replacewith.Text, options);
+
+				txt_textout.Text = fileContent;
+
+			}
+			catch(Exception ex)
+			{
+				MessageBox.Show(ex.Message);
+			}
+
+		}
+
+		private string MatchEvaluator(Match match)
+		{
+			GroupCollection groups = match.Groups;
+
+			string replaceWith = txt_replacewith.Text;
+			for (int i = 1; i <= groups.Count; i++)
+			{
+				replaceWith = replaceWith.Replace($"\\{i}", groups[i].Value);
+			}
+
+			return replaceWith;
 		}
 	}
 }

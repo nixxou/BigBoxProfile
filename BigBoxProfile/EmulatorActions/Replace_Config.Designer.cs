@@ -51,11 +51,19 @@
 			this.chk_filter_comma = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
 			this.chk_filter_remove = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.radio_file = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+			this.btn_file = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.txt_file = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.txt_textin = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.txt_textout = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.btn_testReplace = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label3
 			// 
-			this.label3.Location = new System.Drawing.Point(12, 125);
+			this.label3.Location = new System.Drawing.Point(12, 207);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(150, 20);
 			this.label3.TabIndex = 19;
@@ -63,7 +71,7 @@
 			// 
 			// txt_filter
 			// 
-			this.txt_filter.Location = new System.Drawing.Point(185, 122);
+			this.txt_filter.Location = new System.Drawing.Point(185, 204);
 			this.txt_filter.Name = "txt_filter";
 			this.txt_filter.Size = new System.Drawing.Size(442, 23);
 			this.txt_filter.TabIndex = 18;
@@ -78,7 +86,7 @@
 			// 
 			// radio_cmd
 			// 
-			this.radio_cmd.Location = new System.Drawing.Point(538, 96);
+			this.radio_cmd.Location = new System.Drawing.Point(446, 96);
 			this.radio_cmd.Name = "radio_cmd";
 			this.radio_cmd.Size = new System.Drawing.Size(89, 20);
 			this.radio_cmd.TabIndex = 16;
@@ -86,7 +94,7 @@
 			// 
 			// radio_arg
 			// 
-			this.radio_arg.Location = new System.Drawing.Point(426, 96);
+			this.radio_arg.Location = new System.Drawing.Point(334, 96);
 			this.radio_arg.Name = "radio_arg";
 			this.radio_arg.Size = new System.Drawing.Size(106, 20);
 			this.radio_arg.TabIndex = 15;
@@ -103,7 +111,7 @@
 			// btn_cancel
 			// 
 			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_cancel.Location = new System.Drawing.Point(457, 270);
+			this.btn_cancel.Location = new System.Drawing.Point(457, 352);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 13;
@@ -112,7 +120,7 @@
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(552, 270);
+			this.btn_ok.Location = new System.Drawing.Point(552, 352);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 12;
@@ -159,7 +167,7 @@
 			// 
 			// btn_manage_exclude
 			// 
-			this.btn_manage_exclude.Location = new System.Drawing.Point(536, 218);
+			this.btn_manage_exclude.Location = new System.Drawing.Point(536, 300);
 			this.btn_manage_exclude.Name = "btn_manage_exclude";
 			this.btn_manage_exclude.Size = new System.Drawing.Size(91, 24);
 			this.btn_manage_exclude.TabIndex = 78;
@@ -168,7 +176,7 @@
 			// 
 			// chk_exclude_comma
 			// 
-			this.chk_exclude_comma.Location = new System.Drawing.Point(185, 218);
+			this.chk_exclude_comma.Location = new System.Drawing.Point(185, 300);
 			this.chk_exclude_comma.Name = "chk_exclude_comma";
 			this.chk_exclude_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_exclude_comma.TabIndex = 77;
@@ -177,7 +185,7 @@
 			// 
 			// label6
 			// 
-			this.label6.Location = new System.Drawing.Point(12, 192);
+			this.label6.Location = new System.Drawing.Point(12, 274);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(167, 20);
 			this.label6.TabIndex = 76;
@@ -185,14 +193,14 @@
 			// 
 			// txt_exclude
 			// 
-			this.txt_exclude.Location = new System.Drawing.Point(185, 189);
+			this.txt_exclude.Location = new System.Drawing.Point(185, 271);
 			this.txt_exclude.Name = "txt_exclude";
 			this.txt_exclude.Size = new System.Drawing.Size(442, 23);
 			this.txt_exclude.TabIndex = 75;
 			// 
 			// btn_manage_filter
 			// 
-			this.btn_manage_filter.Location = new System.Drawing.Point(536, 151);
+			this.btn_manage_filter.Location = new System.Drawing.Point(536, 233);
 			this.btn_manage_filter.Name = "btn_manage_filter";
 			this.btn_manage_filter.Size = new System.Drawing.Size(91, 24);
 			this.btn_manage_filter.TabIndex = 74;
@@ -201,7 +209,7 @@
 			// 
 			// chk_filter_comma
 			// 
-			this.chk_filter_comma.Location = new System.Drawing.Point(185, 151);
+			this.chk_filter_comma.Location = new System.Drawing.Point(185, 233);
 			this.chk_filter_comma.Name = "chk_filter_comma";
 			this.chk_filter_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_filter_comma.TabIndex = 73;
@@ -210,11 +218,75 @@
 			// 
 			// chk_filter_remove
 			// 
-			this.chk_filter_remove.Location = new System.Drawing.Point(185, 168);
+			this.chk_filter_remove.Location = new System.Drawing.Point(185, 250);
 			this.chk_filter_remove.Name = "chk_filter_remove";
 			this.chk_filter_remove.Size = new System.Drawing.Size(237, 20);
 			this.chk_filter_remove.TabIndex = 86;
 			this.chk_filter_remove.Values.Text = "If match an arg, remove before execute";
+			// 
+			// radio_file
+			// 
+			this.radio_file.Location = new System.Drawing.Point(541, 96);
+			this.radio_file.Name = "radio_file";
+			this.radio_file.Size = new System.Drawing.Size(86, 20);
+			this.radio_file.TabIndex = 87;
+			this.radio_file.Values.Text = "Specific File";
+			this.radio_file.CheckedChanged += new System.EventHandler(this.radio_file_CheckedChanged);
+			// 
+			// btn_file
+			// 
+			this.btn_file.Location = new System.Drawing.Point(592, 121);
+			this.btn_file.Name = "btn_file";
+			this.btn_file.Size = new System.Drawing.Size(35, 24);
+			this.btn_file.TabIndex = 89;
+			this.btn_file.Values.Text = "...";
+			this.btn_file.Click += new System.EventHandler(this.btn_file_Click);
+			// 
+			// txt_file
+			// 
+			this.txt_file.Location = new System.Drawing.Point(185, 122);
+			this.txt_file.Name = "txt_file";
+			this.txt_file.Size = new System.Drawing.Size(401, 23);
+			this.txt_file.TabIndex = 88;
+			// 
+			// txt_textin
+			// 
+			this.txt_textin.Location = new System.Drawing.Point(6, 19);
+			this.txt_textin.Multiline = true;
+			this.txt_textin.Name = "txt_textin";
+			this.txt_textin.Size = new System.Drawing.Size(493, 147);
+			this.txt_textin.TabIndex = 90;
+			this.txt_textin.Text = "Text in";
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.Controls.Add(this.btn_testReplace);
+			this.groupBox1.Controls.Add(this.txt_textout);
+			this.groupBox1.Controls.Add(this.txt_textin);
+			this.groupBox1.Location = new System.Drawing.Point(645, 12);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(505, 376);
+			this.groupBox1.TabIndex = 91;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Test replace";
+			// 
+			// txt_textout
+			// 
+			this.txt_textout.Location = new System.Drawing.Point(6, 172);
+			this.txt_textout.Multiline = true;
+			this.txt_textout.Name = "txt_textout";
+			this.txt_textout.Size = new System.Drawing.Size(493, 158);
+			this.txt_textout.TabIndex = 91;
+			this.txt_textout.Text = "Text Out";
+			// 
+			// btn_testReplace
+			// 
+			this.btn_testReplace.Location = new System.Drawing.Point(392, 336);
+			this.btn_testReplace.Name = "btn_testReplace";
+			this.btn_testReplace.Size = new System.Drawing.Size(107, 24);
+			this.btn_testReplace.TabIndex = 92;
+			this.btn_testReplace.Values.Text = "Test Replace";
+			this.btn_testReplace.Click += new System.EventHandler(this.btn_testReplace_Click);
 			// 
 			// Replace_Config
 			// 
@@ -222,7 +294,11 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btn_cancel;
-			this.ClientSize = new System.Drawing.Size(645, 306);
+			this.ClientSize = new System.Drawing.Size(1174, 400);
+			this.Controls.Add(this.groupBox1);
+			this.Controls.Add(this.btn_file);
+			this.Controls.Add(this.txt_file);
+			this.Controls.Add(this.radio_file);
 			this.Controls.Add(this.chk_filter_remove);
 			this.Controls.Add(this.btn_manage_exclude);
 			this.Controls.Add(this.chk_exclude_comma);
@@ -251,6 +327,8 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Configuration Module : Replace";
 			this.Load += new System.EventHandler(this.Replace_Config_Load);
+			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -279,5 +357,12 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_comma;
 		private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_remove;
+		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton radio_file;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_file;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_file;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_textin;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_testReplace;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_textout;
 	}
 }
