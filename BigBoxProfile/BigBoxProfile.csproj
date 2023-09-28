@@ -254,6 +254,12 @@
     </Compile>
     <Compile Include="EmulatorActions\FixMameMonitor.cs" />
     <Compile Include="EmulatorActions\FixRetroarchMonitor.cs" />
+    <Compile Include="EmulatorActions\HidDeviceDetector_PopupEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\HidDeviceDetector_PopupEdit.Designer.cs">
+      <DependentUpon>HidDeviceDetector_PopupEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="EmulatorActions\HidDeviceDetector_Config.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -420,6 +426,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\HidDeviceDetector_Config.resx">
       <DependentUpon>HidDeviceDetector_Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\HidDeviceDetector_PopupEdit.resx">
+      <DependentUpon>HidDeviceDetector_PopupEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\Replace_Config.resx">
       <DependentUpon>Replace_Config.cs</DependentUpon>

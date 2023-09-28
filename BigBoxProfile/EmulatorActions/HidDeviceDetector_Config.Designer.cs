@@ -613,6 +613,7 @@
 			this.lv_priority.UseCompatibleStateImageBehavior = false;
 			this.lv_priority.View = System.Windows.Forms.View.Details;
 			this.lv_priority.SelectedIndexChanged += new System.EventHandler(this.lv_priority_SelectedIndexChanged);
+			this.lv_priority.DoubleClick += new System.EventHandler(this.lv_priority_DoubleClick);
 			// 
 			// cjson
 			// 
@@ -750,8 +751,12 @@
 			this.Controls.Add(this.txt_filter);
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "HidDeviceDetector_Config";
-			this.Text = "Form1";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+			this.Text = "Configuration Module : Hid Device Detector";
 			this.Load += new System.EventHandler(this.HidDeviceDetector_Config_Load);
 			this.grp_globalconf.ResumeLayout(false);
 			this.grp_globalconf.PerformLayout();

@@ -1,4 +1,5 @@
-﻿using ComponentFactory.Krypton.Toolkit;
+﻿using BigBoxProfile.RomExtractorUtils;
+using ComponentFactory.Krypton.Toolkit;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,6 +21,23 @@ namespace BigBoxProfile.EmulatorActions
 		public bool commaFilter = false;
 		public bool commaExclude = false;
 		public bool removeFilter = false;
+
+		public int numController = 4;
+		public int numLightgun = 2;
+		public int numWheel = 1;
+		public int numOther = 100;
+		public string prefixController = "--controller%NUM%=";
+		public string prefixLightgun = "--lightgun%NUM%=";
+		public string prefixWheel = "--wheel%NUM%=";
+		public string prefixOther = "";
+		public bool forceRemoveArgController = false;
+		public bool forceRemoveArgWheel = false;
+		public bool forceRemoveArgLightgun = false;
+		public bool forceRemoveArgOther = false;
+		public string ds4winLogPath = "";
+		public string priorityData = "";
+
+
 		public HidDeviceDetector_Config(Dictionary<string, string> Options)
 		{
 
@@ -30,6 +48,30 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
 			if (Options.ContainsKey("removeFilter") && Options["removeFilter"] == "yes") removeFilter = true;
 
+			int tempVal = 0;
+			if(Int32.TryParse(Options.ContainsKey("numController") ? Options["numController"] : numController.ToString(), out tempVal)) numController = tempVal;
+			if(Int32.TryParse(Options.ContainsKey("numLightgun") ? Options["numLightgun"] : numLightgun.ToString(), out tempVal)) numLightgun = tempVal;
+			if(Int32.TryParse(Options.ContainsKey("numWheel") ? Options["numWheel"] : numWheel.ToString(), out tempVal)) numWheel = tempVal;
+			if(Int32.TryParse(Options.ContainsKey("numOther") ? Options["numOther"] : numOther.ToString(), out tempVal)) numOther = tempVal;
+
+			prefixController = Options.ContainsKey("prefixController") ? Options["prefixController"] : prefixController;
+			prefixLightgun = Options.ContainsKey("prefixLightgun") ? Options["prefixLightgun"] : prefixLightgun;
+			prefixWheel = Options.ContainsKey("prefixWheel") ? Options["prefixWheel"] : prefixWheel;
+			prefixOther = Options.ContainsKey("prefixOther") ? Options["prefixOther"] : prefixOther;
+
+			forceRemoveArgController = false;
+			forceRemoveArgLightgun = false;
+			forceRemoveArgWheel = false;
+			forceRemoveArgOther = false;
+			if (Options.ContainsKey("forceRemoveArgController") && Options["forceRemoveArgController"] == "yes") forceRemoveArgController = true;
+			if (Options.ContainsKey("forceRemoveArgWheel") && Options["forceRemoveArgWheel"] == "yes") forceRemoveArgWheel = true;
+			if (Options.ContainsKey("forceRemoveArgLightgun") && Options["forceRemoveArgLightgun"] == "yes") forceRemoveArgLightgun = true;
+			if (Options.ContainsKey("forceRemoveArgOther") && Options["forceRemoveArgOther"] == "yes") forceRemoveArgOther = true;
+
+			ds4winLogPath = Options.ContainsKey("ds4winLogPath") ? Options["ds4winLogPath"] : "";
+			priorityData = Options.ContainsKey("priorityData") ? Options["priorityData"] : "";
+
+
 			InitializeComponent();
 
 			txt_exclude.Text = exclude;
@@ -38,6 +80,35 @@ namespace BigBoxProfile.EmulatorActions
 			btn_manage_filter.Enabled = commaFilter;
 			btn_manage_exclude.Enabled = commaExclude;
 			chk_filter_remove.Checked = removeFilter;
+
+
+			num_nbcontroller.Value = numController;
+			num_nblightgun.Value = numLightgun;
+			num_nbwheel.Value = numWheel;
+			num_nbothers.Value = numOther;
+			chk_forceRemoveControllerArg.Checked = forceRemoveArgController;
+			chk_forceRemoveLightGunArg.Checked = forceRemoveArgLightgun;
+			chk_forceRemoveWheelArg.Checked = forceRemoveArgWheel;
+			chk_forceRemoveOtherArg.Checked = forceRemoveArgOther;
+
+			txt_prefixController.Text = prefixController;
+			txt_prefixLightgun.Text = prefixLightgun;
+			txt_prefixWheel.Text = prefixWheel;
+			txt_prefixOther.Text = prefixOther;
+
+
+			txt_DS4Win.Text = ds4winLogPath;
+
+			if (!String.IsNullOrEmpty(priorityData))
+			{
+				var priority_arr = BigBoxUtils.explode(priorityData, "|||");
+				foreach (var p in priority_arr)
+				{
+					var pObj = new HIDMatcher(p);
+					lv_priority.Items.Add(new ListViewItem(pObj.ToStringArray()));
+				}
+			}
+
 		}
 
 		private void HidDeviceDetector_Config_Load(object sender, EventArgs e)
@@ -59,6 +130,29 @@ namespace BigBoxProfile.EmulatorActions
 			commaFilter = chk_filter_comma.Checked;
 			commaExclude = chk_exclude_comma.Checked;
 			removeFilter = chk_filter_remove.Checked;
+
+			numController = (int)num_nbcontroller.Value;
+			numLightgun = (int)num_nblightgun.Value;
+			numWheel = (int)num_nbwheel.Value;
+			numOther = (int)num_nbothers.Value;
+			prefixController = txt_prefixController.Text;
+			prefixLightgun = txt_prefixLightgun.Text;
+			prefixWheel = txt_prefixWheel.Text;
+			prefixOther = txt_prefixOther.Text;
+			forceRemoveArgController = chk_forceRemoveControllerArg.Checked;
+			forceRemoveArgLightgun = chk_forceRemoveLightGunArg.Checked;
+			forceRemoveArgWheel = chk_forceRemoveWheelArg.Checked;
+			forceRemoveArgOther = chk_forceRemoveOtherArg.Checked;
+			ds4winLogPath = txt_DS4Win.Text;
+
+			string priority = "";
+			foreach (ListViewItem item in lv_priority.Items)
+			{
+				priority += item.SubItems[0].Text + "|||";
+			}
+			priority = priority.Trim('|').Trim('|').Trim('|').Trim('|').Trim('|').Trim('|');
+			priorityData = priority;
+
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
@@ -167,6 +261,7 @@ namespace BigBoxProfile.EmulatorActions
 			if(!IsValidRegex(txt_addDevRegex.Text))
 			{
 				MessageBox.Show("Invalid Regex");
+				return;
 			}
 
 
@@ -205,6 +300,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (!IsValidRegex(txt_addDevRegex.Text))
 			{
 				MessageBox.Show("Invalid Regex");
+				return;
 			}
 			var hidMatcher = new HIDMatcher();
 			hidMatcher.RegexToMatch = txt_addDevRegex.Text;
@@ -222,7 +318,6 @@ namespace BigBoxProfile.EmulatorActions
 			}
 			else
 			{
-				
 				string prefix = "";
 				if(hidMatcher.DeviceType == "controller") prefix = txt_prefixController.Text;
 				if (hidMatcher.DeviceType == "lightgun") prefix = txt_prefixLightgun.Text;
@@ -232,9 +327,6 @@ namespace BigBoxProfile.EmulatorActions
 				fullarg = fullarg.Replace("%NUM%", "1");
 
 				MessageBox.Show("Match ! Argument that will be added to cmd : " + fullarg + "\r\n" + "(For the test, %NUM% will be set to 1)");
-
-
-
 			}
 
 		}
@@ -258,7 +350,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_up_priority_Click(object sender, EventArgs e)
 		{
-			if (lv_priority.SelectedItems.Count == 1 && lv_priority.SelectedItems[0].Index > 1)
+			if (lv_priority.SelectedItems.Count == 1 && lv_priority.SelectedItems[0].Index > 0)
 			{
 				int index = lv_priority.SelectedItems[0].Index;
 				ListViewItem item = lv_priority.SelectedItems[0];
@@ -279,7 +371,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_down_priority_Click(object sender, EventArgs e)
 		{
-			if (lv_priority.SelectedItems.Count == 1 && lv_priority.SelectedItems[0].Index > 0)
+			if (lv_priority.SelectedItems.Count == 1 && lv_priority.SelectedItems[0].Index >= 0)
 			{
 				int selectedIndex = lv_priority.SelectedIndices[0];
 				if (selectedIndex < lv_priority.Items.Count - 1)
@@ -322,6 +414,30 @@ namespace BigBoxProfile.EmulatorActions
 		private void txt_DS4Win_TextChanged(object sender, EventArgs e)
 		{
 
+		}
+
+		private void lv_priority_DoubleClick(object sender, EventArgs e)
+		{
+			if (lv_priority.SelectedItems.Count == 1)
+			{
+				ListViewItem item = lv_priority.SelectedItems[0];
+				var hidItem = new HIDMatcher(item.SubItems[0].Text);
+
+				var frm = new HidDeviceDetector_PopupEdit(hidItem);
+				var result = frm.ShowDialog();
+
+				if (result == DialogResult.OK)
+				{
+					if(frm.HidData != null)
+					{
+						int index = lv_priority.SelectedItems[0].Index;
+						var newItem = new ListViewItem(frm.HidData.ToStringArray());
+						lv_priority.Items.Remove(item);
+						lv_priority.Items.Insert(index, newItem);
+					}
+					
+				}
+			}
 		}
 	}
 }

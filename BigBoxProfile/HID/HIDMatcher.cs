@@ -3,6 +3,7 @@ using HidSharp;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -75,26 +76,32 @@ namespace BigBoxProfile
 			if(UseBT) libData += HIDInfo.GetBluetoothInfo(forceRefresh);
 			if(UseXInput) libData += HIDInfo.GetXINPUT(forceRefresh, logdir);
 
-			try
+			using (StringReader reader = new StringReader(libData))
 			{
-				Match match = Regex.Match(libData, RegexToMatch);
-				if (match.Success)
+				string line;
+				while ((line = reader.ReadLine()) != null)
 				{
-					GroupCollection groups = match.Groups;
-					for (int i = 1; i <= groups.Count; i++)
+					try
 					{
-						suffixOut = suffixOut.Replace($"\\{i}", groups[i].Value);
+						Match match = Regex.Match(line, RegexToMatch);
+						if (match.Success)
+						{
+							GroupCollection groups = match.Groups;
+							for (int i = 1; i <= groups.Count; i++)
+							{
+								suffixOut = suffixOut.Replace($"\\{i}", groups[i].Value);
+							}
+							return suffixOut;
+						}
 					}
-					return suffixOut;
+					catch (Exception e)
+					{
+
+					}
+
 				}
 			}
-			catch(Exception e)
-			{
-
-			}
 			return null;
-
-
 		}
 
 	}
