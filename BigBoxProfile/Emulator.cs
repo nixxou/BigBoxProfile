@@ -47,7 +47,7 @@ namespace BigBoxProfile
 			_modules.Add(new RomExtractor());
 
 			_modules.Add(new PS3Mount());
-
+			_modules.Add(new HidDeviceDetector());
 
 			List<ConfigurationData> loadedModules = ConfigurationData.LoadConfigurationDataList(FileNameConfig);
 			foreach (var module in loadedModules)
@@ -169,6 +169,12 @@ namespace BigBoxProfile
 				if (module.name == "PS3Mount")
 				{
 					var obj = new PS3Mount();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+				if (module.name == "HidDeviceDetector")
+				{
+					var obj = new HidDeviceDetector();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}

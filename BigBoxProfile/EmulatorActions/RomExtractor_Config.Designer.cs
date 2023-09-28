@@ -161,6 +161,7 @@
 			this.lv_priority.TabIndex = 60;
 			this.lv_priority.UseCompatibleStateImageBehavior = false;
 			this.lv_priority.View = System.Windows.Forms.View.Details;
+			this.lv_priority.SelectedIndexChanged += new System.EventHandler(this.lv_priority_SelectedIndexChanged);
 			this.lv_priority.DoubleClick += new System.EventHandler(this.lv_priority_DoubleClick);
 			this.lv_priority.DpiChangedAfterParent += new System.EventHandler(this.lv_priority_DpiChangedAfterParent);
 			// 
