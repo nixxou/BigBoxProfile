@@ -204,7 +204,7 @@ namespace BigBoxProfile
 
 
 
-				//MessageBox.Show("Debug new");
+				MessageBox.Show("Debug new");
 
 
 				ExecutePrelaunch();

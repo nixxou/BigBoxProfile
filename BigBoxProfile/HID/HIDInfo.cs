@@ -26,7 +26,7 @@ namespace BigBoxProfile
 
 		public static string GetHIDSharpInfo(bool refresh)
 		{
-			if(!refresh && String.IsNullOrEmpty(LastHIDSharpInfo)) return LastHIDSharpInfo;
+			if(!refresh && !String.IsNullOrEmpty(LastHIDSharpInfo)) return LastHIDSharpInfo;
 
 			LastHIDSharpInfo = "";
 			var devices = DeviceList.Local.GetHidDevices();
@@ -38,7 +38,7 @@ namespace BigBoxProfile
 					string friendlyName = "Unknown";
 					if (device.GetFriendlyName() != null) friendlyName = device.GetFriendlyName().Trim();
 
-					LastHIDSharpInfo += $"{friendlyName}|{device.VendorID.ToString().Trim()}|{device.ProductID.ToString().Trim()}|{device.DevicePath.ToString().Trim()}" + "\r\n";
+					LastHIDSharpInfo += $"{friendlyName}<>{device.VendorID.ToString().Trim()}<>{device.ProductID.ToString().Trim()}<>{device.DevicePath.ToString().Trim()}" + "\r\n";
 				}
 			}
 			return LastHIDSharpInfo;
@@ -47,7 +47,7 @@ namespace BigBoxProfile
 
 		public static string GetDS4Info(bool refresh)
 		{
-			if (!refresh && String.IsNullOrEmpty(LastDS4Info)) return LastDS4Info;
+			if (!refresh && !String.IsNullOrEmpty(LastDS4Info)) return LastDS4Info;
 
 			LastDS4Info = "";
 			IControllersProvider controllers = new Controllers();
@@ -58,7 +58,7 @@ namespace BigBoxProfile
 
 				string usbstatus = controller.IsConnectedToUsb ? "USB:YES" : "USB:NO";
 
-				LastDS4Info += $"DS4Controller|{controller.VendorId.ToString().Trim()}|{controller.ProductId.ToString().Trim()}|{controller.DevicePath.ToString().Trim()}|{usbstatus.ToString().Trim()}" + "\r\n";
+				LastDS4Info += $"DS4Controller<>{controller.VendorId.ToString().Trim()}<>{controller.ProductId.ToString().Trim()}<>{controller.DevicePath.ToString().Trim()}<>{usbstatus.ToString().Trim()}" + "\r\n";
 			}
 
 
@@ -67,7 +67,7 @@ namespace BigBoxProfile
 
 		public static string GetBluetoothInfo(bool refresh)
 		{
-			if (!refresh && String.IsNullOrEmpty(LastBTInfo)) return LastBTInfo;
+			if (!refresh && !String.IsNullOrEmpty(LastBTInfo)) return LastBTInfo;
 
 			LastBTInfo = "";
 
@@ -79,7 +79,7 @@ namespace BigBoxProfile
 				{
 					if (device.Connected)
 					{
-						LastBTInfo += $"{device.DeviceName}|{device.ClassOfDevice}|{device.DeviceAddress}" + "\r\n";
+						LastBTInfo += $"{device.DeviceName}<>{device.ClassOfDevice}<>{device.DeviceAddress}" + "\r\n";
 					}
 				}
 			}
@@ -89,7 +89,7 @@ namespace BigBoxProfile
 		public static string GetXINPUT(bool refresh, string ds4logPath = "")
 		{
 			
-			if (!refresh && String.IsNullOrEmpty(LastXInput)) return LastXInput;
+			if (!refresh && !String.IsNullOrEmpty(LastXInput)) return LastXInput;
 
 			List<DS4Controller> ds4winControllers = new List<DS4Controller>();
 			if (!string.IsNullOrEmpty(ds4logPath))
@@ -112,16 +112,16 @@ namespace BigBoxProfile
 				if(ds4data != null)
 				{
 					signature = "DS4WIN";
-					extra = $"|{ds4data.MacAddress}|{ds4data.ControllerType}|{ds4data.ConnectionType}|{ds4data.ControllerInputSlot}" + "\r\n";
+					extra = $"<>{ds4data.MacAddress}<>{ds4data.ControllerType}<>{ds4data.ConnectionType}<>{ds4data.ControllerInputSlot}" + "\r\n";
 				}
-				LastXInput += $"XINPUT{slot}|{gamepad.Capabilities.SubType.ToString().Trim()}|{signature}" + extra;
+				LastXInput += $"XINPUT{slot}<>{gamepad.Capabilities.SubType.ToString().Trim()}<>{signature}" + extra;
 			}
 
 
 			gamepad = X.Gamepad_2;
 			if (gamepad.Capabilities.Type != 0)
 			{
-				int slot = 21;
+				int slot = 2;
 				var caps = gamepad.Capabilities;
 				string json = JsonConvert.SerializeObject(caps, Newtonsoft.Json.Formatting.None);
 				string signature = GetMD5Short(json);
@@ -130,9 +130,9 @@ namespace BigBoxProfile
 				if (ds4data != null)
 				{
 					signature = "DS4WIN";
-					extra = $"|{ds4data.MacAddress}|{ds4data.ControllerType}|{ds4data.ConnectionType}|{ds4data.ControllerInputSlot}" + "\r\n";
+					extra = $"<>{ds4data.MacAddress}<>{ds4data.ControllerType}<>{ds4data.ConnectionType}<>{ds4data.ControllerInputSlot}" + "\r\n";
 				}
-				LastXInput += $"XINPUT{slot}|{gamepad.Capabilities.SubType.ToString().Trim()}|{signature}" + extra;
+				LastXInput += $"XINPUT{slot}<>{gamepad.Capabilities.SubType.ToString().Trim()}<>{signature}" + extra;
 			}
 
 			gamepad = X.Gamepad_3;
@@ -147,9 +147,9 @@ namespace BigBoxProfile
 				if (ds4data != null)
 				{
 					signature = "DS4WIN";
-					extra = $"|{ds4data.MacAddress}|{ds4data.ControllerType}|{ds4data.ConnectionType}|{ds4data.ControllerInputSlot}" + "\r\n";
+					extra = $"<>{ds4data.MacAddress}<>{ds4data.ControllerType}<>{ds4data.ConnectionType}<>{ds4data.ControllerInputSlot}" + "\r\n";
 				}
-				LastXInput += $"XINPUT{slot}|{gamepad.Capabilities.SubType.ToString().Trim()}|{signature}" + extra;
+				LastXInput += $"XINPUT{slot}<>{gamepad.Capabilities.SubType.ToString().Trim()}<>{signature}" + extra;
 			}
 
 			gamepad = X.Gamepad_4;
@@ -164,9 +164,9 @@ namespace BigBoxProfile
 				if (ds4data != null)
 				{
 					signature = "DS4WIN";
-					extra = $"|{ds4data.MacAddress}|{ds4data.ControllerType}|{ds4data.ConnectionType}|{ds4data.ControllerInputSlot}" + "\r\n";
+					extra = $"<>{ds4data.MacAddress}<>{ds4data.ControllerType}<>{ds4data.ConnectionType}<>{ds4data.ControllerInputSlot}" + "\r\n";
 				}
-				LastXInput += $"XINPUT{slot}|{gamepad.Capabilities.SubType.ToString().Trim()}|{signature}" + extra;
+				LastXInput += $"XINPUT{slot}<>{gamepad.Capabilities.SubType.ToString().Trim()}<>{signature}" + extra;
 			}
 			return LastXInput;
 		}

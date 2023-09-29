@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -23,7 +24,8 @@ namespace BigBoxProfile.EmulatorActions
 		private string _replacewith = "";
 		private bool _useregex = false;
 		private bool _casesensitive = false;
-		private bool _asArg = false;
+		private bool _asArg = true;
+		private bool _asCmd = false;
 		private bool _asFile = false;
 		private string _selectedFile = "";
 		private string _filter = "";
@@ -50,6 +52,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (result == DialogResult.OK)
 			{
+				/*
 				if (frm.asArg) Options["as_arg"] = "yes";
 				else Options["as_arg"] = "no";
 
@@ -62,6 +65,21 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					Options["as_file"] = "no";
 				}
+				*/
+				if (frm.asArg) Options["as_arg"] = "yes";
+				else Options["as_arg"] = "no";
+
+				if (frm.asCmd) Options["as_cmd"] = "yes";
+				else Options["as_cmd"] = "no";
+
+				if (frm.asFile) Options["as_file"] = "yes";
+				else Options["as_file"] = "no";
+
+				if (Options["as_arg"] == "yes") Options["as_cmd"] = Options["as_file"] = "no";
+				if (Options["as_cmd"] == "yes") Options["as_arg"] = Options["as_file"] = "no";
+				if (Options["as_file"] == "yes") Options["as_arg"] = Options["as_cmd"] = "no";
+
+
 				Options["selectedFile"] = frm.selectedFile.Trim();
 
 				Options["search"] = frm.search;
@@ -100,6 +118,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("casesensitive") == false) Options["casesensitive"] = "no";
 			if (Options.ContainsKey("filter") == false) Options["filter"] = "";
 			if (Options.ContainsKey("as_arg") == false) Options["as_arg"] = "yes";
+			if (Options.ContainsKey("as_cmd") == false) Options["as_cmd"] = "no";
 			if (Options.ContainsKey("as_file") == false) Options["as_file"] = "no";
 			if (Options.ContainsKey("selectedFile") == false) Options["selectedFile"] = "";
 			if (Options.ContainsKey("exclude") == false) Options["exclude"] = "";
@@ -277,7 +296,7 @@ namespace BigBoxProfile.EmulatorActions
 				}
 				filteredArgs = newarg;
 			}
-			else
+			if (_asCmd)
 			{
 				RegexOptions options = RegexOptions.Multiline;
 				if (!_casesensitive) options |= RegexOptions.IgnoreCase;
@@ -311,7 +330,14 @@ namespace BigBoxProfile.EmulatorActions
 			_casesensitive = Options["casesensitive"] == "yes" ? true : false;
 			_filter = Options["filter"];
 			_asArg = Options["as_arg"] == "yes" ? true : false;
+			_asCmd = Options["as_cmd"] == "yes" ? true : false;
 			_asFile = Options["as_file"] == "yes" ? true : false;
+
+			if (_asArg) _asCmd = _asFile = false;
+			if (_asCmd) _asArg = _asFile = false;
+			if (_asFile) _asArg = _asCmd = false;
+
+
 			_exclude = Options["exclude"];
 			_commaFilter = Options["commaFilter"] == "yes" ? true : false;
 			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
@@ -399,11 +425,20 @@ namespace BigBoxProfile.EmulatorActions
 				string fileContent = File.ReadAllText(_selectedFile);
 				RegexOptions options = RegexOptions.Multiline;
 				if (!_casesensitive) options |= RegexOptions.IgnoreCase;
+				options |= RegexOptions.Singleline;
 				Regex regex = _useregex ? new Regex(_search, options) : null;
 				string newFileContent = _useregex ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(_search), _replacewith, options);
 				if (fileContent != newFileContent)
 				{
-					File.WriteAllText(newFileContent, _selectedFile);
+					try
+					{
+						File.WriteAllText(_selectedFile, newFileContent);
+					}
+					catch(Exception ex)
+					{
+						MessageBox.Show(ex.Message);
+					}
+					
 				}
 			}
 			catch(Exception ex)

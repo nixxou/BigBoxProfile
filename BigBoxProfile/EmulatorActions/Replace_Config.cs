@@ -15,6 +15,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public string filter = "";
 		public bool asArg = false;
+		public bool asCmd = false;
 		public bool asFile = false;
 		public string selectedFile = "";
 
@@ -43,19 +44,33 @@ namespace BigBoxProfile.EmulatorActions
 
 			}
 
+			if (Options.ContainsKey("as_cmd"))
+			{
+				if (Options["as_cmd"] == "yes") asCmd = true;
+				else asCmd = false;
+			}
+			else asCmd = true;
+
 			if (Options.ContainsKey("as_arg"))
 			{
 				if (Options["as_arg"] == "yes") asArg = true;
 				else asArg = false;
 			}
-			else asArg = true;
+			else asArg = false;
 
 			if (Options.ContainsKey("as_file"))
 			{
 				if (Options["as_file"] == "yes") asFile = true;
 				else asFile = false;
 			}
-			else asFile = true;
+			else asFile = false;
+
+			if (asCmd) asArg = asFile = false;
+			if (asArg) asCmd = asFile = false;
+			if (asFile) asArg = asCmd = false;
+
+
+
 
 			filter = Options.ContainsKey("filter") ? Options["filter"] : "";
 			exclude = Options.ContainsKey("exclude") ? Options["exclude"] : "";
@@ -72,27 +87,11 @@ namespace BigBoxProfile.EmulatorActions
 			chk_useregex.Checked = useregex;
 
 			txt_filter.Text = filter;
-			if (asArg)
-			{
-				radio_arg.Checked = true;
-				radio_cmd.Checked = false;
-				radio_file.Checked = false;
-			}
-			else
-			{
-				if (asFile)
-				{
-					radio_arg.Checked = false;
-					radio_cmd.Checked = false;
-					radio_file.Checked = true;
-				}
-				else
-				{
-					radio_arg.Checked = false;
-					radio_cmd.Checked = true;
-					radio_file.Checked = false;
-				}
-			}
+
+			radio_arg.Checked = asArg;
+			radio_cmd.Checked = asCmd;
+			radio_file.Checked = asFile;
+
 			txt_file.Enabled = radio_file.Checked;
 			btn_file.Enabled = radio_file.Checked;
 			txt_file.Text = selectedFile;
@@ -103,6 +102,17 @@ namespace BigBoxProfile.EmulatorActions
 			btn_manage_filter.Enabled = commaFilter;
 			btn_manage_exclude.Enabled = commaExclude;
 			chk_filter_remove.Checked = removeFilter;
+			UpdateGUI();
+
+		}
+
+		private void UpdateGUI()
+		{
+			txt_file.Enabled = radio_file.Checked;
+			btn_file.Enabled = radio_file.Checked;
+			txt_search.Multiline = radio_file.Checked;
+			txt_replacewith.Multiline = radio_file.Checked;
+
 		}
 
 		private void btn_ok_Click(object sender, EventArgs e)
@@ -129,11 +139,9 @@ namespace BigBoxProfile.EmulatorActions
 			}
 
 			filter = txt_filter.Text;
-			asArg = false;
-			if (radio_arg.Checked) asArg = true;
-
-			asFile = false;
-			if (radio_file.Checked) asArg = true;
+			asArg = radio_arg.Checked;
+			asCmd = radio_cmd.Checked;
+			asFile = radio_file.Checked;
 
 			selectedFile = txt_file.Text;
 
@@ -212,8 +220,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void radio_file_CheckedChanged(object sender, EventArgs e)
 		{
-			txt_file.Enabled = radio_file.Checked;
-			btn_file.Enabled = radio_file.Checked;
+			UpdateGUI();
 		}
 
 		private void btn_file_Click(object sender, EventArgs e)
@@ -236,6 +243,8 @@ namespace BigBoxProfile.EmulatorActions
 				string fileContent = txt_textin.Text;
 				RegexOptions options = RegexOptions.Multiline;
 				if (!chk_casesensitive.Checked) options |= RegexOptions.IgnoreCase;
+				options |= RegexOptions.Singleline;
+
 				Regex regex = chk_useregex.Checked ? new Regex(txt_search.Text, options) : null;
 				fileContent = chk_useregex.Checked ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(txt_search.Text), txt_replacewith.Text, options);
 
@@ -260,6 +269,16 @@ namespace BigBoxProfile.EmulatorActions
 			}
 
 			return replaceWith;
+		}
+
+		private void radio_arg_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateGUI();
+		}
+
+		private void radio_cmd_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateGUI();
 		}
 	}
 }

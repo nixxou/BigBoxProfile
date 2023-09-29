@@ -40,6 +40,7 @@ namespace BigBoxProfile.EmulatorActions
 		private string _priorityData = "";
 		private List<HIDMatcher> _matchers = new List<HIDMatcher>();
 
+		private List<string> argsToFilterOut = new List<string>();
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
@@ -216,10 +217,121 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
+			List<string> argsController = new List<string>();
+			List<string> argsLightgun = new List<string>();
+			List<string> argsWheel = new List<string>();
+			List<string> argsOther = new List<string>();
+
+			int current_controller = 0;
+			int current_lightgun = 0;
+			int current_wheel = 0;
+			int current_other = 0;
+
+			foreach(var matcher in _matchers)
+			{
+				string type = matcher.DeviceType;
+				if(type == "controller" && current_controller < _numController)
+				{
+					var result = matcher.isMatching(false, _ds4winLogPath);
+					if (result != null)
+					{
+						current_controller++;
+						string prefix = _prefixController;
+						string fullarg = prefix + result;
+						fullarg = fullarg.Replace("%NUM%", current_controller.ToString()).Trim();
+						if (!argsController.Contains(fullarg))
+						{
+							argsController.Add(fullarg);
+						}
+					}
+				}
+				if (type == "lightgun" && current_lightgun < _numLightgun)
+				{
+					var result = matcher.isMatching(false, _ds4winLogPath);
+					if (result != null)
+					{
+						current_lightgun++;
+						string prefix = _prefixLightgun;
+						string fullarg = prefix + result;
+						fullarg = fullarg.Replace("%NUM%", current_lightgun.ToString()).Trim();
+						if (!argsLightgun.Contains(fullarg))
+						{
+							argsLightgun.Add(fullarg);
+						}
+						
+					}
+				}
+				if (type == "wheel" && current_wheel < _numWheel)
+				{
+					var result = matcher.isMatching(false, _ds4winLogPath);
+					if (result != null)
+					{
+						current_wheel++;
+						string prefix = _prefixWheel;
+						string fullarg = prefix + result;
+						fullarg = fullarg.Replace("%NUM%", current_wheel.ToString()).Trim();
+						if (!argsWheel.Contains(fullarg))
+						{
+							argsWheel.Add(fullarg);
+						}
+						
+					}
+				}
+				if (type == "other" && current_other < _numOther)
+				{
+					var result = matcher.isMatching(false, _ds4winLogPath);
+					if (result != null)
+					{
+						current_other++;
+						string prefix = _prefixOther;
+						string fullarg = prefix + result;
+						fullarg = fullarg.Replace("%NUM%", current_other.ToString()).Trim();
+						if (!argsOther.Contains(fullarg))
+						{
+							argsOther.Add(fullarg);
+						}
+						
+					}
+				}
+			}
+
+			
+			List<string> argsFinalList = new List<string>();
+
+			foreach(var a in argsController)
+			{
+				if (_forceRemoveArgController && !argsToFilterOut.Contains(a.ToLower().Trim())) argsToFilterOut.Add(a.ToLower().Trim());
+				if(!argsFinalList.Contains(a)) argsFinalList.Add(a);
+			}
+			foreach (var a in argsLightgun)
+			{
+				if (_forceRemoveArgLightgun && !argsToFilterOut.Contains(a.ToLower().Trim())) argsToFilterOut.Add(a.ToLower().Trim());
+				if (!argsFinalList.Contains(a)) argsFinalList.Add(a);
+			}
+			foreach (var a in argsWheel)
+			{
+				if (_forceRemoveArgWheel && !argsToFilterOut.Contains(a.ToLower().Trim())) argsToFilterOut.Add(a.ToLower().Trim());
+				if (!argsFinalList.Contains(a)) argsFinalList.Add(a);
+			}
+			foreach (var a in argsOther)
+			{
+				if (_forceRemoveArgOther && !argsToFilterOut.Contains(a.ToLower().Trim())) argsToFilterOut.Add(a.ToLower().Trim());
+				if (!argsFinalList.Contains(a)) argsFinalList.Add(a);
+			}
+
+			List<string> newArgs = new List<string>();
+			foreach (var a in args)
+			{
+				newArgs.Add(a);
+			}
+            foreach (var a in argsFinalList)
+			{
+				newArgs.Add(a);
+			}
+            args = newArgs.ToArray();
 
 
-
-			return args;
+            return args;
 		}
 
 
@@ -286,12 +398,15 @@ namespace BigBoxProfile.EmulatorActions
 
 		public string[] FiltersToRemoveOnFinalPass()
 		{
-			List<string> emptylist = new List<string>();
+			List<string> argsToRemove = new List<string>(argsToFilterOut.ToArray());
 			if (_removeFilter)
 			{
-				return BigBoxUtils.MakeFilterListToRemove(_filter, _commaFilter);
+				foreach(var a in BigBoxUtils.MakeFilterListToRemove(_filter, _commaFilter))
+				{
+					argsToRemove.Add(a);
+				}
 			}
-			return emptylist.ToArray();
+			return argsToRemove.ToArray();
 		}
 	}
 }
