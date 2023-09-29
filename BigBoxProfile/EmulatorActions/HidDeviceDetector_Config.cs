@@ -439,5 +439,121 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 		}
+
+		private void btn_testconfig_Click(object sender, EventArgs e)
+		{
+			HIDInfo.ClearCache();
+
+			List<HIDMatcher> matchers = new List<HIDMatcher>();
+			foreach (ListViewItem item in lv_priority.Items)
+			{
+				var pObj = new HIDMatcher(item.SubItems[0].Text);
+				matchers.Add(pObj);
+			}
+
+
+			List<string> argsController = new List<string>();
+			List<string> argsLightgun = new List<string>();
+			List<string> argsWheel = new List<string>();
+			List<string> argsOther = new List<string>();
+
+			int current_controller = 0;
+			int current_lightgun = 0;
+			int current_wheel = 0;
+			int current_other = 0;
+
+			foreach (var matcher in matchers)
+			{
+				string type = matcher.DeviceType;
+				if (type == "controller" && current_controller < num_nbcontroller.Value)
+				{
+					var result = matcher.isMatching(false, txt_DS4Win.Text);
+					if (result != null)
+					{
+						current_controller++;
+						string prefix = txt_prefixController.Text;
+						string fullarg = prefix + result;
+						fullarg = fullarg.Replace("%NUM%", current_controller.ToString()).Trim();
+						if (!argsController.Contains(fullarg))
+						{
+							argsController.Add(fullarg);
+						}
+					}
+				}
+				if (type == "lightgun" && current_lightgun < num_nblightgun.Value)
+				{
+					var result = matcher.isMatching(false, txt_DS4Win.Text);
+					if (result != null)
+					{
+						current_lightgun++;
+						string prefix = txt_prefixLightgun.Text;
+						string fullarg = prefix + result;
+						fullarg = fullarg.Replace("%NUM%", current_lightgun.ToString()).Trim();
+						if (!argsLightgun.Contains(fullarg))
+						{
+							argsLightgun.Add(fullarg);
+						}
+
+					}
+				}
+				if (type == "wheel" && current_wheel < num_nbwheel.Value)
+				{
+					var result = matcher.isMatching(false, txt_DS4Win.Text);
+					if (result != null)
+					{
+						current_wheel++;
+						string prefix = txt_prefixWheel.Text;
+						string fullarg = prefix + result;
+						fullarg = fullarg.Replace("%NUM%", current_wheel.ToString()).Trim();
+						if (!argsWheel.Contains(fullarg))
+						{
+							argsWheel.Add(fullarg);
+						}
+
+					}
+				}
+				if (type == "other" && current_other < num_nbothers.Value)
+				{
+					var result = matcher.isMatching(false, txt_DS4Win.Text);
+					if (result != null)
+					{
+						current_other++;
+						string prefix = txt_prefixOther.Text;
+						string fullarg = prefix + result;
+						fullarg = fullarg.Replace("%NUM%", current_other.ToString()).Trim();
+						if (!argsOther.Contains(fullarg))
+						{
+							argsOther.Add(fullarg);
+						}
+
+					}
+				}
+			}
+
+			List<string> argsFinalList = new List<string>();
+			foreach (var a in argsController)
+			{
+				if (!argsFinalList.Contains(a)) argsFinalList.Add(a);
+			}
+			foreach (var a in argsLightgun)
+			{
+				if (!argsFinalList.Contains(a)) argsFinalList.Add(a);
+			}
+			foreach (var a in argsWheel)
+			{
+				if (!argsFinalList.Contains(a)) argsFinalList.Add(a);
+			}
+			foreach (var a in argsOther)
+			{
+				if (!argsFinalList.Contains(a)) argsFinalList.Add(a);
+			}
+
+			string argStringList = "List of args generated :\r\n";
+			foreach (var a in argsFinalList)
+			{
+				argStringList += a + "\r\n";
+			}
+			MessageBox.Show(argStringList);
+		}
 	}
 }

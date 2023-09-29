@@ -216,6 +216,7 @@ namespace BigBoxProfile.EmulatorActions
 					}
 				}
 			}
+			HIDInfo.ClearCache();
 
 			List<string> argsController = new List<string>();
 			List<string> argsLightgun = new List<string>();

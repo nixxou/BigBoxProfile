@@ -191,6 +191,14 @@ namespace BigBoxProfile
 
 		}
 
+		public static void ClearCache()
+		{
+			LastBTInfo = null;
+			LastXInput = null;
+			LastHIDSharpInfo = null;
+			LastDS4Info = null;
+		}
+
 
 	}
 }

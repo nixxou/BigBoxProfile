@@ -46,36 +46,45 @@
 			this.chk_useBT = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_useXinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.grp_globalconf = new System.Windows.Forms.GroupBox();
-			this.num_nbcontroller = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
-			this.num_nblightgun = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
-			this.num_nbwheel = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
-			this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel4 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel5 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.txt_prefixController = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-			this.txt_prefixLightgun = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-			this.txt_prefixWheel = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-			this.chk_forceRemoveControllerArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-			this.chk_forceRemoveLightGunArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-			this.chk_forceRemoveWheelArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-			this.txt_DS4Win = new System.Windows.Forms.TextBox();
-			this.btn_exploreDS4WinDir = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-			this.kryptonLabel7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel8 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.grp_addNewDevice = new System.Windows.Forms.GroupBox();
-			this.txt_addDevRegex = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-			this.txt_addDevSuffix = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-			this.cmb_addDevType = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
-			this.btn_addDevAdd = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-			this.btn_addDevTest = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-			this.kryptonLabel9 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel10 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel11 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel12 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.chk_forceRemoveOtherArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.txt_prefixOther = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.kryptonLabel14 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel15 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.num_nbothers = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
 			this.kryptonLabel13 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel8 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.btn_exploreDS4WinDir = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.txt_DS4Win = new System.Windows.Forms.TextBox();
+			this.chk_forceRemoveWheelArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_forceRemoveLightGunArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_forceRemoveControllerArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.txt_prefixWheel = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.txt_prefixLightgun = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.txt_prefixController = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.kryptonLabel6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel5 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel4 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.num_nbwheel = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
+			this.num_nblightgun = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
+			this.num_nbcontroller = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
+			this.grp_addNewDevice = new System.Windows.Forms.GroupBox();
+			this.chk_addDevXinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_addDevBT = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_addDevDS4Lib = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_addDevHIDSharp = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.kryptonLabel12 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel11 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel10 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel9 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.btn_addDevTest = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_addDevAdd = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.cmb_addDevType = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
+			this.txt_addDevSuffix = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.txt_addDevRegex = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.btn_delete_priority = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_up_priority = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_down_priority = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -87,16 +96,8 @@
 			this.cUseHIDSharp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cUseDS4Lib = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cUseBT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.chk_addDevXinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-			this.chk_addDevBT = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-			this.chk_addDevDS4Lib = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-			this.chk_addDevHIDSharp = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.cUseXInput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.chk_forceRemoveOtherArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-			this.txt_prefixOther = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-			this.kryptonLabel14 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.kryptonLabel15 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.num_nbothers = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
+			this.btn_testconfig = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.grp_globalconf.SuspendLayout();
 			this.grp_addNewDevice.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_addDevType)).BeginInit();
@@ -291,14 +292,197 @@
 			this.grp_globalconf.TabStop = false;
 			this.grp_globalconf.Text = "Global Config";
 			// 
-			// num_nbcontroller
+			// chk_forceRemoveOtherArg
 			// 
-			this.num_nbcontroller.Location = new System.Drawing.Point(151, 24);
-			this.num_nbcontroller.Name = "num_nbcontroller";
-			this.num_nbcontroller.Size = new System.Drawing.Size(51, 22);
-			this.num_nbcontroller.TabIndex = 0;
-			this.num_nbcontroller.Value = new decimal(new int[] {
-            4,
+			this.chk_forceRemoveOtherArg.Location = new System.Drawing.Point(442, 108);
+			this.chk_forceRemoveOtherArg.Name = "chk_forceRemoveOtherArg";
+			this.chk_forceRemoveOtherArg.Size = new System.Drawing.Size(342, 20);
+			this.chk_forceRemoveOtherArg.TabIndex = 119;
+			this.chk_forceRemoveOtherArg.Values.Text = "Make sur this arg is removed before hitting the executable";
+			// 
+			// txt_prefixOther
+			// 
+			this.txt_prefixOther.Location = new System.Drawing.Point(284, 106);
+			this.txt_prefixOther.Name = "txt_prefixOther";
+			this.txt_prefixOther.Size = new System.Drawing.Size(152, 23);
+			this.txt_prefixOther.TabIndex = 118;
+			// 
+			// kryptonLabel14
+			// 
+			this.kryptonLabel14.Location = new System.Drawing.Point(208, 106);
+			this.kryptonLabel14.Name = "kryptonLabel14";
+			this.kryptonLabel14.Size = new System.Drawing.Size(70, 20);
+			this.kryptonLabel14.TabIndex = 117;
+			this.kryptonLabel14.Values.Text = "Prefix Arg :";
+			// 
+			// kryptonLabel15
+			// 
+			this.kryptonLabel15.Location = new System.Drawing.Point(6, 106);
+			this.kryptonLabel15.Name = "kryptonLabel15";
+			this.kryptonLabel15.Size = new System.Drawing.Size(98, 20);
+			this.kryptonLabel15.TabIndex = 116;
+			this.kryptonLabel15.Values.Text = "Others Devices :";
+			// 
+			// num_nbothers
+			// 
+			this.num_nbothers.Location = new System.Drawing.Point(151, 106);
+			this.num_nbothers.Name = "num_nbothers";
+			this.num_nbothers.Size = new System.Drawing.Size(51, 22);
+			this.num_nbothers.TabIndex = 115;
+			this.num_nbothers.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+			// 
+			// kryptonLabel13
+			// 
+			this.kryptonLabel13.Location = new System.Drawing.Point(6, 191);
+			this.kryptonLabel13.Name = "kryptonLabel13";
+			this.kryptonLabel13.Size = new System.Drawing.Size(170, 20);
+			this.kryptonLabel13.TabIndex = 114;
+			this.kryptonLabel13.Values.Text = "Preview & Test Library Output :";
+			this.kryptonLabel13.Paint += new System.Windows.Forms.PaintEventHandler(this.kryptonLabel13_Paint);
+			// 
+			// kryptonLabel8
+			// 
+			this.kryptonLabel8.Location = new System.Drawing.Point(6, 165);
+			this.kryptonLabel8.Name = "kryptonLabel8";
+			this.kryptonLabel8.Size = new System.Drawing.Size(835, 20);
+			this.kryptonLabel8.TabIndex = 18;
+			this.kryptonLabel8.Values.Text = "(Improve Xinput library by puting custom signature to XINPUT devices managed by D" +
+    "S4Win, allowing you to disting them from regular X360 controller)";
+			// 
+			// kryptonLabel7
+			// 
+			this.kryptonLabel7.Location = new System.Drawing.Point(7, 139);
+			this.kryptonLabel7.Name = "kryptonLabel7";
+			this.kryptonLabel7.Size = new System.Drawing.Size(195, 20);
+			this.kryptonLabel7.TabIndex = 17;
+			this.kryptonLabel7.Values.Text = "(Optional) DS4Win Log Directory :";
+			// 
+			// btn_exploreDS4WinDir
+			// 
+			this.btn_exploreDS4WinDir.Location = new System.Drawing.Point(791, 134);
+			this.btn_exploreDS4WinDir.Name = "btn_exploreDS4WinDir";
+			this.btn_exploreDS4WinDir.Size = new System.Drawing.Size(40, 25);
+			this.btn_exploreDS4WinDir.TabIndex = 16;
+			this.btn_exploreDS4WinDir.Values.Text = "...";
+			this.btn_exploreDS4WinDir.Click += new System.EventHandler(this.btn_exploreDS4WinDir_Click);
+			// 
+			// txt_DS4Win
+			// 
+			this.txt_DS4Win.Location = new System.Drawing.Point(212, 139);
+			this.txt_DS4Win.Name = "txt_DS4Win";
+			this.txt_DS4Win.Size = new System.Drawing.Size(574, 20);
+			this.txt_DS4Win.TabIndex = 15;
+			this.txt_DS4Win.TextChanged += new System.EventHandler(this.txt_DS4Win_TextChanged);
+			// 
+			// chk_forceRemoveWheelArg
+			// 
+			this.chk_forceRemoveWheelArg.Location = new System.Drawing.Point(442, 80);
+			this.chk_forceRemoveWheelArg.Name = "chk_forceRemoveWheelArg";
+			this.chk_forceRemoveWheelArg.Size = new System.Drawing.Size(342, 20);
+			this.chk_forceRemoveWheelArg.TabIndex = 14;
+			this.chk_forceRemoveWheelArg.Values.Text = "Make sur this arg is removed before hitting the executable";
+			// 
+			// chk_forceRemoveLightGunArg
+			// 
+			this.chk_forceRemoveLightGunArg.Location = new System.Drawing.Point(442, 52);
+			this.chk_forceRemoveLightGunArg.Name = "chk_forceRemoveLightGunArg";
+			this.chk_forceRemoveLightGunArg.Size = new System.Drawing.Size(342, 20);
+			this.chk_forceRemoveLightGunArg.TabIndex = 13;
+			this.chk_forceRemoveLightGunArg.Values.Text = "Make sur this arg is removed before hitting the executable";
+			this.chk_forceRemoveLightGunArg.CheckedChanged += new System.EventHandler(this.kryptonCheckBox2_CheckedChanged);
+			// 
+			// chk_forceRemoveControllerArg
+			// 
+			this.chk_forceRemoveControllerArg.Location = new System.Drawing.Point(442, 26);
+			this.chk_forceRemoveControllerArg.Name = "chk_forceRemoveControllerArg";
+			this.chk_forceRemoveControllerArg.Size = new System.Drawing.Size(342, 20);
+			this.chk_forceRemoveControllerArg.TabIndex = 12;
+			this.chk_forceRemoveControllerArg.Values.Text = "Make sur this arg is removed before hitting the executable";
+			// 
+			// txt_prefixWheel
+			// 
+			this.txt_prefixWheel.Location = new System.Drawing.Point(284, 77);
+			this.txt_prefixWheel.Name = "txt_prefixWheel";
+			this.txt_prefixWheel.Size = new System.Drawing.Size(152, 23);
+			this.txt_prefixWheel.TabIndex = 11;
+			this.txt_prefixWheel.Text = "--wheel%NUM%=";
+			// 
+			// txt_prefixLightgun
+			// 
+			this.txt_prefixLightgun.Location = new System.Drawing.Point(284, 49);
+			this.txt_prefixLightgun.Name = "txt_prefixLightgun";
+			this.txt_prefixLightgun.Size = new System.Drawing.Size(152, 23);
+			this.txt_prefixLightgun.TabIndex = 10;
+			this.txt_prefixLightgun.Text = "--lightgun%NUM%=";
+			// 
+			// txt_prefixController
+			// 
+			this.txt_prefixController.Location = new System.Drawing.Point(284, 23);
+			this.txt_prefixController.Name = "txt_prefixController";
+			this.txt_prefixController.Size = new System.Drawing.Size(152, 23);
+			this.txt_prefixController.TabIndex = 9;
+			this.txt_prefixController.Text = "--controller%NUM%=";
+			// 
+			// kryptonLabel6
+			// 
+			this.kryptonLabel6.Location = new System.Drawing.Point(208, 80);
+			this.kryptonLabel6.Name = "kryptonLabel6";
+			this.kryptonLabel6.Size = new System.Drawing.Size(70, 20);
+			this.kryptonLabel6.TabIndex = 8;
+			this.kryptonLabel6.Values.Text = "Prefix Arg :";
+			// 
+			// kryptonLabel5
+			// 
+			this.kryptonLabel5.Location = new System.Drawing.Point(208, 54);
+			this.kryptonLabel5.Name = "kryptonLabel5";
+			this.kryptonLabel5.Size = new System.Drawing.Size(70, 20);
+			this.kryptonLabel5.TabIndex = 7;
+			this.kryptonLabel5.Values.Text = "Prefix Arg :";
+			// 
+			// kryptonLabel4
+			// 
+			this.kryptonLabel4.Location = new System.Drawing.Point(208, 26);
+			this.kryptonLabel4.Name = "kryptonLabel4";
+			this.kryptonLabel4.Size = new System.Drawing.Size(70, 20);
+			this.kryptonLabel4.TabIndex = 6;
+			this.kryptonLabel4.Values.Text = "Prefix Arg :";
+			// 
+			// kryptonLabel3
+			// 
+			this.kryptonLabel3.Location = new System.Drawing.Point(6, 80);
+			this.kryptonLabel3.Name = "kryptonLabel3";
+			this.kryptonLabel3.Size = new System.Drawing.Size(119, 20);
+			this.kryptonLabel3.TabIndex = 5;
+			this.kryptonLabel3.Values.Text = "Number of Wheels :";
+			// 
+			// kryptonLabel2
+			// 
+			this.kryptonLabel2.Location = new System.Drawing.Point(6, 54);
+			this.kryptonLabel2.Name = "kryptonLabel2";
+			this.kryptonLabel2.Size = new System.Drawing.Size(129, 20);
+			this.kryptonLabel2.TabIndex = 4;
+			this.kryptonLabel2.Values.Text = "Number of LightGun :";
+			// 
+			// kryptonLabel1
+			// 
+			this.kryptonLabel1.Location = new System.Drawing.Point(6, 26);
+			this.kryptonLabel1.Name = "kryptonLabel1";
+			this.kryptonLabel1.Size = new System.Drawing.Size(139, 20);
+			this.kryptonLabel1.TabIndex = 3;
+			this.kryptonLabel1.Values.Text = "Number of Controllers :";
+			// 
+			// num_nbwheel
+			// 
+			this.num_nbwheel.Location = new System.Drawing.Point(151, 80);
+			this.num_nbwheel.Name = "num_nbwheel";
+			this.num_nbwheel.Size = new System.Drawing.Size(51, 22);
+			this.num_nbwheel.TabIndex = 2;
+			this.num_nbwheel.Value = new decimal(new int[] {
+            1,
             0,
             0,
             0});
@@ -315,148 +499,17 @@
             0,
             0});
 			// 
-			// num_nbwheel
+			// num_nbcontroller
 			// 
-			this.num_nbwheel.Location = new System.Drawing.Point(151, 80);
-			this.num_nbwheel.Name = "num_nbwheel";
-			this.num_nbwheel.Size = new System.Drawing.Size(51, 22);
-			this.num_nbwheel.TabIndex = 2;
-			this.num_nbwheel.Value = new decimal(new int[] {
-            1,
+			this.num_nbcontroller.Location = new System.Drawing.Point(151, 24);
+			this.num_nbcontroller.Name = "num_nbcontroller";
+			this.num_nbcontroller.Size = new System.Drawing.Size(51, 22);
+			this.num_nbcontroller.TabIndex = 0;
+			this.num_nbcontroller.Value = new decimal(new int[] {
+            4,
             0,
             0,
             0});
-			// 
-			// kryptonLabel1
-			// 
-			this.kryptonLabel1.Location = new System.Drawing.Point(6, 26);
-			this.kryptonLabel1.Name = "kryptonLabel1";
-			this.kryptonLabel1.Size = new System.Drawing.Size(139, 20);
-			this.kryptonLabel1.TabIndex = 3;
-			this.kryptonLabel1.Values.Text = "Number of Controllers :";
-			// 
-			// kryptonLabel2
-			// 
-			this.kryptonLabel2.Location = new System.Drawing.Point(6, 54);
-			this.kryptonLabel2.Name = "kryptonLabel2";
-			this.kryptonLabel2.Size = new System.Drawing.Size(129, 20);
-			this.kryptonLabel2.TabIndex = 4;
-			this.kryptonLabel2.Values.Text = "Number of LightGun :";
-			// 
-			// kryptonLabel3
-			// 
-			this.kryptonLabel3.Location = new System.Drawing.Point(6, 80);
-			this.kryptonLabel3.Name = "kryptonLabel3";
-			this.kryptonLabel3.Size = new System.Drawing.Size(119, 20);
-			this.kryptonLabel3.TabIndex = 5;
-			this.kryptonLabel3.Values.Text = "Number of Wheels :";
-			// 
-			// kryptonLabel4
-			// 
-			this.kryptonLabel4.Location = new System.Drawing.Point(208, 26);
-			this.kryptonLabel4.Name = "kryptonLabel4";
-			this.kryptonLabel4.Size = new System.Drawing.Size(70, 20);
-			this.kryptonLabel4.TabIndex = 6;
-			this.kryptonLabel4.Values.Text = "Prefix Arg :";
-			// 
-			// kryptonLabel5
-			// 
-			this.kryptonLabel5.Location = new System.Drawing.Point(208, 54);
-			this.kryptonLabel5.Name = "kryptonLabel5";
-			this.kryptonLabel5.Size = new System.Drawing.Size(70, 20);
-			this.kryptonLabel5.TabIndex = 7;
-			this.kryptonLabel5.Values.Text = "Prefix Arg :";
-			// 
-			// kryptonLabel6
-			// 
-			this.kryptonLabel6.Location = new System.Drawing.Point(208, 80);
-			this.kryptonLabel6.Name = "kryptonLabel6";
-			this.kryptonLabel6.Size = new System.Drawing.Size(70, 20);
-			this.kryptonLabel6.TabIndex = 8;
-			this.kryptonLabel6.Values.Text = "Prefix Arg :";
-			// 
-			// txt_prefixController
-			// 
-			this.txt_prefixController.Location = new System.Drawing.Point(284, 23);
-			this.txt_prefixController.Name = "txt_prefixController";
-			this.txt_prefixController.Size = new System.Drawing.Size(152, 23);
-			this.txt_prefixController.TabIndex = 9;
-			this.txt_prefixController.Text = "--controller%NUM%=";
-			// 
-			// txt_prefixLightgun
-			// 
-			this.txt_prefixLightgun.Location = new System.Drawing.Point(284, 49);
-			this.txt_prefixLightgun.Name = "txt_prefixLightgun";
-			this.txt_prefixLightgun.Size = new System.Drawing.Size(152, 23);
-			this.txt_prefixLightgun.TabIndex = 10;
-			this.txt_prefixLightgun.Text = "--lightgun%NUM%=";
-			// 
-			// txt_prefixWheel
-			// 
-			this.txt_prefixWheel.Location = new System.Drawing.Point(284, 77);
-			this.txt_prefixWheel.Name = "txt_prefixWheel";
-			this.txt_prefixWheel.Size = new System.Drawing.Size(152, 23);
-			this.txt_prefixWheel.TabIndex = 11;
-			this.txt_prefixWheel.Text = "--wheel%NUM%=";
-			// 
-			// chk_forceRemoveControllerArg
-			// 
-			this.chk_forceRemoveControllerArg.Location = new System.Drawing.Point(442, 26);
-			this.chk_forceRemoveControllerArg.Name = "chk_forceRemoveControllerArg";
-			this.chk_forceRemoveControllerArg.Size = new System.Drawing.Size(342, 20);
-			this.chk_forceRemoveControllerArg.TabIndex = 12;
-			this.chk_forceRemoveControllerArg.Values.Text = "Make sur this arg is removed before hitting the executable";
-			// 
-			// chk_forceRemoveLightGunArg
-			// 
-			this.chk_forceRemoveLightGunArg.Location = new System.Drawing.Point(442, 52);
-			this.chk_forceRemoveLightGunArg.Name = "chk_forceRemoveLightGunArg";
-			this.chk_forceRemoveLightGunArg.Size = new System.Drawing.Size(342, 20);
-			this.chk_forceRemoveLightGunArg.TabIndex = 13;
-			this.chk_forceRemoveLightGunArg.Values.Text = "Make sur this arg is removed before hitting the executable";
-			this.chk_forceRemoveLightGunArg.CheckedChanged += new System.EventHandler(this.kryptonCheckBox2_CheckedChanged);
-			// 
-			// chk_forceRemoveWheelArg
-			// 
-			this.chk_forceRemoveWheelArg.Location = new System.Drawing.Point(442, 80);
-			this.chk_forceRemoveWheelArg.Name = "chk_forceRemoveWheelArg";
-			this.chk_forceRemoveWheelArg.Size = new System.Drawing.Size(342, 20);
-			this.chk_forceRemoveWheelArg.TabIndex = 14;
-			this.chk_forceRemoveWheelArg.Values.Text = "Make sur this arg is removed before hitting the executable";
-			// 
-			// txt_DS4Win
-			// 
-			this.txt_DS4Win.Location = new System.Drawing.Point(212, 139);
-			this.txt_DS4Win.Name = "txt_DS4Win";
-			this.txt_DS4Win.Size = new System.Drawing.Size(574, 20);
-			this.txt_DS4Win.TabIndex = 15;
-			this.txt_DS4Win.TextChanged += new System.EventHandler(this.txt_DS4Win_TextChanged);
-			// 
-			// btn_exploreDS4WinDir
-			// 
-			this.btn_exploreDS4WinDir.Location = new System.Drawing.Point(791, 134);
-			this.btn_exploreDS4WinDir.Name = "btn_exploreDS4WinDir";
-			this.btn_exploreDS4WinDir.Size = new System.Drawing.Size(40, 25);
-			this.btn_exploreDS4WinDir.TabIndex = 16;
-			this.btn_exploreDS4WinDir.Values.Text = "...";
-			this.btn_exploreDS4WinDir.Click += new System.EventHandler(this.btn_exploreDS4WinDir_Click);
-			// 
-			// kryptonLabel7
-			// 
-			this.kryptonLabel7.Location = new System.Drawing.Point(7, 139);
-			this.kryptonLabel7.Name = "kryptonLabel7";
-			this.kryptonLabel7.Size = new System.Drawing.Size(195, 20);
-			this.kryptonLabel7.TabIndex = 17;
-			this.kryptonLabel7.Values.Text = "(Optional) DS4Win Log Directory :";
-			// 
-			// kryptonLabel8
-			// 
-			this.kryptonLabel8.Location = new System.Drawing.Point(6, 165);
-			this.kryptonLabel8.Name = "kryptonLabel8";
-			this.kryptonLabel8.Size = new System.Drawing.Size(835, 20);
-			this.kryptonLabel8.TabIndex = 18;
-			this.kryptonLabel8.Values.Text = "(Improve Xinput library by puting custom signature to XINPUT devices managed by D" +
-    "S4Win, allowing you to disting them from regular X360 controller)";
 			// 
 			// grp_addNewDevice
 			// 
@@ -480,37 +533,69 @@
 			this.grp_addNewDevice.TabStop = false;
 			this.grp_addNewDevice.Text = "Add new Device";
 			// 
-			// txt_addDevRegex
+			// chk_addDevXinput
 			// 
-			this.txt_addDevRegex.Location = new System.Drawing.Point(112, 25);
-			this.txt_addDevRegex.Name = "txt_addDevRegex";
-			this.txt_addDevRegex.Size = new System.Drawing.Size(464, 23);
-			this.txt_addDevRegex.TabIndex = 0;
+			this.chk_addDevXinput.Location = new System.Drawing.Point(458, 107);
+			this.chk_addDevXinput.Name = "chk_addDevXinput";
+			this.chk_addDevXinput.Size = new System.Drawing.Size(83, 20);
+			this.chk_addDevXinput.TabIndex = 117;
+			this.chk_addDevXinput.Values.Text = "Use XInput";
 			// 
-			// txt_addDevSuffix
+			// chk_addDevBT
 			// 
-			this.txt_addDevSuffix.Location = new System.Drawing.Point(112, 51);
-			this.txt_addDevSuffix.Name = "txt_addDevSuffix";
-			this.txt_addDevSuffix.Size = new System.Drawing.Size(464, 23);
-			this.txt_addDevSuffix.TabIndex = 1;
+			this.chk_addDevBT.Location = new System.Drawing.Point(308, 107);
+			this.chk_addDevBT.Name = "chk_addDevBT";
+			this.chk_addDevBT.Size = new System.Drawing.Size(144, 20);
+			this.chk_addDevBT.TabIndex = 116;
+			this.chk_addDevBT.Values.Text = "Use Bluetooth (Slow !)";
 			// 
-			// cmb_addDevType
+			// chk_addDevDS4Lib
 			// 
-			this.cmb_addDevType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cmb_addDevType.DropDownWidth = 464;
-			this.cmb_addDevType.Location = new System.Drawing.Point(112, 80);
-			this.cmb_addDevType.Name = "cmb_addDevType";
-			this.cmb_addDevType.Size = new System.Drawing.Size(464, 21);
-			this.cmb_addDevType.TabIndex = 2;
+			this.chk_addDevDS4Lib.Location = new System.Drawing.Point(217, 107);
+			this.chk_addDevDS4Lib.Name = "chk_addDevDS4Lib";
+			this.chk_addDevDS4Lib.Size = new System.Drawing.Size(85, 20);
+			this.chk_addDevDS4Lib.TabIndex = 115;
+			this.chk_addDevDS4Lib.Values.Text = "Use DS4Lib";
 			// 
-			// btn_addDevAdd
+			// chk_addDevHIDSharp
 			// 
-			this.btn_addDevAdd.Location = new System.Drawing.Point(112, 133);
-			this.btn_addDevAdd.Name = "btn_addDevAdd";
-			this.btn_addDevAdd.Size = new System.Drawing.Size(90, 25);
-			this.btn_addDevAdd.TabIndex = 3;
-			this.btn_addDevAdd.Values.Text = "Add to list";
-			this.btn_addDevAdd.Click += new System.EventHandler(this.btn_addDevAdd_Click);
+			this.chk_addDevHIDSharp.Location = new System.Drawing.Point(112, 107);
+			this.chk_addDevHIDSharp.Name = "chk_addDevHIDSharp";
+			this.chk_addDevHIDSharp.Size = new System.Drawing.Size(99, 20);
+			this.chk_addDevHIDSharp.TabIndex = 114;
+			this.chk_addDevHIDSharp.Values.Text = "Use HIDSharp";
+			// 
+			// kryptonLabel12
+			// 
+			this.kryptonLabel12.Location = new System.Drawing.Point(6, 106);
+			this.kryptonLabel12.Name = "kryptonLabel12";
+			this.kryptonLabel12.Size = new System.Drawing.Size(93, 20);
+			this.kryptonLabel12.TabIndex = 8;
+			this.kryptonLabel12.Values.Text = "Search Library :";
+			// 
+			// kryptonLabel11
+			// 
+			this.kryptonLabel11.Location = new System.Drawing.Point(8, 80);
+			this.kryptonLabel11.Name = "kryptonLabel11";
+			this.kryptonLabel11.Size = new System.Drawing.Size(82, 20);
+			this.kryptonLabel11.TabIndex = 7;
+			this.kryptonLabel11.Values.Text = "Device Type :";
+			// 
+			// kryptonLabel10
+			// 
+			this.kryptonLabel10.Location = new System.Drawing.Point(8, 54);
+			this.kryptonLabel10.Name = "kryptonLabel10";
+			this.kryptonLabel10.Size = new System.Drawing.Size(69, 20);
+			this.kryptonLabel10.TabIndex = 6;
+			this.kryptonLabel10.Values.Text = "Suffix Arg :";
+			// 
+			// kryptonLabel9
+			// 
+			this.kryptonLabel9.Location = new System.Drawing.Point(8, 28);
+			this.kryptonLabel9.Name = "kryptonLabel9";
+			this.kryptonLabel9.Size = new System.Drawing.Size(50, 20);
+			this.kryptonLabel9.TabIndex = 5;
+			this.kryptonLabel9.Values.Text = "Regex :";
 			// 
 			// btn_addDevTest
 			// 
@@ -521,46 +606,37 @@
 			this.btn_addDevTest.Values.Text = "Test";
 			this.btn_addDevTest.Click += new System.EventHandler(this.btn_addDevTest_Click);
 			// 
-			// kryptonLabel9
+			// btn_addDevAdd
 			// 
-			this.kryptonLabel9.Location = new System.Drawing.Point(8, 28);
-			this.kryptonLabel9.Name = "kryptonLabel9";
-			this.kryptonLabel9.Size = new System.Drawing.Size(50, 20);
-			this.kryptonLabel9.TabIndex = 5;
-			this.kryptonLabel9.Values.Text = "Regex :";
+			this.btn_addDevAdd.Location = new System.Drawing.Point(112, 133);
+			this.btn_addDevAdd.Name = "btn_addDevAdd";
+			this.btn_addDevAdd.Size = new System.Drawing.Size(90, 25);
+			this.btn_addDevAdd.TabIndex = 3;
+			this.btn_addDevAdd.Values.Text = "Add to list";
+			this.btn_addDevAdd.Click += new System.EventHandler(this.btn_addDevAdd_Click);
 			// 
-			// kryptonLabel10
+			// cmb_addDevType
 			// 
-			this.kryptonLabel10.Location = new System.Drawing.Point(8, 54);
-			this.kryptonLabel10.Name = "kryptonLabel10";
-			this.kryptonLabel10.Size = new System.Drawing.Size(69, 20);
-			this.kryptonLabel10.TabIndex = 6;
-			this.kryptonLabel10.Values.Text = "Suffix Arg :";
+			this.cmb_addDevType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_addDevType.DropDownWidth = 464;
+			this.cmb_addDevType.Location = new System.Drawing.Point(112, 80);
+			this.cmb_addDevType.Name = "cmb_addDevType";
+			this.cmb_addDevType.Size = new System.Drawing.Size(464, 21);
+			this.cmb_addDevType.TabIndex = 2;
 			// 
-			// kryptonLabel11
+			// txt_addDevSuffix
 			// 
-			this.kryptonLabel11.Location = new System.Drawing.Point(8, 80);
-			this.kryptonLabel11.Name = "kryptonLabel11";
-			this.kryptonLabel11.Size = new System.Drawing.Size(82, 20);
-			this.kryptonLabel11.TabIndex = 7;
-			this.kryptonLabel11.Values.Text = "Device Type :";
+			this.txt_addDevSuffix.Location = new System.Drawing.Point(112, 51);
+			this.txt_addDevSuffix.Name = "txt_addDevSuffix";
+			this.txt_addDevSuffix.Size = new System.Drawing.Size(464, 23);
+			this.txt_addDevSuffix.TabIndex = 1;
 			// 
-			// kryptonLabel12
+			// txt_addDevRegex
 			// 
-			this.kryptonLabel12.Location = new System.Drawing.Point(6, 106);
-			this.kryptonLabel12.Name = "kryptonLabel12";
-			this.kryptonLabel12.Size = new System.Drawing.Size(93, 20);
-			this.kryptonLabel12.TabIndex = 8;
-			this.kryptonLabel12.Values.Text = "Search Library :";
-			// 
-			// kryptonLabel13
-			// 
-			this.kryptonLabel13.Location = new System.Drawing.Point(6, 191);
-			this.kryptonLabel13.Name = "kryptonLabel13";
-			this.kryptonLabel13.Size = new System.Drawing.Size(170, 20);
-			this.kryptonLabel13.TabIndex = 114;
-			this.kryptonLabel13.Values.Text = "Preview & Test Library Output :";
-			this.kryptonLabel13.Paint += new System.Windows.Forms.PaintEventHandler(this.kryptonLabel13_Paint);
+			this.txt_addDevRegex.Location = new System.Drawing.Point(112, 25);
+			this.txt_addDevRegex.Name = "txt_addDevRegex";
+			this.txt_addDevRegex.Size = new System.Drawing.Size(464, 23);
+			this.txt_addDevRegex.TabIndex = 0;
 			// 
 			// btn_delete_priority
 			// 
@@ -649,91 +725,26 @@
 			this.cUseBT.Text = "Use Bluetooth";
 			this.cUseBT.Width = 100;
 			// 
-			// chk_addDevXinput
-			// 
-			this.chk_addDevXinput.Location = new System.Drawing.Point(458, 107);
-			this.chk_addDevXinput.Name = "chk_addDevXinput";
-			this.chk_addDevXinput.Size = new System.Drawing.Size(83, 20);
-			this.chk_addDevXinput.TabIndex = 117;
-			this.chk_addDevXinput.Values.Text = "Use XInput";
-			// 
-			// chk_addDevBT
-			// 
-			this.chk_addDevBT.Location = new System.Drawing.Point(308, 107);
-			this.chk_addDevBT.Name = "chk_addDevBT";
-			this.chk_addDevBT.Size = new System.Drawing.Size(144, 20);
-			this.chk_addDevBT.TabIndex = 116;
-			this.chk_addDevBT.Values.Text = "Use Bluetooth (Slow !)";
-			// 
-			// chk_addDevDS4Lib
-			// 
-			this.chk_addDevDS4Lib.Location = new System.Drawing.Point(217, 107);
-			this.chk_addDevDS4Lib.Name = "chk_addDevDS4Lib";
-			this.chk_addDevDS4Lib.Size = new System.Drawing.Size(85, 20);
-			this.chk_addDevDS4Lib.TabIndex = 115;
-			this.chk_addDevDS4Lib.Values.Text = "Use DS4Lib";
-			// 
-			// chk_addDevHIDSharp
-			// 
-			this.chk_addDevHIDSharp.Location = new System.Drawing.Point(112, 107);
-			this.chk_addDevHIDSharp.Name = "chk_addDevHIDSharp";
-			this.chk_addDevHIDSharp.Size = new System.Drawing.Size(99, 20);
-			this.chk_addDevHIDSharp.TabIndex = 114;
-			this.chk_addDevHIDSharp.Values.Text = "Use HIDSharp";
-			// 
 			// cUseXInput
 			// 
 			this.cUseXInput.Text = "Use XInput";
 			this.cUseXInput.Width = 91;
 			// 
-			// chk_forceRemoveOtherArg
+			// btn_testconfig
 			// 
-			this.chk_forceRemoveOtherArg.Location = new System.Drawing.Point(442, 108);
-			this.chk_forceRemoveOtherArg.Name = "chk_forceRemoveOtherArg";
-			this.chk_forceRemoveOtherArg.Size = new System.Drawing.Size(342, 20);
-			this.chk_forceRemoveOtherArg.TabIndex = 119;
-			this.chk_forceRemoveOtherArg.Values.Text = "Make sur this arg is removed before hitting the executable";
-			// 
-			// txt_prefixOther
-			// 
-			this.txt_prefixOther.Location = new System.Drawing.Point(284, 106);
-			this.txt_prefixOther.Name = "txt_prefixOther";
-			this.txt_prefixOther.Size = new System.Drawing.Size(152, 23);
-			this.txt_prefixOther.TabIndex = 118;
-			// 
-			// kryptonLabel14
-			// 
-			this.kryptonLabel14.Location = new System.Drawing.Point(208, 106);
-			this.kryptonLabel14.Name = "kryptonLabel14";
-			this.kryptonLabel14.Size = new System.Drawing.Size(70, 20);
-			this.kryptonLabel14.TabIndex = 117;
-			this.kryptonLabel14.Values.Text = "Prefix Arg :";
-			// 
-			// kryptonLabel15
-			// 
-			this.kryptonLabel15.Location = new System.Drawing.Point(6, 106);
-			this.kryptonLabel15.Name = "kryptonLabel15";
-			this.kryptonLabel15.Size = new System.Drawing.Size(98, 20);
-			this.kryptonLabel15.TabIndex = 116;
-			this.kryptonLabel15.Values.Text = "Others Devices :";
-			// 
-			// num_nbothers
-			// 
-			this.num_nbothers.Location = new System.Drawing.Point(151, 106);
-			this.num_nbothers.Name = "num_nbothers";
-			this.num_nbothers.Size = new System.Drawing.Size(51, 22);
-			this.num_nbothers.TabIndex = 115;
-			this.num_nbothers.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
+			this.btn_testconfig.Location = new System.Drawing.Point(1361, 653);
+			this.btn_testconfig.Name = "btn_testconfig";
+			this.btn_testconfig.Size = new System.Drawing.Size(75, 70);
+			this.btn_testconfig.TabIndex = 120;
+			this.btn_testconfig.Values.Text = "Test Config";
+			this.btn_testconfig.Click += new System.EventHandler(this.btn_testconfig_Click);
 			// 
 			// HidDeviceDetector_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1455, 801);
+			this.Controls.Add(this.btn_testconfig);
 			this.Controls.Add(this.btn_delete_priority);
 			this.Controls.Add(this.btn_up_priority);
 			this.Controls.Add(this.btn_down_priority);
@@ -839,5 +850,6 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel14;
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel15;
 		private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown num_nbothers;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_testconfig;
 	}
 }
