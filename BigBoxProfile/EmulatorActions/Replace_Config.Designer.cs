@@ -58,12 +58,21 @@
 			this.btn_testReplace = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.txt_search = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
 			this.txt_replacewith = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.btn_manageVariables = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.textBox1 = new System.Windows.Forms.TextBox();
 			this.groupBox1.SuspendLayout();
+			this.groupBox2.SuspendLayout();
+			this.groupBox3.SuspendLayout();
+			this.groupBox4.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// label3
 			// 
-			this.label3.Location = new System.Drawing.Point(12, 324);
+			this.label3.Location = new System.Drawing.Point(17, 19);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(150, 20);
 			this.label3.TabIndex = 19;
@@ -71,14 +80,14 @@
 			// 
 			// txt_filter
 			// 
-			this.txt_filter.Location = new System.Drawing.Point(185, 321);
+			this.txt_filter.Location = new System.Drawing.Point(190, 16);
 			this.txt_filter.Name = "txt_filter";
 			this.txt_filter.Size = new System.Drawing.Size(442, 23);
 			this.txt_filter.TabIndex = 18;
 			// 
 			// label2
 			// 
-			this.label2.Location = new System.Drawing.Point(12, 213);
+			this.label2.Location = new System.Drawing.Point(12, 220);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(77, 20);
 			this.label2.TabIndex = 17;
@@ -86,7 +95,7 @@
 			// 
 			// radio_cmd
 			// 
-			this.radio_cmd.Location = new System.Drawing.Point(446, 213);
+			this.radio_cmd.Location = new System.Drawing.Point(446, 220);
 			this.radio_cmd.Name = "radio_cmd";
 			this.radio_cmd.Size = new System.Drawing.Size(89, 20);
 			this.radio_cmd.TabIndex = 16;
@@ -95,7 +104,7 @@
 			// 
 			// radio_arg
 			// 
-			this.radio_arg.Location = new System.Drawing.Point(334, 213);
+			this.radio_arg.Location = new System.Drawing.Point(334, 220);
 			this.radio_arg.Name = "radio_arg";
 			this.radio_arg.Size = new System.Drawing.Size(106, 20);
 			this.radio_arg.TabIndex = 15;
@@ -104,7 +113,7 @@
 			// 
 			// label1
 			// 
-			this.label1.Location = new System.Drawing.Point(12, 12);
+			this.label1.Location = new System.Drawing.Point(12, 19);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(53, 20);
 			this.label1.TabIndex = 14;
@@ -113,7 +122,7 @@
 			// btn_cancel
 			// 
 			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_cancel.Location = new System.Drawing.Point(457, 469);
+			this.btn_cancel.Location = new System.Drawing.Point(1297, 496);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 13;
@@ -122,7 +131,7 @@
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(552, 469);
+			this.btn_ok.Location = new System.Drawing.Point(1378, 496);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 12;
@@ -131,7 +140,7 @@
 			// 
 			// label4
 			// 
-			this.label4.Location = new System.Drawing.Point(12, 97);
+			this.label4.Location = new System.Drawing.Point(12, 104);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(88, 20);
 			this.label4.TabIndex = 21;
@@ -139,7 +148,7 @@
 			// 
 			// chk_useregex
 			// 
-			this.chk_useregex.Location = new System.Drawing.Point(442, 187);
+			this.chk_useregex.Location = new System.Drawing.Point(442, 194);
 			this.chk_useregex.Name = "chk_useregex";
 			this.chk_useregex.Size = new System.Drawing.Size(80, 20);
 			this.chk_useregex.TabIndex = 22;
@@ -147,7 +156,7 @@
 			// 
 			// chk_casesensitive
 			// 
-			this.chk_casesensitive.Location = new System.Drawing.Point(528, 187);
+			this.chk_casesensitive.Location = new System.Drawing.Point(528, 194);
 			this.chk_casesensitive.Name = "chk_casesensitive";
 			this.chk_casesensitive.Size = new System.Drawing.Size(99, 20);
 			this.chk_casesensitive.TabIndex = 23;
@@ -155,7 +164,7 @@
 			// 
 			// btn_manage_exclude
 			// 
-			this.btn_manage_exclude.Location = new System.Drawing.Point(536, 417);
+			this.btn_manage_exclude.Location = new System.Drawing.Point(541, 112);
 			this.btn_manage_exclude.Name = "btn_manage_exclude";
 			this.btn_manage_exclude.Size = new System.Drawing.Size(91, 24);
 			this.btn_manage_exclude.TabIndex = 78;
@@ -164,7 +173,7 @@
 			// 
 			// chk_exclude_comma
 			// 
-			this.chk_exclude_comma.Location = new System.Drawing.Point(185, 417);
+			this.chk_exclude_comma.Location = new System.Drawing.Point(190, 112);
 			this.chk_exclude_comma.Name = "chk_exclude_comma";
 			this.chk_exclude_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_exclude_comma.TabIndex = 77;
@@ -173,7 +182,7 @@
 			// 
 			// label6
 			// 
-			this.label6.Location = new System.Drawing.Point(12, 391);
+			this.label6.Location = new System.Drawing.Point(17, 86);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(167, 20);
 			this.label6.TabIndex = 76;
@@ -181,14 +190,14 @@
 			// 
 			// txt_exclude
 			// 
-			this.txt_exclude.Location = new System.Drawing.Point(185, 388);
+			this.txt_exclude.Location = new System.Drawing.Point(190, 83);
 			this.txt_exclude.Name = "txt_exclude";
 			this.txt_exclude.Size = new System.Drawing.Size(442, 23);
 			this.txt_exclude.TabIndex = 75;
 			// 
 			// btn_manage_filter
 			// 
-			this.btn_manage_filter.Location = new System.Drawing.Point(536, 350);
+			this.btn_manage_filter.Location = new System.Drawing.Point(541, 45);
 			this.btn_manage_filter.Name = "btn_manage_filter";
 			this.btn_manage_filter.Size = new System.Drawing.Size(91, 24);
 			this.btn_manage_filter.TabIndex = 74;
@@ -197,7 +206,7 @@
 			// 
 			// chk_filter_comma
 			// 
-			this.chk_filter_comma.Location = new System.Drawing.Point(185, 350);
+			this.chk_filter_comma.Location = new System.Drawing.Point(190, 45);
 			this.chk_filter_comma.Name = "chk_filter_comma";
 			this.chk_filter_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_filter_comma.TabIndex = 73;
@@ -206,7 +215,7 @@
 			// 
 			// chk_filter_remove
 			// 
-			this.chk_filter_remove.Location = new System.Drawing.Point(185, 367);
+			this.chk_filter_remove.Location = new System.Drawing.Point(190, 62);
 			this.chk_filter_remove.Name = "chk_filter_remove";
 			this.chk_filter_remove.Size = new System.Drawing.Size(237, 20);
 			this.chk_filter_remove.TabIndex = 86;
@@ -214,7 +223,7 @@
 			// 
 			// radio_file
 			// 
-			this.radio_file.Location = new System.Drawing.Point(541, 213);
+			this.radio_file.Location = new System.Drawing.Point(541, 220);
 			this.radio_file.Name = "radio_file";
 			this.radio_file.Size = new System.Drawing.Size(86, 20);
 			this.radio_file.TabIndex = 87;
@@ -223,7 +232,7 @@
 			// 
 			// btn_file
 			// 
-			this.btn_file.Location = new System.Drawing.Point(592, 238);
+			this.btn_file.Location = new System.Drawing.Point(592, 245);
 			this.btn_file.Name = "btn_file";
 			this.btn_file.Size = new System.Drawing.Size(35, 24);
 			this.btn_file.TabIndex = 89;
@@ -232,7 +241,7 @@
 			// 
 			// txt_file
 			// 
-			this.txt_file.Location = new System.Drawing.Point(185, 239);
+			this.txt_file.Location = new System.Drawing.Point(185, 246);
 			this.txt_file.Name = "txt_file";
 			this.txt_file.Size = new System.Drawing.Size(401, 23);
 			this.txt_file.TabIndex = 88;
@@ -242,9 +251,9 @@
 			this.groupBox1.Controls.Add(this.txt_textout);
 			this.groupBox1.Controls.Add(this.txt_textin);
 			this.groupBox1.Controls.Add(this.btn_testReplace);
-			this.groupBox1.Location = new System.Drawing.Point(657, 12);
+			this.groupBox1.Location = new System.Drawing.Point(939, 12);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(514, 498);
+			this.groupBox1.Size = new System.Drawing.Size(514, 478);
 			this.groupBox1.TabIndex = 91;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Test replace";
@@ -267,7 +276,7 @@
 			// 
 			// btn_testReplace
 			// 
-			this.btn_testReplace.Location = new System.Drawing.Point(392, 457);
+			this.btn_testReplace.Location = new System.Drawing.Point(401, 446);
 			this.btn_testReplace.Name = "btn_testReplace";
 			this.btn_testReplace.Size = new System.Drawing.Size(107, 24);
 			this.btn_testReplace.TabIndex = 92;
@@ -276,7 +285,7 @@
 			// 
 			// txt_search
 			// 
-			this.txt_search.Location = new System.Drawing.Point(119, 12);
+			this.txt_search.Location = new System.Drawing.Point(119, 19);
 			this.txt_search.Name = "txt_search";
 			this.txt_search.Size = new System.Drawing.Size(508, 79);
 			this.txt_search.TabIndex = 92;
@@ -284,39 +293,97 @@
 			// 
 			// txt_replacewith
 			// 
-			this.txt_replacewith.Location = new System.Drawing.Point(119, 97);
+			this.txt_replacewith.Location = new System.Drawing.Point(119, 104);
 			this.txt_replacewith.Name = "txt_replacewith";
 			this.txt_replacewith.Size = new System.Drawing.Size(508, 79);
 			this.txt_replacewith.TabIndex = 93;
 			this.txt_replacewith.Text = "";
 			// 
+			// groupBox2
+			// 
+			this.groupBox2.Controls.Add(this.btn_manage_exclude);
+			this.groupBox2.Controls.Add(this.txt_filter);
+			this.groupBox2.Controls.Add(this.label3);
+			this.groupBox2.Controls.Add(this.chk_filter_comma);
+			this.groupBox2.Controls.Add(this.btn_manage_filter);
+			this.groupBox2.Controls.Add(this.txt_exclude);
+			this.groupBox2.Controls.Add(this.label6);
+			this.groupBox2.Controls.Add(this.chk_exclude_comma);
+			this.groupBox2.Controls.Add(this.chk_filter_remove);
+			this.groupBox2.Location = new System.Drawing.Point(12, 332);
+			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(654, 158);
+			this.groupBox2.TabIndex = 95;
+			this.groupBox2.TabStop = false;
+			this.groupBox2.Text = "Filters";
+			// 
+			// groupBox3
+			// 
+			this.groupBox3.Controls.Add(this.txt_search);
+			this.groupBox3.Controls.Add(this.label1);
+			this.groupBox3.Controls.Add(this.radio_arg);
+			this.groupBox3.Controls.Add(this.txt_replacewith);
+			this.groupBox3.Controls.Add(this.radio_cmd);
+			this.groupBox3.Controls.Add(this.label2);
+			this.groupBox3.Controls.Add(this.label4);
+			this.groupBox3.Controls.Add(this.btn_file);
+			this.groupBox3.Controls.Add(this.chk_useregex);
+			this.groupBox3.Controls.Add(this.txt_file);
+			this.groupBox3.Controls.Add(this.chk_casesensitive);
+			this.groupBox3.Controls.Add(this.radio_file);
+			this.groupBox3.Location = new System.Drawing.Point(17, 12);
+			this.groupBox3.Name = "groupBox3";
+			this.groupBox3.Size = new System.Drawing.Size(654, 300);
+			this.groupBox3.TabIndex = 96;
+			this.groupBox3.TabStop = false;
+			this.groupBox3.Text = "Search And Replace";
+			// 
+			// groupBox4
+			// 
+			this.groupBox4.Controls.Add(this.btn_manageVariables);
+			this.groupBox4.Controls.Add(this.listBox1);
+			this.groupBox4.Location = new System.Drawing.Point(677, 12);
+			this.groupBox4.Name = "groupBox4";
+			this.groupBox4.Size = new System.Drawing.Size(256, 478);
+			this.groupBox4.TabIndex = 97;
+			this.groupBox4.TabStop = false;
+			this.groupBox4.Text = "Variables (Advanced Users Only !)";
+			this.groupBox4.Enter += new System.EventHandler(this.groupBox4_Enter);
+			// 
+			// listBox1
+			// 
+			this.listBox1.FormattingEnabled = true;
+			this.listBox1.Location = new System.Drawing.Point(12, 19);
+			this.listBox1.Name = "listBox1";
+			this.listBox1.Size = new System.Drawing.Size(233, 407);
+			this.listBox1.TabIndex = 0;
+			// 
+			// btn_manageVariables
+			// 
+			this.btn_manageVariables.Location = new System.Drawing.Point(12, 433);
+			this.btn_manageVariables.Name = "btn_manageVariables";
+			this.btn_manageVariables.Size = new System.Drawing.Size(233, 24);
+			this.btn_manageVariables.TabIndex = 96;
+			this.btn_manageVariables.Values.Text = "Manage Variables";
+			this.btn_manageVariables.Click += new System.EventHandler(this.btn_manageVariables_Click);
+			// 
+			// textBox1
+			// 
+			this.textBox1.Location = new System.Drawing.Point(407, 496);
+			this.textBox1.Name = "textBox1";
+			this.textBox1.Size = new System.Drawing.Size(468, 20);
+			this.textBox1.TabIndex = 98;
+			// 
 			// Replace_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1181, 522);
-			this.Controls.Add(this.txt_replacewith);
-			this.Controls.Add(this.txt_search);
+			this.ClientSize = new System.Drawing.Size(1461, 528);
+			this.Controls.Add(this.textBox1);
+			this.Controls.Add(this.groupBox4);
+			this.Controls.Add(this.groupBox3);
+			this.Controls.Add(this.groupBox2);
 			this.Controls.Add(this.groupBox1);
-			this.Controls.Add(this.btn_file);
-			this.Controls.Add(this.txt_file);
-			this.Controls.Add(this.radio_file);
-			this.Controls.Add(this.chk_filter_remove);
-			this.Controls.Add(this.btn_manage_exclude);
-			this.Controls.Add(this.chk_exclude_comma);
-			this.Controls.Add(this.label6);
-			this.Controls.Add(this.txt_exclude);
-			this.Controls.Add(this.btn_manage_filter);
-			this.Controls.Add(this.chk_filter_comma);
-			this.Controls.Add(this.chk_casesensitive);
-			this.Controls.Add(this.chk_useregex);
-			this.Controls.Add(this.label4);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.txt_filter);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.radio_cmd);
-			this.Controls.Add(this.radio_arg);
-			this.Controls.Add(this.label1);
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -328,6 +395,11 @@
 			this.Text = "Configuration Module : Replace";
 			this.Load += new System.EventHandler(this.Replace_Config_Load);
 			this.groupBox1.ResumeLayout(false);
+			this.groupBox2.ResumeLayout(false);
+			this.groupBox2.PerformLayout();
+			this.groupBox3.ResumeLayout(false);
+			this.groupBox3.PerformLayout();
+			this.groupBox4.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -363,5 +435,11 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox txt_textout;
 		private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox txt_textin;
 		private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox txt_replacewith;
+		private System.Windows.Forms.GroupBox groupBox2;
+		private System.Windows.Forms.GroupBox groupBox3;
+		private System.Windows.Forms.GroupBox groupBox4;
+		private System.Windows.Forms.ListBox listBox1;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_manageVariables;
+		private System.Windows.Forms.TextBox textBox1;
 	}
 }

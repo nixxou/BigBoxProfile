@@ -41,44 +41,51 @@
 			this.txt_addDevRegex = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.btn_cancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.chk_addDevMatchUnique = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.num_addDevMaxMatch = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
+			this.kryptonLabel16 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_addDevType)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// chk_addDevXinput
 			// 
-			this.chk_addDevXinput.Location = new System.Drawing.Point(454, 94);
+			this.chk_addDevXinput.Location = new System.Drawing.Point(464, 120);
 			this.chk_addDevXinput.Name = "chk_addDevXinput";
 			this.chk_addDevXinput.Size = new System.Drawing.Size(83, 20);
 			this.chk_addDevXinput.TabIndex = 129;
 			this.chk_addDevXinput.Values.Text = "Use XInput";
+			this.chk_addDevXinput.CheckedChanged += new System.EventHandler(this.chk_addDevXinput_CheckedChanged);
 			// 
 			// chk_addDevBT
 			// 
-			this.chk_addDevBT.Location = new System.Drawing.Point(304, 94);
+			this.chk_addDevBT.Location = new System.Drawing.Point(314, 120);
 			this.chk_addDevBT.Name = "chk_addDevBT";
 			this.chk_addDevBT.Size = new System.Drawing.Size(144, 20);
 			this.chk_addDevBT.TabIndex = 128;
 			this.chk_addDevBT.Values.Text = "Use Bluetooth (Slow !)";
+			this.chk_addDevBT.CheckedChanged += new System.EventHandler(this.chk_addDevBT_CheckedChanged);
 			// 
 			// chk_addDevDS4Lib
 			// 
-			this.chk_addDevDS4Lib.Location = new System.Drawing.Point(213, 94);
+			this.chk_addDevDS4Lib.Location = new System.Drawing.Point(223, 120);
 			this.chk_addDevDS4Lib.Name = "chk_addDevDS4Lib";
 			this.chk_addDevDS4Lib.Size = new System.Drawing.Size(85, 20);
 			this.chk_addDevDS4Lib.TabIndex = 127;
 			this.chk_addDevDS4Lib.Values.Text = "Use DS4Lib";
+			this.chk_addDevDS4Lib.CheckedChanged += new System.EventHandler(this.chk_addDevDS4Lib_CheckedChanged);
 			// 
 			// chk_addDevHIDSharp
 			// 
-			this.chk_addDevHIDSharp.Location = new System.Drawing.Point(108, 94);
+			this.chk_addDevHIDSharp.Location = new System.Drawing.Point(118, 120);
 			this.chk_addDevHIDSharp.Name = "chk_addDevHIDSharp";
 			this.chk_addDevHIDSharp.Size = new System.Drawing.Size(99, 20);
 			this.chk_addDevHIDSharp.TabIndex = 126;
 			this.chk_addDevHIDSharp.Values.Text = "Use HIDSharp";
+			this.chk_addDevHIDSharp.CheckedChanged += new System.EventHandler(this.chk_addDevHIDSharp_CheckedChanged);
 			// 
 			// kryptonLabel12
 			// 
-			this.kryptonLabel12.Location = new System.Drawing.Point(2, 93);
+			this.kryptonLabel12.Location = new System.Drawing.Point(4, 120);
 			this.kryptonLabel12.Name = "kryptonLabel12";
 			this.kryptonLabel12.Size = new System.Drawing.Size(93, 20);
 			this.kryptonLabel12.TabIndex = 125;
@@ -112,21 +119,21 @@
 			// 
 			this.cmb_addDevType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_addDevType.DropDownWidth = 464;
-			this.cmb_addDevType.Location = new System.Drawing.Point(108, 67);
+			this.cmb_addDevType.Location = new System.Drawing.Point(120, 67);
 			this.cmb_addDevType.Name = "cmb_addDevType";
 			this.cmb_addDevType.Size = new System.Drawing.Size(464, 21);
 			this.cmb_addDevType.TabIndex = 120;
 			// 
 			// txt_addDevSuffix
 			// 
-			this.txt_addDevSuffix.Location = new System.Drawing.Point(108, 38);
+			this.txt_addDevSuffix.Location = new System.Drawing.Point(120, 38);
 			this.txt_addDevSuffix.Name = "txt_addDevSuffix";
 			this.txt_addDevSuffix.Size = new System.Drawing.Size(464, 23);
 			this.txt_addDevSuffix.TabIndex = 119;
 			// 
 			// txt_addDevRegex
 			// 
-			this.txt_addDevRegex.Location = new System.Drawing.Point(108, 12);
+			this.txt_addDevRegex.Location = new System.Drawing.Point(120, 12);
 			this.txt_addDevRegex.Name = "txt_addDevRegex";
 			this.txt_addDevRegex.Size = new System.Drawing.Size(464, 23);
 			this.txt_addDevRegex.TabIndex = 118;
@@ -134,7 +141,7 @@
 			// btn_cancel
 			// 
 			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_cancel.Location = new System.Drawing.Point(416, 120);
+			this.btn_cancel.Location = new System.Drawing.Point(416, 158);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 131;
@@ -143,18 +150,54 @@
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(497, 120);
+			this.btn_ok.Location = new System.Drawing.Point(497, 158);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 130;
 			this.btn_ok.Values.Text = "Save";
 			this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
 			// 
+			// chk_addDevMatchUnique
+			// 
+			this.chk_addDevMatchUnique.Location = new System.Drawing.Point(187, 94);
+			this.chk_addDevMatchUnique.Name = "chk_addDevMatchUnique";
+			this.chk_addDevMatchUnique.Size = new System.Drawing.Size(184, 20);
+			this.chk_addDevMatchUnique.TabIndex = 134;
+			this.chk_addDevMatchUnique.Values.Text = "Each match should be unique";
+			// 
+			// num_addDevMaxMatch
+			// 
+			this.num_addDevMaxMatch.Location = new System.Drawing.Point(120, 94);
+			this.num_addDevMaxMatch.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.num_addDevMaxMatch.Name = "num_addDevMaxMatch";
+			this.num_addDevMaxMatch.Size = new System.Drawing.Size(51, 22);
+			this.num_addDevMaxMatch.TabIndex = 133;
+			this.num_addDevMaxMatch.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			// 
+			// kryptonLabel16
+			// 
+			this.kryptonLabel16.Location = new System.Drawing.Point(4, 94);
+			this.kryptonLabel16.Name = "kryptonLabel16";
+			this.kryptonLabel16.Size = new System.Drawing.Size(108, 20);
+			this.kryptonLabel16.TabIndex = 132;
+			this.kryptonLabel16.Values.Text = "Max match count:";
+			// 
 			// HidDeviceDetector_PopupEdit
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(605, 158);
+			this.ClientSize = new System.Drawing.Size(605, 197);
+			this.Controls.Add(this.chk_addDevMatchUnique);
+			this.Controls.Add(this.num_addDevMaxMatch);
+			this.Controls.Add(this.kryptonLabel16);
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
 			this.Controls.Add(this.chk_addDevXinput);
@@ -194,5 +237,8 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_addDevRegex;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_cancel;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_ok;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevMatchUnique;
+		private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown num_addDevMaxMatch;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel16;
 	}
 }

@@ -24,6 +24,8 @@ namespace BigBoxProfile.EmulatorActions
 		public bool commaExclude = false;
 		public bool removeFilter = false;
 
+		public string variablesData = "";
+
 
 		public Replace_Config(Dictionary<string, string> Options)
 		{
@@ -80,6 +82,8 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
 			if (Options.ContainsKey("removeFilter") && Options["removeFilter"] == "yes") removeFilter = true;
 
+			variablesData = Options.ContainsKey("variablesData") ? Options["variablesData"] : "";
+
 			InitializeComponent();
 			txt_search.Text = search;
 			txt_replacewith.Text = replacewith;
@@ -112,6 +116,17 @@ namespace BigBoxProfile.EmulatorActions
 			btn_file.Enabled = radio_file.Checked;
 			txt_search.Multiline = radio_file.Checked;
 			txt_replacewith.Multiline = radio_file.Checked;
+
+			listBox1.Items.Clear();
+			if (!String.IsNullOrEmpty(variablesData))
+			{
+				var priority_arr = BigBoxUtils.explode(variablesData, "|||");
+				foreach (var p in priority_arr)
+				{
+					var pObj = new VariableData(p);
+					listBox1.Items.Add(pObj.VariableName);
+				}
+			}
 
 		}
 
@@ -279,6 +294,22 @@ namespace BigBoxProfile.EmulatorActions
 		private void radio_cmd_CheckedChanged(object sender, EventArgs e)
 		{
 			UpdateGUI();
+		}
+
+		private void groupBox4_Enter(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btn_manageVariables_Click(object sender, EventArgs e)
+		{
+			var frm = new Manage_Variables(variablesData);
+			var result = frm.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				variablesData = frm.result;
+				UpdateGUI();
+			}
 		}
 	}
 }

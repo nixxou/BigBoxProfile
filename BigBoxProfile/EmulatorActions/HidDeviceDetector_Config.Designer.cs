@@ -72,6 +72,9 @@
 			this.num_nblightgun = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
 			this.num_nbcontroller = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
 			this.grp_addNewDevice = new System.Windows.Forms.GroupBox();
+			this.chk_addDevMatchUnique = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.num_addDevMaxMatch = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
+			this.kryptonLabel16 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.chk_addDevXinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_addDevBT = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_addDevDS4Lib = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
@@ -97,6 +100,8 @@
 			this.cUseDS4Lib = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cUseBT = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cUseXInput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.cMaxMatch = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.cUniqueMatch = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btn_testconfig = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.grp_globalconf.SuspendLayout();
 			this.grp_addNewDevice.SuspendLayout();
@@ -513,6 +518,9 @@
 			// 
 			// grp_addNewDevice
 			// 
+			this.grp_addNewDevice.Controls.Add(this.chk_addDevMatchUnique);
+			this.grp_addNewDevice.Controls.Add(this.num_addDevMaxMatch);
+			this.grp_addNewDevice.Controls.Add(this.kryptonLabel16);
 			this.grp_addNewDevice.Controls.Add(this.chk_addDevXinput);
 			this.grp_addNewDevice.Controls.Add(this.chk_addDevBT);
 			this.grp_addNewDevice.Controls.Add(this.chk_addDevDS4Lib);
@@ -526,16 +534,49 @@
 			this.grp_addNewDevice.Controls.Add(this.cmb_addDevType);
 			this.grp_addNewDevice.Controls.Add(this.txt_addDevSuffix);
 			this.grp_addNewDevice.Controls.Add(this.txt_addDevRegex);
-			this.grp_addNewDevice.Location = new System.Drawing.Point(12, 207);
+			this.grp_addNewDevice.Location = new System.Drawing.Point(12, 177);
 			this.grp_addNewDevice.Name = "grp_addNewDevice";
-			this.grp_addNewDevice.Size = new System.Drawing.Size(586, 180);
+			this.grp_addNewDevice.Size = new System.Drawing.Size(586, 210);
 			this.grp_addNewDevice.TabIndex = 115;
 			this.grp_addNewDevice.TabStop = false;
 			this.grp_addNewDevice.Text = "Add new Device";
 			// 
+			// chk_addDevMatchUnique
+			// 
+			this.chk_addDevMatchUnique.Location = new System.Drawing.Point(189, 130);
+			this.chk_addDevMatchUnique.Name = "chk_addDevMatchUnique";
+			this.chk_addDevMatchUnique.Size = new System.Drawing.Size(145, 20);
+			this.chk_addDevMatchUnique.TabIndex = 121;
+			this.chk_addDevMatchUnique.Values.Text = "Ignore duplicate suffix";
+			// 
+			// num_addDevMaxMatch
+			// 
+			this.num_addDevMaxMatch.Location = new System.Drawing.Point(122, 130);
+			this.num_addDevMaxMatch.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.num_addDevMaxMatch.Name = "num_addDevMaxMatch";
+			this.num_addDevMaxMatch.Size = new System.Drawing.Size(51, 22);
+			this.num_addDevMaxMatch.TabIndex = 120;
+			this.num_addDevMaxMatch.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			// 
+			// kryptonLabel16
+			// 
+			this.kryptonLabel16.Location = new System.Drawing.Point(6, 130);
+			this.kryptonLabel16.Name = "kryptonLabel16";
+			this.kryptonLabel16.Size = new System.Drawing.Size(108, 20);
+			this.kryptonLabel16.TabIndex = 118;
+			this.kryptonLabel16.Values.Text = "Max match count:";
+			// 
 			// chk_addDevXinput
 			// 
-			this.chk_addDevXinput.Location = new System.Drawing.Point(458, 107);
+			this.chk_addDevXinput.Location = new System.Drawing.Point(468, 107);
 			this.chk_addDevXinput.Name = "chk_addDevXinput";
 			this.chk_addDevXinput.Size = new System.Drawing.Size(83, 20);
 			this.chk_addDevXinput.TabIndex = 117;
@@ -543,7 +584,7 @@
 			// 
 			// chk_addDevBT
 			// 
-			this.chk_addDevBT.Location = new System.Drawing.Point(308, 107);
+			this.chk_addDevBT.Location = new System.Drawing.Point(318, 107);
 			this.chk_addDevBT.Name = "chk_addDevBT";
 			this.chk_addDevBT.Size = new System.Drawing.Size(144, 20);
 			this.chk_addDevBT.TabIndex = 116;
@@ -551,7 +592,7 @@
 			// 
 			// chk_addDevDS4Lib
 			// 
-			this.chk_addDevDS4Lib.Location = new System.Drawing.Point(217, 107);
+			this.chk_addDevDS4Lib.Location = new System.Drawing.Point(227, 107);
 			this.chk_addDevDS4Lib.Name = "chk_addDevDS4Lib";
 			this.chk_addDevDS4Lib.Size = new System.Drawing.Size(85, 20);
 			this.chk_addDevDS4Lib.TabIndex = 115;
@@ -559,7 +600,7 @@
 			// 
 			// chk_addDevHIDSharp
 			// 
-			this.chk_addDevHIDSharp.Location = new System.Drawing.Point(112, 107);
+			this.chk_addDevHIDSharp.Location = new System.Drawing.Point(122, 107);
 			this.chk_addDevHIDSharp.Name = "chk_addDevHIDSharp";
 			this.chk_addDevHIDSharp.Size = new System.Drawing.Size(99, 20);
 			this.chk_addDevHIDSharp.TabIndex = 114;
@@ -599,7 +640,7 @@
 			// 
 			// btn_addDevTest
 			// 
-			this.btn_addDevTest.Location = new System.Drawing.Point(217, 133);
+			this.btn_addDevTest.Location = new System.Drawing.Point(227, 169);
 			this.btn_addDevTest.Name = "btn_addDevTest";
 			this.btn_addDevTest.Size = new System.Drawing.Size(90, 25);
 			this.btn_addDevTest.TabIndex = 4;
@@ -608,7 +649,7 @@
 			// 
 			// btn_addDevAdd
 			// 
-			this.btn_addDevAdd.Location = new System.Drawing.Point(112, 133);
+			this.btn_addDevAdd.Location = new System.Drawing.Point(122, 169);
 			this.btn_addDevAdd.Name = "btn_addDevAdd";
 			this.btn_addDevAdd.Size = new System.Drawing.Size(90, 25);
 			this.btn_addDevAdd.TabIndex = 3;
@@ -619,23 +660,23 @@
 			// 
 			this.cmb_addDevType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_addDevType.DropDownWidth = 464;
-			this.cmb_addDevType.Location = new System.Drawing.Point(112, 80);
+			this.cmb_addDevType.Location = new System.Drawing.Point(122, 80);
 			this.cmb_addDevType.Name = "cmb_addDevType";
-			this.cmb_addDevType.Size = new System.Drawing.Size(464, 21);
+			this.cmb_addDevType.Size = new System.Drawing.Size(454, 21);
 			this.cmb_addDevType.TabIndex = 2;
 			// 
 			// txt_addDevSuffix
 			// 
-			this.txt_addDevSuffix.Location = new System.Drawing.Point(112, 51);
+			this.txt_addDevSuffix.Location = new System.Drawing.Point(122, 51);
 			this.txt_addDevSuffix.Name = "txt_addDevSuffix";
-			this.txt_addDevSuffix.Size = new System.Drawing.Size(464, 23);
+			this.txt_addDevSuffix.Size = new System.Drawing.Size(454, 23);
 			this.txt_addDevSuffix.TabIndex = 1;
 			// 
 			// txt_addDevRegex
 			// 
-			this.txt_addDevRegex.Location = new System.Drawing.Point(112, 25);
+			this.txt_addDevRegex.Location = new System.Drawing.Point(122, 25);
 			this.txt_addDevRegex.Name = "txt_addDevRegex";
-			this.txt_addDevRegex.Size = new System.Drawing.Size(464, 23);
+			this.txt_addDevRegex.Size = new System.Drawing.Size(454, 23);
 			this.txt_addDevRegex.TabIndex = 0;
 			// 
 			// btn_delete_priority
@@ -678,7 +719,9 @@
             this.cUseHIDSharp,
             this.cUseDS4Lib,
             this.cUseBT,
-            this.cUseXInput});
+            this.cUseXInput,
+            this.cMaxMatch,
+            this.cUniqueMatch});
 			this.lv_priority.FullRowSelect = true;
 			this.lv_priority.HideSelection = false;
 			this.lv_priority.Location = new System.Drawing.Point(12, 393);
@@ -694,11 +737,12 @@
 			// cjson
 			// 
 			this.cjson.Text = "json";
+			this.cjson.Width = 50;
 			// 
 			// cRegex
 			// 
 			this.cRegex.Text = "Regex";
-			this.cRegex.Width = 656;
+			this.cRegex.Width = 450;
 			// 
 			// cSuffix
 			// 
@@ -708,17 +752,17 @@
 			// cDeviceType
 			// 
 			this.cDeviceType.Text = "Device";
-			this.cDeviceType.Width = 108;
+			this.cDeviceType.Width = 110;
 			// 
 			// cUseHIDSharp
 			// 
 			this.cUseHIDSharp.Text = "Use HIDSharp";
-			this.cUseHIDSharp.Width = 99;
+			this.cUseHIDSharp.Width = 100;
 			// 
 			// cUseDS4Lib
 			// 
 			this.cUseDS4Lib.Text = "Use DS4Lib";
-			this.cUseDS4Lib.Width = 95;
+			this.cUseDS4Lib.Width = 100;
 			// 
 			// cUseBT
 			// 
@@ -728,7 +772,17 @@
 			// cUseXInput
 			// 
 			this.cUseXInput.Text = "Use XInput";
-			this.cUseXInput.Width = 91;
+			this.cUseXInput.Width = 100;
+			// 
+			// cMaxMatch
+			// 
+			this.cMaxMatch.Text = "Max Match";
+			this.cMaxMatch.Width = 100;
+			// 
+			// cUniqueMatch
+			// 
+			this.cUniqueMatch.Text = "Ignore dup suffix";
+			this.cUniqueMatch.Width = 100;
 			// 
 			// btn_testconfig
 			// 
@@ -851,5 +905,10 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel15;
 		private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown num_nbothers;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_testconfig;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevMatchUnique;
+		private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown num_addDevMaxMatch;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel16;
+		private System.Windows.Forms.ColumnHeader cMaxMatch;
+		private System.Windows.Forms.ColumnHeader cUniqueMatch;
 	}
 }

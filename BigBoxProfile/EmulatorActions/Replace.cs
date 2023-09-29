@@ -35,6 +35,8 @@ namespace BigBoxProfile.EmulatorActions
 		private bool _commaExclude = false;
 		private bool _removeFilter = false;
 
+		private string _variablesData = "";
+
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
@@ -103,6 +105,9 @@ namespace BigBoxProfile.EmulatorActions
 
 				if (frm.removeFilter) Options["removeFilter"] = "yes";
 				else Options["removeFilter"] = "no";
+
+				Options["variablesData"] = frm.variablesData;
+
 				UpdateConfig();
 			}
 
@@ -125,6 +130,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("commaFilter") == false) Options["commaFilter"] = "no";
 			if (Options.ContainsKey("commaExclude") == false) Options["commaExclude"] = "no";
 			if (Options.ContainsKey("removeFilter") == false) Options["removeFilter"] = "no";
+			if (Options.ContainsKey("variablesData") == false) Options["variablesData"] = "";
 			UpdateConfig();
 
 		}
@@ -343,6 +349,8 @@ namespace BigBoxProfile.EmulatorActions
 			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
 			_removeFilter = Options["removeFilter"] == "yes" ? true : false;
 			_selectedFile = Options["selectedFile"];
+
+			_variablesData = Options["variablesData"];
 
 		}
 

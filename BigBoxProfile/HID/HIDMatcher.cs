@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static XInput.Wrapper.X.Gamepad;
 
 namespace BigBoxProfile
@@ -21,6 +22,8 @@ namespace BigBoxProfile
 		public bool UseDS4Lib { get; set; }
 		public bool UseBT { get; set; }
 		public bool UseXInput { get; set; }
+		public int MaxMatch { get; set; }
+		public bool UniqueMatch { get; set; }
 
 		public HIDMatcher()
 		{
@@ -31,24 +34,36 @@ namespace BigBoxProfile
 			this.UseDS4Lib = false;
 			this.UseBT = false;
 			this.UseXInput = false;
+			this.MaxMatch = 1;
+			this.UniqueMatch = false;
 		}
 
 		public HIDMatcher(string json)
 		{
-			HIDMatcher DeserializeData = JsonConvert.DeserializeObject<HIDMatcher>(json);
-			this.RegexToMatch = DeserializeData.RegexToMatch;
-			this.Suffix = DeserializeData.Suffix;
-			this.DeviceType = DeserializeData.DeviceType;
-			this.UseHIDSharp = DeserializeData.UseHIDSharp;
-			this.UseDS4Lib = DeserializeData.UseDS4Lib;
-			this.UseBT = DeserializeData.UseBT;
-			this.UseXInput = DeserializeData.UseXInput;
+			try
+			{
+				HIDMatcher DeserializeData = JsonConvert.DeserializeObject<HIDMatcher>(json);
+				this.RegexToMatch = DeserializeData.RegexToMatch;
+				this.Suffix = DeserializeData.Suffix;
+				this.DeviceType = DeserializeData.DeviceType;
+				this.UseHIDSharp = DeserializeData.UseHIDSharp;
+				this.UseDS4Lib = DeserializeData.UseDS4Lib;
+				this.UseBT = DeserializeData.UseBT;
+				this.UseXInput = DeserializeData.UseXInput;
+				this.MaxMatch = DeserializeData.MaxMatch;
+				this.UniqueMatch = DeserializeData.UniqueMatch;
+			}
+			catch(Exception ex) 
+			{
+				MessageBox.Show(ex.Message);
+			}
+
 		}
 
 
 		public string[] ToStringArray()
 		{
-			var arrayString = new string[8];
+			var arrayString = new string[10];
 			arrayString[0] = Serialize();
 			arrayString[1] = this.RegexToMatch;
 			arrayString[2] = this.Suffix;
@@ -57,6 +72,8 @@ namespace BigBoxProfile
 			arrayString[5] = (this.UseDS4Lib ? "YES" : "NO");
 			arrayString[6] = (this.UseBT ? "YES" : "NO");
 			arrayString[7] = (this.UseXInput ? "YES" : "NO");
+			arrayString[8] = this.MaxMatch.ToString();
+			arrayString[9] = (this.UniqueMatch ? "YES" : "NO");
 			return arrayString;
 
 		}
@@ -67,14 +84,17 @@ namespace BigBoxProfile
 			return json;
 		}
 
-		public string isMatching(bool forceRefresh = false, string logdir = "")
+		public string[] isMatching(bool forceRefresh = false, string logdir = "")
 		{
-			string suffixOut = this.Suffix;
+			
 			string libData = "";
 			if(UseHIDSharp) libData += HIDInfo.GetHIDSharpInfo(forceRefresh);
 			if(UseDS4Lib) libData += HIDInfo.GetDS4Info(forceRefresh);
 			if(UseBT) libData += HIDInfo.GetBluetoothInfo(forceRefresh);
 			if(UseXInput) libData += HIDInfo.GetXINPUT(forceRefresh, logdir);
+
+			List<string> suffixList = new List<string>();
+			int currentMatchCount = 0;
 
 			using (StringReader reader = new StringReader(libData))
 			{
@@ -86,12 +106,26 @@ namespace BigBoxProfile
 						Match match = Regex.Match(line, RegexToMatch);
 						if (match.Success)
 						{
+							string suffixOut = this.Suffix;
 							GroupCollection groups = match.Groups;
 							for (int i = 1; i <= groups.Count; i++)
 							{
 								suffixOut = suffixOut.Replace($"\\{i}", groups[i].Value);
 							}
-							return suffixOut;
+							if (UniqueMatch)
+							{
+								if (!suffixList.Contains(suffixOut))
+								{
+									suffixList.Add(suffixOut);
+									currentMatchCount++;
+								}
+							}
+							else
+							{
+								suffixList.Add(suffixOut);
+								currentMatchCount++;
+							}
+							if (currentMatchCount == MaxMatch) return suffixList.ToArray();
 						}
 					}
 					catch (Exception e)
@@ -100,6 +134,10 @@ namespace BigBoxProfile
 					}
 
 				}
+			}
+			if(suffixList.Count > 0)
+			{
+				return suffixList.ToArray();
 			}
 			return null;
 		}

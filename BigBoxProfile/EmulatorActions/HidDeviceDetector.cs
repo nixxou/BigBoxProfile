@@ -236,13 +236,17 @@ namespace BigBoxProfile.EmulatorActions
 					var result = matcher.isMatching(false, _ds4winLogPath);
 					if (result != null)
 					{
-						current_controller++;
-						string prefix = _prefixController;
-						string fullarg = prefix + result;
-						fullarg = fullarg.Replace("%NUM%", current_controller.ToString()).Trim();
-						if (!argsController.Contains(fullarg))
+						foreach (var suffix in result)
 						{
-							argsController.Add(fullarg);
+							current_controller++;
+							string prefix = _prefixController;
+							string fullarg = prefix + result;
+							fullarg = fullarg.Replace("%NUM%", current_controller.ToString()).Trim();
+							if (!argsController.Contains(fullarg))
+							{
+								argsController.Add(fullarg);
+							}
+							if (current_controller >= _numController) break;
 						}
 					}
 				}
@@ -251,13 +255,17 @@ namespace BigBoxProfile.EmulatorActions
 					var result = matcher.isMatching(false, _ds4winLogPath);
 					if (result != null)
 					{
-						current_lightgun++;
-						string prefix = _prefixLightgun;
-						string fullarg = prefix + result;
-						fullarg = fullarg.Replace("%NUM%", current_lightgun.ToString()).Trim();
-						if (!argsLightgun.Contains(fullarg))
+						foreach (var suffix in result)
 						{
-							argsLightgun.Add(fullarg);
+							current_lightgun++;
+							string prefix = _prefixLightgun;
+							string fullarg = prefix + result;
+							fullarg = fullarg.Replace("%NUM%", current_lightgun.ToString()).Trim();
+							if (!argsLightgun.Contains(fullarg))
+							{
+								argsLightgun.Add(fullarg);
+							}
+							if (current_lightgun >= _numLightgun) break;
 						}
 						
 					}
@@ -267,13 +275,17 @@ namespace BigBoxProfile.EmulatorActions
 					var result = matcher.isMatching(false, _ds4winLogPath);
 					if (result != null)
 					{
-						current_wheel++;
-						string prefix = _prefixWheel;
-						string fullarg = prefix + result;
-						fullarg = fullarg.Replace("%NUM%", current_wheel.ToString()).Trim();
-						if (!argsWheel.Contains(fullarg))
+						foreach (var suffix in result)
 						{
-							argsWheel.Add(fullarg);
+							current_wheel++;
+							string prefix = _prefixWheel;
+							string fullarg = prefix + result;
+							fullarg = fullarg.Replace("%NUM%", current_wheel.ToString()).Trim();
+							if (!argsWheel.Contains(fullarg))
+							{
+								argsWheel.Add(fullarg);
+							}
+							if (current_wheel >= _numWheel) break;
 						}
 						
 					}
@@ -283,15 +295,18 @@ namespace BigBoxProfile.EmulatorActions
 					var result = matcher.isMatching(false, _ds4winLogPath);
 					if (result != null)
 					{
-						current_other++;
-						string prefix = _prefixOther;
-						string fullarg = prefix + result;
-						fullarg = fullarg.Replace("%NUM%", current_other.ToString()).Trim();
-						if (!argsOther.Contains(fullarg))
+						foreach (var suffix in result)
 						{
-							argsOther.Add(fullarg);
+							current_other++;
+							string prefix = _prefixOther;
+							string fullarg = prefix + result;
+							fullarg = fullarg.Replace("%NUM%", current_other.ToString()).Trim();
+							if (!argsOther.Contains(fullarg))
+							{
+								argsOther.Add(fullarg);
+							}
+							if (current_other >= _numOther) break;
 						}
-						
 					}
 				}
 			}

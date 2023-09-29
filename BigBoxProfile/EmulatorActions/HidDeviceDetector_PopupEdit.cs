@@ -45,6 +45,8 @@ namespace BigBoxProfile.EmulatorActions
 			chk_addDevDS4Lib.Checked = hidMatcher.UseDS4Lib;
 			chk_addDevBT.Checked = hidMatcher.UseBT;
 			chk_addDevXinput.Checked = hidMatcher.UseXInput;
+			num_addDevMaxMatch.Value = hidMatcher.MaxMatch;
+			chk_addDevMatchUnique.Checked = hidMatcher.UniqueMatch;
 		}
 
 		private void HidDeviceDetector_PopupEdit_Load(object sender, EventArgs e)
@@ -96,9 +98,31 @@ namespace BigBoxProfile.EmulatorActions
 			HidData.UseDS4Lib = chk_addDevDS4Lib.Checked;
 			HidData.UseBT = chk_addDevBT.Checked;
 			HidData.UseXInput = chk_addDevXinput.Checked;
+			HidData.MaxMatch = (int)num_addDevMaxMatch.Value;
+			HidData.UniqueMatch = chk_addDevMatchUnique.Checked;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
+		}
+
+		private void chk_addDevHIDSharp_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void chk_addDevDS4Lib_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void chk_addDevBT_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void chk_addDevXinput_CheckedChanged(object sender, EventArgs e)
+		{
+
 		}
 	}
 }
