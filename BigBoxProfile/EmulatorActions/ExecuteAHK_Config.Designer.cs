@@ -49,6 +49,7 @@
 			this.label7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
 			this.chk_filter_remove = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_runbeforebackground = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.SuspendLayout();
 			// 
 			// txt_filter
@@ -208,6 +209,14 @@
 			this.chk_filter_remove.TabIndex = 95;
 			this.chk_filter_remove.Values.Text = "If match an arg, remove before execute";
 			// 
+			// chk_runbeforebackground
+			// 
+			this.chk_runbeforebackground.Location = new System.Drawing.Point(612, 107);
+			this.chk_runbeforebackground.Name = "chk_runbeforebackground";
+			this.chk_runbeforebackground.Size = new System.Drawing.Size(214, 20);
+			this.chk_runbeforebackground.TabIndex = 96;
+			this.chk_runbeforebackground.Values.Text = "Execute Before : run in background";
+			// 
 			// ExecuteAHK_Config
 			// 
 			this.AcceptButton = this.btn_ok;
@@ -215,6 +224,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btn_cancel;
 			this.ClientSize = new System.Drawing.Size(1198, 852);
+			this.Controls.Add(this.chk_runbeforebackground);
 			this.Controls.Add(this.chk_filter_remove);
 			this.Controls.Add(this.btn_manage_exclude);
 			this.Controls.Add(this.chk_exclude_comma);
@@ -267,5 +277,6 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel label7;
 		private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_remove;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_runbeforebackground;
 	}
 }

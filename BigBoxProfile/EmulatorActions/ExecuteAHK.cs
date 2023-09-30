@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BigBoxProfile.EmulatorActions
@@ -22,6 +23,8 @@ namespace BigBoxProfile.EmulatorActions
 		private string _ahkCodeReal = "";
 		private string _ahkCodeBefore = "";
 		private string _ahkCodeAfter = "";
+
+		private bool _runbeforebackground = false;
 
 		private string _exclude = "";
 		private bool _commaFilter = false;
@@ -62,6 +65,9 @@ namespace BigBoxProfile.EmulatorActions
 				if (frm.removeFilter) Options["removeFilter"] = "yes";
 				else Options["removeFilter"] = "no";
 
+				if (frm.runbeforebackground) Options["runbeforebackground"] = "yes";
+				else Options["runbeforebackground"] = "no";
+
 				UpdateConfig();
 			}
 
@@ -75,6 +81,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("ahkCodeReal") == false) Options["ahkCodeReal"] = "";
 			if (Options.ContainsKey("ahkCodeBefore") == false) Options["ahkCodeBefore"] = "";
 			if (Options.ContainsKey("ahkCodeAfter") == false) Options["ahkCodeAfter"] = "";
+			if (Options.ContainsKey("runbeforebackground") == false) Options["runbeforebackground"] = "no";
 
 			if (Options.ContainsKey("filter") == false) Options["filter"] = "";
 			if (Options.ContainsKey("exclude") == false) Options["exclude"] = "";
@@ -303,6 +310,7 @@ Args := []
 			_commaFilter = Options["commaFilter"] == "yes" ? true : false;
 			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
 			_removeFilter = Options["removeFilter"] == "yes" ? true : false;
+			_runbeforebackground = Options["runbeforebackground"] == "yes" ? true : false;
 		}
 
 		public void ExecuteBefore(string[] args)
@@ -359,7 +367,13 @@ Args := []
 				}
 			}
 
-			if (_ahkCodeBefore != "") AhkExecute(args, _ahkCodeBefore);
+			//if (_ahkCodeBefore != "") AhkExecute(args, _ahkCodeBefore);
+			if (_ahkCodeBefore != "")
+			{
+				if(_runbeforebackground) Task.Run(() => AhkExecute(args, _ahkCodeBefore));
+				else AhkExecute(args, _ahkCodeBefore);
+			}
+
 		}
 		public void ExecuteAfter(string[] args)
 		{

@@ -283,6 +283,20 @@ namespace BigBoxProfile.EmulatorActions
 			var filteredArgs = BigBoxUtils.ArgsWithoutFirstElement(args);
 			var filteredCmd = BigBoxUtils.ArgsToCommandLine(filteredArgs);
 
+			Dictionary<string, VariableData> variablesDictionary = new Dictionary<string, VariableData>();
+			if (!String.IsNullOrEmpty(_variablesData))
+			{
+				var priority_arr = BigBoxUtils.explode(_variablesData, "|||");
+				foreach (var p in priority_arr)
+				{
+					var pObj = new VariableData(p);
+					if (!variablesDictionary.ContainsKey(pObj.VariableName))
+					{
+						variablesDictionary.Add(pObj.VariableName, pObj);
+					}
+				}
+			}
+
 
 			if (_asArg)
 			{
@@ -296,6 +310,26 @@ namespace BigBoxProfile.EmulatorActions
 					//string result = _useregex ? regex.Replace(elem, MatchEvaluator) : elem.Replace(_search, _replacewith);
 					string result = _useregex ? regex.Replace(elem, MatchEvaluator) : Regex.Replace(elem, Regex.Escape(_search), _replacewith, options);
 
+					if (variablesDictionary.Count > 0)
+					{
+						int currentLoopVariable = 0;
+						int maxLoopVariable = 10;
+						bool foundVariable = true;
+						while (foundVariable)
+						{
+							foundVariable = false;
+							currentLoopVariable++;
+							foreach (var v in variablesDictionary)
+							{
+								if (result.ToLower().Contains(v.Key.ToLower()))
+								{
+									foundVariable = true;
+									result = v.Value.ReplaceVariable(result,args);
+								}
+							}
+							if (currentLoopVariable > maxLoopVariable) break;
+						}
+					}
 
 					newarg[index] = result;
 					index++;
@@ -310,6 +344,27 @@ namespace BigBoxProfile.EmulatorActions
 
 				//string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator) : filteredCmd.Replace(_search, _replacewith);
 				string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator) : Regex.Replace(filteredCmd, Regex.Escape(_search), _replacewith, options);
+
+				if (variablesDictionary.Count > 0)
+				{
+					int currentLoopVariable = 0;
+					int maxLoopVariable = 10;
+					bool foundVariable = true;
+					while (foundVariable)
+					{
+						foundVariable = false;
+						currentLoopVariable++;
+						foreach (var v in variablesDictionary)
+						{
+							if (result.ToLower().Contains(v.Key.ToLower()))
+							{
+								foundVariable = true;
+								result = v.Value.ReplaceVariable(result,args);
+							}
+						}
+						if (currentLoopVariable > maxLoopVariable) break;
+					}
+				}
 
 				filteredArgs = BigBoxUtils.CommandLineToArgs(result);
 			}
@@ -428,6 +483,20 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
+			Dictionary<string,VariableData> variablesDictionary = new Dictionary<string, VariableData>();
+			if (!String.IsNullOrEmpty(_variablesData))
+			{
+				var priority_arr = BigBoxUtils.explode(_variablesData, "|||");
+				foreach (var p in priority_arr)
+				{
+					var pObj = new VariableData(p);
+					if (!variablesDictionary.ContainsKey(pObj.VariableName))
+					{
+						variablesDictionary.Add(pObj.VariableName, pObj);
+					}
+				}
+			}
+
 			try
 			{
 				string fileContent = File.ReadAllText(_selectedFile);
@@ -436,6 +505,30 @@ namespace BigBoxProfile.EmulatorActions
 				options |= RegexOptions.Singleline;
 				Regex regex = _useregex ? new Regex(_search, options) : null;
 				string newFileContent = _useregex ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(_search), _replacewith, options);
+				if(variablesDictionary.Count > 0)
+				{
+					int currentLoopVariable = 0;
+					int maxLoopVariable = 10;
+					bool foundVariable = true;
+					while (foundVariable)
+					{
+						foundVariable = false;
+						currentLoopVariable++;
+						foreach(var v in variablesDictionary )
+						{
+							if (newFileContent.ToLower().Contains(v.Key.ToLower()))
+							{
+								foundVariable = true;
+								newFileContent = v.Value.ReplaceVariable(newFileContent,args);
+							}
+						}
+						if (currentLoopVariable > maxLoopVariable) break;
+					}
+				}
+
+				
+				
+				
 				if (fileContent != newFileContent)
 				{
 					try
@@ -454,11 +547,6 @@ namespace BigBoxProfile.EmulatorActions
 				MessageBox.Show(ex.Message);
 				return;
 			}
-
-
-
-
-
 		}
 		public void ExecuteAfter(string[] args)
 		{

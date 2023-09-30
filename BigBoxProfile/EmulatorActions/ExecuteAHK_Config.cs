@@ -18,6 +18,7 @@ namespace BigBoxProfile.EmulatorActions
 		public bool commaFilter = false;
 		public bool commaExclude = false;
 		public bool removeFilter = false;
+		public bool runbeforebackground = false;
 
 		public ExecuteAHK_Config(Dictionary<string, string> Options)
 		{
@@ -31,6 +32,8 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("commaFilter") && Options["commaFilter"] == "yes") commaFilter = true;
 			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
 			if (Options.ContainsKey("removeFilter") && Options["removeFilter"] == "yes") removeFilter = true;
+
+			if (Options.ContainsKey("runbeforebackground") && Options["runbeforebackground"] == "yes") runbeforebackground = true;
 
 			InitializeComponent();
 
@@ -46,6 +49,7 @@ namespace BigBoxProfile.EmulatorActions
 			btn_manage_filter.Enabled = commaFilter;
 			btn_manage_exclude.Enabled = commaExclude;
 			chk_filter_remove.Checked = removeFilter;
+			chk_runbeforebackground.Checked = runbeforebackground;
 
 		}
 
@@ -65,6 +69,7 @@ namespace BigBoxProfile.EmulatorActions
 			commaFilter = chk_filter_comma.Checked;
 			commaExclude = chk_exclude_comma.Checked;
 			removeFilter = chk_filter_remove.Checked;
+			runbeforebackground = chk_runbeforebackground.Checked;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();

@@ -42,6 +42,8 @@
 			this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.btn_cancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.kryptonLabel5 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.txt_fallback = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
 			this.SuspendLayout();
 			// 
 			// txt_value
@@ -143,7 +145,7 @@
 			// btn_cancel
 			// 
 			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_cancel.Location = new System.Drawing.Point(561, 372);
+			this.btn_cancel.Location = new System.Drawing.Point(559, 467);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 138;
@@ -152,18 +154,36 @@
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(642, 372);
+			this.btn_ok.Location = new System.Drawing.Point(642, 467);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 137;
 			this.btn_ok.Values.Text = "Save";
 			this.btn_ok.Click += new System.EventHandler(this.btn_ok_Click);
 			// 
+			// kryptonLabel5
+			// 
+			this.kryptonLabel5.Location = new System.Drawing.Point(23, 359);
+			this.kryptonLabel5.Name = "kryptonLabel5";
+			this.kryptonLabel5.Size = new System.Drawing.Size(94, 20);
+			this.kryptonLabel5.TabIndex = 140;
+			this.kryptonLabel5.Values.Text = "FallBack Value :";
+			// 
+			// txt_fallback
+			// 
+			this.txt_fallback.Location = new System.Drawing.Point(157, 359);
+			this.txt_fallback.Name = "txt_fallback";
+			this.txt_fallback.Size = new System.Drawing.Size(560, 102);
+			this.txt_fallback.TabIndex = 139;
+			this.txt_fallback.Text = "";
+			// 
 			// Manage_Variables_PopupEdit
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(748, 408);
+			this.ClientSize = new System.Drawing.Size(748, 509);
+			this.Controls.Add(this.kryptonLabel5);
+			this.Controls.Add(this.txt_fallback);
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
 			this.Controls.Add(this.txt_value);
@@ -200,5 +220,7 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel1;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_cancel;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_ok;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel5;
+		private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox txt_fallback;
 	}
 }

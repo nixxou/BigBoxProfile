@@ -61,9 +61,8 @@
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
-			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.btn_manageVariables = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -256,7 +255,7 @@
 			this.groupBox1.Size = new System.Drawing.Size(514, 478);
 			this.groupBox1.TabIndex = 91;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Test replace";
+			this.groupBox1.Text = "Basic test replace";
 			// 
 			// txt_textout
 			// 
@@ -350,14 +349,6 @@
 			this.groupBox4.Text = "Variables (Advanced Users Only !)";
 			this.groupBox4.Enter += new System.EventHandler(this.groupBox4_Enter);
 			// 
-			// listBox1
-			// 
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.Location = new System.Drawing.Point(12, 19);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(233, 407);
-			this.listBox1.TabIndex = 0;
-			// 
 			// btn_manageVariables
 			// 
 			this.btn_manageVariables.Location = new System.Drawing.Point(12, 433);
@@ -367,19 +358,19 @@
 			this.btn_manageVariables.Values.Text = "Manage Variables";
 			this.btn_manageVariables.Click += new System.EventHandler(this.btn_manageVariables_Click);
 			// 
-			// textBox1
+			// listBox1
 			// 
-			this.textBox1.Location = new System.Drawing.Point(407, 496);
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(468, 20);
-			this.textBox1.TabIndex = 98;
+			this.listBox1.FormattingEnabled = true;
+			this.listBox1.Location = new System.Drawing.Point(12, 19);
+			this.listBox1.Name = "listBox1";
+			this.listBox1.Size = new System.Drawing.Size(233, 407);
+			this.listBox1.TabIndex = 0;
 			// 
 			// Replace_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1461, 528);
-			this.Controls.Add(this.textBox1);
 			this.Controls.Add(this.groupBox4);
 			this.Controls.Add(this.groupBox3);
 			this.Controls.Add(this.groupBox2);
@@ -401,7 +392,6 @@
 			this.groupBox3.PerformLayout();
 			this.groupBox4.ResumeLayout(false);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -440,6 +430,5 @@
 		private System.Windows.Forms.GroupBox groupBox4;
 		private System.Windows.Forms.ListBox listBox1;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_manageVariables;
-		private System.Windows.Forms.TextBox textBox1;
 	}
 }

@@ -15,10 +15,14 @@ using System.Windows.Forms;
 
 namespace BigBoxProfile
 {
+
+	
 	
 	public partial class Manage_Variables : KryptonForm
 	{
 		public string result = "";
+
+		private VariableData _testData = new VariableData();
 		public Manage_Variables(string variablesData)
 		{
 
@@ -34,6 +38,7 @@ namespace BigBoxProfile
 					lv_priority.Items.Add(new ListViewItem(pObj.ToStringArray()));
 				}
 			}
+			UpdateTestLabel();
 
 		}
 
@@ -83,6 +88,7 @@ namespace BigBoxProfile
 
 			newItem.RegexToMatch = txt_regex.Text;
 			newItem.VariableValue = txt_value.Text;
+			newItem.FallbackValue = txt_fallback.Text;
 
 			ListViewItem item = new ListViewItem(newItem.ToStringArray());
 			lv_priority.Items.Add(item);
@@ -130,22 +136,114 @@ namespace BigBoxProfile
 
 		private void btn_testReplace_Click(object sender, EventArgs e)
 		{
-			try
+
+			if (rtest_simple.Checked)
 			{
-				string fileContent = txt_textin.Text;
-				RegexOptions options = RegexOptions.Multiline;
-				options |= RegexOptions.Singleline;
-
-				Regex regex = new Regex(txt_regex.Text, options);
-				fileContent = regex.Replace(fileContent, MatchEvaluator);
-
-				txt_textout.Text = fileContent;
-
+				try
+				{
+					RegexOptions options = RegexOptions.Multiline;
+					options |= RegexOptions.IgnoreCase;
+					options |= RegexOptions.Singleline;
+					Regex regex = new Regex(txt_regex.Text, options);
+					Match match = regex.Match(txt_textin.Text);
+					bool foundMatch = match.Success;
+					if (foundMatch)
+					{
+						txt_textout.Text = regex.Replace(txt_textin.Text, MatchEvaluator);
+					}
+					else
+					{
+						txt_textout.Text = txt_fallback.Text;
+					}
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message);
+				}
 			}
-			catch (Exception ex)
+			if (rtest_variable.Checked)
 			{
-				MessageBox.Show(ex.Message);
+				string[] args = BigBoxUtils.CommandLineToArgs(txt_fakecmdline.Text);
+				string result  = txt_textin.Text;
+				Dictionary<string, VariableData> variablesDictionary = new Dictionary<string, VariableData>();
+				/*
+				if (!String.IsNullOrEmpty(_variablesData))
+				{
+					var priority_arr = BigBoxUtils.explode(_variablesData, "|||");
+					foreach (var p in priority_arr)
+					{
+						var pObj = new VariableData(p);
+						if (!variablesDictionary.ContainsKey(pObj.VariableName))
+						{
+							variablesDictionary.Add(pObj.VariableName, pObj);
+						}
+					}
+				}
+				*/
+				variablesDictionary.Add(_testData.VariableName, _testData);
+				if (variablesDictionary.Count > 0)
+				{
+					int currentLoopVariable = 0;
+					int maxLoopVariable = 10;
+					bool foundVariable = true;
+					while (foundVariable)
+					{
+						foundVariable = false;
+						currentLoopVariable++;
+						foreach (var v in variablesDictionary)
+						{
+							if (result.ToLower().Contains(v.Key.ToLower()))
+							{
+								foundVariable = true;
+								result = v.Value.ReplaceVariable(result, args);
+							}
+						}
+						if (currentLoopVariable > maxLoopVariable) break;
+					}
+				}
+				txt_textout.Text = result;
 			}
+			if (rtest_full.Checked)
+			{
+				string[] args = BigBoxUtils.CommandLineToArgs(txt_fakecmdline.Text);
+				string result = txt_textin.Text;
+
+				Dictionary<string, VariableData> variablesDictionary = new Dictionary<string, VariableData>();
+				if (lv_priority.Items.Count > 0)
+				{
+					foreach (ListViewItem item in lv_priority.Items)
+					{
+						var pObj = new VariableData(item.SubItems[0].Text);
+						if (!variablesDictionary.ContainsKey(pObj.VariableName))
+						{
+							variablesDictionary.Add(pObj.VariableName, pObj);
+						}
+					}
+				}
+
+				if (variablesDictionary.Count > 0)
+				{
+					int currentLoopVariable = 0;
+					int maxLoopVariable = 10;
+					bool foundVariable = true;
+					while (foundVariable)
+					{
+						foundVariable = false;
+						currentLoopVariable++;
+						foreach (var v in variablesDictionary)
+						{
+							if (result.ToLower().Contains(v.Key.ToLower()))
+							{
+								foundVariable = true;
+								result = v.Value.ReplaceVariable(result, args);
+							}
+						}
+						if (currentLoopVariable > maxLoopVariable) break;
+					}
+				}
+				txt_textout.Text = result;
+			}
+
 		}
 
 		private string MatchEvaluator(Match match)
@@ -263,6 +361,148 @@ namespace BigBoxProfile
 				btn_down_priority.Enabled = false;
 				btn_delete_priority.Enabled = false;
 			}
+		}
+
+		private void txt_variableName_TextChanged(object sender, EventArgs e)
+		{
+			_testData.VariableName = txt_variableName.Text;
+			UpdateTestLabel();
+		}
+
+		private void radio_arg_CheckedChanged(object sender, EventArgs e)
+		{
+			if(radio_arg.Checked)
+			{
+				_testData.SourceData = "arg";
+				UpdateTestLabel();
+			}
+		}
+
+		private void radio_cmd_CheckedChanged(object sender, EventArgs e)
+		{
+			if(radio_cmd.Checked)
+			{
+				_testData.SourceData = "cmd";
+				UpdateTestLabel();
+			}
+		}
+
+		private void radio_file_CheckedChanged(object sender, EventArgs e)
+		{
+			if (radio_file.Checked)
+			{
+				_testData.SourceData = txt_file.Text;
+				UpdateTestLabel();
+			}
+		}
+
+		private void txt_file_TextChanged(object sender, EventArgs e)
+		{
+			if(_testData.SourceData != "arg" && _testData.SourceData != "cmd")
+			{
+				_testData.SourceData = txt_file.Text;
+				UpdateTestLabel();
+			}
+		}
+
+		private void txt_regex_TextChanged(object sender, EventArgs e)
+		{
+			_testData.RegexToMatch = txt_regex.Text;
+			UpdateTestLabel();
+		}
+
+		private void txt_value_TextChanged(object sender, EventArgs e)
+		{
+			_testData.VariableValue = txt_value.Text;
+			UpdateTestLabel();
+		}
+
+		private void txt_fallback_TextChanged(object sender, EventArgs e)
+		{
+			_testData.FallbackValue = txt_fallback.Text;
+			UpdateTestLabel();
+		}
+
+		private void test_label_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void UpdateTestLabel()
+		{
+			if (rtest_simple.Checked)
+			{
+				txt_fakecmdline.Visible = false;
+				lbl_fakecmd.Visible = false;
+				test_label.Text = $"Simple Regex test" + "\r\n"
+					+ "It's just to test your regex to quickly see if something is wrong" + "\r\n"
+					+ "Will test your 'text in' bellow against the regex you setup on the right side "
+					+ $"({ToStringShort(_testData.RegexToMatch, 20)})" + "\r\n"
+					+ $"if match it will show the 'Replace With' ({ToStringShort(_testData.VariableValue, 20)}) inside the text out" + "\r\n";
+
+			}
+
+			if (rtest_variable.Checked)
+			{
+				test_label.Text = $"Variable test" + "\r\n"
+					+ "It's for testing only the current variable you are setting up (the one on the right side input form)" + "\r\n"
+					+ $"So in the 'text in', you put your somewhere inside your variable name ({ToStringShort(_testData.VariableName, 20)})" + "\r\n"
+					+ $"And the variable should be replaced" + "\r\n" + "\r\n";
+				if(radio_arg.Checked || radio_cmd.Checked)
+				{
+					txt_fakecmdline.Visible = true;
+					lbl_fakecmd.Visible = true;
+					test_label.Text += $"Since you are using {_testData.SourceData} as source, you must enter a command line that will be used as source";
+				}
+				else
+				{
+					txt_fakecmdline.Visible = false;
+					lbl_fakecmd.Visible = false;
+					test_label.Text += $"the content of the file {_testData.SourceData} will be used as source";
+				}
+
+			}
+			if (rtest_full.Checked)
+			{
+				test_label.Text = $"Registered Variable test" + "\r\n"
+					+ "Test text in against all variables registered" + "\r\n" + "\r\n" + "\r\n";
+				if (radio_arg.Checked || radio_cmd.Checked)
+				{
+					txt_fakecmdline.Visible = true;
+					lbl_fakecmd.Visible = true;
+					test_label.Text += $"Since you are using {_testData.SourceData} as source, you must enter a command line that will be used as source";
+				}
+				else
+				{
+					txt_fakecmdline.Visible = false;
+					lbl_fakecmd.Visible = false;
+					test_label.Text += $"the content of the file {_testData.SourceData} will be used as source";
+				}
+
+
+			}
+		}
+
+		public static string ToStringShort(string input, int maxLength)
+		{
+			if (string.IsNullOrEmpty(input))
+			{
+				return string.Empty;
+			}
+
+			if (input.Length <= maxLength)
+			{
+				return input;
+			}
+			else
+			{
+				return input.Substring(0, maxLength) + "...";
+			}
+		}
+
+		private void rtest_simple_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateTestLabel();
 		}
 	}
 }

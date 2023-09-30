@@ -56,6 +56,17 @@
 			this.txt_textout = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
 			this.txt_textin = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
 			this.btn_testReplace = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.txt_fallback = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
+			this.kryptonLabel5 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.cFallback = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.rtest_variable = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+			this.rtest_simple = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+			this.txt_fakecmdline = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.kryptonLabel6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.test_label = new ComponentFactory.Krypton.Toolkit.KryptonWrapLabel();
+			this.rtest_full = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+			this.lbl_fakecmd = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonWrapLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonWrapLabel();
 			this.groupBox1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -63,18 +74,18 @@
 			// 
 			this.kryptonLabel1.Location = new System.Drawing.Point(12, 12);
 			this.kryptonLabel1.Name = "kryptonLabel1";
-			this.kryptonLabel1.Size = new System.Drawing.Size(97, 20);
+			this.kryptonLabel1.Size = new System.Drawing.Size(49, 20);
 			this.kryptonLabel1.TabIndex = 0;
-			this.kryptonLabel1.Values.Text = "Variable Name :";
+			this.kryptonLabel1.Values.Text = "Name :";
 			this.kryptonLabel1.Paint += new System.Windows.Forms.PaintEventHandler(this.kryptonLabel1_Paint);
 			// 
 			// kryptonLabel2
 			// 
 			this.kryptonLabel2.Location = new System.Drawing.Point(14, 224);
 			this.kryptonLabel2.Name = "kryptonLabel2";
-			this.kryptonLabel2.Size = new System.Drawing.Size(95, 20);
+			this.kryptonLabel2.Size = new System.Drawing.Size(88, 20);
 			this.kryptonLabel2.TabIndex = 1;
-			this.kryptonLabel2.Values.Text = "Varibale Value :";
+			this.kryptonLabel2.Values.Text = "Replace With :";
 			// 
 			// txt_variableName
 			// 
@@ -82,22 +93,23 @@
 			this.txt_variableName.Name = "txt_variableName";
 			this.txt_variableName.Size = new System.Drawing.Size(296, 23);
 			this.txt_variableName.TabIndex = 2;
+			this.txt_variableName.TextChanged += new System.EventHandler(this.txt_variableName_TextChanged);
 			// 
 			// kryptonLabel3
 			// 
 			this.kryptonLabel3.Location = new System.Drawing.Point(10, 45);
 			this.kryptonLabel3.Name = "kryptonLabel3";
-			this.kryptonLabel3.Size = new System.Drawing.Size(130, 20);
+			this.kryptonLabel3.Size = new System.Drawing.Size(83, 20);
 			this.kryptonLabel3.TabIndex = 5;
-			this.kryptonLabel3.Values.Text = "Variable Data Source :";
+			this.kryptonLabel3.Values.Text = "Data Source :";
 			// 
 			// kryptonLabel4
 			// 
 			this.kryptonLabel4.Location = new System.Drawing.Point(10, 106);
 			this.kryptonLabel4.Name = "kryptonLabel4";
-			this.kryptonLabel4.Size = new System.Drawing.Size(97, 20);
+			this.kryptonLabel4.Size = new System.Drawing.Size(50, 20);
 			this.kryptonLabel4.TabIndex = 7;
-			this.kryptonLabel4.Values.Text = "Variable Regex :";
+			this.kryptonLabel4.Values.Text = "Regex :";
 			// 
 			// btn_file
 			// 
@@ -114,6 +126,7 @@
 			this.txt_file.Name = "txt_file";
 			this.txt_file.Size = new System.Drawing.Size(519, 23);
 			this.txt_file.TabIndex = 93;
+			this.txt_file.TextChanged += new System.EventHandler(this.txt_file_TextChanged);
 			// 
 			// radio_file
 			// 
@@ -122,6 +135,7 @@
 			this.radio_file.Size = new System.Drawing.Size(86, 20);
 			this.radio_file.TabIndex = 92;
 			this.radio_file.Values.Text = "Specific File";
+			this.radio_file.CheckedChanged += new System.EventHandler(this.radio_file_CheckedChanged);
 			// 
 			// radio_cmd
 			// 
@@ -130,6 +144,7 @@
 			this.radio_cmd.Size = new System.Drawing.Size(89, 20);
 			this.radio_cmd.TabIndex = 91;
 			this.radio_cmd.Values.Text = "the cmdLine";
+			this.radio_cmd.CheckedChanged += new System.EventHandler(this.radio_cmd_CheckedChanged);
 			// 
 			// radio_arg
 			// 
@@ -139,6 +154,7 @@
 			this.radio_arg.Size = new System.Drawing.Size(106, 20);
 			this.radio_arg.TabIndex = 90;
 			this.radio_arg.Values.Text = "Each Argument";
+			this.radio_arg.CheckedChanged += new System.EventHandler(this.radio_arg_CheckedChanged);
 			// 
 			// txt_regex
 			// 
@@ -147,14 +163,16 @@
 			this.txt_regex.Size = new System.Drawing.Size(560, 102);
 			this.txt_regex.TabIndex = 95;
 			this.txt_regex.Text = "";
+			this.txt_regex.TextChanged += new System.EventHandler(this.txt_regex_TextChanged);
 			// 
 			// txt_value
 			// 
 			this.txt_value.Location = new System.Drawing.Point(146, 224);
 			this.txt_value.Name = "txt_value";
-			this.txt_value.Size = new System.Drawing.Size(560, 126);
+			this.txt_value.Size = new System.Drawing.Size(560, 102);
 			this.txt_value.TabIndex = 96;
 			this.txt_value.Text = "";
+			this.txt_value.TextChanged += new System.EventHandler(this.txt_value_TextChanged);
 			// 
 			// btn_delete_priority
 			// 
@@ -193,13 +211,14 @@
             this.cName,
             this.cSource,
             this.cRegex,
-            this.cValue});
+            this.cValue,
+            this.cFallback});
 			this.lv_priority.FullRowSelect = true;
 			this.lv_priority.HideSelection = false;
-			this.lv_priority.Location = new System.Drawing.Point(39, 401);
+			this.lv_priority.Location = new System.Drawing.Point(14, 488);
 			this.lv_priority.MultiSelect = false;
 			this.lv_priority.Name = "lv_priority";
-			this.lv_priority.Size = new System.Drawing.Size(1343, 329);
+			this.lv_priority.Size = new System.Drawing.Size(1368, 242);
 			this.lv_priority.TabIndex = 120;
 			this.lv_priority.UseCompatibleStateImageBehavior = false;
 			this.lv_priority.View = System.Windows.Forms.View.Details;
@@ -233,7 +252,7 @@
 			// 
 			// btn_add
 			// 
-			this.btn_add.Location = new System.Drawing.Point(596, 356);
+			this.btn_add.Location = new System.Drawing.Point(596, 449);
 			this.btn_add.Name = "btn_add";
 			this.btn_add.Size = new System.Drawing.Size(110, 25);
 			this.btn_add.TabIndex = 124;
@@ -261,46 +280,147 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.lbl_fakecmd);
+			this.groupBox1.Controls.Add(this.rtest_full);
+			this.groupBox1.Controls.Add(this.test_label);
+			this.groupBox1.Controls.Add(this.kryptonLabel6);
 			this.groupBox1.Controls.Add(this.txt_textout);
 			this.groupBox1.Controls.Add(this.txt_textin);
+			this.groupBox1.Controls.Add(this.rtest_variable);
 			this.groupBox1.Controls.Add(this.btn_testReplace);
+			this.groupBox1.Controls.Add(this.rtest_simple);
+			this.groupBox1.Controls.Add(this.txt_fakecmdline);
 			this.groupBox1.Location = new System.Drawing.Point(726, 9);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(656, 386);
+			this.groupBox1.Size = new System.Drawing.Size(656, 465);
 			this.groupBox1.TabIndex = 127;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Test replace";
 			// 
 			// txt_textout
 			// 
-			this.txt_textout.Location = new System.Drawing.Point(15, 186);
+			this.txt_textout.Location = new System.Drawing.Point(15, 305);
 			this.txt_textout.Name = "txt_textout";
-			this.txt_textout.Size = new System.Drawing.Size(635, 155);
+			this.txt_textout.Size = new System.Drawing.Size(632, 124);
 			this.txt_textout.TabIndex = 95;
 			this.txt_textout.Text = "Text Out";
 			// 
 			// txt_textin
 			// 
-			this.txt_textin.Location = new System.Drawing.Point(15, 19);
+			this.txt_textin.Location = new System.Drawing.Point(15, 215);
 			this.txt_textin.Name = "txt_textin";
-			this.txt_textin.Size = new System.Drawing.Size(635, 161);
+			this.txt_textin.Size = new System.Drawing.Size(629, 84);
 			this.txt_textin.TabIndex = 94;
 			this.txt_textin.Text = "Text In";
 			// 
 			// btn_testReplace
 			// 
-			this.btn_testReplace.Location = new System.Drawing.Point(543, 347);
+			this.btn_testReplace.Location = new System.Drawing.Point(543, 435);
 			this.btn_testReplace.Name = "btn_testReplace";
 			this.btn_testReplace.Size = new System.Drawing.Size(107, 24);
 			this.btn_testReplace.TabIndex = 92;
 			this.btn_testReplace.Values.Text = "Test Replace";
 			this.btn_testReplace.Click += new System.EventHandler(this.btn_testReplace_Click);
 			// 
+			// txt_fallback
+			// 
+			this.txt_fallback.Location = new System.Drawing.Point(146, 341);
+			this.txt_fallback.Name = "txt_fallback";
+			this.txt_fallback.Size = new System.Drawing.Size(560, 102);
+			this.txt_fallback.TabIndex = 128;
+			this.txt_fallback.Text = "";
+			this.txt_fallback.TextChanged += new System.EventHandler(this.txt_fallback_TextChanged);
+			// 
+			// kryptonLabel5
+			// 
+			this.kryptonLabel5.Location = new System.Drawing.Point(12, 341);
+			this.kryptonLabel5.Name = "kryptonLabel5";
+			this.kryptonLabel5.Size = new System.Drawing.Size(94, 20);
+			this.kryptonLabel5.TabIndex = 129;
+			this.kryptonLabel5.Values.Text = "FallBack Value :";
+			// 
+			// cFallback
+			// 
+			this.cFallback.Text = "Fallback Value";
+			this.cFallback.Width = 510;
+			// 
+			// rtest_variable
+			// 
+			this.rtest_variable.Location = new System.Drawing.Point(215, 19);
+			this.rtest_variable.Name = "rtest_variable";
+			this.rtest_variable.Size = new System.Drawing.Size(135, 20);
+			this.rtest_variable.TabIndex = 132;
+			this.rtest_variable.Values.Text = "Test current Variable";
+			// 
+			// rtest_simple
+			// 
+			this.rtest_simple.Checked = true;
+			this.rtest_simple.Location = new System.Drawing.Point(93, 19);
+			this.rtest_simple.Name = "rtest_simple";
+			this.rtest_simple.Size = new System.Drawing.Size(116, 20);
+			this.rtest_simple.TabIndex = 131;
+			this.rtest_simple.Values.Text = "Simple regex test";
+			this.rtest_simple.CheckedChanged += new System.EventHandler(this.rtest_simple_CheckedChanged);
+			// 
+			// txt_fakecmdline
+			// 
+			this.txt_fakecmdline.Location = new System.Drawing.Point(128, 186);
+			this.txt_fakecmdline.Name = "txt_fakecmdline";
+			this.txt_fakecmdline.Size = new System.Drawing.Size(504, 23);
+			this.txt_fakecmdline.TabIndex = 130;
+			// 
+			// kryptonLabel6
+			// 
+			this.kryptonLabel6.Location = new System.Drawing.Point(15, 19);
+			this.kryptonLabel6.Name = "kryptonLabel6";
+			this.kryptonLabel6.Size = new System.Drawing.Size(74, 20);
+			this.kryptonLabel6.TabIndex = 130;
+			this.kryptonLabel6.Values.Text = "Test mode :";
+			// 
+			// test_label
+			// 
+			this.test_label.AutoSize = false;
+			this.test_label.Font = new System.Drawing.Font("Segoe UI", 9F);
+			this.test_label.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(57)))), ((int)(((byte)(91)))));
+			this.test_label.Location = new System.Drawing.Point(15, 61);
+			this.test_label.Name = "test_label";
+			this.test_label.Size = new System.Drawing.Size(617, 115);
+			this.test_label.Click += new System.EventHandler(this.test_label_Click);
+			// 
+			// rtest_full
+			// 
+			this.rtest_full.Location = new System.Drawing.Point(356, 19);
+			this.rtest_full.Name = "rtest_full";
+			this.rtest_full.Size = new System.Drawing.Size(159, 20);
+			this.rtest_full.TabIndex = 134;
+			this.rtest_full.Values.Text = "Test Registered Variables";
+			// 
+			// lbl_fakecmd
+			// 
+			this.lbl_fakecmd.Location = new System.Drawing.Point(15, 189);
+			this.lbl_fakecmd.Name = "lbl_fakecmd";
+			this.lbl_fakecmd.Size = new System.Drawing.Size(94, 20);
+			this.lbl_fakecmd.TabIndex = 135;
+			this.lbl_fakecmd.Values.Text = "command line :";
+			// 
+			// kryptonWrapLabel1
+			// 
+			this.kryptonWrapLabel1.AutoSize = false;
+			this.kryptonWrapLabel1.Font = new System.Drawing.Font("Segoe UI", 9F);
+			this.kryptonWrapLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(57)))), ((int)(((byte)(91)))));
+			this.kryptonWrapLabel1.Location = new System.Drawing.Point(14, 260);
+			this.kryptonWrapLabel1.Name = "kryptonWrapLabel1";
+			this.kryptonWrapLabel1.Size = new System.Drawing.Size(117, 48);
+			this.kryptonWrapLabel1.Text = "You can use \\1 \\2 ... to match your regex groups";
+			// 
 			// Manage_Variables
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1468, 766);
+			this.Controls.Add(this.kryptonWrapLabel1);
+			this.Controls.Add(this.kryptonLabel5);
+			this.Controls.Add(this.txt_fallback);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.btn_ok);
 			this.Controls.Add(this.btn_cancel);
@@ -325,6 +445,7 @@
 			this.Text = "Form1";
 			this.Load += new System.EventHandler(this.Manage_Variables_Load);
 			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -360,5 +481,16 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox txt_textout;
 		private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox txt_textin;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_testReplace;
+		private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox txt_fallback;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel5;
+		private System.Windows.Forms.ColumnHeader cFallback;
+		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rtest_variable;
+		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rtest_simple;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_fakecmdline;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel6;
+		private ComponentFactory.Krypton.Toolkit.KryptonWrapLabel test_label;
+		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rtest_full;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel lbl_fakecmd;
+		private ComponentFactory.Krypton.Toolkit.KryptonWrapLabel kryptonWrapLabel1;
 	}
 }

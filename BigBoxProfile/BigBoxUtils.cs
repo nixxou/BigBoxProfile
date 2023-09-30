@@ -1240,6 +1240,17 @@ namespace BigBoxProfile
 			return filterList.ToArray();
 		}
 
+		public static string ReadAllTextLockedFile(string filePath)
+		{
+			if (!File.Exists(filePath)) return "";
+			using (FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+			using (StreamReader reader = new StreamReader(stream))
+			{
+				return reader.ReadToEnd();
+			}
+
+		}
+
 
 
 	}

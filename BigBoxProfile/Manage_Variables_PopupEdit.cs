@@ -85,7 +85,7 @@ namespace BigBoxProfile
 			}
 			vdData.RegexToMatch = txt_regex.Text;
 			vdData.VariableValue = txt_value.Text;
-
+			vdData.FallbackValue = txt_fallback.Text;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
