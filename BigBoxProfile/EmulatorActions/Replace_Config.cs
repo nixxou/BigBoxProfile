@@ -132,26 +132,60 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
-			try
+			string searchFinal = txt_search.Text;
+			string replaceFinal = txt_replacewith.Text;
+
+			List<string> variablesList = new List<string>();
+			for (int i = 0; i < listBox1.Items.Count; i++)
 			{
-				string fileContent = txt_textin.Text;
-				RegexOptions options = RegexOptions.Multiline;
-				if (!chk_casesensitive.Checked) options |= RegexOptions.IgnoreCase;
-				Regex regex = chk_useregex.Checked ? new Regex(txt_search.Text, options) : null;
-				fileContent = chk_useregex.Checked ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(txt_search.Text), txt_replacewith.Text, options);
+				variablesList.Add(listBox1.Items[i].ToString());
 			}
-			catch (Exception ex)
+
+			bool forceSaisie = false;
+			if (variablesList.Count > 0)
 			{
-				MessageBox.Show(ex.Message);
-				return;
+				foreach (var v in variablesList)
+				{
+					if (searchFinal.ToLower().Contains(v.ToLower()))
+					{
+						forceSaisie = true;
+					}
+					if (replaceFinal.ToLower().Contains(v.ToLower()))
+					{
+						forceSaisie = true;
+					}
+				}
+			}
+
+			if (forceSaisie)
+			{
+				MessageBox.Show("Variables in Search / Replace, no check will be done about the integrity of the regex, be carefull !");
+			}
+			else
+			{
+				try
+				{
+					string fileContent = txt_textin.Text;
+					RegexOptions options = RegexOptions.Multiline;
+					if (!chk_casesensitive.Checked) options |= RegexOptions.IgnoreCase;
+					Regex regex = chk_useregex.Checked ? new Regex(txt_search.Text, options) : null;
+					fileContent = chk_useregex.Checked ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(txt_search.Text), txt_replacewith.Text, options);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message);
+					return;
+				}
+
+
+				if (chk_useregex.Checked && !IsValidRegex(txt_search.Text))
+				{
+					MessageBox.Show("Invalid Regex !");
+					return;
+				}
 			}
 
 
-			if (chk_useregex.Checked && !IsValidRegex(txt_search.Text))
-			{
-				MessageBox.Show("Invalid Regex !");
-				return;
-			}
 
 			filter = txt_filter.Text;
 			asArg = radio_arg.Checked;

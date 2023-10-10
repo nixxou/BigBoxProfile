@@ -22,6 +22,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private string _search = "";
 		private string _replacewith = "";
+
 		private bool _useregex = false;
 		private bool _casesensitive = false;
 		private bool _asArg = true;
@@ -36,6 +37,10 @@ namespace BigBoxProfile.EmulatorActions
 		private bool _removeFilter = false;
 
 		private string _variablesData = "";
+
+		private string _searchFinal = "";
+		private string _replacewithFinal = "";
+		private string _selectedFileFinal = "";
 
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
@@ -297,6 +302,49 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
+			this._searchFinal = this._search;
+			this._replacewithFinal = this._replacewith;
+
+			if (variablesDictionary.Count > 0)
+			{
+				int currentLoopVariable = 0;
+				int maxLoopVariable = 10;
+				bool foundVariable = true;
+				while (foundVariable)
+				{
+					foundVariable = false;
+					currentLoopVariable++;
+					foreach (var v in variablesDictionary)
+					{
+						if (_searchFinal.ToLower().Contains(v.Key.ToLower()))
+						{
+							foundVariable = true;
+							_searchFinal = v.Value.ReplaceVariable(_searchFinal, args);
+						}
+					}
+					if (currentLoopVariable > maxLoopVariable) break;
+				}
+			}
+			if (variablesDictionary.Count > 0)
+			{
+				int currentLoopVariable = 0;
+				int maxLoopVariable = 10;
+				bool foundVariable = true;
+				while (foundVariable)
+				{
+					foundVariable = false;
+					currentLoopVariable++;
+					foreach (var v in variablesDictionary)
+					{
+						if (_replacewithFinal.ToLower().Contains(v.Key.ToLower()))
+						{
+							foundVariable = true;
+							_replacewithFinal = v.Value.ReplaceVariable(_replacewithFinal, args);
+						}
+					}
+					if (currentLoopVariable > maxLoopVariable) break;
+				}
+			}
 
 			if (_asArg)
 			{
@@ -306,9 +354,9 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					RegexOptions options = RegexOptions.Multiline;
 					if (!_casesensitive) options |= RegexOptions.IgnoreCase;
-					Regex regex = _useregex ? new Regex(_search, options) : null;
+					Regex regex = _useregex ? new Regex(_searchFinal, options) : null;
 					//string result = _useregex ? regex.Replace(elem, MatchEvaluator) : elem.Replace(_search, _replacewith);
-					string result = _useregex ? regex.Replace(elem, MatchEvaluator2) : Regex.Replace(elem, Regex.Escape(_search), _replacewith, options);
+					string result = _useregex ? regex.Replace(elem, MatchEvaluator2) : Regex.Replace(elem, Regex.Escape(_searchFinal), _replacewithFinal, options);
 
 					if (variablesDictionary.Count > 0)
 					{
@@ -340,10 +388,10 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				RegexOptions options = RegexOptions.Multiline;
 				if (!_casesensitive) options |= RegexOptions.IgnoreCase;
-				Regex regex = _useregex ? new Regex(_search, options) : null;
+				Regex regex = _useregex ? new Regex(_searchFinal, options) : null;
 
 				//string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator) : filteredCmd.Replace(_search, _replacewith);
-				string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator2) : Regex.Replace(filteredCmd, Regex.Escape(_search), _replacewith, options);
+				string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator2) : Regex.Replace(filteredCmd, Regex.Escape(_searchFinal), _replacewithFinal, options);
 
 
 				
@@ -416,7 +464,7 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			GroupCollection groups = match.Groups;
 
-			string replaceWith = this._replacewith;
+			string replaceWith = this._replacewithFinal;
 			for (int i = 1; i <= groups.Count; i++)
 			{
 				replaceWith = replaceWith.Replace($"\\{i}", groups[i].Value);
@@ -432,7 +480,8 @@ namespace BigBoxProfile.EmulatorActions
 				return;
 			}
 			if (_asFile == false) return;
-			if (string.IsNullOrEmpty(_selectedFile) || !File.Exists(_selectedFile)) return;
+			//if (string.IsNullOrEmpty(_selectedFile) || !File.Exists(_selectedFile)) return;
+			if (string.IsNullOrEmpty(_selectedFile)) return;
 
 			string cmd = BigBoxUtils.ArgsToCommandLine(args);
 			string cmdlower = cmd.ToLower();
@@ -500,14 +549,83 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
+			this._searchFinal = this._search;
+			this._replacewithFinal = this._replacewith;
+			this._selectedFileFinal = this._selectedFile;
+
+			if (variablesDictionary.Count > 0)
+			{
+				int currentLoopVariable = 0;
+				int maxLoopVariable = 10;
+				bool foundVariable = true;
+				while (foundVariable)
+				{
+					foundVariable = false;
+					currentLoopVariable++;
+					foreach (var v in variablesDictionary)
+					{
+						if (_searchFinal.ToLower().Contains(v.Key.ToLower()))
+						{
+							foundVariable = true;
+							_searchFinal = v.Value.ReplaceVariable(_searchFinal, args);
+						}
+					}
+					if (currentLoopVariable > maxLoopVariable) break;
+				}
+			}
+			if (variablesDictionary.Count > 0)
+			{
+				int currentLoopVariable = 0;
+				int maxLoopVariable = 10;
+				bool foundVariable = true;
+				while (foundVariable)
+				{
+					foundVariable = false;
+					currentLoopVariable++;
+					foreach (var v in variablesDictionary)
+					{
+						if (_replacewithFinal.ToLower().Contains(v.Key.ToLower()))
+						{
+							foundVariable = true;
+							_replacewithFinal = v.Value.ReplaceVariable(_replacewithFinal, args);
+						}
+					}
+					if (currentLoopVariable > maxLoopVariable) break;
+				}
+			}
+			if (variablesDictionary.Count > 0)
+			{
+				int currentLoopVariable = 0;
+				int maxLoopVariable = 10;
+				bool foundVariable = true;
+				while (foundVariable)
+				{
+					foundVariable = false;
+					currentLoopVariable++;
+					foreach (var v in variablesDictionary)
+					{
+						if (_selectedFileFinal.ToLower().Contains(v.Key.ToLower()))
+						{
+							foundVariable = true;
+							_selectedFileFinal = v.Value.ReplaceVariable(_selectedFileFinal, args);
+						}
+					}
+					if (currentLoopVariable > maxLoopVariable) break;
+				}
+			}
+
+
+			if (!File.Exists(_selectedFileFinal)) return;
+
 			try
 			{
-				string fileContent = File.ReadAllText(_selectedFile);
+				string fileContent = File.ReadAllText(_selectedFileFinal);
 				RegexOptions options = RegexOptions.Multiline;
 				if (!_casesensitive) options |= RegexOptions.IgnoreCase;
 				options |= RegexOptions.Singleline;
-				Regex regex = _useregex ? new Regex(_search, options) : null;
-				string newFileContent = _useregex ? regex.Replace(fileContent, MatchEvaluator2) : Regex.Replace(fileContent, Regex.Escape(_search), _replacewith, options);
+				Regex regex = _useregex ? new Regex(_searchFinal, options) : null;
+				string newFileContent = _useregex ? regex.Replace(fileContent, MatchEvaluator2) : Regex.Replace(fileContent, Regex.Escape(_searchFinal), _replacewithFinal, options);
+
 
 				//string newFileContent = regex.Replace(fileContent, MatchEvaluator2);
 
@@ -540,7 +658,7 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					try
 					{
-						File.WriteAllText(_selectedFile, newFileContent);
+						File.WriteAllText(_selectedFileFinal, newFileContent);
 					}
 					catch(Exception ex)
 					{
