@@ -118,6 +118,9 @@
     <Reference Include="DiscUtils.Streams, Version=0.16.0.0, Culture=neutral, PublicKeyToken=5fa5b410cc9c6289, processorArchitecture=MSIL">
       <HintPath>..\packages\DiscUtils.Streams.0.16.13\lib\net45\DiscUtils.Streams.dll</HintPath>
     </Reference>
+    <Reference Include="Gma.System.MouseKeyHook, Version=5.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MouseKeyHook.5.7.1\lib\net48\Gma.System.MouseKeyHook.dll</HintPath>
+    </Reference>
     <Reference Include="HidSharp, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\HidSharp.2.1.0\lib\net35\HidSharp.dll</HintPath>
     </Reference>
@@ -201,9 +204,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="XInput.Wrapper, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\XInput.Wrapper.0.3.1\lib\net40\XInput.Wrapper.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BigBoxLauncher.cs" />
@@ -288,6 +288,14 @@
       <DependentUpon>HidDeviceDetector_Config.cs</DependentUpon>
     </Compile>
     <Compile Include="EmulatorActions\HidDeviceDetector.cs" />
+    <Compile Include="EmulatorActions\PauseMenu.cs" />
+    <Compile Include="EmulatorActions\PauseMenu_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\PauseMenu_Config.Designer.cs">
+      <DependentUpon>PauseMenu_Config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EmulatorActions\PrettyKeys.cs" />
     <Compile Include="EmulatorActions\PS3Mount.cs" />
     <Compile Include="EmulatorActions\Replace_Config.cs">
       <SubType>Form</SubType>
@@ -368,6 +376,7 @@
       <DependentUpon>EmulatorConfig.cs</DependentUpon>
     </Compile>
     <Compile Include="EmulatorLauncher.cs" />
+    <Compile Include="HookManager.cs" />
     <Compile Include="Manage_Variables_PopupEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -428,6 +437,7 @@
     <Compile Include="SoundCardUtility.cs" />
     <Compile Include="VariableData.cs" />
     <Compile Include="WildCard.cs" />
+    <Compile Include="X.cs" />
     <EmbeddedResource Include="Config.resx">
       <DependentUpon>Config.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -463,6 +473,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\HidDeviceDetector_PopupEdit.resx">
       <DependentUpon>HidDeviceDetector_PopupEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\PauseMenu_Config.resx">
+      <DependentUpon>PauseMenu_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\Replace_Config.resx">
       <DependentUpon>Replace_Config.cs</DependentUpon>

@@ -14,9 +14,6 @@ using XInput.Wrapper;
 
 namespace BigBoxProfile.EmulatorActions
 {
-
-
-
 	public partial class RomExtractor_Task : Form
 	{
 		private RomExtractor_ArchiveFile _archiveFile = null;

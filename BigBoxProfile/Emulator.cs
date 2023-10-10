@@ -48,6 +48,7 @@ namespace BigBoxProfile
 
 			_modules.Add(new PS3Mount());
 			_modules.Add(new HidDeviceDetector());
+			_modules.Add(new PauseMenu());
 
 			List<ConfigurationData> loadedModules = ConfigurationData.LoadConfigurationDataList(FileNameConfig);
 			foreach (var module in loadedModules)
@@ -175,6 +176,12 @@ namespace BigBoxProfile
 				if (module.name == "HidDeviceDetector")
 				{
 					var obj = new HidDeviceDetector();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+				if (module.name == "PauseMenu")
+				{
+					var obj = new PauseMenu();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
