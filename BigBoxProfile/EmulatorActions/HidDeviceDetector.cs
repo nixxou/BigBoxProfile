@@ -240,7 +240,7 @@ namespace BigBoxProfile.EmulatorActions
 						{
 							current_controller++;
 							string prefix = _prefixController;
-							string fullarg = prefix + result;
+							string fullarg = prefix + suffix;
 							fullarg = fullarg.Replace("%NUM%", current_controller.ToString()).Trim();
 							if (!argsController.Contains(fullarg))
 							{
@@ -259,7 +259,7 @@ namespace BigBoxProfile.EmulatorActions
 						{
 							current_lightgun++;
 							string prefix = _prefixLightgun;
-							string fullarg = prefix + result;
+							string fullarg = prefix + suffix;
 							fullarg = fullarg.Replace("%NUM%", current_lightgun.ToString()).Trim();
 							if (!argsLightgun.Contains(fullarg))
 							{
@@ -279,7 +279,7 @@ namespace BigBoxProfile.EmulatorActions
 						{
 							current_wheel++;
 							string prefix = _prefixWheel;
-							string fullarg = prefix + result;
+							string fullarg = prefix + suffix;
 							fullarg = fullarg.Replace("%NUM%", current_wheel.ToString()).Trim();
 							if (!argsWheel.Contains(fullarg))
 							{
@@ -299,7 +299,7 @@ namespace BigBoxProfile.EmulatorActions
 						{
 							current_other++;
 							string prefix = _prefixOther;
-							string fullarg = prefix + result;
+							string fullarg = prefix + suffix;
 							fullarg = fullarg.Replace("%NUM%", current_other.ToString()).Trim();
 							if (!argsOther.Contains(fullarg))
 							{

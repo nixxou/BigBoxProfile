@@ -44,12 +44,14 @@
 			this.chk_addDevMatchUnique = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.num_addDevMaxMatch = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
 			this.kryptonLabel16 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.chk_addDevDinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_addDevSDL = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_addDevType)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// chk_addDevXinput
 			// 
-			this.chk_addDevXinput.Location = new System.Drawing.Point(464, 120);
+			this.chk_addDevXinput.Location = new System.Drawing.Point(622, 120);
 			this.chk_addDevXinput.Name = "chk_addDevXinput";
 			this.chk_addDevXinput.Size = new System.Drawing.Size(83, 20);
 			this.chk_addDevXinput.TabIndex = 129;
@@ -121,27 +123,27 @@
 			this.cmb_addDevType.DropDownWidth = 464;
 			this.cmb_addDevType.Location = new System.Drawing.Point(120, 67);
 			this.cmb_addDevType.Name = "cmb_addDevType";
-			this.cmb_addDevType.Size = new System.Drawing.Size(464, 21);
+			this.cmb_addDevType.Size = new System.Drawing.Size(580, 21);
 			this.cmb_addDevType.TabIndex = 120;
 			// 
 			// txt_addDevSuffix
 			// 
 			this.txt_addDevSuffix.Location = new System.Drawing.Point(120, 38);
 			this.txt_addDevSuffix.Name = "txt_addDevSuffix";
-			this.txt_addDevSuffix.Size = new System.Drawing.Size(464, 23);
+			this.txt_addDevSuffix.Size = new System.Drawing.Size(580, 23);
 			this.txt_addDevSuffix.TabIndex = 119;
 			// 
 			// txt_addDevRegex
 			// 
 			this.txt_addDevRegex.Location = new System.Drawing.Point(120, 12);
 			this.txt_addDevRegex.Name = "txt_addDevRegex";
-			this.txt_addDevRegex.Size = new System.Drawing.Size(464, 23);
+			this.txt_addDevRegex.Size = new System.Drawing.Size(580, 23);
 			this.txt_addDevRegex.TabIndex = 118;
 			// 
 			// btn_cancel
 			// 
 			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_cancel.Location = new System.Drawing.Point(416, 158);
+			this.btn_cancel.Location = new System.Drawing.Point(532, 161);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 131;
@@ -150,7 +152,7 @@
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(497, 158);
+			this.btn_ok.Location = new System.Drawing.Point(625, 161);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 130;
@@ -190,11 +192,29 @@
 			this.kryptonLabel16.TabIndex = 132;
 			this.kryptonLabel16.Values.Text = "Max match count:";
 			// 
+			// chk_addDevDinput
+			// 
+			this.chk_addDevDinput.Location = new System.Drawing.Point(532, 120);
+			this.chk_addDevDinput.Name = "chk_addDevDinput";
+			this.chk_addDevDinput.Size = new System.Drawing.Size(84, 20);
+			this.chk_addDevDinput.TabIndex = 135;
+			this.chk_addDevDinput.Values.Text = "Use DInput";
+			// 
+			// chk_addDevSDL
+			// 
+			this.chk_addDevSDL.Location = new System.Drawing.Point(458, 120);
+			this.chk_addDevSDL.Name = "chk_addDevSDL";
+			this.chk_addDevSDL.Size = new System.Drawing.Size(68, 20);
+			this.chk_addDevSDL.TabIndex = 136;
+			this.chk_addDevSDL.Values.Text = "Use SDL";
+			// 
 			// HidDeviceDetector_PopupEdit
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(605, 197);
+			this.ClientSize = new System.Drawing.Size(712, 197);
+			this.Controls.Add(this.chk_addDevSDL);
+			this.Controls.Add(this.chk_addDevDinput);
 			this.Controls.Add(this.chk_addDevMatchUnique);
 			this.Controls.Add(this.num_addDevMaxMatch);
 			this.Controls.Add(this.kryptonLabel16);
@@ -240,5 +260,7 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevMatchUnique;
 		private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown num_addDevMaxMatch;
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel16;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevDinput;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevSDL;
 	}
 }

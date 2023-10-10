@@ -214,11 +214,22 @@ namespace BigBoxProfile.EmulatorActions
 				txt_testdevice.Text += "BLUETOOTHLIB:\r\n";
 				txt_testdevice.Text += HIDInfo.GetBluetoothInfo(true);
 			}
+			if (chk_useSDL.Checked)
+			{
+				txt_testdevice.Text += "SDLLIB:\r\n";
+				txt_testdevice.Text += HIDInfo.GetSDLInfo(true);
+			}
+			if (chk_useDinput.Checked)
+			{
+				txt_testdevice.Text += "DINPUTLIB:\r\n";
+				txt_testdevice.Text += HIDInfo.GetDInputInfo(true);
+			}
 			if (chk_useXinput.Checked)
 			{
 				txt_testdevice.Text += "XINPUTLIB:\r\n";
 				txt_testdevice.Text += HIDInfo.GetXINPUT(true,txt_DS4Win.Text);
 			}
+
 		}
 
 		private void kryptonCheckBox2_CheckedChanged(object sender, EventArgs e)
@@ -275,6 +286,9 @@ namespace BigBoxProfile.EmulatorActions
 			hidMatcher.UseXInput = chk_addDevXinput.Checked;
 			hidMatcher.MaxMatch = (int)num_addDevMaxMatch.Value;
 			hidMatcher.UniqueMatch = chk_addDevMatchUnique.Checked;
+			hidMatcher.UseDInput = chk_addDevDinput.Checked;
+			hidMatcher.UseSDL = chk_addDevSDL.Checked;
+
 
 			ListViewItem item = new ListViewItem(hidMatcher.ToStringArray());
 			lv_priority.Items.Add(item);
@@ -314,6 +328,8 @@ namespace BigBoxProfile.EmulatorActions
 			hidMatcher.UseXInput = chk_addDevXinput.Checked;
 			hidMatcher.MaxMatch = (int)num_addDevMaxMatch.Value;
 			hidMatcher.UniqueMatch = chk_addDevMatchUnique.Checked;
+			hidMatcher.UseDInput = chk_addDevDinput.Checked;
+			hidMatcher.UseSDL = chk_addDevSDL.Checked;
 
 			var result = hidMatcher.isMatching(true,txt_DS4Win.Text);
 			if(result == null)

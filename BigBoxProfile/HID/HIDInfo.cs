@@ -12,17 +12,24 @@ using InTheHand.Net.Sockets;
 using Newtonsoft.Json;
 using XInput.Wrapper;
 using System.Security.Cryptography;
+using SharpDX.DirectInput;
+using SDL2;
+using System.Runtime.InteropServices;
 
 namespace BigBoxProfile
 {
 	public static class HIDInfo
 	{
-        public static string LastHIDSharpInfo { get; private set; }
+		public static string LastHIDSharpInfo { get; private set; }
 		public static string LastDS4Info { get; private set; }
 
 		public static string LastBTInfo { get; private set; }
 
 		public static string LastXInput { get; private set; }
+
+		public static string LastDInput { get; private set; }
+
+		public static string LastSDL { get; private set; }
 
 		public static string GetHIDSharpInfo(bool refresh)
 		{
@@ -36,14 +43,86 @@ namespace BigBoxProfile
 				{
 
 					string friendlyName = "Unknown";
-					if (device.GetFriendlyName() != null) friendlyName = device.GetFriendlyName().Trim();
+					try
+					{
+						if (device.GetFriendlyName() != null) friendlyName = device.GetFriendlyName().Trim();
+					}
+					catch { }
+					
 
 					LastHIDSharpInfo += $"{friendlyName}<>{device.VendorID.ToString().Trim()}<>{device.ProductID.ToString().Trim()}<>{device.DevicePath.ToString().Trim()}" + "\r\n";
 				}
 			}
+ 
 			return LastHIDSharpInfo;
 		}
 
+		public static string GetDInputInfo(bool refresh)
+		{
+			if (!refresh && !String.IsNullOrEmpty(LastDInput)) return LastDInput;
+
+			LastDInput = "";
+			DirectInput directInput = new DirectInput();
+			var ddevices = directInput.GetDevices();
+			foreach (var deviceInstance in ddevices)
+			{
+				if (!IsStickType(deviceInstance))
+					continue;
+
+				var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);
+				LastDInput += $"{deviceInstance.ProductName}<>{deviceInstance.Type}<>{deviceInstance.InstanceGuid}<>{deviceInstance.InstanceName}<>{joystick.Properties.InterfacePath}" + "\r\n";
+
+				//deviceList.Add(new DeviceInfo(deviceInstance));
+			}
+
+			/*
+			SharpDX.XInput.Controller[] controllers = new SharpDX.XInput.Controller[4];
+
+			for (SharpDX.XInput.UserIndex index = SharpDX.XInput.UserIndex.One; index <= SharpDX.XInput.UserIndex.Four; index++)
+			{
+				controllers[(int)index] = new SharpDX.XInput.Controller(index);
+			}
+
+
+			for (SharpDX.XInput.UserIndex index = SharpDX.XInput.UserIndex.One; index <= SharpDX.XInput.UserIndex.Four; index++)
+			{
+				SharpDX.XInput.Controller controller = controllers[(int)index];
+				var capabilities = controller.GetCapabilities(SharpDX.XInput.DeviceQueryType.Any);
+			}
+			*/
+			
+
+			return LastDInput;
+		}
+
+		private static bool IsStickType(DeviceInstance deviceInstance)
+		{
+			return deviceInstance.Type == SharpDX.DirectInput.DeviceType.Joystick
+					|| deviceInstance.Type == SharpDX.DirectInput.DeviceType.Gamepad
+					|| deviceInstance.Type == SharpDX.DirectInput.DeviceType.FirstPerson
+					|| deviceInstance.Type == SharpDX.DirectInput.DeviceType.Flight
+					|| deviceInstance.Type == SharpDX.DirectInput.DeviceType.Driving
+					|| deviceInstance.Type == SharpDX.DirectInput.DeviceType.Supplemental;
+		}
+
+		public static string GetSDLInfo(bool refresh)
+		{
+			if (!refresh && !String.IsNullOrEmpty(LastSDL)) return LastSDL;
+
+			LastSDL = "";
+			SDL2.SDL.SDL_Init(SDL2.SDL.SDL_INIT_JOYSTICK);
+			for (int i = 0; i < SDL2.SDL.SDL_NumJoysticks(); i++)
+			{
+				var currentJoy = SDL.SDL_JoystickOpen(i);
+				string caps = $"{SDL.SDL_JoystickNumAxes(currentJoy)} {SDL.SDL_JoystickNumBalls(currentJoy)} {SDL.SDL_JoystickNumButtons(currentJoy)} {SDL.SDL_JoystickNumHats(currentJoy)}";
+				string signature = GetMD5Short(caps);
+				LastSDL += $"SDL{i}<>{SDL2.SDL.SDL_JoystickNameForIndex(i)}<>{signature}<>{SDL.SDL_JoystickGetDeviceGUID(i)}<>{SDL.SDL_JoystickGetSerial(currentJoy)}" + "\r\n";
+				SDL.SDL_JoystickClose(currentJoy);
+			}
+
+
+			return LastSDL;
+		}
 
 		public static string GetDS4Info(bool refresh)
 		{
@@ -197,6 +276,7 @@ namespace BigBoxProfile
 			LastXInput = null;
 			LastHIDSharpInfo = null;
 			LastDS4Info = null;
+			LastDInput = null;
 		}
 
 

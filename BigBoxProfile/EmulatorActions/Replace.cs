@@ -308,7 +308,7 @@ namespace BigBoxProfile.EmulatorActions
 					if (!_casesensitive) options |= RegexOptions.IgnoreCase;
 					Regex regex = _useregex ? new Regex(_search, options) : null;
 					//string result = _useregex ? regex.Replace(elem, MatchEvaluator) : elem.Replace(_search, _replacewith);
-					string result = _useregex ? regex.Replace(elem, MatchEvaluator) : Regex.Replace(elem, Regex.Escape(_search), _replacewith, options);
+					string result = _useregex ? regex.Replace(elem, MatchEvaluator2) : Regex.Replace(elem, Regex.Escape(_search), _replacewith, options);
 
 					if (variablesDictionary.Count > 0)
 					{
@@ -343,7 +343,10 @@ namespace BigBoxProfile.EmulatorActions
 				Regex regex = _useregex ? new Regex(_search, options) : null;
 
 				//string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator) : filteredCmd.Replace(_search, _replacewith);
-				string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator) : Regex.Replace(filteredCmd, Regex.Escape(_search), _replacewith, options);
+				string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator2) : Regex.Replace(filteredCmd, Regex.Escape(_search), _replacewith, options);
+
+
+				
 
 				if (variablesDictionary.Count > 0)
 				{
@@ -409,7 +412,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
-		private string MatchEvaluator(Match match)
+		private string MatchEvaluator2(Match match)
 		{
 			GroupCollection groups = match.Groups;
 
@@ -504,8 +507,12 @@ namespace BigBoxProfile.EmulatorActions
 				if (!_casesensitive) options |= RegexOptions.IgnoreCase;
 				options |= RegexOptions.Singleline;
 				Regex regex = _useregex ? new Regex(_search, options) : null;
-				string newFileContent = _useregex ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(_search), _replacewith, options);
-				if(variablesDictionary.Count > 0)
+				string newFileContent = _useregex ? regex.Replace(fileContent, MatchEvaluator2) : Regex.Replace(fileContent, Regex.Escape(_search), _replacewith, options);
+
+				//string newFileContent = regex.Replace(fileContent, MatchEvaluator2);
+
+
+				if (variablesDictionary.Count > 0)
 				{
 					int currentLoopVariable = 0;
 					int maxLoopVariable = 10;

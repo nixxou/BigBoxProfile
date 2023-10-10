@@ -24,6 +24,8 @@ namespace BigBoxProfile
 		public bool UseXInput { get; set; }
 		public int MaxMatch { get; set; }
 		public bool UniqueMatch { get; set; }
+		public bool UseDInput { get; set; }
+		public bool UseSDL { get; set; }
 
 		public HIDMatcher()
 		{
@@ -36,6 +38,8 @@ namespace BigBoxProfile
 			this.UseXInput = false;
 			this.MaxMatch = 1;
 			this.UniqueMatch = false;
+			this.UseDInput = false;
+			this.UseSDL = false;
 		}
 
 		public HIDMatcher(string json)
@@ -52,6 +56,8 @@ namespace BigBoxProfile
 				this.UseXInput = DeserializeData.UseXInput;
 				this.MaxMatch = DeserializeData.MaxMatch;
 				this.UniqueMatch = DeserializeData.UniqueMatch;
+				this.UseDInput = DeserializeData.UseDInput;
+				this.UseSDL = DeserializeData.UseSDL;
 			}
 			catch(Exception ex) 
 			{
@@ -63,7 +69,7 @@ namespace BigBoxProfile
 
 		public string[] ToStringArray()
 		{
-			var arrayString = new string[10];
+			var arrayString = new string[12];
 			arrayString[0] = Serialize();
 			arrayString[1] = this.RegexToMatch;
 			arrayString[2] = this.Suffix;
@@ -74,6 +80,8 @@ namespace BigBoxProfile
 			arrayString[7] = (this.UseXInput ? "YES" : "NO");
 			arrayString[8] = this.MaxMatch.ToString();
 			arrayString[9] = (this.UniqueMatch ? "YES" : "NO");
+			arrayString[10] = (this.UseDInput ? "YES" : "NO");
+			arrayString[11] = (this.UseSDL ? "YES" : "NO");
 			return arrayString;
 
 		}
@@ -92,6 +100,8 @@ namespace BigBoxProfile
 			if(UseDS4Lib) libData += HIDInfo.GetDS4Info(forceRefresh);
 			if(UseBT) libData += HIDInfo.GetBluetoothInfo(forceRefresh);
 			if(UseXInput) libData += HIDInfo.GetXINPUT(forceRefresh, logdir);
+			if(UseDInput) libData += HIDInfo.GetDInputInfo(forceRefresh);
+			if(UseSDL) libData += HIDInfo.GetSDLInfo(forceRefresh);
 
 			List<string> suffixList = new List<string>();
 			int currentMatchCount = 0;

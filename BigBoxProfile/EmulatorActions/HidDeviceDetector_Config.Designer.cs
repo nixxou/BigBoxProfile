@@ -46,6 +46,7 @@
 			this.chk_useBT = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_useXinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.grp_globalconf = new System.Windows.Forms.GroupBox();
+			this.chk_useDinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_forceRemoveOtherArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.txt_prefixOther = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.kryptonLabel14 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
@@ -72,6 +73,7 @@
 			this.num_nblightgun = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
 			this.num_nbcontroller = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
 			this.grp_addNewDevice = new System.Windows.Forms.GroupBox();
+			this.chk_addDevDinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_addDevMatchUnique = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.num_addDevMaxMatch = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
 			this.kryptonLabel16 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
@@ -102,7 +104,11 @@
 			this.cUseXInput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cMaxMatch = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cUniqueMatch = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.cUseDInput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btn_testconfig = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.chk_useSDL = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_addDevSDL = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.cUseSDL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.grp_globalconf.SuspendLayout();
 			this.grp_addNewDevice.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_addDevType)).BeginInit();
@@ -214,7 +220,7 @@
 			// 
 			// btn_testdevice
 			// 
-			this.btn_testdevice.Location = new System.Drawing.Point(687, 321);
+			this.btn_testdevice.Location = new System.Drawing.Point(687, 337);
 			this.btn_testdevice.Name = "btn_testdevice";
 			this.btn_testdevice.Size = new System.Drawing.Size(106, 25);
 			this.btn_testdevice.TabIndex = 109;
@@ -223,7 +229,7 @@
 			// 
 			// chk_usehidsharp
 			// 
-			this.chk_usehidsharp.Location = new System.Drawing.Point(687, 217);
+			this.chk_usehidsharp.Location = new System.Drawing.Point(687, 214);
 			this.chk_usehidsharp.Name = "chk_usehidsharp";
 			this.chk_usehidsharp.Size = new System.Drawing.Size(99, 20);
 			this.chk_usehidsharp.TabIndex = 110;
@@ -232,7 +238,7 @@
 			// 
 			// chk_useDS4
 			// 
-			this.chk_useDS4.Location = new System.Drawing.Point(687, 243);
+			this.chk_useDS4.Location = new System.Drawing.Point(687, 235);
 			this.chk_useDS4.Name = "chk_useDS4";
 			this.chk_useDS4.Size = new System.Drawing.Size(85, 20);
 			this.chk_useDS4.TabIndex = 111;
@@ -241,7 +247,7 @@
 			// 
 			// chk_useBT
 			// 
-			this.chk_useBT.Location = new System.Drawing.Point(687, 269);
+			this.chk_useBT.Location = new System.Drawing.Point(687, 254);
 			this.chk_useBT.Name = "chk_useBT";
 			this.chk_useBT.Size = new System.Drawing.Size(144, 20);
 			this.chk_useBT.TabIndex = 112;
@@ -250,7 +256,7 @@
 			// 
 			// chk_useXinput
 			// 
-			this.chk_useXinput.Location = new System.Drawing.Point(689, 295);
+			this.chk_useXinput.Location = new System.Drawing.Point(687, 315);
 			this.chk_useXinput.Name = "chk_useXinput";
 			this.chk_useXinput.Size = new System.Drawing.Size(83, 20);
 			this.chk_useXinput.TabIndex = 113;
@@ -259,6 +265,8 @@
 			// 
 			// grp_globalconf
 			// 
+			this.grp_globalconf.Controls.Add(this.chk_useSDL);
+			this.grp_globalconf.Controls.Add(this.chk_useDinput);
 			this.grp_globalconf.Controls.Add(this.chk_forceRemoveOtherArg);
 			this.grp_globalconf.Controls.Add(this.txt_prefixOther);
 			this.grp_globalconf.Controls.Add(this.kryptonLabel14);
@@ -296,6 +304,14 @@
 			this.grp_globalconf.TabIndex = 114;
 			this.grp_globalconf.TabStop = false;
 			this.grp_globalconf.Text = "Global Config";
+			// 
+			// chk_useDinput
+			// 
+			this.chk_useDinput.Location = new System.Drawing.Point(687, 295);
+			this.chk_useDinput.Name = "chk_useDinput";
+			this.chk_useDinput.Size = new System.Drawing.Size(84, 20);
+			this.chk_useDinput.TabIndex = 120;
+			this.chk_useDinput.Values.Text = "Use DInput";
 			// 
 			// chk_forceRemoveOtherArg
 			// 
@@ -518,6 +534,8 @@
 			// 
 			// grp_addNewDevice
 			// 
+			this.grp_addNewDevice.Controls.Add(this.chk_addDevSDL);
+			this.grp_addNewDevice.Controls.Add(this.chk_addDevDinput);
 			this.grp_addNewDevice.Controls.Add(this.chk_addDevMatchUnique);
 			this.grp_addNewDevice.Controls.Add(this.num_addDevMaxMatch);
 			this.grp_addNewDevice.Controls.Add(this.kryptonLabel16);
@@ -540,6 +558,14 @@
 			this.grp_addNewDevice.TabIndex = 115;
 			this.grp_addNewDevice.TabStop = false;
 			this.grp_addNewDevice.Text = "Add new Device";
+			// 
+			// chk_addDevDinput
+			// 
+			this.chk_addDevDinput.Location = new System.Drawing.Point(468, 130);
+			this.chk_addDevDinput.Name = "chk_addDevDinput";
+			this.chk_addDevDinput.Size = new System.Drawing.Size(84, 20);
+			this.chk_addDevDinput.TabIndex = 122;
+			this.chk_addDevDinput.Values.Text = "Use DInput";
 			// 
 			// chk_addDevMatchUnique
 			// 
@@ -721,7 +747,9 @@
             this.cUseBT,
             this.cUseXInput,
             this.cMaxMatch,
-            this.cUniqueMatch});
+            this.cUniqueMatch,
+            this.cUseDInput,
+            this.cUseSDL});
 			this.lv_priority.FullRowSelect = true;
 			this.lv_priority.HideSelection = false;
 			this.lv_priority.Location = new System.Drawing.Point(12, 393);
@@ -792,6 +820,22 @@
 			this.btn_testconfig.TabIndex = 120;
 			this.btn_testconfig.Values.Text = "Test Config";
 			this.btn_testconfig.Click += new System.EventHandler(this.btn_testconfig_Click);
+			// 
+			// chk_useSDL
+			// 
+			this.chk_useSDL.Location = new System.Drawing.Point(687, 275);
+			this.chk_useSDL.Name = "chk_useSDL";
+			this.chk_useSDL.Size = new System.Drawing.Size(68, 20);
+			this.chk_useSDL.TabIndex = 121;
+			this.chk_useSDL.Values.Text = "Use SDL";
+			// 
+			// chk_addDevSDL
+			// 
+			this.chk_addDevSDL.Location = new System.Drawing.Point(394, 130);
+			this.chk_addDevSDL.Name = "chk_addDevSDL";
+			this.chk_addDevSDL.Size = new System.Drawing.Size(68, 20);
+			this.chk_addDevSDL.TabIndex = 122;
+			this.chk_addDevSDL.Values.Text = "Use SDL";
 			// 
 			// HidDeviceDetector_Config
 			// 
@@ -910,5 +954,11 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel16;
 		private System.Windows.Forms.ColumnHeader cMaxMatch;
 		private System.Windows.Forms.ColumnHeader cUniqueMatch;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_useDinput;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevDinput;
+		private System.Windows.Forms.ColumnHeader cUseDInput;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_useSDL;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevSDL;
+		private System.Windows.Forms.ColumnHeader cUseSDL;
 	}
 }
