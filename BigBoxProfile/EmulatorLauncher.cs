@@ -22,6 +22,7 @@ namespace BigBoxProfile
 		string NewExe;
 		string Dir;
 		string[] Args;
+		public static string[] OriginalArgs { get; private set; }
 
 		public static string BigBoxFolder = "";
 
@@ -83,7 +84,7 @@ namespace BigBoxProfile
 			ExeFile = Path.GetFileName(ExeFileFull);
 			NewExe = Path.Combine(Dir, Path.GetFileNameWithoutExtension(ExeFileFull) + "_.exe");
 			Args = args;
-
+			OriginalArgs = new List<string>(args).ToArray();
 
 
 		}
@@ -204,7 +205,7 @@ namespace BigBoxProfile
 
 
 
-				MessageBox.Show("Debug new");
+				//MessageBox.Show("Debug new");
 
 
 				ExecutePrelaunch();

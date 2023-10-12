@@ -407,6 +407,7 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				this.chromiumWebBrowser1 = new CefSharp.WinForms.ChromiumWebBrowser();
 				this.chromiumWebBrowser1.ActivateBrowserOnCreation = false;
+				BigBoxUtils.CefInit();
 				//this.chromiumWebBrowser1.Visible = false;
 				this.chromiumWebBrowser1.Location = fakebrowser_txt.Location;
 				this.chromiumWebBrowser1.Name = "chromiumWebBrowser1";

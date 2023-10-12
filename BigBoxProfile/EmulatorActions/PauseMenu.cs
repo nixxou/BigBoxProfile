@@ -1,6 +1,9 @@
 ﻿using Gma.System.MouseKeyHook;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using XInput.Wrapper;
 
@@ -8,6 +11,15 @@ namespace BigBoxProfile.EmulatorActions
 {
 	internal class PauseMenu : IEmulatorAction
 	{
+		[DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
+		public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
+
+		[DllImport("user32.dll", EntryPoint = "SetForegroundWindow")]
+		public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+		[DllImport("User32.dll", EntryPoint = "ShowWindowAsync")]
+		private static extern bool ShowWindowAsync(IntPtr hWnd, int cmdShow);
+		private const int WS_SHOWNORMAL = 1;
 
 		private static IKeyboardMouseEvents _globalHook = null;
 
@@ -29,16 +41,23 @@ namespace BigBoxProfile.EmulatorActions
 		private bool _removeFilter = false;
 		private string _keyCombo = "";
 		private string _gamepadCombo = "";
+		private int _gamepadKeyPressMinDuration = 0;
+		private bool _forcefullActivation = false;
+		private bool _pauseEmulation = false;
+		private bool _copyArt = true;
+		private string _ahkPause = "";
+		private string _ahkResume = "";
+		private string _htmlFile = "";
 
 		private X.Gamepad gamepad = null;
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
-		private int pressDurationMilliseconds = 1000; // Par exemple, 1000 millisecondes (1 seconde)
+		//private int pressDurationMilliseconds = 1000; // Par exemple, 1000 millisecondes (1 seconde)
 		private bool isComboActive = false; // Variable pour suivre si la combinaison est active
 		private System.Timers.Timer timerGamepad = null;
 
-
+		private PauseMenu_Show activePauseMenu = null;
 
 		//public Dictionary<string, string> Options = new Dictionary<string, string>();
 
@@ -71,6 +90,21 @@ namespace BigBoxProfile.EmulatorActions
 				Options["keyCombo"] = frm.keyCombo.Trim();
 				Options["gamepadCombo"] = frm.gamepadCombo.Trim();
 
+				Options["gamepadKeyPressMinDuration"] = frm.gamepadKeyPressMinDuration.ToString();
+
+				if (frm.forcefullActivation) Options["forcefullActivation"] = "yes";
+				else Options["forcefullActivation"] = "no";
+
+				if (frm.pauseEmulation) Options["pauseEmulation"] = "yes";
+				else Options["pauseEmulation"] = "no";
+
+				if (frm.copyArt) Options["copyArt"] = "yes";
+				else Options["copyArt"] = "no";
+
+				Options["htmlFile"] = frm.htmlFile.Trim();
+				Options["ahkPause"] = frm.ahkPause.Trim();
+				Options["ahkResume"] = frm.ahkResume.Trim();
+
 				UpdateConfig();
 			}
 
@@ -87,6 +121,18 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (Options.ContainsKey("keyCombo") == false) Options["keyCombo"] = "";
 			if (Options.ContainsKey("gamepadCombo") == false) Options["gamepadCombo"] = "";
+
+			if (Options.ContainsKey("gamepadKeyPressMinDuration") == false) Options["gamepadKeyPressMinDuration"] = "0";
+
+			if (Options.ContainsKey("forcefullActivation") == false) Options["forcefullActivation"] = "no";
+
+			if (Options.ContainsKey("pauseEmulation") == false) Options["pauseEmulation"] = "no";
+			if (Options.ContainsKey("copyArt") == false) Options["copyArt"] = "yes";
+
+			if (Options.ContainsKey("htmlFile") == false) Options["htmlFile"] = "";
+			if (Options.ContainsKey("ahkPause") == false) Options["ahkPause"] = "";
+			if (Options.ContainsKey("ahkResume") == false) Options["ahkResume"] = "";
+
 			UpdateConfig();
 
 		}
@@ -138,6 +184,23 @@ namespace BigBoxProfile.EmulatorActions
 
 			_keyCombo = Options["keyCombo"];
 			_gamepadCombo = Options["gamepadCombo"];
+
+			int tmpInt = 0;
+			_gamepadKeyPressMinDuration = 0;
+			if (Options.ContainsKey("gamepadKeyPressMinDuration"))
+			{
+				if (int.TryParse(Options["gamepadKeyPressMinDuration"], out tmpInt))
+				{
+					_gamepadKeyPressMinDuration = tmpInt;
+				}
+			}
+
+			_forcefullActivation = Options["forcefullActivation"] == "yes" ? true : false;
+			_pauseEmulation = Options["pauseEmulation"] == "yes" ? true : false;
+			_copyArt = Options["copyArt"] == "yes" ? true : false;
+			_htmlFile = Options["htmlFile"];
+			_ahkPause = Options["ahkPause"];
+			_ahkResume = Options["ahkResume"];
 		}
 
 		public void ExecuteBefore(string[] args)
@@ -145,7 +208,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (IsConfigured())
 			{
 				var keycombi = Combination.FromString(_keyCombo);
-				Action actionPauseMenu = () => { MessageBox.Show("TEST"); };
+				Action actionPauseMenu = () => { ShowPause(); };
 				var assignment = new Dictionary<Combination, Action>
 				{
 					{keycombi, actionPauseMenu}
@@ -158,37 +221,45 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					gamepad = X.Gamepad_1;
 					X.StartPolling(gamepad);
-					timerGamepad = new System.Timers.Timer(pressDurationMilliseconds);
+					timerGamepad = new System.Timers.Timer(_gamepadKeyPressMinDuration);
 
 					timerGamepad.Elapsed += (sender, e) =>
 					{
+						
 						// Le timer s'est écoulé, la touche a été pressée pendant la durée spécifiée
 						if (isComboActive)
 						{
-							MessageBox.Show("Gamepad Combo Timer !");
+							ShowPause();
 						}
+						isComboActive = false;
+						timerGamepad.Stop();
 
 						// Réinitialisez la variable pour la prochaine pression de touche
-						isComboActive = false;
+
 					};
 
-					gamepad.KeyDown += (object sender, EventArgs e) =>
+					gamepad.StateChanged += (object a, EventArgs b) =>
 					{
-						if (gamepad.state.Gamepad.IsButtonDown(_gamepadCombo))
+						if (gamepad.state.Gamepad.IsButtonDown("Guide"))
 						{
-							isComboActive = true;
-							timerGamepad.Start();
-							//MessageBox.Show("Gamepad Combo !");
+							if (_gamepadKeyPressMinDuration == 0)
+							{
+								ShowPause();
+							}
+							else
+							{
+								if (!isComboActive)
+								{
+									isComboActive = true;
+									timerGamepad.Start();
+								}
+							}
 						}
 						else
 						{
-							if (isComboActive)
-							{
-								timerGamepad.Stop();
-								isComboActive = false; // Réinitialisez la variable
-							}
+							timerGamepad.Stop();
+							isComboActive = false; // Réinitialisez la variable
 						}
-
 					};
 				}
 
@@ -228,6 +299,63 @@ namespace BigBoxProfile.EmulatorActions
 				return BigBoxUtils.MakeFilterListToRemove(_filter, _commaFilter);
 			}
 			return emptylist.ToArray();
+		}
+
+		public void ShowPause()
+		{
+			if (activePauseMenu == null)
+			{
+				/*
+				// Créez un nouveau thread avec une fonction anonyme
+				Thread backgroundThread = new Thread(() =>
+				{
+					activePauseMenu = new PauseMenu_Show(true);
+					activePauseMenu.FormClosed += (sender, e) =>
+					{
+						activePauseMenu = null; // Réinitialise la référence lorsque la fenêtre est fermée.
+					};
+					activePauseMenu.ShowDialog();
+				});
+
+
+				// Démarrez le thread
+				backgroundThread.Start();
+				*/
+
+				activePauseMenu = new PauseMenu_Show(true);
+				activePauseMenu.FormClosed += (sender, e) =>
+				{
+					activePauseMenu.chromiumWebBrowser1.Dispose();
+					activePauseMenu.Dispose();
+					activePauseMenu = null; // Réinitialise la référence lorsque la fenêtre est fermée.
+				};
+				activePauseMenu.ShowDialog();
+
+
+
+				/*
+				activePauseMenu.Location = new Point(0, 0);
+				activePauseMenu.FormBorderStyle = FormBorderStyle.None;
+				activePauseMenu.Width = Screen.PrimaryScreen.Bounds.Width;
+				activePauseMenu.Height = Screen.PrimaryScreen.Bounds.Height;
+
+				activePauseMenu.ShowDialog();
+				activePauseMenu.BringToFront();
+				activePauseMenu.TopMost = true;
+				activePauseMenu.Activate();
+				
+				SystemParametersInfo((uint)0x2001, 0, 0, 0x0002 | 0x0001);
+				ShowWindowAsync(activePauseMenu.Handle, WS_SHOWNORMAL);
+				SetForegroundWindow(activePauseMenu.Handle);
+				SystemParametersInfo((uint)0x2001, 200000, 200000, 0x0002 | 0x0001);
+				*/
+			}
+			else
+			{
+				activePauseMenu.Close();
+			}
+
+
 		}
 	}
 }

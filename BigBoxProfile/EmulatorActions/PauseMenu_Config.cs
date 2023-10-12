@@ -33,6 +33,15 @@ namespace BigBoxProfile.EmulatorActions
 		public bool removeFilter = false;
 		public string keyCombo = "";
 		public string gamepadCombo = "";
+		public int gamepadKeyPressMinDuration = 0;
+		public bool forcefullActivation = false;
+
+		public bool pauseEmulation = false;
+		public bool copyArt = true;
+		public string ahkPause = "";
+		public string ahkResume = "";
+		public string htmlFile = "";
+
 
 		public PauseMenu_Config(Dictionary<string, string> Options)
 		{
@@ -49,6 +58,28 @@ namespace BigBoxProfile.EmulatorActions
 			keyCombo = Options.ContainsKey("keyCombo") ? Options["keyCombo"] : "";
 			gamepadCombo = Options.ContainsKey("gamepadCombo") ? Options["gamepadCombo"] : "";
 
+			if (Options.ContainsKey("forcefullActivation") && Options["forcefullActivation"] == "yes") forcefullActivation = true;
+			if (Options.ContainsKey("pauseEmulation") && Options["pauseEmulation"] == "yes") pauseEmulation = true;
+			if (Options.ContainsKey("copyArt") && Options["copyArt"] == "no") copyArt = false;
+
+			ahkPause = Options.ContainsKey("ahkPause") ? Options["ahkPause"] : "";
+			ahkResume = Options.ContainsKey("ahkResume") ? Options["ahkResume"] : "";
+
+			if (ahkPause != "") ahkPause = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(ahkPause));
+			if (ahkResume != "") ahkResume = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(ahkResume));
+			htmlFile = Options.ContainsKey("htmlFile") ? Options["htmlFile"] : "";
+
+			int tmpInt = 0;
+			gamepadKeyPressMinDuration = 0;
+			if (Options.ContainsKey("gamepadKeyPressMinDuration"))
+			{
+				if(int.TryParse(Options["gamepadKeyPressMinDuration"], out tmpInt))
+				{
+					gamepadKeyPressMinDuration = tmpInt;
+				}
+			}
+			//gamepadKeyPressMinDuration = Options.ContainsKey("gamepadKeyPressMinDuration") ? int.Parse(Options["gamepadKeyPressMinDuration"]) : 0;
+
 			InitializeComponent();
 
 			txt_filter.Text = filter;
@@ -60,6 +91,14 @@ namespace BigBoxProfile.EmulatorActions
 			chk_filter_remove.Checked = removeFilter;
 			TextBoxKeyCombo.Text = keyCombo;
 			TextBoxGKeyCombo.Text = gamepadCombo;
+			num_gamepadKeyPressMinDuration.Value = gamepadKeyPressMinDuration;
+			chk_forcefullActivation.Checked = forcefullActivation;
+
+			chk_copyArty.Checked = copyArt;
+			chk_pauseEmulation.Checked = pauseEmulation;
+			txt_file.Text = htmlFile;
+			txt_ahkPause.Text = ahkPause;
+			txt_ahkResume.Text = ahkResume;
 		}
 
 		private void btn_ok_Click(object sender, EventArgs e)
@@ -71,6 +110,17 @@ namespace BigBoxProfile.EmulatorActions
 			removeFilter = chk_filter_remove.Checked;
 			keyCombo = TextBoxKeyCombo.Text;
 			gamepadCombo = TextBoxGKeyCombo.Text;
+			gamepadKeyPressMinDuration = (int)num_gamepadKeyPressMinDuration.Value;
+			forcefullActivation = chk_forcefullActivation.Checked;
+
+			copyArt = chk_copyArty.Checked;
+			pauseEmulation = chk_pauseEmulation.Checked;
+			htmlFile = txt_file.Text;
+
+			ahkPause = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(txt_ahkPause.Text));
+			ahkResume = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(txt_ahkResume.Text));
+
+
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
@@ -142,6 +192,11 @@ namespace BigBoxProfile.EmulatorActions
 			Focus();
 			TextBoxGKeyCombo.Focus();
 			TextBoxGKeyCombo.Select(TextBoxGKeyCombo.Text.Length, 0);
+		}
+
+		private void txt_file_TextChanged(object sender, EventArgs e)
+		{
+
 		}
 	}
 

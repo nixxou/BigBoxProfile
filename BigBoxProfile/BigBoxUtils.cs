@@ -1,4 +1,7 @@
-﻿using CliWrap;
+﻿using CefSharp.SchemeHandler;
+using CefSharp.WinForms;
+using CefSharp;
+using CliWrap;
 using Microsoft.Win32;
 using Microsoft.Win32.TaskScheduler;
 using MonitorSwitcherGUI;
@@ -20,11 +23,68 @@ using System.Windows.Forms;
 using System.Xml;
 using static System.Net.WebRequestMethods;
 using File = System.IO.File;
+using System.IO.MemoryMappedFiles;
 
 namespace BigBoxProfile
 {
 	internal class BigBoxUtils
 	{
+
+		public static string DataHtmlDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BigBoxProfile", "html");
+		public static bool CefInitialized = false;
+
+		private static bool _gameInfoPulled = false;
+		private static string _gameInfoJSON = @"
+{
+  ""Title"": """",
+  ""Platform"": """",
+  ""GameApplicationPath"": """",
+  ""EmulatorApplicationPath"": """",
+  ""GameCommandLine"": """",
+  ""EmulatorCommandLine"": """",
+  ""EmulatorPlatformCommandLine"": """",
+  ""BackgroundImagePath"": """",
+  ""ClearLogoImagePath"": """",
+  ""FrontImagePath"": """",
+  ""ManualPath"": """",
+  ""VideoPath"": """",
+  ""ScreenshotImagePath"": """",
+  ""ReleaseDateFormated"": """",
+  ""ReleaseDate"": """",
+  ""ClearLogoImagesFolder"": """",
+  ""MusicFolder"": """",
+  ""Cart3DImagePath"": """",
+  ""CartFrontImagePath"": """",
+  ""Box3DImagePath"": """",
+  ""RootFolder"": """",
+  ""BezelImagePath"": """",
+  ""PlatformBackgroundImagePath"": """",
+  ""PlatformClearLogo"": """",
+  ""CustomFields"": {}
+}
+";
+		public static string GameInfoJSON
+		{
+			get
+			{
+				if (_gameInfoPulled)
+				{
+					return _gameInfoJSON;
+				}
+				else
+				{
+					getGameData();
+					return _gameInfoJSON;
+				}
+			}
+			private set
+			{
+				_gameInfoJSON = value;
+			}
+		}
+
+
+
 		[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
 		private static extern bool CreateSymbolicLink(string symlinkFileName, string targetFileName, int flags);
 
@@ -48,6 +108,28 @@ namespace BigBoxProfile
 		[DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool GetDiskFreeSpaceEx(string lpDirectoryName, out ulong lpFreeBytesAvailable, out ulong lpTotalNumberOfBytes, out ulong lpTotalNumberOfFreeBytes);
+
+		public static void getGameData()
+		{
+			if(_gameInfoPulled) return;
+			string jsonResumeData = _gameInfoJSON;
+			try
+			{
+				using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting("LaunchboxJsonResumeData"))
+				{
+					using (MemoryMappedViewAccessor accessor = mmf.CreateViewAccessor())
+					{
+						long length = accessor.Capacity;
+						byte[] jsonDataBytes = new byte[length];
+						accessor.ReadArray(0, jsonDataBytes, 0, (int)length);
+						jsonResumeData = Encoding.UTF8.GetString(jsonDataBytes).TrimEnd('\0');
+					}
+				}
+			}
+			catch { }
+			GameInfoJSON = jsonResumeData;
+			_gameInfoPulled = true;
+		}
 
 		public static void MakeLink(string source, string target)
 		{
@@ -213,6 +295,8 @@ namespace BigBoxProfile
 			foreach (var dir in Directory.GetDirectories(Profile.PathMainProfileDir, "*"))
 			{
 				string ExeName = Path.GetFileName(dir);
+				if (dir == "html") continue;
+
 				string RegPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\" + ExeName;
 				if (ExeName != "")
 				{
@@ -1248,6 +1332,34 @@ namespace BigBoxProfile
 			{
 				return reader.ReadToEnd();
 			}
+
+		}
+
+		public static void CefInit()
+		{
+			if(CefInitialized) return;
+			if (!Directory.Exists(DataHtmlDir)) Directory.CreateDirectory(DataHtmlDir);
+			if (!Directory.Exists(Path.Combine(DataHtmlDir,"tmp"))) Directory.CreateDirectory(Path.Combine(DataHtmlDir, "tmp"));
+
+
+			var settings = new CefSettings();
+			settings.RegisterScheme(new CefCustomScheme
+			{
+				SchemeName = "localfolder",
+				DomainName = "cefsharp",
+				SchemeHandlerFactory = new FolderSchemeHandlerFactory(
+					rootFolder: DataHtmlDir,
+					hostName: "cefsharp",
+					defaultPage: "index.html" // will default to index.html
+				)
+			});
+			settings.CefCommandLineArgs.Add("disable-web-security");
+			settings.CefCommandLineArgs.Add("--disable-web-security");
+			settings.CefCommandLineArgs.Add("--allow-file-access-from-files");
+			settings.CefCommandLineArgs.Add("allow-file-access-from-files");
+			Cef.Initialize(settings);
+			CefInitialized = true;
+
 
 		}
 

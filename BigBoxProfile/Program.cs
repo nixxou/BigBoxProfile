@@ -11,6 +11,8 @@ namespace BigBoxProfile
 {
 	internal static class Program
 	{
+
+
 		[DllImport("user32.dll")]
 		private static extern bool SetForegroundWindow(IntPtr hWnd);
 		/// <summary>
@@ -100,6 +102,9 @@ namespace BigBoxProfile
 
 				if (args.Length >= 1)
 				{
+					
+					//if (!Directory.Exists(DataHtmlDir)) { Directory.CreateDirectory(DataHtmlDir); }
+
 					if (File.Exists(args[0]))
 					{
 						if (args[0].EndsWith("BigBox.exe") || args[0].EndsWith("LaunchBox.exe"))
