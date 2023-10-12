@@ -44,10 +44,18 @@ namespace BigBoxProfile.EmulatorActions
 		private int _gamepadKeyPressMinDuration = 0;
 		private bool _forcefullActivation = false;
 		private bool _pauseEmulation = false;
+		private bool _disableSound = false;
 		private bool _copyArt = true;
 		private string _ahkPause = "";
 		private string _ahkResume = "";
 		private string _htmlFile = "";
+
+		private bool _executePauseAfter = false;
+		private bool _executeResumeBefore = false;
+		private int _delayStarting = 0;
+		private int _delayAutoClose = 0;
+		private string _typeScreen = "pause";
+
 
 		private string _variablesData = "";
 
@@ -100,6 +108,9 @@ namespace BigBoxProfile.EmulatorActions
 				if (frm.pauseEmulation) Options["pauseEmulation"] = "yes";
 				else Options["pauseEmulation"] = "no";
 
+				if (frm.disableSound) Options["disableSound"] = "yes";
+				else Options["disableSound"] = "no";
+
 				if (frm.copyArt) Options["copyArt"] = "yes";
 				else Options["copyArt"] = "no";
 
@@ -107,7 +118,18 @@ namespace BigBoxProfile.EmulatorActions
 				Options["ahkPause"] = frm.ahkPause.Trim();
 				Options["ahkResume"] = frm.ahkResume.Trim();
 
+				if (frm.executePauseAfter) Options["executePauseAfter"] = "yes";
+				else Options["executePauseAfter"] = "no";
+
+				if (frm.executeResumeBefore) Options["executeResumeBefore"] = "yes";
+				else Options["executeResumeBefore"] = "no";
+
+				Options["delayStarting"] = frm.delayStarting.ToString();
+				Options["delayAutoClose"] = frm.delayAutoClose.ToString();
+
 				Options["variablesData"] = frm.variablesData;
+
+				Options["typeScreen"] = frm.typeScreen;
 
 				UpdateConfig();
 			}
@@ -131,6 +153,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("forcefullActivation") == false) Options["forcefullActivation"] = "no";
 
 			if (Options.ContainsKey("pauseEmulation") == false) Options["pauseEmulation"] = "no";
+			if (Options.ContainsKey("disableSound") == false) Options["disableSound"] = "no";
 			if (Options.ContainsKey("copyArt") == false) Options["copyArt"] = "yes";
 
 			if (Options.ContainsKey("htmlFile") == false) Options["htmlFile"] = "";
@@ -139,6 +162,12 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (Options.ContainsKey("variablesData") == false) Options["variablesData"] = "";
 
+			if (Options.ContainsKey("executePauseAfter") == false) Options["executePauseAfter"] = "no";
+			if (Options.ContainsKey("executeResumeBefore") == false) Options["executeResumeBefore"] = "no";
+			if (Options.ContainsKey("delayStarting") == false) Options["delayStarting"] = "0";
+			if (Options.ContainsKey("delayAutoClose") == false) Options["delayAutoClose"] = "0";
+
+			if (Options.ContainsKey("typeScreen") == false) Options["typeScreen"] = "pause";
 			UpdateConfig();
 
 		}
@@ -203,11 +232,38 @@ namespace BigBoxProfile.EmulatorActions
 
 			_forcefullActivation = Options["forcefullActivation"] == "yes" ? true : false;
 			_pauseEmulation = Options["pauseEmulation"] == "yes" ? true : false;
+			_disableSound = Options["disableSound"] == "yes" ? true : false;
+
 			_copyArt = Options["copyArt"] == "yes" ? true : false;
 			_htmlFile = Options["htmlFile"];
 			_ahkPause = Options["ahkPause"];
 			_ahkResume = Options["ahkResume"];
 			_variablesData = Options["variablesData"];
+
+
+			_executePauseAfter = Options["executePauseAfter"] == "yes" ? true : false;
+			_executeResumeBefore = Options["executeResumeBefore"] == "yes" ? true : false;
+
+			tmpInt = 0;
+			_delayStarting = 0;
+			if (Options.ContainsKey("delayStarting"))
+			{
+				if (int.TryParse(Options["delayStarting"], out tmpInt))
+				{
+					_delayStarting = tmpInt;
+				}
+			}
+			tmpInt = 0;
+			_delayAutoClose = 0;
+			if (Options.ContainsKey("delayAutoClose"))
+			{
+				if (int.TryParse(Options["delayAutoClose"], out tmpInt))
+				{
+					_delayAutoClose = tmpInt;
+				}
+			}
+
+			_typeScreen = Options["typeScreen"];
 		}
 
 		public void ExecuteBefore(string[] args)

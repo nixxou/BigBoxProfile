@@ -37,11 +37,18 @@ namespace BigBoxProfile.EmulatorActions
 		public bool forcefullActivation = false;
 
 		public bool pauseEmulation = false;
+		public bool disableSound = false;
 		public bool copyArt = true;
 		public string ahkPause = "";
 		public string ahkResume = "";
 		public string htmlFile = "";
 		public string variablesData = "";
+
+		public bool executePauseAfter = false;
+		public bool executeResumeBefore = false;
+		public int delayStarting = 0;
+		public int delayAutoClose = 0;
+		public string typeScreen = "pause";
 
 
 		public PauseMenu_Config(Dictionary<string, string> Options)
@@ -61,6 +68,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (Options.ContainsKey("forcefullActivation") && Options["forcefullActivation"] == "yes") forcefullActivation = true;
 			if (Options.ContainsKey("pauseEmulation") && Options["pauseEmulation"] == "yes") pauseEmulation = true;
+			if (Options.ContainsKey("disableSound") && Options["disableSound"] == "yes") disableSound = true;
 			if (Options.ContainsKey("copyArt") && Options["copyArt"] == "no") copyArt = false;
 
 			ahkPause = Options.ContainsKey("ahkPause") ? Options["ahkPause"] : "";
@@ -68,6 +76,11 @@ namespace BigBoxProfile.EmulatorActions
 			htmlFile = Options.ContainsKey("htmlFile") ? Options["htmlFile"] : "";
 
 			variablesData = Options.ContainsKey("variablesData") ? Options["variablesData"] : "";
+
+			if (Options.ContainsKey("executePauseAfter") && Options["executePauseAfter"] == "yes") executePauseAfter = true;
+			if (Options.ContainsKey("executeResumeBefore") && Options["executeResumeBefore"] == "yes") executeResumeBefore = true;
+
+
 
 			int tmpInt = 0;
 			gamepadKeyPressMinDuration = 0;
@@ -78,6 +91,29 @@ namespace BigBoxProfile.EmulatorActions
 					gamepadKeyPressMinDuration = tmpInt;
 				}
 			}
+
+			tmpInt = 0;
+			delayStarting = 0;
+			if (Options.ContainsKey("delayStarting"))
+			{
+				if (int.TryParse(Options["delayStarting"], out tmpInt))
+				{
+					delayStarting = tmpInt;
+				}
+			}
+
+			tmpInt = 0;
+			delayAutoClose = 0;
+			if (Options.ContainsKey("delayAutoClose"))
+			{
+				if (int.TryParse(Options["delayAutoClose"], out tmpInt))
+				{
+					delayAutoClose = tmpInt;
+				}
+			}
+
+			typeScreen = Options.ContainsKey("typeScreen") ? Options["typeScreen"] : "pause";
+
 			//gamepadKeyPressMinDuration = Options.ContainsKey("gamepadKeyPressMinDuration") ? int.Parse(Options["gamepadKeyPressMinDuration"]) : 0;
 
 			InitializeComponent();
@@ -96,12 +132,45 @@ namespace BigBoxProfile.EmulatorActions
 
 			chk_copyArty.Checked = copyArt;
 			chk_pauseEmulation.Checked = pauseEmulation;
+			chk_disableSound.Checked = disableSound;
 			txt_file.Text = htmlFile;
 			txt_ahkPause.Text = ahkPause;
 			txt_ahkResume.Text = ahkResume;
+
+			num_delaystart.Value = delayStarting;
+			num_autoclose.Value = delayAutoClose;
+			chk_executePauseAfter.Checked = executePauseAfter;
+			chk_executeResumeBefore.Checked = executeResumeBefore;
+
+			if(typeScreen=="pause") radio_pause.Checked = true;
+			if(typeScreen=="start") radio_startup.Checked = true;
+			if(typeScreen=="end") radio_end.Checked = true;
+
+
 			UpdateGUI();
+			UpdateRadioGUI();
 		}
 
+		private void UpdateRadioGUI()
+		{
+			if (typeScreen == "pause")
+			{
+				num_autoclose.Visible = false;
+				TextBoxKeyCombo.Visible = true;
+				TextBoxGKeyCombo.Visible=true;
+				button6.Visible = true;
+				button1.Visible = true;
+			}
+			else 
+			{
+				num_autoclose.Visible = true;
+				TextBoxKeyCombo.Visible = false;
+				TextBoxGKeyCombo.Visible = false;
+				button6.Visible = false;
+				button1.Visible = false;
+			}
+
+		}
 		private void UpdateGUI()
 		{
 			listBox1.Items.Clear();
@@ -137,6 +206,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			copyArt = chk_copyArty.Checked;
 			pauseEmulation = chk_pauseEmulation.Checked;
+			disableSound = chk_disableSound.Checked;
 			htmlFile = txt_file.Text;
 
 			ahkPause = txt_ahkPause.Text;
@@ -230,6 +300,26 @@ namespace BigBoxProfile.EmulatorActions
 				variablesData = frm.result;
 				UpdateGUI();
 			}
+		}
+
+		private void PauseMenu_Config_Load(object sender, EventArgs e)
+		{
+
+		}
+
+		private void radio_startup_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateRadioGUI();
+		}
+
+		private void radio_end_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateRadioGUI();
+		}
+
+		private void radio_pause_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateRadioGUI();
 		}
 	}
 

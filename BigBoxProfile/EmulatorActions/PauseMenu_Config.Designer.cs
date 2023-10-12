@@ -57,6 +57,16 @@
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
 			this.btn_manageVariables = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.chk_executePauseAfter = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_executeResumeBefore = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_disableSound = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.kryptonLabel3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.num_delaystart = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
+			this.kryptonLabel4 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.num_autoclose = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
+			this.radio_pause = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+			this.radio_startup = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+			this.radio_end = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
 			this.groupBox2.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			this.SuspendLayout();
@@ -172,7 +182,7 @@
 			// 
 			// TextBoxKeyCombo
 			// 
-			this.TextBoxKeyCombo.Location = new System.Drawing.Point(31, 236);
+			this.TextBoxKeyCombo.Location = new System.Drawing.Point(31, 259);
 			this.TextBoxKeyCombo.Name = "TextBoxKeyCombo";
 			this.TextBoxKeyCombo.ReadOnly = true;
 			this.TextBoxKeyCombo.Size = new System.Drawing.Size(274, 20);
@@ -182,16 +192,16 @@
 			// 
 			// button6
 			// 
-			this.button6.Location = new System.Drawing.Point(31, 262);
+			this.button6.Location = new System.Drawing.Point(31, 285);
 			this.button6.Name = "button6";
-			this.button6.Size = new System.Drawing.Size(274, 33);
+			this.button6.Size = new System.Drawing.Size(274, 24);
 			this.button6.TabIndex = 99;
 			this.button6.Values.Text = "Set Keyboard Bind Keys";
 			this.button6.Click += new System.EventHandler(this.button6_Click);
 			// 
 			// TextBoxGKeyCombo
 			// 
-			this.TextBoxGKeyCombo.Location = new System.Drawing.Point(368, 236);
+			this.TextBoxGKeyCombo.Location = new System.Drawing.Point(368, 259);
 			this.TextBoxGKeyCombo.Name = "TextBoxGKeyCombo";
 			this.TextBoxGKeyCombo.ReadOnly = true;
 			this.TextBoxGKeyCombo.Size = new System.Drawing.Size(276, 20);
@@ -201,9 +211,9 @@
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(368, 262);
+			this.button1.Location = new System.Drawing.Point(368, 285);
 			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(276, 33);
+			this.button1.Size = new System.Drawing.Size(276, 24);
 			this.button1.TabIndex = 101;
 			this.button1.Values.Text = "Set Gamepad Bind Keys";
 			this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -215,7 +225,7 @@
             0,
             0,
             0});
-			this.num_gamepadKeyPressMinDuration.Location = new System.Drawing.Point(522, 301);
+			this.num_gamepadKeyPressMinDuration.Location = new System.Drawing.Point(524, 315);
 			this.num_gamepadKeyPressMinDuration.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -227,7 +237,7 @@
 			// 
 			// chk_forcefullActivation
 			// 
-			this.chk_forcefullActivation.Location = new System.Drawing.Point(31, 327);
+			this.chk_forcefullActivation.Location = new System.Drawing.Point(29, 378);
 			this.chk_forcefullActivation.Name = "chk_forcefullActivation";
 			this.chk_forcefullActivation.Size = new System.Drawing.Size(126, 20);
 			this.chk_forcefullActivation.TabIndex = 104;
@@ -237,21 +247,21 @@
 			// 
 			this.txt_ahkPause.Location = new System.Drawing.Point(686, 14);
 			this.txt_ahkPause.Name = "txt_ahkPause";
-			this.txt_ahkPause.Size = new System.Drawing.Size(707, 256);
+			this.txt_ahkPause.Size = new System.Drawing.Size(707, 235);
 			this.txt_ahkPause.TabIndex = 105;
 			this.txt_ahkPause.Text = "kryptonRichTextBox1";
 			// 
 			// txt_ahkResume
 			// 
-			this.txt_ahkResume.Location = new System.Drawing.Point(686, 285);
+			this.txt_ahkResume.Location = new System.Drawing.Point(686, 259);
 			this.txt_ahkResume.Name = "txt_ahkResume";
-			this.txt_ahkResume.Size = new System.Drawing.Size(707, 211);
+			this.txt_ahkResume.Size = new System.Drawing.Size(707, 237);
 			this.txt_ahkResume.TabIndex = 106;
 			this.txt_ahkResume.Text = "kryptonRichTextBox2";
 			// 
 			// chk_pauseEmulation
 			// 
-			this.chk_pauseEmulation.Location = new System.Drawing.Point(31, 353);
+			this.chk_pauseEmulation.Location = new System.Drawing.Point(29, 404);
 			this.chk_pauseEmulation.Name = "chk_pauseEmulation";
 			this.chk_pauseEmulation.Size = new System.Drawing.Size(113, 20);
 			this.chk_pauseEmulation.TabIndex = 107;
@@ -259,7 +269,7 @@
 			// 
 			// chk_copyArty
 			// 
-			this.chk_copyArty.Location = new System.Drawing.Point(31, 379);
+			this.chk_copyArty.Location = new System.Drawing.Point(29, 454);
 			this.chk_copyArty.Name = "chk_copyArty";
 			this.chk_copyArty.Size = new System.Drawing.Size(152, 20);
 			this.chk_copyArty.TabIndex = 108;
@@ -267,7 +277,7 @@
 			// 
 			// kryptonLabel1
 			// 
-			this.kryptonLabel1.Location = new System.Drawing.Point(368, 301);
+			this.kryptonLabel1.Location = new System.Drawing.Point(368, 315);
 			this.kryptonLabel1.Name = "kryptonLabel1";
 			this.kryptonLabel1.Size = new System.Drawing.Size(150, 20);
 			this.kryptonLabel1.TabIndex = 109;
@@ -325,11 +335,122 @@
 			this.listBox1.Size = new System.Drawing.Size(291, 420);
 			this.listBox1.TabIndex = 0;
 			// 
+			// chk_executePauseAfter
+			// 
+			this.chk_executePauseAfter.Location = new System.Drawing.Point(29, 480);
+			this.chk_executePauseAfter.Name = "chk_executePauseAfter";
+			this.chk_executePauseAfter.Size = new System.Drawing.Size(328, 20);
+			this.chk_executePauseAfter.TabIndex = 114;
+			this.chk_executePauseAfter.Values.Text = "Execute Pause Ahk code after showing the pause screen";
+			// 
+			// chk_executeResumeBefore
+			// 
+			this.chk_executeResumeBefore.Location = new System.Drawing.Point(29, 506);
+			this.chk_executeResumeBefore.Name = "chk_executeResumeBefore";
+			this.chk_executeResumeBefore.Size = new System.Drawing.Size(341, 20);
+			this.chk_executeResumeBefore.TabIndex = 115;
+			this.chk_executeResumeBefore.Values.Text = "Execute Resume ahk code before closing the pause screen";
+			// 
+			// chk_disableSound
+			// 
+			this.chk_disableSound.Location = new System.Drawing.Point(29, 428);
+			this.chk_disableSound.Name = "chk_disableSound";
+			this.chk_disableSound.Size = new System.Drawing.Size(102, 20);
+			this.chk_disableSound.TabIndex = 116;
+			this.chk_disableSound.Values.Text = "Disable Sound";
+			// 
+			// kryptonLabel3
+			// 
+			this.kryptonLabel3.Location = new System.Drawing.Point(29, 326);
+			this.kryptonLabel3.Name = "kryptonLabel3";
+			this.kryptonLabel3.Size = new System.Drawing.Size(158, 20);
+			this.kryptonLabel3.TabIndex = 118;
+			this.kryptonLabel3.Values.Text = "Delay before starting (ms) :";
+			// 
+			// num_delaystart
+			// 
+			this.num_delaystart.Increment = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+			this.num_delaystart.Location = new System.Drawing.Point(212, 324);
+			this.num_delaystart.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+			this.num_delaystart.Name = "num_delaystart";
+			this.num_delaystart.Size = new System.Drawing.Size(120, 22);
+			this.num_delaystart.TabIndex = 117;
+			// 
+			// kryptonLabel4
+			// 
+			this.kryptonLabel4.Location = new System.Drawing.Point(29, 352);
+			this.kryptonLabel4.Name = "kryptonLabel4";
+			this.kryptonLabel4.Size = new System.Drawing.Size(177, 20);
+			this.kryptonLabel4.TabIndex = 120;
+			this.kryptonLabel4.Values.Text = "Autoclose after : (0=disabled) :";
+			// 
+			// num_autoclose
+			// 
+			this.num_autoclose.Increment = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+			this.num_autoclose.Location = new System.Drawing.Point(212, 350);
+			this.num_autoclose.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+			this.num_autoclose.Name = "num_autoclose";
+			this.num_autoclose.Size = new System.Drawing.Size(120, 22);
+			this.num_autoclose.TabIndex = 119;
+			// 
+			// radio_pause
+			// 
+			this.radio_pause.Location = new System.Drawing.Point(31, 229);
+			this.radio_pause.Name = "radio_pause";
+			this.radio_pause.Size = new System.Drawing.Size(133, 20);
+			this.radio_pause.TabIndex = 121;
+			this.radio_pause.Values.Text = "Use as Pause Screen";
+			this.radio_pause.CheckedChanged += new System.EventHandler(this.radio_pause_CheckedChanged);
+			// 
+			// radio_startup
+			// 
+			this.radio_startup.Location = new System.Drawing.Point(174, 229);
+			this.radio_startup.Name = "radio_startup";
+			this.radio_startup.Size = new System.Drawing.Size(141, 20);
+			this.radio_startup.TabIndex = 122;
+			this.radio_startup.Values.Text = "Use as Startup Screen";
+			this.radio_startup.CheckedChanged += new System.EventHandler(this.radio_startup_CheckedChanged);
+			// 
+			// radio_end
+			// 
+			this.radio_end.Location = new System.Drawing.Point(321, 229);
+			this.radio_end.Name = "radio_end";
+			this.radio_end.Size = new System.Drawing.Size(120, 20);
+			this.radio_end.TabIndex = 123;
+			this.radio_end.Values.Text = "Use as Exit Screen";
+			this.radio_end.CheckedChanged += new System.EventHandler(this.radio_end_CheckedChanged);
+			// 
 			// PauseMenu_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1720, 546);
+			this.Controls.Add(this.radio_end);
+			this.Controls.Add(this.radio_startup);
+			this.Controls.Add(this.radio_pause);
+			this.Controls.Add(this.kryptonLabel4);
+			this.Controls.Add(this.num_autoclose);
+			this.Controls.Add(this.kryptonLabel3);
+			this.Controls.Add(this.num_delaystart);
+			this.Controls.Add(this.chk_disableSound);
+			this.Controls.Add(this.chk_executeResumeBefore);
+			this.Controls.Add(this.chk_executePauseAfter);
 			this.Controls.Add(this.groupBox4);
 			this.Controls.Add(this.kryptonLabel2);
 			this.Controls.Add(this.btn_file);
@@ -350,6 +471,7 @@
 			this.Controls.Add(this.groupBox2);
 			this.Name = "PauseMenu_Config";
 			this.Text = "PauseMenu_Config";
+			this.Load += new System.EventHandler(this.PauseMenu_Config_Load);
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			this.groupBox4.ResumeLayout(false);
@@ -389,5 +511,15 @@
 		private System.Windows.Forms.GroupBox groupBox4;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_manageVariables;
 		private System.Windows.Forms.ListBox listBox1;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_executePauseAfter;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_executeResumeBefore;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_disableSound;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel3;
+		private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown num_delaystart;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel4;
+		private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown num_autoclose;
+		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton radio_pause;
+		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton radio_startup;
+		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton radio_end;
 	}
 }
