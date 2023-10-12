@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace BigBoxProfile
 {
@@ -41,10 +43,44 @@ namespace BigBoxProfile
 
 			txt_regex.Text = vdItem.RegexToMatch;
 			txt_value.Text = vdItem.VariableValue;
-
-
+			txt_ahk.Text = vdItem.ahkCode;
+			UpdateGui();
 
 		}
+
+		public void UpdateGui()
+		{
+
+			if (radio_arg.Checked || radio_cmd.Checked)
+			{
+				txt_regex.Visible = true;
+				txt_value.Visible = true;
+				txt_fallback.Visible = true;
+				txt_file.Visible = false;
+				labelAHK.Visible = false;
+				txt_ahk.Visible = false;
+			}
+			if (radio_file.Checked)
+			{
+				txt_regex.Visible = true;
+				txt_value.Visible = true;
+				txt_fallback.Visible = true;
+				txt_file.Visible = true;
+				labelAHK.Visible = false;
+				txt_ahk.Visible = false;
+			}
+			if (radio_ahk.Checked)
+			{
+				txt_regex.Visible = false;
+				txt_value.Visible = false;
+				txt_fallback.Visible = false;
+				txt_file.Visible = false;
+				labelAHK.Visible = true;
+				txt_ahk.Visible = true;
+			}
+
+		}
+
 
 		private void btn_cancel_Click(object sender, EventArgs e)
 		{
@@ -54,21 +90,34 @@ namespace BigBoxProfile
 
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
-			if (String.IsNullOrEmpty(txt_variableName.Text) || String.IsNullOrEmpty(txt_regex.Text) || String.IsNullOrEmpty(txt_value.Text))
+			if (radio_ahk.Enabled)
 			{
-				MessageBox.Show("You must fill the form");
-				return;
+				if (String.IsNullOrEmpty(txt_variableName.Text))
+				{
+					MessageBox.Show("You must fill the form");
+					return;
+				}
 			}
-			if (radio_file.Checked && txt_file.Text == "")
+			else
 			{
-				MessageBox.Show("You must select a file");
-				return;
+				if (String.IsNullOrEmpty(txt_variableName.Text) || String.IsNullOrEmpty(txt_regex.Text) || String.IsNullOrEmpty(txt_value.Text))
+				{
+					MessageBox.Show("You must fill the form");
+					return;
+				}
+				if (radio_file.Checked && txt_file.Text == "")
+				{
+					MessageBox.Show("You must select a file");
+					return;
+				}
+				if (!IsValidRegex(txt_regex.Text))
+				{
+					MessageBox.Show("Invalid Regex");
+					return;
+				}
 			}
-			if (!IsValidRegex(txt_regex.Text))
-			{
-				MessageBox.Show("Invalid Regex");
-				return;
-			}
+
+
 			vdData = new VariableData();
 			vdData.VariableName = txt_variableName.Text;
 			if (radio_arg.Checked)
@@ -79,6 +128,10 @@ namespace BigBoxProfile
 			{
 				vdData.SourceData = "cmd";
 			}
+			if (radio_ahk.Checked)
+			{
+				vdData.SourceData = "ahk";
+			}
 			if (radio_file.Checked)
 			{
 				vdData.SourceData = txt_file.Text;
@@ -86,6 +139,7 @@ namespace BigBoxProfile
 			vdData.RegexToMatch = txt_regex.Text;
 			vdData.VariableValue = txt_value.Text;
 			vdData.FallbackValue = txt_fallback.Text;
+			vdData.ahkCode = txt_ahk.Text;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
@@ -118,6 +172,26 @@ namespace BigBoxProfile
 
 				}
 			}
+		}
+
+		private void radio_file_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateGui();
+		}
+
+		private void radio_cmd_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateGui();
+		}
+
+		private void radio_arg_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateGui();
+		}
+
+		private void radio_ahk_CheckedChanged(object sender, EventArgs e)
+		{
+			UpdateGui();
 		}
 	}
 }

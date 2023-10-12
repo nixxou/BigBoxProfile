@@ -44,6 +44,9 @@
 			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.kryptonLabel5 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.txt_fallback = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
+			this.txt_ahk = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
+			this.labelAHK = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.radio_ahk = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
 			this.SuspendLayout();
 			// 
 			// txt_value
@@ -85,6 +88,7 @@
 			this.radio_file.Size = new System.Drawing.Size(86, 20);
 			this.radio_file.TabIndex = 132;
 			this.radio_file.Values.Text = "Specific File";
+			this.radio_file.CheckedChanged += new System.EventHandler(this.radio_file_CheckedChanged);
 			// 
 			// radio_cmd
 			// 
@@ -93,6 +97,7 @@
 			this.radio_cmd.Size = new System.Drawing.Size(89, 20);
 			this.radio_cmd.TabIndex = 131;
 			this.radio_cmd.Values.Text = "the cmdLine";
+			this.radio_cmd.CheckedChanged += new System.EventHandler(this.radio_cmd_CheckedChanged);
 			// 
 			// radio_arg
 			// 
@@ -102,6 +107,7 @@
 			this.radio_arg.Size = new System.Drawing.Size(106, 20);
 			this.radio_arg.TabIndex = 130;
 			this.radio_arg.Values.Text = "Each Argument";
+			this.radio_arg.CheckedChanged += new System.EventHandler(this.radio_arg_CheckedChanged);
 			// 
 			// kryptonLabel4
 			// 
@@ -177,11 +183,39 @@
 			this.txt_fallback.TabIndex = 139;
 			this.txt_fallback.Text = "";
 			// 
+			// txt_ahk
+			// 
+			this.txt_ahk.Location = new System.Drawing.Point(160, 103);
+			this.txt_ahk.Name = "txt_ahk";
+			this.txt_ahk.Size = new System.Drawing.Size(576, 358);
+			this.txt_ahk.TabIndex = 141;
+			this.txt_ahk.Text = "";
+			// 
+			// labelAHK
+			// 
+			this.labelAHK.Location = new System.Drawing.Point(20, 135);
+			this.labelAHK.Name = "labelAHK";
+			this.labelAHK.Size = new System.Drawing.Size(73, 20);
+			this.labelAHK.TabIndex = 142;
+			this.labelAHK.Values.Text = "AHK Code :";
+			// 
+			// radio_ahk
+			// 
+			this.radio_ahk.Location = new System.Drawing.Point(459, 48);
+			this.radio_ahk.Name = "radio_ahk";
+			this.radio_ahk.Size = new System.Drawing.Size(78, 20);
+			this.radio_ahk.TabIndex = 143;
+			this.radio_ahk.Values.Text = "AHK Code";
+			this.radio_ahk.CheckedChanged += new System.EventHandler(this.radio_ahk_CheckedChanged);
+			// 
 			// Manage_Variables_PopupEdit
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(748, 509);
+			this.Controls.Add(this.radio_ahk);
+			this.Controls.Add(this.labelAHK);
+			this.Controls.Add(this.txt_ahk);
 			this.Controls.Add(this.kryptonLabel5);
 			this.Controls.Add(this.txt_fallback);
 			this.Controls.Add(this.btn_cancel);
@@ -222,5 +256,8 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_ok;
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel5;
 		private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox txt_fallback;
+		private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox txt_ahk;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel labelAHK;
+		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton radio_ahk;
 	}
 }

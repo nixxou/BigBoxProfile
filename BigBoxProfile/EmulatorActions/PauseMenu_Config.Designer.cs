@@ -54,7 +54,11 @@
 			this.btn_file = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.txt_file = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.kryptonLabel2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.btn_manageVariables = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.groupBox2.SuspendLayout();
+			this.groupBox4.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox2
@@ -150,7 +154,7 @@
 			// btn_cancel
 			// 
 			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_cancel.Location = new System.Drawing.Point(1237, 502);
+			this.btn_cancel.Location = new System.Drawing.Point(1537, 502);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 98;
@@ -159,7 +163,7 @@
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(1318, 502);
+			this.btn_ok.Location = new System.Drawing.Point(1627, 502);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 97;
@@ -293,11 +297,40 @@
 			this.kryptonLabel2.TabIndex = 112;
 			this.kryptonLabel2.Values.Text = "HTML File :";
 			// 
+			// groupBox4
+			// 
+			this.groupBox4.Controls.Add(this.btn_manageVariables);
+			this.groupBox4.Controls.Add(this.listBox1);
+			this.groupBox4.Location = new System.Drawing.Point(1399, 14);
+			this.groupBox4.Name = "groupBox4";
+			this.groupBox4.Size = new System.Drawing.Size(309, 482);
+			this.groupBox4.TabIndex = 113;
+			this.groupBox4.TabStop = false;
+			this.groupBox4.Text = "Variables (Advanced Users Only !)";
+			// 
+			// btn_manageVariables
+			// 
+			this.btn_manageVariables.Location = new System.Drawing.Point(12, 452);
+			this.btn_manageVariables.Name = "btn_manageVariables";
+			this.btn_manageVariables.Size = new System.Drawing.Size(291, 24);
+			this.btn_manageVariables.TabIndex = 96;
+			this.btn_manageVariables.Values.Text = "Manage Variables";
+			this.btn_manageVariables.Click += new System.EventHandler(this.btn_manageVariables_Click);
+			// 
+			// listBox1
+			// 
+			this.listBox1.FormattingEnabled = true;
+			this.listBox1.Location = new System.Drawing.Point(12, 19);
+			this.listBox1.Name = "listBox1";
+			this.listBox1.Size = new System.Drawing.Size(291, 420);
+			this.listBox1.TabIndex = 0;
+			// 
 			// PauseMenu_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1405, 546);
+			this.ClientSize = new System.Drawing.Size(1720, 546);
+			this.Controls.Add(this.groupBox4);
 			this.Controls.Add(this.kryptonLabel2);
 			this.Controls.Add(this.btn_file);
 			this.Controls.Add(this.txt_file);
@@ -319,6 +352,7 @@
 			this.Text = "PauseMenu_Config";
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
+			this.groupBox4.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -352,5 +386,8 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_file;
 		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_file;
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel2;
+		private System.Windows.Forms.GroupBox groupBox4;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_manageVariables;
+		private System.Windows.Forms.ListBox listBox1;
 	}
 }

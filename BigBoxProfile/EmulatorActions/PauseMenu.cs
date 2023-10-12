@@ -49,6 +49,8 @@ namespace BigBoxProfile.EmulatorActions
 		private string _ahkResume = "";
 		private string _htmlFile = "";
 
+		private string _variablesData = "";
+
 		private X.Gamepad gamepad = null;
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
@@ -105,6 +107,8 @@ namespace BigBoxProfile.EmulatorActions
 				Options["ahkPause"] = frm.ahkPause.Trim();
 				Options["ahkResume"] = frm.ahkResume.Trim();
 
+				Options["variablesData"] = frm.variablesData;
+
 				UpdateConfig();
 			}
 
@@ -132,6 +136,8 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("htmlFile") == false) Options["htmlFile"] = "";
 			if (Options.ContainsKey("ahkPause") == false) Options["ahkPause"] = "";
 			if (Options.ContainsKey("ahkResume") == false) Options["ahkResume"] = "";
+
+			if (Options.ContainsKey("variablesData") == false) Options["variablesData"] = "";
 
 			UpdateConfig();
 
@@ -201,6 +207,7 @@ namespace BigBoxProfile.EmulatorActions
 			_htmlFile = Options["htmlFile"];
 			_ahkPause = Options["ahkPause"];
 			_ahkResume = Options["ahkResume"];
+			_variablesData = Options["variablesData"];
 		}
 
 		public void ExecuteBefore(string[] args)

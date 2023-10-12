@@ -42,6 +42,39 @@ namespace BigBoxProfile
 
 		}
 
+		public void UpdateGui()
+		{
+
+			if (radio_arg.Checked || radio_cmd.Checked)
+			{
+				txt_regex.Enabled = true;
+				txt_value.Enabled = true;
+				txt_fallback.Enabled = true;
+				txt_file.Visible = false;
+				groupBox1.Visible = true;
+				groupahk.Visible = false;
+			}
+			if(radio_file.Checked)
+			{
+				txt_regex.Enabled = true;
+				txt_value.Enabled = true;
+				txt_fallback.Enabled = true;
+				txt_file.Visible = true;
+				groupBox1.Visible = true;
+				groupahk.Visible = false;
+			}
+			if (radio_ahk.Checked)
+			{
+				txt_regex.Enabled = false;
+				txt_value.Enabled = false;
+				txt_fallback.Enabled = false;
+				txt_file.Visible = false;
+				groupBox1.Visible = false;
+				groupahk.Visible = true;
+			}
+
+		}
+
 		private void kryptonLabel1_Paint(object sender, PaintEventArgs e)
 		{
 
@@ -49,26 +82,39 @@ namespace BigBoxProfile
 
 		private void Manage_Variables_Load(object sender, EventArgs e)
 		{
-
+			UpdateGui();
 		}
 
 		private void btn_add_Click(object sender, EventArgs e)
 		{
-			if (String.IsNullOrEmpty(txt_variableName.Text) || String.IsNullOrEmpty(txt_regex.Text) || String.IsNullOrEmpty(txt_value.Text))
+			if (radio_ahk.Enabled)
 			{
-				MessageBox.Show("You must fill the form");
-				return;
+				if (String.IsNullOrEmpty(txt_variableName.Text))
+				{
+					MessageBox.Show("You must fill the form");
+					return;
+				}
 			}
-			if (radio_file.Checked && txt_file.Text == "")
+			else
 			{
-				MessageBox.Show("You must select a file");
-				return;
+				if (String.IsNullOrEmpty(txt_variableName.Text) || String.IsNullOrEmpty(txt_regex.Text) || String.IsNullOrEmpty(txt_value.Text))
+				{
+					MessageBox.Show("You must fill the form");
+					return;
+				}
+				if (radio_file.Checked && txt_file.Text == "")
+				{
+					MessageBox.Show("You must select a file");
+					return;
+				}
+				if (!IsValidRegex(txt_regex.Text))
+				{
+					MessageBox.Show("Invalid Regex");
+					return;
+				}
 			}
-			if (!IsValidRegex(txt_regex.Text))
-			{
-				MessageBox.Show("Invalid Regex");
-				return;
-			}
+
+
 
 
 			VariableData newItem = new VariableData();
@@ -85,10 +131,15 @@ namespace BigBoxProfile
 			{
 				newItem.SourceData = txt_file.Text;
 			}
+			if (radio_ahk.Checked)
+			{
+				newItem.SourceData = "ahk";
+			}
 
 			newItem.RegexToMatch = txt_regex.Text;
 			newItem.VariableValue = txt_value.Text;
 			newItem.FallbackValue = txt_fallback.Text;
+			newItem.ahkCode = txt_ahk.Text;
 
 			ListViewItem item = new ListViewItem(newItem.ToStringArray());
 			lv_priority.Items.Add(item);
@@ -375,6 +426,7 @@ namespace BigBoxProfile
 			{
 				_testData.SourceData = "arg";
 				UpdateTestLabel();
+				UpdateGui();
 			}
 		}
 
@@ -384,6 +436,7 @@ namespace BigBoxProfile
 			{
 				_testData.SourceData = "cmd";
 				UpdateTestLabel();
+				UpdateGui();
 			}
 		}
 
@@ -393,6 +446,18 @@ namespace BigBoxProfile
 			{
 				_testData.SourceData = txt_file.Text;
 				UpdateTestLabel();
+				UpdateGui();
+			}
+		}
+
+
+		private void radio_ahk_CheckedChanged(object sender, EventArgs e)
+		{
+			if (radio_ahk.Checked)
+			{
+				_testData.SourceData = "ahk";
+				UpdateTestLabel();
+				UpdateGui();
 			}
 		}
 
@@ -504,5 +569,6 @@ namespace BigBoxProfile
 		{
 			UpdateTestLabel();
 		}
+
 	}
 }

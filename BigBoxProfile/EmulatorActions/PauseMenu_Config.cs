@@ -41,6 +41,7 @@ namespace BigBoxProfile.EmulatorActions
 		public string ahkPause = "";
 		public string ahkResume = "";
 		public string htmlFile = "";
+		public string variablesData = "";
 
 
 		public PauseMenu_Config(Dictionary<string, string> Options)
@@ -64,10 +65,9 @@ namespace BigBoxProfile.EmulatorActions
 
 			ahkPause = Options.ContainsKey("ahkPause") ? Options["ahkPause"] : "";
 			ahkResume = Options.ContainsKey("ahkResume") ? Options["ahkResume"] : "";
-
-			if (ahkPause != "") ahkPause = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(ahkPause));
-			if (ahkResume != "") ahkResume = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(ahkResume));
 			htmlFile = Options.ContainsKey("htmlFile") ? Options["htmlFile"] : "";
+
+			variablesData = Options.ContainsKey("variablesData") ? Options["variablesData"] : "";
 
 			int tmpInt = 0;
 			gamepadKeyPressMinDuration = 0;
@@ -99,10 +99,32 @@ namespace BigBoxProfile.EmulatorActions
 			txt_file.Text = htmlFile;
 			txt_ahkPause.Text = ahkPause;
 			txt_ahkResume.Text = ahkResume;
+			UpdateGUI();
+		}
+
+		private void UpdateGUI()
+		{
+			listBox1.Items.Clear();
+			if (!String.IsNullOrEmpty(variablesData))
+			{
+				var priority_arr = BigBoxUtils.explode(variablesData, "|||");
+				foreach (var p in priority_arr)
+				{
+					var pObj = new VariableData(p);
+					listBox1.Items.Add(pObj.VariableName);
+				}
+			}
+
 		}
 
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
+			List<string> variablesList = new List<string>();
+			for (int i = 0; i < listBox1.Items.Count; i++)
+			{
+				variablesList.Add(listBox1.Items[i].ToString());
+			}
+
 			filter = txt_filter.Text;
 			exclude = txt_exclude.Text;
 			commaFilter = chk_filter_comma.Checked;
@@ -117,8 +139,8 @@ namespace BigBoxProfile.EmulatorActions
 			pauseEmulation = chk_pauseEmulation.Checked;
 			htmlFile = txt_file.Text;
 
-			ahkPause = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(txt_ahkPause.Text));
-			ahkResume = System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(txt_ahkResume.Text));
+			ahkPause = txt_ahkPause.Text;
+			ahkResume = txt_ahkResume.Text;
 
 
 
@@ -197,6 +219,17 @@ namespace BigBoxProfile.EmulatorActions
 		private void txt_file_TextChanged(object sender, EventArgs e)
 		{
 
+		}
+
+		private void btn_manageVariables_Click(object sender, EventArgs e)
+		{
+			var frm = new Manage_Variables(variablesData);
+			var result = frm.ShowDialog();
+			if (result == DialogResult.OK)
+			{
+				variablesData = frm.result;
+				UpdateGUI();
+			}
 		}
 	}
 
