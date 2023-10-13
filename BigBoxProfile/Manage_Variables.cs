@@ -94,6 +94,16 @@ namespace BigBoxProfile
 					MessageBox.Show("You must fill the form");
 					return;
 				}
+				string errorTxt = "";
+				if (!BigBoxUtils.AHKSyntaxCheck(txt_ahk.Text, true, out errorTxt))
+				{
+					DialogResult dialogResult = MessageBox.Show($"AHK Syntax error : {errorTxt} \n Are you sure you want to save ?", "AHK Syntax error", MessageBoxButtons.YesNo);
+					if (dialogResult == DialogResult.No)
+					{
+						return;
+					}
+				}
+
 			}
 			else
 			{

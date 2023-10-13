@@ -1,4 +1,5 @@
-﻿using ComponentFactory.Krypton.Toolkit;
+﻿using CliWrap;
+using ComponentFactory.Krypton.Toolkit;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -60,6 +61,43 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
+			string errorTxt = "";
+			if (!BigBoxUtils.AHKSyntaxCheck(txt_CodeExemple.Text, true, out errorTxt))
+			{
+				DialogResult dialogResult = MessageBox.Show($"Syntax error : {errorTxt} \n Are you sure you want to save ?", "<<Modify Command Line(Exemple Only)>> Syntax error", MessageBoxButtons.YesNo);
+				if (dialogResult == DialogResult.No)
+				{
+					return;
+				}
+			}
+			errorTxt = "";
+			if (!BigBoxUtils.AHKSyntaxCheck(txt_CodeReal.Text, true, out errorTxt))
+			{
+				DialogResult dialogResult = MessageBox.Show($"Syntax error : {errorTxt} \n Are you sure you want to save ?", "<<Modify Command Line (Real)>> Syntax error", MessageBoxButtons.YesNo);
+				if (dialogResult == DialogResult.No)
+				{
+					return;
+				}
+			}
+			errorTxt = "";
+			if (!BigBoxUtils.AHKSyntaxCheck(txt_CodeBefore.Text, true, out errorTxt))
+			{
+				DialogResult dialogResult = MessageBox.Show($"Syntax error : {errorTxt} \n Are you sure you want to save ?", "<<Execute Before>> Syntax error", MessageBoxButtons.YesNo);
+				if (dialogResult == DialogResult.No)
+				{
+					return;
+				}
+			}
+			errorTxt = "";
+			if (!BigBoxUtils.AHKSyntaxCheck(txt_CodeAfter.Text, true, out errorTxt))
+			{
+				DialogResult dialogResult = MessageBox.Show($"Syntax error : {errorTxt} \n Are you sure you want to save ?", "<<Execute After>> Syntax error", MessageBoxButtons.YesNo);
+				if (dialogResult == DialogResult.No)
+				{
+					return;
+				}
+			}
+
 			filter = txt_filter.Text;
 			ahkCodeExemple = txt_CodeExemple.Text;
 			ahkCodeReal = txt_CodeReal.Text;
