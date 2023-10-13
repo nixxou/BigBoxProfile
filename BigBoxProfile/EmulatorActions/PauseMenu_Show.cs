@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.MemoryMappedFiles;
@@ -16,7 +17,9 @@ using CefSharp.SchemeHandler;
 using CefSharp.Web;
 using CefSharp.WinForms;
 using Microsoft.Win32;
+using MonitorSwitcherGUI;
 using Newtonsoft.Json;
+using SharpDX;
 
 
 namespace BigBoxProfile.EmulatorActions
@@ -24,6 +27,7 @@ namespace BigBoxProfile.EmulatorActions
 
 	public partial class PauseMenu_Show : Form
 	{
+
 		public CustomBrowser chromiumWebBrowser1;
 
 		[DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
@@ -38,28 +42,78 @@ namespace BigBoxProfile.EmulatorActions
 
 
 
-		private bool ForcefullActivation = false;
+		private PauseMenu _config = null;
+		private string[] _args = null;
 
+		private System.Timers.Timer timerEnd = null;
+		private Screen _selectedScreen = null;
+		private int _selectedScreenIndex = -1;
+		private int _selectedScreenDPI = -1;
 
-
-		public PauseMenu_Show(bool forcefullActivation)
+		public PauseMenu_Show(PauseMenu pauseMenu, string[] args)
 		{
-
-			ForcefullActivation = forcefullActivation;
-
-
-
+			_args = args;
+			_config = pauseMenu;
 
 			InitializeComponent();
 
-			this.Location = new Point(0, 0);
+			_selectedScreen = null;
+			Screen MainScreen = null;
+			int MainScreenIndex = -1;
+			int MainScreenDpi = -1;
+			Screen[] screens = Screen.AllScreens;
+			for (int i = 0; i < screens.Length; i++)
+			{
+				Screen screen = screens[i];
+				string DeviceName = screen.DeviceName.Trim('\\').Trim('.').Trim('\\');
+				if(_config._selectedMonitor == DeviceName)
+				{
+					_selectedScreen = screen;
+					_selectedScreenIndex = i;
+					_selectedScreenDPI = DPIUtils.GetMonitorDPI(i);
+				}
+				if (screen.Primary)
+				{
+					MainScreenIndex = i;
+					MainScreenDpi = DPIUtils.GetMonitorDPI(i);
+					MainScreen = screen;
+				}
+			}
+			if (_selectedScreen == null)
+			{
+				_selectedScreen = MainScreen;
+				_selectedScreenIndex = MainScreenIndex;
+				_selectedScreenDPI = MainScreenDpi;
+			}
+
+			int SizeWidth = _selectedScreen.Bounds.Width;
+			int SizeHeight = _selectedScreen.Bounds.Height;
+			if (_config._dpi == 0)
+			{
+				SizeWidth = (int)Math.Floor((double)SizeWidth * ((double)_selectedScreenDPI / 100.0));
+				SizeHeight = (int)Math.Floor((double)SizeHeight * ((double)_selectedScreenDPI / 100.0));
+			}
+			else
+			{
+				SizeWidth = (int)Math.Floor((double)SizeWidth * ((double)_config._dpi / 100.0));
+				SizeHeight = (int)Math.Floor((double)SizeHeight * ((double)_config._dpi / 100.0));
+			}
+			this.Location = new Point(_selectedScreen.Bounds.Left, _selectedScreen.Bounds.Top);
 			this.FormBorderStyle = FormBorderStyle.None;
-			this.Width = Screen.PrimaryScreen.Bounds.Width;
-			this.Height = Screen.PrimaryScreen.Bounds.Height;
+			this.Width = SizeWidth;
+			this.Height = SizeHeight;
+			//this.WindowState = FormWindowState.Maximized;
 
 			fakebrowser_txt.Width = this.Width;
 			fakebrowser_txt.Height = this.Height;
-			fakebrowser_txt.Location = this.Location;
+			fakebrowser_txt.Location = new Point(0,0);
+			
+
+
+			// Gestion de l'échelle DPI
+			//this.AutoScaleMode = AutoScaleMode.Dpi;
+			//this.AutoScroll = true;
+			//this.AutoScaleDimensions = new SizeF(96F, 96F); // Réglez cette valeur sur la résolution DPI de référence (96 DPI par défaut)
 
 			this.chromiumWebBrowser1 = new CustomBrowser();
 			this.chromiumWebBrowser1.ParentForm = this;
@@ -67,43 +121,44 @@ namespace BigBoxProfile.EmulatorActions
 			BigBoxUtils.CefInit();
 
 			//this.chromiumWebBrowser1.IsBrowserInitializedChanged += (a,b) => { chromiumWebBrowser1.ShowDevTools(); };
-
-
-			string htmlContent = File.ReadAllText(Path.Combine(BigBoxUtils.DataHtmlDir, @"index.html"));
-			string jsonFrom = @"<script id=""jsonGameData"" type=""text/plain"">{}</script>";
-			string jsonTo = @"<script id=""jsonGameData"" type=""text/plain"">" + BigBoxUtils.GameInfoJSON + @"</script>";
-			htmlContent = htmlContent.Replace(jsonFrom, jsonTo);
-			/*
-			try
+			Dictionary<string, VariableData> variablesDictionary = new Dictionary<string, VariableData>();
+			if (!String.IsNullOrEmpty(_config._variablesData))
 			{
-				using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting("LaunchboxJsonGameData"))
+				var priority_arr = BigBoxUtils.explode(_config._variablesData, "|||");
+				foreach (var p in priority_arr)
 				{
-					using (MemoryMappedViewAccessor accessor = mmf.CreateViewAccessor())
+					var pObj = new VariableData(p);
+					if (!variablesDictionary.ContainsKey(pObj.VariableName))
 					{
-						long length = accessor.Capacity;
-						byte[] jsonDataBytes = new byte[length];
-						accessor.ReadArray(0, jsonDataBytes, 0, (int)length);
-						string jsonData = Encoding.UTF8.GetString(jsonDataBytes).TrimEnd('\0');
-
-
-						
-						var dynamicObject = JsonConvert.DeserializeObject<dynamic>(jsonData);
-						MessageBox.Show((string)dynamicObject.ClearLogoImagePath);
-						File.Copy((string)dynamicObject.ClearLogoImagePath, Path.Combine(BigBoxUtils.DataHtmlDir, @"clearlogo.png"));
-
+						variablesDictionary.Add(pObj.VariableName, pObj);
 					}
 				}
 			}
-			catch { }
-			*/
+
+			string htmlContent = File.ReadAllText(_config._htmlFile);
+
+			if (variablesDictionary.Count > 0)
+			{
+				int currentLoopVariable = 0;
+				int maxLoopVariable = 10;
+				bool foundVariable = true;
+				while (foundVariable)
+				{
+					foundVariable = false;
+					currentLoopVariable++;
+					foreach (var v in variablesDictionary)
+					{
+						if (htmlContent.ToLower().Contains(v.Key.ToLower()))
+						{
+							foundVariable = true;
+							htmlContent = v.Value.ReplaceVariable(htmlContent, _args);
+						}
+					}
+					if (currentLoopVariable > maxLoopVariable) break;
+				}
+			}
 
 			this.chromiumWebBrowser1.LoadHtml(htmlContent, "localfolder://cefsharp/index.html");
-
-
-			//this.chromiumWebBrowser1 = new ChromiumWebBrowser("localfolder://cefsharp/");
-
-
-
 
 			this.chromiumWebBrowser1.Location = fakebrowser_txt.Location;
 			this.chromiumWebBrowser1.Name = "chromiumWebBrowser1";
@@ -118,12 +173,28 @@ namespace BigBoxProfile.EmulatorActions
 			this.BringToFront();
 			this.TopMost = true;
 			this.Activate();
+			chromiumWebBrowser1.Focus();
+
 			timer1.Enabled = true;
-			if (ForcefullActivation)
+			if (_config._forcefullActivation)
 			{
 				this.LostFocus += timer1_Tick;
 			}
 			SystemEvents.DisplaySettingsChanged += new EventHandler(SystemEvents_DisplaySettingsChanged);
+
+			if (_config._delayAutoClose > 0)
+			{
+				timerEnd = new System.Timers.Timer(_config._delayAutoClose);
+				timerEnd.Enabled = true;
+				timerEnd.Elapsed += (sender, e) =>
+				{
+					timerEnd.Stop();
+					this.Invoke(new Action(() =>
+					 {
+						 this.Close();
+					 }));
+				};
+			}
 
 		}
 
@@ -137,7 +208,8 @@ namespace BigBoxProfile.EmulatorActions
 			ShowWindowAsync(this.Handle, WS_SHOWNORMAL);
 			SetForegroundWindow(this.Handle);
 			SystemParametersInfo((uint)0x2001, 200000, 200000, 0x0002 | 0x0001);
-			if (!ForcefullActivation) timer1.Enabled = false;
+			chromiumWebBrowser1.Focus();
+			if (!_config._forcefullActivation) timer1.Enabled = false;
 		}
 
 		private void PauseMenu_Show_Load(object sender, EventArgs e)
@@ -151,14 +223,54 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
 		{
-			this.Activate();
-			this.Location = new Point(0, 0);
+			_selectedScreen = null;
+			Screen MainScreen = null;
+			int MainScreenIndex = -1;
+			int MainScreenDpi = -1;
+			Screen[] screens = Screen.AllScreens;
+			for (int i = 0; i < screens.Length; i++)
+			{
+				Screen screen = screens[i];
+				string DeviceName = screen.DeviceName.Trim('\\').Trim('.').Trim('\\');
+				if (_config._selectedMonitor == DeviceName)
+				{
+					_selectedScreen = screen;
+					_selectedScreenIndex = i;
+					_selectedScreenDPI = DPIUtils.GetMonitorDPI(i);
+				}
+				if (screen.Primary)
+				{
+					MainScreenIndex = i;
+					MainScreenDpi = DPIUtils.GetMonitorDPI(i);
+					MainScreen = screen;
+				}
+			}
+			if (_selectedScreen == null)
+			{
+				_selectedScreen = MainScreen;
+				_selectedScreenIndex = MainScreenIndex;
+				_selectedScreenDPI = MainScreenDpi;
+			}
+
+			int SizeWidth = _selectedScreen.Bounds.Width;
+			int SizeHeight = _selectedScreen.Bounds.Height;
+			if (_config._dpi == 0)
+			{
+				SizeWidth = (int)Math.Floor((double)SizeWidth * ((double)_selectedScreenDPI / 100.0));
+				SizeHeight = (int)Math.Floor((double)SizeHeight * ((double)_selectedScreenDPI / 100.0));
+			}
+			else
+			{
+				SizeWidth = (int)Math.Floor((double)SizeWidth * ((double)_config._dpi / 100.0));
+				SizeHeight = (int)Math.Floor((double)SizeHeight * ((double)_config._dpi / 100.0));
+			}
+			this.Location = new Point(_selectedScreen.Bounds.Left, _selectedScreen.Bounds.Top);
 			this.FormBorderStyle = FormBorderStyle.None;
-			this.Width = Screen.PrimaryScreen.Bounds.Width;
-			this.Height = Screen.PrimaryScreen.Bounds.Height;
+			this.Width = SizeWidth;
+			this.Height = SizeHeight;
 			fakebrowser_txt.Width = this.Width;
 			fakebrowser_txt.Height = this.Height;
-			fakebrowser_txt.Location = this.Location;
+			fakebrowser_txt.Location = new Point(0, 0);
 			//this.WindowState = FormWindowState.Maximized;
 			this.chromiumWebBrowser1.Size = fakebrowser_txt.Size;
 			this.chromiumWebBrowser1.Refresh();

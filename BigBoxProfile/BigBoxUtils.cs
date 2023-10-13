@@ -83,6 +83,17 @@ namespace BigBoxProfile
 			}
 		}
 
+		[DllImport("kernel32.dll")]
+		private static extern IntPtr OpenThread(int dwDesiredAccess, bool bInheritHandle, int dwThreadId);
+
+		[DllImport("kernel32.dll")]
+		private static extern bool SuspendThread(IntPtr hThread);
+
+		[DllImport("kernel32.dll")]
+		private static extern int ResumeThread(IntPtr hThread);
+
+		[DllImport("kernel32.dll")]
+		private static extern int CloseHandle(IntPtr hObject);
 
 
 		[DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
@@ -1820,6 +1831,101 @@ OriginalArgs := []
 			}
 		}
 
+		public static Process FindProcessEmulator(string[] args)
+		{
+			if (args.Length == 0) return null;
+			string emuPath = args[0];
+			string processName = Path.GetFileNameWithoutExtension(emuPath);
+
+			var currentProcessHandle = Process.GetCurrentProcess().Id;
+			Process FoundProcess = null;
+			foreach (var p in Process.GetProcessesByName(processName).Where(p => p.MainWindowTitle != ""))
+			{
+				var parent = ParentProcessUtilities.GetParentProcess(p.Id);
+				if(parent != null)
+				{
+					if(parent.Id == currentProcessHandle)
+					{
+						FoundProcess = p;
+						break;
+					}
+					else
+					{
+						var grandParent = ParentProcessUtilities.GetParentProcess(parent.Id);
+						if(grandParent != null)
+						{
+							if (grandParent.Id == currentProcessHandle)
+							{
+								FoundProcess = p;
+								break;
+							}
+						}
+					}
+				}
+			}
+			foreach (var p in Process.GetProcessesByName(processName))
+			{
+				var parent = ParentProcessUtilities.GetParentProcess(p.Id);
+				if (parent != null)
+				{
+					if (parent.Id == currentProcessHandle)
+					{
+						FoundProcess = p;
+						break;
+					}
+					else
+					{
+						var grandParent = ParentProcessUtilities.GetParentProcess(parent.Id);
+						if (grandParent != null)
+						{
+							if (grandParent.Id == currentProcessHandle)
+							{
+								FoundProcess = p;
+								break;
+							}
+						}
+					}
+				}
+			}
+			if (FoundProcess == null) FoundProcess = Process.GetProcessesByName(processName).Where(p => p.MainWindowTitle != "").FirstOrDefault();
+			if (FoundProcess == null) FoundProcess = Process.GetProcessesByName(processName).FirstOrDefault();
+
+			return FoundProcess;
+
+		}
+
+
+		public static void PauseProcess(int processId)
+		{
+			Process process = Process.GetProcessById(processId);
+			foreach (ProcessThread thread in process.Threads)
+			{
+				IntPtr hThread = OpenThread(0x0002, false, thread.Id); // THREAD_SUSPEND_RESUME
+				if (hThread != IntPtr.Zero)
+				{
+					SuspendThread(hThread);
+					CloseHandle(hThread);
+				}
+			}
+		}
+
+		public static void ResumeProcess(int processId)
+		{
+			Process process = Process.GetProcessById(processId);
+			foreach (ProcessThread thread in process.Threads)
+			{
+				IntPtr hThread = OpenThread(0x0002, false, thread.Id); // THREAD_SUSPEND_RESUME
+				if (hThread != IntPtr.Zero)
+				{
+					int suspendCount = 0;
+					do
+					{
+						suspendCount = ResumeThread(hThread);
+					} while (suspendCount > 0);
+					CloseHandle(hThread);
+				}
+			}
+		}
 
 
 	}

@@ -67,8 +67,16 @@
 			this.radio_pause = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
 			this.radio_startup = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
 			this.radio_end = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
+			this.cmb_add = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
+			this.kryptonLabel5 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.cmb_dpi = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
+			this.kryptonLabel8 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.groupBox2.SuspendLayout();
 			this.groupBox4.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.cmb_dpi)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupBox2
@@ -245,17 +253,17 @@
 			// 
 			// txt_ahkPause
 			// 
-			this.txt_ahkPause.Location = new System.Drawing.Point(686, 14);
+			this.txt_ahkPause.Location = new System.Drawing.Point(686, 35);
 			this.txt_ahkPause.Name = "txt_ahkPause";
-			this.txt_ahkPause.Size = new System.Drawing.Size(707, 235);
+			this.txt_ahkPause.Size = new System.Drawing.Size(707, 216);
 			this.txt_ahkPause.TabIndex = 105;
 			this.txt_ahkPause.Text = "kryptonRichTextBox1";
 			// 
 			// txt_ahkResume
 			// 
-			this.txt_ahkResume.Location = new System.Drawing.Point(686, 259);
+			this.txt_ahkResume.Location = new System.Drawing.Point(686, 276);
 			this.txt_ahkResume.Name = "txt_ahkResume";
-			this.txt_ahkResume.Size = new System.Drawing.Size(707, 237);
+			this.txt_ahkResume.Size = new System.Drawing.Size(707, 220);
 			this.txt_ahkResume.TabIndex = 106;
 			this.txt_ahkResume.Text = "kryptonRichTextBox2";
 			// 
@@ -271,9 +279,9 @@
 			// 
 			this.chk_copyArty.Location = new System.Drawing.Point(29, 454);
 			this.chk_copyArty.Name = "chk_copyArty";
-			this.chk_copyArty.Size = new System.Drawing.Size(152, 20);
+			this.chk_copyArty.Size = new System.Drawing.Size(311, 20);
 			this.chk_copyArty.TabIndex = 108;
-			this.chk_copyArty.Values.Text = "Copy art img to tmp dir";
+			this.chk_copyArty.Values.Text = "Copy art img to %appdata%/BigBoxProfile/html/tmp";
 			// 
 			// kryptonLabel1
 			// 
@@ -290,6 +298,7 @@
 			this.btn_file.Size = new System.Drawing.Size(35, 24);
 			this.btn_file.TabIndex = 111;
 			this.btn_file.Values.Text = "...";
+			this.btn_file.Click += new System.EventHandler(this.btn_file_Click);
 			// 
 			// txt_file
 			// 
@@ -436,11 +445,69 @@
 			this.radio_end.Values.Text = "Use as Exit Screen";
 			this.radio_end.CheckedChanged += new System.EventHandler(this.radio_end_CheckedChanged);
 			// 
+			// cmb_add
+			// 
+			this.cmb_add.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_add.DropDownWidth = 363;
+			this.cmb_add.FormattingEnabled = true;
+			this.cmb_add.Location = new System.Drawing.Point(473, 377);
+			this.cmb_add.Name = "cmb_add";
+			this.cmb_add.Size = new System.Drawing.Size(171, 21);
+			this.cmb_add.TabIndex = 124;
+			// 
+			// kryptonLabel5
+			// 
+			this.kryptonLabel5.Location = new System.Drawing.Point(368, 378);
+			this.kryptonLabel5.Name = "kryptonLabel5";
+			this.kryptonLabel5.Size = new System.Drawing.Size(96, 20);
+			this.kryptonLabel5.TabIndex = 125;
+			this.kryptonLabel5.Values.Text = "Select Monitor :";
+			// 
+			// kryptonLabel6
+			// 
+			this.kryptonLabel6.Location = new System.Drawing.Point(686, 14);
+			this.kryptonLabel6.Name = "kryptonLabel6";
+			this.kryptonLabel6.Size = new System.Drawing.Size(128, 20);
+			this.kryptonLabel6.TabIndex = 126;
+			this.kryptonLabel6.Values.Text = "AHK Code On Pause :";
+			// 
+			// kryptonLabel7
+			// 
+			this.kryptonLabel7.Location = new System.Drawing.Point(686, 254);
+			this.kryptonLabel7.Name = "kryptonLabel7";
+			this.kryptonLabel7.Size = new System.Drawing.Size(137, 20);
+			this.kryptonLabel7.TabIndex = 127;
+			this.kryptonLabel7.Values.Text = "AHK Code on Resume :";
+			// 
+			// cmb_dpi
+			// 
+			this.cmb_dpi.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_dpi.DropDownWidth = 363;
+			this.cmb_dpi.FormattingEnabled = true;
+			this.cmb_dpi.Location = new System.Drawing.Point(473, 403);
+			this.cmb_dpi.Name = "cmb_dpi";
+			this.cmb_dpi.Size = new System.Drawing.Size(171, 21);
+			this.cmb_dpi.TabIndex = 128;
+			// 
+			// kryptonLabel8
+			// 
+			this.kryptonLabel8.Location = new System.Drawing.Point(368, 403);
+			this.kryptonLabel8.Name = "kryptonLabel8";
+			this.kryptonLabel8.Size = new System.Drawing.Size(56, 20);
+			this.kryptonLabel8.TabIndex = 129;
+			this.kryptonLabel8.Values.Text = "Set DPI :";
+			// 
 			// PauseMenu_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1720, 546);
+			this.Controls.Add(this.kryptonLabel8);
+			this.Controls.Add(this.cmb_dpi);
+			this.Controls.Add(this.kryptonLabel7);
+			this.Controls.Add(this.kryptonLabel6);
+			this.Controls.Add(this.kryptonLabel5);
+			this.Controls.Add(this.cmb_add);
 			this.Controls.Add(this.radio_end);
 			this.Controls.Add(this.radio_startup);
 			this.Controls.Add(this.radio_pause);
@@ -475,6 +542,8 @@
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			this.groupBox4.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.cmb_dpi)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -521,5 +590,11 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton radio_pause;
 		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton radio_startup;
 		private ComponentFactory.Krypton.Toolkit.KryptonRadioButton radio_end;
+		private ComponentFactory.Krypton.Toolkit.KryptonComboBox cmb_add;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel5;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel6;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel7;
+		private ComponentFactory.Krypton.Toolkit.KryptonComboBox cmb_dpi;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel8;
 	}
 }

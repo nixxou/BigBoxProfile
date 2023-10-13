@@ -48,6 +48,7 @@
 			this.ClientSize = new System.Drawing.Size(800, 450);
 			this.Controls.Add(this.fakebrowser_txt);
 			this.Name = "PauseMenu_Show";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "PauseMenu_Show";
 			this.ResumeLayout(false);
 			this.PerformLayout();

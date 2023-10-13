@@ -14,6 +14,10 @@ using System.Windows.Forms;
 using XInput.Wrapper;
 using System.Threading;
 using DualShock4Lib;
+using System.Diagnostics;
+using CefSharp.DevTools.BackgroundService;
+using MonitorSwitcherGUI;
+using static System.Windows.Forms.Design.AxImporter;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -49,6 +53,9 @@ namespace BigBoxProfile.EmulatorActions
 		public int delayStarting = 0;
 		public int delayAutoClose = 0;
 		public string typeScreen = "pause";
+		public string selectedMonitor = "Main";
+
+		public int dpi = 0;
 
 
 		public PauseMenu_Config(Dictionary<string, string> Options)
@@ -69,7 +76,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("forcefullActivation") && Options["forcefullActivation"] == "yes") forcefullActivation = true;
 			if (Options.ContainsKey("pauseEmulation") && Options["pauseEmulation"] == "yes") pauseEmulation = true;
 			if (Options.ContainsKey("disableSound") && Options["disableSound"] == "yes") disableSound = true;
-			if (Options.ContainsKey("copyArt") && Options["copyArt"] == "no") copyArt = false;
+			if (Options.ContainsKey("copyArt") && Options["copyArt"] == "yes") copyArt = true;
 
 			ahkPause = Options.ContainsKey("ahkPause") ? Options["ahkPause"] : "";
 			ahkResume = Options.ContainsKey("ahkResume") ? Options["ahkResume"] : "";
@@ -112,8 +119,18 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
-			typeScreen = Options.ContainsKey("typeScreen") ? Options["typeScreen"] : "pause";
+			tmpInt = 0;
+			dpi = 0;
+			if (Options.ContainsKey("dpi"))
+			{
+				if (int.TryParse(Options["dpi"], out tmpInt))
+				{
+					dpi = tmpInt;
+				}
+			}
 
+			typeScreen = Options.ContainsKey("typeScreen") ? Options["typeScreen"] : "pause";
+			selectedMonitor = Options.ContainsKey("selectedMonitor") ? Options["selectedMonitor"] : "Main";
 			//gamepadKeyPressMinDuration = Options.ContainsKey("gamepadKeyPressMinDuration") ? int.Parse(Options["gamepadKeyPressMinDuration"]) : 0;
 
 			InitializeComponent();
@@ -149,10 +166,67 @@ namespace BigBoxProfile.EmulatorActions
 
 			UpdateGUI();
 			UpdateRadioGUI();
+
+			cmb_add.Items.Clear();
+			cmb_add.Items.Add("Main");
+			Screen[] screens = Screen.AllScreens;
+			Debug.WriteLine($"Nombre d'écrans : {screens.Length}");
+			for (int i = 0; i < screens.Length; i++)
+			{
+				Screen screen = screens[i];
+				Debug.WriteLine($"Écran {i + 1}");
+				Debug.WriteLine($"Device Name : {screen.DeviceName}");
+				Debug.WriteLine($"Working Area : {screen.WorkingArea}");
+				Debug.WriteLine($"Bounds : {screen.Bounds}");
+				Debug.WriteLine($"Primary : {screen.Primary}");
+
+				int currentDpi = DPIUtils.GetMonitorDPI(i);
+				Debug.WriteLine($"Primary : {currentDpi}");
+
+				string DeviceName = screen.DeviceName.Trim('\\').Trim('.').Trim('\\');
+
+				cmb_add.Items.Add(DeviceName);
+			}
+			var index = cmb_add.Items.IndexOf(selectedMonitor);
+			if (index >= 0)
+			{
+				cmb_add.SelectedIndex = index;
+			}
+			else
+			{
+				cmb_add.Items.Add(selectedMonitor);
+				index = cmb_add.Items.IndexOf(selectedMonitor);
+				cmb_add.SelectedIndex = index;
+			}
+
+			cmb_dpi.Items.Clear();
+			cmb_dpi.Items.Add("Automatic");
+			cmb_dpi.Items.Add("100%");
+			cmb_dpi.Items.Add("125%");
+			cmb_dpi.Items.Add("150%");
+			cmb_dpi.Items.Add("175%");
+			cmb_dpi.Items.Add("200%");
+			cmb_dpi.Items.Add("225%");
+			cmb_dpi.SelectedIndex = 0;
+			index = cmb_add.Items.IndexOf(dpi + "%");
+			if (index >= 0)
+			{
+				cmb_dpi.SelectedIndex = index;
+			}
+			
+			
+
+
+
+
 		}
 
 		private void UpdateRadioGUI()
 		{
+			if (radio_pause.Checked) typeScreen = "pause";
+			if (radio_startup.Checked) typeScreen = "start";
+			if (radio_end.Checked) typeScreen = "end";
+
 			if (typeScreen == "pause")
 			{
 				num_autoclose.Visible = false;
@@ -188,6 +262,25 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void btn_ok_Click(object sender, EventArgs e)
 		{
+			string errorTxt = "";
+			if (!BigBoxUtils.AHKSyntaxCheck(txt_ahkPause.Text, true, out errorTxt))
+			{
+				DialogResult dialogResult = MessageBox.Show($"Syntax error : {errorTxt} \n Are you sure you want to save ?", "<<AHK Pause code>> Syntax error", MessageBoxButtons.YesNo);
+				if (dialogResult == DialogResult.No)
+				{
+					return;
+				}
+			}
+			errorTxt = "";
+			if (!BigBoxUtils.AHKSyntaxCheck(txt_ahkResume.Text, true, out errorTxt))
+			{
+				DialogResult dialogResult = MessageBox.Show($"Syntax error : {errorTxt} \n Are you sure you want to save ?", "<<AHK Resume code>> Syntax error", MessageBoxButtons.YesNo);
+				if (dialogResult == DialogResult.No)
+				{
+					return;
+				}
+			}
+
 			List<string> variablesList = new List<string>();
 			for (int i = 0; i < listBox1.Items.Count; i++)
 			{
@@ -212,7 +305,29 @@ namespace BigBoxProfile.EmulatorActions
 			ahkPause = txt_ahkPause.Text;
 			ahkResume = txt_ahkResume.Text;
 
+			delayStarting = (int)num_delaystart.Value;
+			delayAutoClose = (int)num_autoclose.Value;
+			executePauseAfter = chk_executePauseAfter.Checked;
+			executeResumeBefore = chk_executeResumeBefore.Checked;
 
+
+			if (radio_pause.Checked) typeScreen = "pause";
+			if (radio_startup.Checked) typeScreen = "start";
+			if (radio_end.Checked) typeScreen = "end";
+
+			selectedMonitor = cmb_add.SelectedItem.ToString();
+
+			dpi = 0;
+			string dpistring = cmb_dpi.SelectedItem.ToString();
+			if (dpistring != "Automatic")
+			{
+				dpistring = dpistring.Trim('%').Trim();
+				int tmpDpi = 0;
+				if (int.TryParse(dpistring, out tmpDpi))
+				{
+					dpi = tmpDpi;
+				}
+			}
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
@@ -320,6 +435,19 @@ namespace BigBoxProfile.EmulatorActions
 		private void radio_pause_CheckedChanged(object sender, EventArgs e)
 		{
 			UpdateRadioGUI();
+		}
+
+		private void btn_file_Click(object sender, EventArgs e)
+		{
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					// Obtenez le chemin complet du fichier sélectionné
+					txt_file.Text = openFileDialog.FileName;
+
+				}
+			}
 		}
 	}
 
