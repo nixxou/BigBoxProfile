@@ -183,6 +183,8 @@ namespace BigBoxProfile.EmulatorActions
 
 			this.chromiumWebBrowser1.LoadHtml(htmlContent, "localfolder://cefsharp/index.html");
 
+			//this.chromiumWebBrowser1.LoadHtml("Hello world", "localfolder://cefsharp/index.html");
+
 			this.Controls.Remove(this.fakebrowser_txt);
 			this.Controls.Add(this.chromiumWebBrowser1);
 			this.chromiumWebBrowser1.Refresh();
@@ -317,6 +319,24 @@ namespace BigBoxProfile.EmulatorActions
 		private void timer1_Tick_1(object sender, EventArgs e)
 		{
 
+		}
+
+		private void PauseMenu_Show_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			if(timer1 != null)
+			{
+				timer1.Enabled = false;
+				timer1.Stop();
+			}
+			if(timerEnd != null)
+			{
+				timerEnd.Enabled = false;
+				timerEnd.Stop();
+				
+			}
+			
+
+			
 		}
 	}
 

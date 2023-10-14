@@ -469,7 +469,8 @@ namespace BigBoxProfile.EmulatorActions
 						Task.Run(() => AhkExecute(args, _ahkPause));
 					};
 				}
-
+				
+				/*
 				activePauseMenu.FormClosed += (sender, e) =>
 				{
 					activePauseMenu.chromiumWebBrowser1.Dispose();
@@ -487,10 +488,12 @@ namespace BigBoxProfile.EmulatorActions
 						}
 
 					}
-
-
 					AhkExecute(args, _ahkResume);
 				};
+				*/
+
+				activePauseMenu.FormClosed += CloseActiveMenu;
+
 				tempDisableHotkey = false;
 				//Application.Run(activePauseMenu);
 				activePauseMenu.ShowDialog();
@@ -502,6 +505,27 @@ namespace BigBoxProfile.EmulatorActions
 			}
 
 
+		}
+
+		private void CloseActiveMenu(object sender, FormClosedEventArgs e)
+		{
+			activePauseMenu.chromiumWebBrowser1.Dispose();
+			activePauseMenu.Dispose();
+			activePauseMenu = null; // Réinitialise la référence lorsque la fenêtre est fermée.
+			if (_processEmulator != null)
+			{
+				if (_pauseEmulation)
+				{
+					BigBoxUtils.ResumeProcess(_processEmulator.Id);
+				}
+				if (_restoreVolumeTo != null)
+				{
+					VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, (float)_restoreVolumeTo);
+				}
+
+			}
+			string[] nargs = new List<string>().ToArray();
+			AhkExecute(nargs, _ahkResume);
 		}
 
 		private void AhkExecute(string[] args, string code)

@@ -55,6 +55,7 @@
 			this.txt_file = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.kryptonLabel2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.btn_importFromLaunchbox = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_manageVariables = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.chk_executePauseAfter = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
@@ -330,6 +331,15 @@
 			this.groupBox4.TabStop = false;
 			this.groupBox4.Text = "Variables (Advanced Users Only !)";
 			// 
+			// btn_importFromLaunchbox
+			// 
+			this.btn_importFromLaunchbox.Location = new System.Drawing.Point(498, 225);
+			this.btn_importFromLaunchbox.Name = "btn_importFromLaunchbox";
+			this.btn_importFromLaunchbox.Size = new System.Drawing.Size(146, 24);
+			this.btn_importFromLaunchbox.TabIndex = 97;
+			this.btn_importFromLaunchbox.Values.Text = "Import From Launchbox";
+			this.btn_importFromLaunchbox.Click += new System.EventHandler(this.btn_importFromLaunchbox_Click);
+			// 
 			// btn_manageVariables
 			// 
 			this.btn_manageVariables.Location = new System.Drawing.Point(12, 452);
@@ -532,6 +542,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1720, 546);
+			this.Controls.Add(this.btn_importFromLaunchbox);
 			this.Controls.Add(this.chk_showDevTools);
 			this.Controls.Add(this.button3);
 			this.Controls.Add(this.button2);
@@ -632,5 +643,6 @@
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Button button3;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_showDevTools;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_importFromLaunchbox;
 	}
 }

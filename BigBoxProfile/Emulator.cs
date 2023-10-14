@@ -6,6 +6,7 @@ namespace BigBoxProfile
 {
 	public class Emulator
 	{
+		public static string LastEmulatorName = "";
 		public string FileNameEmulator;
 		public string ProfileName;
 		public string FileNameConfig;
@@ -20,6 +21,7 @@ namespace BigBoxProfile
 
 		public Emulator(string profileName, string fileNameEmulator)
 		{
+			LastEmulatorName = fileNameEmulator;
 			ProfileName = profileName;
 			FileNameEmulator = fileNameEmulator;
 			FileNameConfig = Path.Combine(Profile.PathMainProfileDir, FileNameEmulator, ProfileName + ".xml");

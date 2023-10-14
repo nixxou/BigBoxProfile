@@ -19,6 +19,8 @@ using CefSharp.DevTools.BackgroundService;
 using MonitorSwitcherGUI;
 using static System.Windows.Forms.Design.AxImporter;
 using CefSharp.DevTools.DOM;
+using System.IO;
+using System.Xml.Linq;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -43,7 +45,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public bool pauseEmulation = false;
 		public bool disableSound = false;
-		public bool copyArt = true;
+		public bool copyArt = false;
 		public string ahkPause = "";
 		public string ahkResume = "";
 		public string htmlFile = "";
@@ -458,6 +460,138 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void button2_Click(object sender, EventArgs e)
 		{
+			MessageBox.Show(Emulator.LastEmulatorName);
+		}
+
+		private void btn_importFromLaunchbox_Click(object sender, EventArgs e)
+		{
+			MessageBox.Show("Please select the Emulators.xml file in the Data directory of Launchbox.");
+			using (OpenFileDialog openFileDialog = new OpenFileDialog())
+			{
+				openFileDialog.Filter = "Fichiers XML (*.xml)|*.xml|Tous les fichiers (*.*)|*.*";
+				openFileDialog.FilterIndex = 1;
+				openFileDialog.CheckFileExists = true;
+				openFileDialog.CheckPathExists = true;
+				openFileDialog.Title = "Select Emulators.xml";
+
+				if (openFileDialog.ShowDialog() == DialogResult.OK)
+				{
+					if (Path.GetFileName(openFileDialog.FileName) != "Emulators.xml")
+					{
+						MessageBox.Show("Please select the Emulators.xml file in the Data directory of Launchbox.", "File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+					else
+					{
+						string sourceXml = openFileDialog.FileName;
+						string exename = Emulator.LastEmulatorName;
+						try
+						{
+							XDocument xdoc = XDocument.Parse(File.ReadAllText(sourceXml));
+							var node = xdoc.Root.Elements("Emulator").Where(p => ((string)p.Element("ApplicationPath")).ToLower().EndsWith(exename.Trim().ToLower())).FirstOrDefault();
+							if(node != null)
+							{
+								string pauseScript = node.Elements("PauseAutoHotkeyScript").FirstOrDefault().Value;
+								string resumeScript = node.Elements("ResumeAutoHotkeyScript").FirstOrDefault().Value;
+								string loadStateScript = node.Elements("LoadStateAutoHotkeyScript").FirstOrDefault().Value;
+								string saveStateScript = node.Elements("SaveStateAutoHotkeyScript").FirstOrDefault().Value;
+								string resetScript = node.Elements("ResetAutoHotkeyScript").FirstOrDefault().Value;
+								string swapDiscsScript = node.Elements("SwapDiscsAutoHotkeyScript").FirstOrDefault().Value;
+
+								txt_ahkPause.Text = pauseScript;
+								txt_ahkResume.Text = resumeScript;
+
+								Dictionary<string, VariableData> variablesDictionary = new Dictionary<string, VariableData>();
+								if (!String.IsNullOrEmpty(variablesData))
+								{
+									var priority_arr = BigBoxUtils.explode(variablesData, "|||");
+									foreach (var p in priority_arr)
+									{
+										var pObj = new VariableData(p);
+										if (!variablesDictionary.ContainsKey(pObj.VariableName))
+										{
+											variablesDictionary.Add(pObj.VariableName, pObj);
+										}
+									}
+								}
+
+								bool IsVariableAdded = false;
+								//if(!string.IsNullOrEmpty(loadStateScript))
+								{
+									string keyname = "{{loadState}}";
+									if (!variablesDictionary.ContainsKey(keyname))
+									{
+										VariableData newItem = new VariableData();
+										newItem.VariableName = keyname;
+										newItem.SourceData = "cmd";
+										newItem.VariableValue = loadStateScript;
+										variablesDictionary.Add(keyname, newItem);
+										IsVariableAdded = true;
+									}
+								}
+								//if (!string.IsNullOrEmpty(saveStateScript))
+								{
+									string keyname = "{{saveState}}";
+									if (!variablesDictionary.ContainsKey(keyname))
+									{
+										VariableData newItem = new VariableData();
+										newItem.VariableName = keyname;
+										newItem.SourceData = "cmd";
+										newItem.VariableValue = saveStateScript;
+										variablesDictionary.Add(keyname, newItem);
+										IsVariableAdded = true;
+									}
+								}
+								//if (!string.IsNullOrEmpty(resetScript))
+								{
+									string keyname = "{{reset}}";
+									if (!variablesDictionary.ContainsKey(keyname))
+									{
+										VariableData newItem = new VariableData();
+										newItem.VariableName = keyname;
+										newItem.SourceData = "cmd";
+										newItem.VariableValue = resetScript;
+										variablesDictionary.Add(keyname, newItem);
+										IsVariableAdded = true;
+									}
+								}
+								//if (!string.IsNullOrEmpty(swapDiscsScript))
+								{
+									string keyname = "{{swapDiscs}}";
+									if (!variablesDictionary.ContainsKey(keyname))
+									{
+										VariableData newItem = new VariableData();
+										newItem.VariableName = keyname;
+										newItem.SourceData = "cmd";
+										newItem.VariableValue = swapDiscsScript;
+										variablesDictionary.Add(keyname, newItem);
+										IsVariableAdded = true;
+									}
+								}
+
+								if (IsVariableAdded)
+								{
+									listBox1.Items.Clear();
+									string result = "";
+									foreach(var variable in variablesDictionary)
+									{
+										listBox1.Items.Add(variable.Key);
+										result += variable.Value.Serialize() + "|||";
+									}
+									result = result.Trim('|').Trim('|').Trim('|').Trim('|').Trim('|').Trim('|');
+									variablesData = result;
+								}
+
+							}
+						}
+						catch(Exception ex)
+						{
+							MessageBox.Show("erreur :" + ex.Message);
+						}
+					}
+				}
+			}
+
+			
 
 		}
 	}

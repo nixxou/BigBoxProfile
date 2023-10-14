@@ -87,7 +87,7 @@ namespace BigBoxProfile
 
 		private void btn_add_Click(object sender, EventArgs e)
 		{
-			if (radio_ahk.Enabled)
+			if (radio_ahk.Checked)
 			{
 				if (String.IsNullOrEmpty(txt_variableName.Text))
 				{
