@@ -1,6 +1,7 @@
 ﻿using Gma.System.MouseKeyHook;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -63,8 +64,14 @@ namespace BigBoxProfile.EmulatorActions
 		public string _typeScreen { get; private set; } = "pause";
 		public string _variablesData { get; private set; } = "";
 		public string _selectedMonitor { get; private set; } = "Main";
-
 		public int _dpi { get; private set; } = 0;
+		public bool _showDevTools { get; private set; } = false;
+
+
+		public bool tempDisableHotkey = false;
+
+		private float? _restoreVolumeTo = null;
+		private Process _processEmulator = null;
 
 		private X.Gamepad gamepad = null;
 
@@ -143,6 +150,9 @@ namespace BigBoxProfile.EmulatorActions
 
 				Options["dpi"] = frm.dpi.ToString();
 
+				if (frm.showDevTools) Options["showDevTools"] = "yes";
+				else Options["showDevTools"] = "no";
+
 				UpdateConfig();
 			}
 
@@ -184,6 +194,8 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("selectedMonitor") == false) Options["selectedMonitor"] = "Main";
 
 			if (Options.ContainsKey("dpi") == false) Options["dpi"] = "0";
+
+			if (Options.ContainsKey("showDevTools") == false) Options["showDevTools"] = "no";
 			UpdateConfig();
 
 		}
@@ -291,6 +303,8 @@ namespace BigBoxProfile.EmulatorActions
 					_dpi = tmpInt;
 				}
 			}
+
+			_showDevTools = Options["showDevTools"] == "yes" ? true : false;
 		}
 
 		public void ExecuteBefore(string[] args)
@@ -409,28 +423,75 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void ShowPause(string[] args)
 		{
+			/*
+			activePauseMenu = new PauseMenu_Show(this, args);
+			Application.Run(activePauseMenu);
+
+			return;
+			*/
+			if (tempDisableHotkey) return;
+
 			if (activePauseMenu == null)
 			{
-				AhkExecute(args, _ahkPause);
+				tempDisableHotkey = true;
+
+				if (!_executePauseAfter) AhkExecute(args, _ahkPause);
+
 				//MessageBox.Show("debug pause");
-				var process = BigBoxUtils.FindProcessEmulator(args);
-				if (_pauseEmulation)
+				_processEmulator = BigBoxUtils.FindProcessEmulator(args);
+				if(_processEmulator != null)
 				{
-					BigBoxUtils.PauseProcess(process.Id);
+					if (_disableSound)
+					{
+						float? currentVolume = VolumeMix.VolumeMixer.GetApplicationVolume(_processEmulator.Id);
+						if(currentVolume != null)
+						{
+							VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, 0f);
+							_restoreVolumeTo = currentVolume;
+						}
+						
+					}
+
+					if (_pauseEmulation)
+					{
+						BigBoxUtils.PauseProcess(_processEmulator.Id);
+					}
+
 				}
 
 				activePauseMenu = new PauseMenu_Show(this, args);
+
+				if (_executePauseAfter)
+				{
+					activePauseMenu.Load += (sender, e) =>
+					{
+
+						Task.Run(() => AhkExecute(args, _ahkPause));
+					};
+				}
+
 				activePauseMenu.FormClosed += (sender, e) =>
 				{
 					activePauseMenu.chromiumWebBrowser1.Dispose();
 					activePauseMenu.Dispose();
 					activePauseMenu = null; // Réinitialise la référence lorsque la fenêtre est fermée.
-					if (_pauseEmulation)
+					if(_processEmulator != null)
 					{
-						BigBoxUtils.ResumeProcess(process.Id);
+						if (_pauseEmulation)
+						{
+							BigBoxUtils.ResumeProcess(_processEmulator.Id);
+						}
+						if(_restoreVolumeTo != null)
+						{
+							VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, (float)_restoreVolumeTo);
+						}
+
 					}
+
+
 					AhkExecute(args, _ahkResume);
 				};
+				tempDisableHotkey = false;
 				//Application.Run(activePauseMenu);
 				activePauseMenu.ShowDialog();
 

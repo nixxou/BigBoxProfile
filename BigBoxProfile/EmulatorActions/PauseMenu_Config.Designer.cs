@@ -73,6 +73,9 @@
 			this.kryptonLabel7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.cmb_dpi = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
 			this.kryptonLabel8 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.button2 = new System.Windows.Forms.Button();
+			this.button3 = new System.Windows.Forms.Button();
+			this.chk_showDevTools = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.groupBox2.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).BeginInit();
@@ -497,11 +500,41 @@
 			this.kryptonLabel8.TabIndex = 129;
 			this.kryptonLabel8.Values.Text = "Set DPI :";
 			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(1001, 510);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(75, 23);
+			this.button2.TabIndex = 130;
+			this.button2.Text = "button2";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
+			// 
+			// button3
+			// 
+			this.button3.Location = new System.Drawing.Point(1082, 511);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(75, 23);
+			this.button3.TabIndex = 131;
+			this.button3.Text = "button3";
+			this.button3.UseVisualStyleBackColor = true;
+			// 
+			// chk_showDevTools
+			// 
+			this.chk_showDevTools.Location = new System.Drawing.Point(368, 433);
+			this.chk_showDevTools.Name = "chk_showDevTools";
+			this.chk_showDevTools.Size = new System.Drawing.Size(184, 20);
+			this.chk_showDevTools.TabIndex = 132;
+			this.chk_showDevTools.Values.Text = "Show Dev Tools (Debug web)";
+			// 
 			// PauseMenu_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1720, 546);
+			this.Controls.Add(this.chk_showDevTools);
+			this.Controls.Add(this.button3);
+			this.Controls.Add(this.button2);
 			this.Controls.Add(this.kryptonLabel8);
 			this.Controls.Add(this.cmb_dpi);
 			this.Controls.Add(this.kryptonLabel7);
@@ -596,5 +629,8 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel7;
 		private ComponentFactory.Krypton.Toolkit.KryptonComboBox cmb_dpi;
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel8;
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button3;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_showDevTools;
 	}
 }

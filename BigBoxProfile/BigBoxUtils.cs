@@ -1737,13 +1737,13 @@ gameDataJson =
 " + BigBoxUtils.GameInfoJSON + @"
 )
 
-if(Json.test(resumeJson)){
-	gameData := JSON.parse(resumeJson,true)
+if(Json.test(gameDataJson)){
+	gameData := JSON.parse(gameDataJson,true)
 }
 else{
 	gameData := {}
 }
-gameDataString := ChangeObjToString(gameDataString)
+gameDataString := ChangeObjToString(gameData)
 
 Array(items*) {
 	items.base := ArrayEx
@@ -1847,6 +1847,7 @@ OriginalArgs := []
 					if(parent.Id == currentProcessHandle)
 					{
 						FoundProcess = p;
+						return FoundProcess;
 						break;
 					}
 					else
@@ -1857,13 +1858,16 @@ OriginalArgs := []
 							if (grandParent.Id == currentProcessHandle)
 							{
 								FoundProcess = p;
+								return FoundProcess;
 								break;
 							}
 						}
 					}
 				}
 			}
-			foreach (var p in Process.GetProcessesByName(processName))
+			
+
+			foreach (var p in Process.GetProcessesByName(processName).Where(p => 1 == 1))
 			{
 				var parent = ParentProcessUtilities.GetParentProcess(p.Id);
 				if (parent != null)
@@ -1871,6 +1875,7 @@ OriginalArgs := []
 					if (parent.Id == currentProcessHandle)
 					{
 						FoundProcess = p;
+						return FoundProcess;
 						break;
 					}
 					else
@@ -1881,6 +1886,7 @@ OriginalArgs := []
 							if (grandParent.Id == currentProcessHandle)
 							{
 								FoundProcess = p;
+								return FoundProcess;
 								break;
 							}
 						}

@@ -55,7 +55,7 @@ namespace BigBoxProfile.EmulatorActions
 			_args = args;
 			_config = pauseMenu;
 
-			InitializeComponent();
+			
 
 			_selectedScreen = null;
 			Screen MainScreen = null;
@@ -85,6 +85,7 @@ namespace BigBoxProfile.EmulatorActions
 				_selectedScreenIndex = MainScreenIndex;
 				_selectedScreenDPI = MainScreenDpi;
 			}
+			
 
 			int SizeWidth = _selectedScreen.Bounds.Width;
 			int SizeHeight = _selectedScreen.Bounds.Height;
@@ -98,29 +99,43 @@ namespace BigBoxProfile.EmulatorActions
 				SizeWidth = (int)Math.Floor((double)SizeWidth * ((double)_config._dpi / 100.0));
 				SizeHeight = (int)Math.Floor((double)SizeHeight * ((double)_config._dpi / 100.0));
 			}
-			this.Location = new Point(_selectedScreen.Bounds.Left, _selectedScreen.Bounds.Top);
+			Debug.WriteLine(SizeWidth.ToString() + " - " + SizeHeight.ToString());
+
+			InitializeComponent();
 			this.FormBorderStyle = FormBorderStyle.None;
+			this.Location = new Point(_selectedScreen.Bounds.Left, _selectedScreen.Bounds.Top);
+
+
+			
 			this.Width = SizeWidth;
 			this.Height = SizeHeight;
+			this.BackColor = Color.LimeGreen;
+			this.TransparencyKey = Color.LimeGreen;
+
 			//this.WindowState = FormWindowState.Maximized;
+
 
 			fakebrowser_txt.Width = this.Width;
 			fakebrowser_txt.Height = this.Height;
-			fakebrowser_txt.Location = new Point(0,0);
-			
+			fakebrowser_txt.Location = new Point(0, 0);
 
+			
 
 			// Gestion de l'échelle DPI
 			//this.AutoScaleMode = AutoScaleMode.Dpi;
 			//this.AutoScroll = true;
 			//this.AutoScaleDimensions = new SizeF(96F, 96F); // Réglez cette valeur sur la résolution DPI de référence (96 DPI par défaut)
 
+
 			this.chromiumWebBrowser1 = new CustomBrowser();
 			this.chromiumWebBrowser1.ParentForm = this;
 			this.chromiumWebBrowser1.ActivateBrowserOnCreation = false;
+			
 			BigBoxUtils.CefInit();
+			
 
-			//this.chromiumWebBrowser1.IsBrowserInitializedChanged += (a,b) => { chromiumWebBrowser1.ShowDevTools(); };
+			if(_config._showDevTools) this.chromiumWebBrowser1.IsBrowserInitializedChanged += (a,b) => { chromiumWebBrowser1.ShowDevTools(); };
+
 			Dictionary<string, VariableData> variablesDictionary = new Dictionary<string, VariableData>();
 			if (!String.IsNullOrEmpty(_config._variablesData))
 			{
@@ -158,22 +173,42 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
-			this.chromiumWebBrowser1.LoadHtml(htmlContent, "localfolder://cefsharp/index.html");
-
+			
 			this.chromiumWebBrowser1.Location = fakebrowser_txt.Location;
 			this.chromiumWebBrowser1.Name = "chromiumWebBrowser1";
-			this.chromiumWebBrowser1.Size = fakebrowser_txt.Size;
-
+			//this.chromiumWebBrowser1.Size = fakebrowser_txt.Size;
+			this.chromiumWebBrowser1.Height = this.Height;
+			this.chromiumWebBrowser1.Width = this.Width;
 			this.chromiumWebBrowser1.TabIndex = fakebrowser_txt.TabIndex;
+
+			this.chromiumWebBrowser1.LoadHtml(htmlContent, "localfolder://cefsharp/index.html");
+
 			this.Controls.Remove(this.fakebrowser_txt);
 			this.Controls.Add(this.chromiumWebBrowser1);
+			this.chromiumWebBrowser1.Refresh();
 			chromiumWebBrowser1.LifeSpanHandler = new CefAHKIntercept();
 
+			this.Refresh();
 
 			this.BringToFront();
 			this.TopMost = true;
 			this.Activate();
 			chromiumWebBrowser1.Focus();
+			
+
+			/*
+			var timerWeb = new System.Timers.Timer(1000);
+			timerWeb.Enabled = true;
+			timerWeb.Elapsed += (sender, e) =>
+			{
+				timerWeb.Stop();
+				this.Invoke(new Action(() =>
+				{
+					
+
+				}));
+			};
+			*/
 
 			timer1.Enabled = true;
 			if (_config._forcefullActivation)
@@ -190,12 +225,11 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					timerEnd.Stop();
 					this.Invoke(new Action(() =>
-					 {
-						 this.Close();
-					 }));
+					{
+						this.Close();
+					}));
 				};
 			}
-
 		}
 
 		private void timer1_Tick(object sender, EventArgs e)
@@ -219,6 +253,10 @@ namespace BigBoxProfile.EmulatorActions
 
 
 
+		}
+		protected override void OnPaintBackground(PaintEventArgs e)
+		{
+			e.Graphics.FillRectangle(Brushes.LimeGreen, e.ClipRectangle);
 		}
 
 		private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
@@ -274,6 +312,11 @@ namespace BigBoxProfile.EmulatorActions
 			//this.WindowState = FormWindowState.Maximized;
 			this.chromiumWebBrowser1.Size = fakebrowser_txt.Size;
 			this.chromiumWebBrowser1.Refresh();
+		}
+
+		private void timer1_Tick_1(object sender, EventArgs e)
+		{
+
 		}
 	}
 

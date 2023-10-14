@@ -18,6 +18,7 @@ using System.Diagnostics;
 using CefSharp.DevTools.BackgroundService;
 using MonitorSwitcherGUI;
 using static System.Windows.Forms.Design.AxImporter;
+using CefSharp.DevTools.DOM;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -54,6 +55,7 @@ namespace BigBoxProfile.EmulatorActions
 		public int delayAutoClose = 0;
 		public string typeScreen = "pause";
 		public string selectedMonitor = "Main";
+		public bool showDevTools = false;
 
 		public int dpi = 0;
 
@@ -131,7 +133,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			typeScreen = Options.ContainsKey("typeScreen") ? Options["typeScreen"] : "pause";
 			selectedMonitor = Options.ContainsKey("selectedMonitor") ? Options["selectedMonitor"] : "Main";
-			//gamepadKeyPressMinDuration = Options.ContainsKey("gamepadKeyPressMinDuration") ? int.Parse(Options["gamepadKeyPressMinDuration"]) : 0;
+			if (Options.ContainsKey("showDevTools") && Options["showDevTools"] == "yes") showDevTools = true;
 
 			InitializeComponent();
 
@@ -162,6 +164,8 @@ namespace BigBoxProfile.EmulatorActions
 			if(typeScreen=="pause") radio_pause.Checked = true;
 			if(typeScreen=="start") radio_startup.Checked = true;
 			if(typeScreen=="end") radio_end.Checked = true;
+
+			chk_showDevTools.Checked = showDevTools;
 
 
 			UpdateGUI();
@@ -208,7 +212,7 @@ namespace BigBoxProfile.EmulatorActions
 			cmb_dpi.Items.Add("200%");
 			cmb_dpi.Items.Add("225%");
 			cmb_dpi.SelectedIndex = 0;
-			index = cmb_add.Items.IndexOf(dpi + "%");
+			index = cmb_dpi.Items.IndexOf(dpi.ToString() + "%");
 			if (index >= 0)
 			{
 				cmb_dpi.SelectedIndex = index;
@@ -329,6 +333,8 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
+			showDevTools = chk_showDevTools.Checked;
+
 			this.DialogResult = DialogResult.OK;
 			this.Close();
 		}
@@ -448,6 +454,11 @@ namespace BigBoxProfile.EmulatorActions
 
 				}
 			}
+		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 

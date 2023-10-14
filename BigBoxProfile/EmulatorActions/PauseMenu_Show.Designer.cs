@@ -41,12 +41,17 @@
 			this.fakebrowser_txt.Size = new System.Drawing.Size(319, 231);
 			this.fakebrowser_txt.TabIndex = 0;
 			// 
+			// timer1
+			// 
+			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+			// 
 			// PauseMenu_Show
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(800, 450);
 			this.Controls.Add(this.fakebrowser_txt);
+			this.DoubleBuffered = true;
 			this.Name = "PauseMenu_Show";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "PauseMenu_Show";
