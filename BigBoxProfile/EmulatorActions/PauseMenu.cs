@@ -1,4 +1,6 @@
-﻿using Gma.System.MouseKeyHook;
+﻿using CliWrap;
+using CliWrap.Buffered;
+using Gma.System.MouseKeyHook;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -66,6 +68,9 @@ namespace BigBoxProfile.EmulatorActions
 		public string _selectedMonitor { get; private set; } = "Main";
 		public int _dpi { get; private set; } = 0;
 		public bool _showDevTools { get; private set; } = false;
+		public bool _ahkFromExe { get; private set; } = false;
+
+		public string ahkCodeToExecute = "";
 
 
 		public bool tempDisableHotkey = false;
@@ -82,7 +87,28 @@ namespace BigBoxProfile.EmulatorActions
 		private System.Timers.Timer timerGamepad = null;
 		private System.Timers.Timer timerStart = null;
 
-		private PauseMenu_Show activePauseMenu = null;
+		private PauseMenu_Show _activePauseMenu = null;
+		AutoHotkey.Interop.AutoHotkeyEngine ahk_session = null;
+
+		public PauseMenu_Show activePauseMenu
+		{
+			get { return _activePauseMenu; }
+			private set
+			{
+				if (_activePauseMenu != null && value == null)
+				{
+					_activePauseMenu = value;
+					var ActionOnClose = Task.Run(() => DoActionOnClose());
+					
+					//Action
+				}
+				else
+				{
+					_activePauseMenu = value;
+				}
+
+			}
+		}
 
 		//public Dictionary<string, string> Options = new Dictionary<string, string>();
 
@@ -153,6 +179,11 @@ namespace BigBoxProfile.EmulatorActions
 				if (frm.showDevTools) Options["showDevTools"] = "yes";
 				else Options["showDevTools"] = "no";
 
+				if (frm.ahkFromExe) Options["ahkFromExe"] = "yes";
+				else Options["ahkFromExe"] = "no";
+
+				
+
 				UpdateConfig();
 			}
 
@@ -196,6 +227,10 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("dpi") == false) Options["dpi"] = "0";
 
 			if (Options.ContainsKey("showDevTools") == false) Options["showDevTools"] = "no";
+
+			if (Options.ContainsKey("ahkFromExe") == false) Options["ahkFromExe"] = "no";
+
+			
 			UpdateConfig();
 
 		}
@@ -305,16 +340,21 @@ namespace BigBoxProfile.EmulatorActions
 			}
 
 			_showDevTools = Options["showDevTools"] == "yes" ? true : false;
+			_ahkFromExe = Options["ahkFromExe"] == "yes" ? true : false;
 		}
 
 		public void ExecuteBefore(string[] args)
 		{
+			//MessageBox.Show("debug pause before");
 			if (IsConfigured() && _typeScreen == "pause")
 			{
 				if (!string.IsNullOrEmpty(_keyCombo))
 				{
 					var keycombi = Combination.FromString(_keyCombo);
-					Action actionPauseMenu = () => { ShowPauseWithDelay(args); };
+					Action actionPauseMenu = () => {
+						ShowPauseWithDelay(args);
+						
+					};
 					var assignment = new Dictionary<Combination, Action>
 					{
 						{keycombi, actionPauseMenu}
@@ -324,21 +364,27 @@ namespace BigBoxProfile.EmulatorActions
 
 				}
 
+				
 				if (!string.IsNullOrEmpty(_gamepadCombo))
 				{
 					gamepad = X.Gamepad_1;
 					X.StartPolling(gamepad);
-					timerGamepad = new System.Timers.Timer(_gamepadKeyPressMinDuration);
 
-					timerGamepad.Elapsed += (sender, e) =>
+					if(_gamepadKeyPressMinDuration > 0)
 					{
-						if (isComboActive)
+						timerGamepad = new System.Timers.Timer(_gamepadKeyPressMinDuration);
+
+						timerGamepad.Elapsed += (sender, e) =>
 						{
-							ShowPauseWithDelay(args);
-						}
-						isComboActive = false;
-						timerGamepad.Stop();
-					};
+							if (isComboActive)
+							{
+								ShowPauseWithDelay(args);
+							}
+							isComboActive = false;
+							timerGamepad.Stop();
+						};
+
+					}
 
 					gamepad.StateChanged += (object a, EventArgs b) =>
 					{
@@ -359,11 +405,12 @@ namespace BigBoxProfile.EmulatorActions
 						}
 						else
 						{
-							timerGamepad.Stop();
+							if(timerGamepad != null) timerGamepad.Stop();
 							isComboActive = false; // Réinitialisez la variable
 						}
 					};
 				}
+				
 			}
 			if(IsConfigured() && _typeScreen == "start")
 			{
@@ -374,17 +421,39 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void ShowPauseWithDelay(string[] args)
 		{
-			if (_delayStarting == 0) ShowPause(args);
-			else
+			if(tempDisableHotkey == true || ahk_session != null)
 			{
-				timerStart = new System.Timers.Timer(_delayStarting);
-				timerStart.Enabled = true;
-				timerStart.Elapsed += (sender, e) =>
-				{
-					timerStart.Stop();
-					ShowPause(args);
-				};
+				string zzzzz = "sd";
+				return;
 			}
+			if(activePauseMenu != null && tempDisableHotkey == false && ahk_session == null)
+			{
+				tempDisableHotkey = true;
+				activePauseMenu.Close();
+				activePauseMenu = null;
+
+				tempDisableHotkey = false;
+				return;
+			}
+			if(activePauseMenu == null && tempDisableHotkey == false && ahk_session == null)
+			{
+				tempDisableHotkey = true;
+				if (_delayStarting == 0) ShowPause(args);
+				else
+				{
+					timerStart = new System.Timers.Timer(_delayStarting);
+					timerStart.Enabled = true;
+					timerStart.Elapsed += (sender, e) =>
+					{
+						timerStart.Stop();
+						ShowPause(args);
+					};
+				}
+				return;
+			}
+
+
+
 		}
 
 		private void GamepadKeyDown()
@@ -423,95 +492,67 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void ShowPause(string[] args)
 		{
-			/*
-			activePauseMenu = new PauseMenu_Show(this, args);
-			Application.Run(activePauseMenu);
+			
 
-			return;
-			*/
-			if (tempDisableHotkey) return;
-
-			if (activePauseMenu == null)
+			if (!_executePauseAfter) AhkExecute(args, _ahkPause,_ahkFromExe);
+			
+			 
+			_processEmulator = BigBoxUtils.FindProcessEmulator(args);
+			if(_processEmulator != null)
 			{
-				tempDisableHotkey = true;
-
-				if (!_executePauseAfter) AhkExecute(args, _ahkPause);
-
-				//MessageBox.Show("debug pause");
-				_processEmulator = BigBoxUtils.FindProcessEmulator(args);
-				if(_processEmulator != null)
+				if (_disableSound)
 				{
-					if (_disableSound)
+					float? currentVolume = VolumeMix.VolumeMixer.GetApplicationVolume(_processEmulator.Id);
+					if(currentVolume != null)
 					{
-						float? currentVolume = VolumeMix.VolumeMixer.GetApplicationVolume(_processEmulator.Id);
-						if(currentVolume != null)
-						{
-							VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, 0f);
-							_restoreVolumeTo = currentVolume;
-						}
+						VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, 0f);
+						_restoreVolumeTo = currentVolume;
+					}
 						
-					}
-
-					if (_pauseEmulation)
-					{
-						BigBoxUtils.PauseProcess(_processEmulator.Id);
-					}
-
 				}
-
-				activePauseMenu = new PauseMenu_Show(this, args);
-
-				if (_executePauseAfter)
+				if (_pauseEmulation)
 				{
-					activePauseMenu.Load += (sender, e) =>
-					{
-
-						Task.Run(() => AhkExecute(args, _ahkPause));
-					};
+					BigBoxUtils.PauseProcess(_processEmulator.Id);
 				}
-				
-				/*
-				activePauseMenu.FormClosed += (sender, e) =>
-				{
-					activePauseMenu.chromiumWebBrowser1.Dispose();
-					activePauseMenu.Dispose();
-					activePauseMenu = null; // Réinitialise la référence lorsque la fenêtre est fermée.
-					if(_processEmulator != null)
-					{
-						if (_pauseEmulation)
-						{
-							BigBoxUtils.ResumeProcess(_processEmulator.Id);
-						}
-						if(_restoreVolumeTo != null)
-						{
-							VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, (float)_restoreVolumeTo);
-						}
-
-					}
-					AhkExecute(args, _ahkResume);
-				};
-				*/
-
-				activePauseMenu.FormClosed += CloseActiveMenu;
-
-				tempDisableHotkey = false;
-				//Application.Run(activePauseMenu);
-				activePauseMenu.ShowDialog();
-
 			}
-			else
+
+			activePauseMenu = new PauseMenu_Show(this, args);
+			if (_executePauseAfter)
 			{
-				activePauseMenu.Close();
+				activePauseMenu.Load += (sender, e) =>
+				{
+
+					Task.Run(() => AhkExecute(args, _ahkPause, _ahkFromExe));
+				};
 			}
+			
+			activePauseMenu.FormClosed += CloseActiveMenu;
+			//Task.Run(() => activePauseMenu.ShowDialog());
+			//Thread.Sleep(1000);
+			activePauseMenu.ShowDialog();
 
 
 		}
 
 		private void CloseActiveMenu(object sender, FormClosedEventArgs e)
 		{
-			activePauseMenu.chromiumWebBrowser1.Dispose();
-			activePauseMenu.Dispose();
+			
+			/*
+			//activePauseMenu.chromiumWebBrowser1.Dispose();
+			try {
+				activePauseMenu.Dispose();
+			}
+			catch { }
+			*/
+			
 			activePauseMenu = null; // Réinitialise la référence lorsque la fenêtre est fermée.
+
+
+			
+		}
+
+		private void DoActionOnClose()
+		{
 			if (_processEmulator != null)
 			{
 				if (_pauseEmulation)
@@ -522,52 +563,159 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, (float)_restoreVolumeTo);
 				}
+				Thread.Sleep(2000);
 
 			}
 			string[] nargs = new List<string>().ToArray();
-			AhkExecute(nargs, _ahkResume);
+			AhkExecute(nargs, _ahkResume, _ahkFromExe);
+
+			if(ahkCodeToExecute != "")
+			{
+				AhkExecute(nargs, ahkCodeToExecute, _ahkFromExe);
+				ahkCodeToExecute = "";
+			}
+			tempDisableHotkey = false;
 		}
 
-		private void AhkExecute(string[] args, string code)
+		private void AhkExecute(string[] args, string code, bool fromExe)
 		{
-			var ahk = new AutoHotkey.Interop.AutoHotkeyEngine();
-			string ahk_code = BigBoxUtils.AHKGetPrefix();
-
-			int i = 0;
-			foreach (var arg in args)
+			if (fromExe)
 			{
-				ahk.SetVar($"arg{i}", arg);
-				ahk_code += $@"Args.Insert({i}, arg{i})";
-				ahk_code += "\n";
-				i++;
+				string currentDir = Path.GetFullPath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
+				string ahkExe = Path.Combine(currentDir, "AutoHotkeyU32.exe");
+				if (!File.Exists(ahkExe)) fromExe = false;
 			}
 
-			ahk_code += "\n";
-			if (EmulatorLauncher.OriginalArgs != null)
+			if (fromExe)
 			{
-				int y = 0;
-				foreach (var arg in EmulatorLauncher.OriginalArgs)
+				string code_prefix_gamedata = "";
+				string code_prefix_args = "";
+				if (code.StartsWith("#includegamedata"))
 				{
-					ahk.SetVar($"originalarg{y}", arg);
-					ahk_code += $@"OriginalArgs.Insert({y}, originalarg{y})";
-					ahk_code += "\n";
-					y++;
+					code = code.Replace("#includegamedata", "");
+					code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
 				}
+
+				if (code.StartsWith("#includeargs"))
+				{
+					code = code.Replace("#includeargs", "");
+					int i = 0;
+					foreach (var arg in args)
+					{
+						code_prefix_args += $@"arg{i}=
+(
+{arg}
+)";
+						code_prefix_args += $@"Args.Insert({i}, arg{i})";
+						code_prefix_args += "\n";
+						i++;
+					}
+
+					code_prefix_args += "\n";
+					if (EmulatorLauncher.OriginalArgs != null)
+					{
+						int y = 0;
+						foreach (var arg in EmulatorLauncher.OriginalArgs)
+						{
+							code_prefix_args += $@"originalarg{y}=
+(
+{arg}
+)";
+							code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
+							code_prefix_args += "\n";
+							y++;
+						}
+					}
+				}
+
+				code = code_prefix_gamedata + "\n" + code_prefix_args + "\n" + code;
+
+				string tempFilePath = Path.Combine(Path.GetTempPath(), "temp_script.ahk");
+
+				try
+				{
+					// Écrivez le code AHK dans le fichier temporaire
+					File.WriteAllText(tempFilePath, code);
+
+					string currentDir = Path.GetFullPath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
+					string ahkExe = Path.Combine(currentDir, "AutoHotkeyU32.exe");
+
+					// Créez un processus pour exécuter le script AHK
+					Process process = new Process();
+					process.StartInfo.FileName = ahkExe;
+					process.StartInfo.Arguments = tempFilePath;
+					process.StartInfo.UseShellExecute = false;
+					process.StartInfo.CreateNoWindow = true;
+
+					// Démarrer le processus
+					process.Start();
+					process.WaitForExit();
+
+					// Supprimez le fichier temporaire après l'exécution
+					File.Delete(tempFilePath);
+				}
+				catch { }
 			}
-
-
-			ahk_code += code;
-			ahk_code += "\n";
-			ahk_code += @"resultatfinal := Args.join(""|||"")";
-
-			try
+			else
 			{
-				ahk.ExecRaw(ahk_code);
+				while (ahk_session != null)
+				{
+					Thread.Sleep(100);
+				}
+				ahk_session = new AutoHotkey.Interop.AutoHotkeyEngine();
+
+				string code_prefix_gamedata = "";
+				string code_prefix_args = "";
+				if (code.StartsWith("#includegamedata"))
+				{
+					code = code.Replace("#includegamedata", "");
+					code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
+				}
+
+				if (code.StartsWith("#includeargs"))
+				{
+					code = code.Replace("#includeargs", "");
+					int i = 0;
+					foreach (var arg in args)
+					{
+						ahk_session.SetVar($"arg{i}", arg);
+						code_prefix_args += $@"Args.Insert({i}, arg{i})";
+						code_prefix_args += "\n";
+						i++;
+					}
+
+					code_prefix_args += "\n";
+					if (EmulatorLauncher.OriginalArgs != null)
+					{
+						int y = 0;
+						foreach (var arg in EmulatorLauncher.OriginalArgs)
+						{
+							ahk_session.SetVar($"originalarg{y}", arg);
+							code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
+							code_prefix_args += "\n";
+							y++;
+						}
+					}
+				}
+
+				code = code_prefix_gamedata + "\n" + code_prefix_args + "\n" + code;
+
+				try
+				{
+					ahk_session.ExecRaw(code);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message);
+				}
+
+				ahk_session = null;
 			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message);
-			}
+
+
+
+			//string ahk_code = BigBoxUtils.AHKGetPrefix();
 		}
+
 	}
 }

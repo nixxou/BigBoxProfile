@@ -126,51 +126,56 @@ namespace BigBoxProfile.EmulatorActions
 
 		private string[] AhkExecute(string[] args, string code)
 		{
-			var ahk = new AutoHotkey.Interop.AutoHotkeyEngine();
-			string ahk_code = BigBoxUtils.AHKGetPrefix();
 
+			var ahk_session = new AutoHotkey.Interop.AutoHotkeyEngine();
+
+			string code_prefix_gamedata = "";
+			string code_prefix_args = "";
+			if (code.StartsWith("#includegamedata"))
+			{
+				code = code.Replace("#includegamedata", "");
+				code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
+			}
+
+
+			code = code.Replace("#includeargs", "");
 			int i = 0;
 			foreach (var arg in args)
 			{
-				ahk.SetVar($"arg{i}", arg);
-				ahk_code += $@"Args.Insert({i}, arg{i})";
-				ahk_code += "\n";
+				ahk_session.SetVar($"arg{i}", arg);
+				code_prefix_args += $@"Args.Insert({i}, arg{i})";
+				code_prefix_args += "\n";
 				i++;
 			}
 
-			ahk_code += "\n";
-			if(EmulatorLauncher.OriginalArgs != null)
+			code_prefix_args += "\n";
+			if (EmulatorLauncher.OriginalArgs != null)
 			{
 				int y = 0;
 				foreach (var arg in EmulatorLauncher.OriginalArgs)
 				{
-					ahk.SetVar($"originalarg{y}", arg);
-					ahk_code += $@"OriginalArgs.Insert({y}, originalarg{y})";
-					ahk_code += "\n";
+					ahk_session.SetVar($"originalarg{y}", arg);
+					code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
+					code_prefix_args += "\n";
 					y++;
 				}
 			}
 
+			code = code_prefix_gamedata + "\n" + code_prefix_args + "\n" + code;
+			code += "\n";
+			code += @"resultatfinal := Args.join(""|||"")";
+			code += "\n";
 
-			ahk_code += code;
-			ahk_code += "\n";
-			ahk_code += @"resultatfinal := Args.join(""|||"")";
-
-
-
-			//ahk_code += "\n";
-			//ahk_code += "MsgBox, %resultatfinal%";
 			try
 			{
-				ahk.ExecRaw(ahk_code);
-				string resultatfinal = ahk.GetVar("resultatfinal");
+				ahk_session.ExecRaw(code);
+				string resultatfinal = ahk_session.GetVar("resultatfinal");
 				args = BigBoxUtils.explode(resultatfinal, "|||");
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message);
 			}
-
 
 			return args;
 		}

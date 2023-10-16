@@ -77,37 +77,57 @@ namespace BigBoxProfile
 			if(SourceData == "ahk")
 			{
 				string resultatfinal = "";
-				var ahk = new AutoHotkey.Interop.AutoHotkeyEngine();
-				string ahk_code = BigBoxUtils.AHKGetPrefix();
 
-				int i = 0;
-				foreach (var arg in argsData)
+				var ahk_session = new AutoHotkey.Interop.AutoHotkeyEngine();
+
+				string code_prefix_gamedata = "";
+				string code_prefix_args = "";
+				string code = ahkCode;
+				if (code.StartsWith("#includegamedata"))
 				{
-					ahk.SetVar($"arg{i}", arg);
-					ahk_code += $@"Args.Insert({i}, arg{i})";
-					ahk_code += "\n";
-					i++;
+					code = code.Replace("#includegamedata", "");
+					code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
 				}
-
-				ahk_code += "\n";
-				if (EmulatorLauncher.OriginalArgs != null)
+				
+				if (code.StartsWith("#includeargs"))
 				{
-					int y = 0;
-					foreach (var arg in EmulatorLauncher.OriginalArgs)
+					code = code.Replace("#includeargs", "");
+					int i = 0;
+					foreach (var arg in argsData)
 					{
-						ahk.SetVar($"originalarg{y}", arg);
-						ahk_code += $@"OriginalArgs.Insert({y}, originalarg{y})";
-						ahk_code += "\n";
-						y++;
+						ahk_session.SetVar($"arg{i}", arg);
+						code_prefix_args += $@"Args.Insert({i}, arg{i})";
+						code_prefix_args += "\n";
+						i++;
 					}
+
+					code_prefix_args += "\n";
+					if (EmulatorLauncher.OriginalArgs != null)
+					{
+						int y = 0;
+						foreach (var arg in EmulatorLauncher.OriginalArgs)
+						{
+							ahk_session.SetVar($"originalarg{y}", arg);
+							code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
+							code_prefix_args += "\n";
+							y++;
+						}
+					}
+					code_prefix_args += "\n";
+					code_prefix_args += @"resultatfinal := Args.join(""|||"")";
+					code_prefix_args += "\n";
 				}
 
+				code = code_prefix_gamedata + "\n" + code_prefix_args + "\n" + code;
 
-				ahk_code += ahkCode;
+				code += "\n";
+				code += @"returnvalue := """"";
+				code += "\n";
+
 				try
 				{
-					ahk.ExecRaw(ahk_code);
-					resultatfinal = ahk.GetVar("returnvalue");
+					ahk_session.ExecRaw(code);
+					resultatfinal = ahk_session.GetVar("returnvalue");
 				}
 				catch (Exception ex)
 				{

@@ -58,6 +58,7 @@ namespace BigBoxProfile.EmulatorActions
 		public string typeScreen = "pause";
 		public string selectedMonitor = "Main";
 		public bool showDevTools = false;
+		public bool ahkFromExe = false;
 
 		public int dpi = 0;
 
@@ -136,6 +137,7 @@ namespace BigBoxProfile.EmulatorActions
 			typeScreen = Options.ContainsKey("typeScreen") ? Options["typeScreen"] : "pause";
 			selectedMonitor = Options.ContainsKey("selectedMonitor") ? Options["selectedMonitor"] : "Main";
 			if (Options.ContainsKey("showDevTools") && Options["showDevTools"] == "yes") showDevTools = true;
+			if (Options.ContainsKey("ahkFromExe") && Options["ahkFromExe"] == "yes") ahkFromExe = true;
 
 			InitializeComponent();
 
@@ -168,6 +170,7 @@ namespace BigBoxProfile.EmulatorActions
 			if(typeScreen=="end") radio_end.Checked = true;
 
 			chk_showDevTools.Checked = showDevTools;
+			chk_ahkFromExe.Checked = ahkFromExe;
 
 
 			UpdateGUI();
@@ -336,6 +339,7 @@ namespace BigBoxProfile.EmulatorActions
 			}
 
 			showDevTools = chk_showDevTools.Checked;
+			ahkFromExe = chk_ahkFromExe.Checked;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();

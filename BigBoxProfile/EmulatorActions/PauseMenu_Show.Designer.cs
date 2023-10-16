@@ -56,6 +56,7 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
 			this.Text = "PauseMenu_Show";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PauseMenu_Show_FormClosing);
+			this.Load += new System.EventHandler(this.PauseMenu_Show_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

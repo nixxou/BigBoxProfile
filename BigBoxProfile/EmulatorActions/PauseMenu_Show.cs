@@ -245,12 +245,13 @@ namespace BigBoxProfile.EmulatorActions
 			SetForegroundWindow(this.Handle);
 			SystemParametersInfo((uint)0x2001, 200000, 200000, 0x0002 | 0x0001);
 			chromiumWebBrowser1.Focus();
-			if (!_config._forcefullActivation) timer1.Enabled = false;
+			//if (!_config._forcefullActivation) 
+			timer1.Enabled = false;
 		}
 
 		private void PauseMenu_Show_Load(object sender, EventArgs e)
 		{
-
+			_config.tempDisableHotkey = false;
 
 
 
@@ -323,6 +324,16 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void PauseMenu_Show_FormClosing(object sender, FormClosingEventArgs e)
 		{
+			try
+			{
+				if (chromiumWebBrowser1 != null)
+				{
+					chromiumWebBrowser1.Dispose();
+				}
+
+			}
+			catch { }
+
 			if(timer1 != null)
 			{
 				timer1.Enabled = false;
@@ -333,10 +344,12 @@ namespace BigBoxProfile.EmulatorActions
 				timerEnd.Enabled = false;
 				timerEnd.Stop();
 				
-			}
-			
+			}	
+		}
 
-			
+		public void SetAHKCodeToExecute(string code)
+		{
+			_config.ahkCodeToExecute = code;
 		}
 	}
 
@@ -351,15 +364,16 @@ namespace BigBoxProfile.EmulatorActions
 				string code_base64 = targetUrl.Substring(4);
 				byte[] data = Convert.FromBase64String(code_base64);
 				string decodedString = System.Text.Encoding.UTF8.GetString(data);
-				var ahk = new AutoHotkey.Interop.AutoHotkeyEngine();
+				//var ahk = new AutoHotkey.Interop.AutoHotkeyEngine();
 
 				var customBrowser = (CustomBrowser)chromiumWebBrowser;
 				customBrowser.ParentForm.Invoke(new Action(() =>
 				{
+					customBrowser.ParentForm.SetAHKCodeToExecute(decodedString);
 					customBrowser.ParentForm.Close();
 				}));
 				Thread.Sleep(200);
-				ahk.ExecRaw(decodedString);
+				//ahk.ExecRaw(decodedString);
 
 				newBrowser = null;
 				return true;
