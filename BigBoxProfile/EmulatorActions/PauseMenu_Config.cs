@@ -59,6 +59,8 @@ namespace BigBoxProfile.EmulatorActions
 		public string selectedMonitor = "Main";
 		public bool showDevTools = false;
 		public bool ahkFromExe = false;
+		public bool includeSpecialVariable = false;
+
 
 		public int dpi = 0;
 
@@ -91,6 +93,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (Options.ContainsKey("executePauseAfter") && Options["executePauseAfter"] == "yes") executePauseAfter = true;
 			if (Options.ContainsKey("executeResumeBefore") && Options["executeResumeBefore"] == "yes") executeResumeBefore = true;
+			if (Options.ContainsKey("includeSpecialVariable") && Options["includeSpecialVariable"] == "yes") includeSpecialVariable = true;
 
 
 
@@ -171,6 +174,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			chk_showDevTools.Checked = showDevTools;
 			chk_ahkFromExe.Checked = ahkFromExe;
+			chk_includeSpecialVariable.Checked = includeSpecialVariable;
 
 
 			UpdateGUI();
@@ -340,6 +344,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			showDevTools = chk_showDevTools.Checked;
 			ahkFromExe = chk_ahkFromExe.Checked;
+			includeSpecialVariable = chk_includeSpecialVariable.Checked;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();

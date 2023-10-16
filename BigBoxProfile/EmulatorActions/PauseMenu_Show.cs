@@ -152,6 +152,12 @@ namespace BigBoxProfile.EmulatorActions
 
 			string htmlContent = File.ReadAllText(_config._htmlFile);
 
+			if (_config._includeSpecialVariable)
+			{
+				htmlContent = htmlContent.Replace("{{GAMEDATA}}", _config.specialVariableGameData);
+				htmlContent = htmlContent.Replace("{{ARGSDATA}}", _config.specialVaribaleArgsData);
+			}
+
 			if (variablesDictionary.Count > 0)
 			{
 				int currentLoopVariable = 0;

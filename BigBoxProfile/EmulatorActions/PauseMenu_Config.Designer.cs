@@ -78,6 +78,7 @@
 			this.button3 = new System.Windows.Forms.Button();
 			this.chk_showDevTools = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_ahkFromExe = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_includeSpecialVariable = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.groupBox2.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).BeginInit();
@@ -546,11 +547,20 @@
 			this.chk_ahkFromExe.TabIndex = 133;
 			this.chk_ahkFromExe.Values.Text = "Execute AHK from AutoHotkeyU32.exe";
 			// 
+			// chk_includeSpecialVariable
+			// 
+			this.chk_includeSpecialVariable.Location = new System.Drawing.Point(368, 485);
+			this.chk_includeSpecialVariable.Name = "chk_includeSpecialVariable";
+			this.chk_includeSpecialVariable.Size = new System.Drawing.Size(336, 20);
+			this.chk_includeSpecialVariable.TabIndex = 134;
+			this.chk_includeSpecialVariable.Values.Text = "Include special variable {{GAMEDATA}} and {{ARGSDATA}}";
+			// 
 			// PauseMenu_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1720, 546);
+			this.Controls.Add(this.chk_includeSpecialVariable);
 			this.Controls.Add(this.chk_ahkFromExe);
 			this.Controls.Add(this.btn_importFromLaunchbox);
 			this.Controls.Add(this.chk_showDevTools);
@@ -655,5 +665,6 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_showDevTools;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_importFromLaunchbox;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_ahkFromExe;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_includeSpecialVariable;
 	}
 }

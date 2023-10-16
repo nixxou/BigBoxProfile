@@ -24,6 +24,9 @@ using System.Xml;
 using static System.Net.WebRequestMethods;
 using File = System.IO.File;
 using System.IO.MemoryMappedFiles;
+using BigBoxProfile.RomExtractorUtils;
+using Newtonsoft.Json;
+using System.Diagnostics.Contracts;
 
 namespace BigBoxProfile
 {
@@ -1931,6 +1934,110 @@ OriginalArgs := []
 					CloseHandle(hThread);
 				}
 			}
+		}
+
+		public static string GuessRomPath(string[] Args, string[] OriginalArgs)
+		{
+			string initialRomPath = "";
+			if(GameInfoJSON != "")
+			{
+				Dictionary<string, object> gameData = JsonConvert.DeserializeObject<Dictionary<string, object>>(GameInfoJSON);
+				if (gameData != null)
+				{
+					if (gameData.ContainsKey("GameApplicationPath"))
+					{
+						initialRomPath = (string)gameData["GameApplicationPath"];
+					}
+				}
+			}
+			if (string.IsNullOrEmpty(initialRomPath))
+			{
+				foreach (string arg in Args)
+				{
+					if (arg.ToLower().Trim().Contains(initialRomPath.ToLower().Trim()))
+					{
+						return Path.GetFullPath(initialRomPath);
+					}
+				}
+				string initialRomFile = Path.GetFileName(initialRomPath).ToLower().Trim();
+				foreach (string arg in Args)
+				{
+					if (arg.ToLower().Trim().EndsWith(initialRomFile))
+					{
+						if (File.Exists(arg))
+						{
+							return Path.GetFullPath(arg);
+						}
+						else
+						{
+							if (arg.Contains("="))
+							{
+								string[] parties = arg.Split(new char[] { '=' }, 2);
+								if (parties.Length == 2)
+								{
+									string valeurApresPremierEgal = parties[1];
+									if (File.Exists(valeurApresPremierEgal)) return valeurApresPremierEgal;
+								}
+							}
+						}
+					}
+				}
+			}
+			var FilteredArgs = new List<string>(Args.ToArray());
+			if(Args.Length > 0)
+			{
+				FilteredArgs.RemoveAt(0);
+				foreach (string oarg in OriginalArgs)
+				{
+					if (FilteredArgs.Contains(oarg))
+					{
+						FilteredArgs.Remove(oarg);
+					}
+				}
+			}
+			string biggestFileName = "";
+			long biggestFileSize = -1;
+			foreach(var farg in FilteredArgs)
+			{
+				try{
+					if (File.Exists(farg))
+					{
+						long taille = new FileInfo(farg).Length;
+						if (taille > biggestFileSize)
+						{
+							biggestFileName = Path.GetFullPath(farg);
+							biggestFileSize = taille;
+						}
+
+					}
+					else
+					{
+						if (farg.Contains("="))
+						{
+							string[] parties = farg.Split(new char[] { '=' }, 2);
+							if (parties.Length == 2)
+							{
+								string valeurApresPremierEgal = parties[1];
+								if (File.Exists(valeurApresPremierEgal))
+								{
+									long taille = new FileInfo(farg).Length;
+									if (taille > biggestFileSize)
+									{
+										biggestFileName = Path.GetFullPath(farg);
+										biggestFileSize = taille;
+									}
+								}
+							}
+						}
+
+					}
+				}
+				catch { }
+
+			}
+			if (biggestFileName != "") return biggestFileName;
+
+			return Path.GetFullPath(initialRomPath);
 		}
 
 

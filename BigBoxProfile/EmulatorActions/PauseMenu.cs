@@ -1,6 +1,7 @@
 ﻿using CliWrap;
 using CliWrap.Buffered;
 using Gma.System.MouseKeyHook;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,6 +70,14 @@ namespace BigBoxProfile.EmulatorActions
 		public int _dpi { get; private set; } = 0;
 		public bool _showDevTools { get; private set; } = false;
 		public bool _ahkFromExe { get; private set; } = false;
+
+		public bool _includeSpecialVariable { get; private set; } = false;
+
+		public string specialVariableGameData { get; private set; } = "";
+		public string specialVaribaleArgsData { get; private set; } = "";
+
+		public string guessedRomFile { get; private set; } = "";
+		
 
 		public string ahkCodeToExecute = "";
 
@@ -182,7 +191,8 @@ namespace BigBoxProfile.EmulatorActions
 				if (frm.ahkFromExe) Options["ahkFromExe"] = "yes";
 				else Options["ahkFromExe"] = "no";
 
-				
+				if (frm.includeSpecialVariable) Options["includeSpecialVariable"] = "yes";
+				else Options["includeSpecialVariable"] = "no";
 
 				UpdateConfig();
 			}
@@ -230,6 +240,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (Options.ContainsKey("ahkFromExe") == false) Options["ahkFromExe"] = "no";
 
+			if (Options.ContainsKey("includeSpecialVariable") == false) Options["includeSpecialVariable"] = "no";
 			
 			UpdateConfig();
 
@@ -341,10 +352,62 @@ namespace BigBoxProfile.EmulatorActions
 
 			_showDevTools = Options["showDevTools"] == "yes" ? true : false;
 			_ahkFromExe = Options["ahkFromExe"] == "yes" ? true : false;
+			_includeSpecialVariable = Options["includeSpecialVariable"] == "yes" ? true : false;
 		}
 
 		public void ExecuteBefore(string[] args)
 		{
+			if (IsConfigured()){
+				specialVariableGameData = BigBoxUtils.GameInfoJSON;
+				guessedRomFile = BigBoxUtils.GuessRomPath(args, EmulatorLauncher.OriginalArgs);
+
+
+				Dictionary<string,object> argsData = new Dictionary<string,object>();
+				argsData.Add("Args",new List<string>(args).ToArray());
+
+				if (EmulatorLauncher.OriginalArgs != null)
+				{
+					argsData.Add("OriginalArgs", new List<string>(EmulatorLauncher.OriginalArgs).ToArray());
+					if(guessedRomFile != "")
+					{
+						try
+						{
+							argsData.Add("RomFilePath", guessedRomFile);
+							argsData.Add("RomFileName", Path.GetFileName(guessedRomFile));
+							argsData.Add("RomFileNameWithoutExt", Path.GetFileNameWithoutExtension(guessedRomFile));
+							argsData.Add("RomFileDir", Path.GetDirectoryName(guessedRomFile));
+						}
+						catch { }
+					}
+					else
+					{
+						argsData.Add("RomFilePath", "");
+						argsData.Add("RomFileName", "");
+						argsData.Add("RomFileNameWithoutExt", "");
+						argsData.Add("RomFileDir", "");
+					}
+					
+				}
+				if (args.Length > 0)
+				{
+					argsData.Add("EmulatorFilePath", args[0]);
+					argsData.Add("EmulatorFileName", Path.GetFileName(args[0]));
+					argsData.Add("EmulatorNameWithoutExt", Path.GetFileNameWithoutExtension(args[0]));
+					argsData.Add("EmulatorFileDir", Path.GetDirectoryName(args[0]));
+				}
+				else
+				{
+					argsData.Add("EmulatorFilePath", "");
+					argsData.Add("EmulatorFileName", "");
+					argsData.Add("EmulatorNameWithoutExt", "");
+					argsData.Add("EmulatorFileDir", "");
+				}
+
+
+				specialVaribaleArgsData = JsonConvert.SerializeObject(argsData, Newtonsoft.Json.Formatting.Indented);
+
+			}
+
 			//MessageBox.Show("debug pause before");
 			if (IsConfigured() && _typeScreen == "pause")
 			{
@@ -606,6 +669,7 @@ namespace BigBoxProfile.EmulatorActions
 (
 {arg}
 )";
+						code_prefix_args += "\n";
 						code_prefix_args += $@"Args.Insert({i}, arg{i})";
 						code_prefix_args += "\n";
 						i++;
@@ -621,6 +685,7 @@ namespace BigBoxProfile.EmulatorActions
 (
 {arg}
 )";
+							code_prefix_args += "\n";
 							code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
 							code_prefix_args += "\n";
 							y++;
@@ -639,6 +704,7 @@ namespace BigBoxProfile.EmulatorActions
 
 					string currentDir = Path.GetFullPath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
 					string ahkExe = Path.Combine(currentDir, "AutoHotkeyU32.exe");
+
 
 					// Créez un processus pour exécuter le script AHK
 					Process process = new Process();
