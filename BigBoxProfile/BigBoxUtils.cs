@@ -1361,7 +1361,7 @@ namespace BigBoxProfile
 			{
 				SchemeName = "localfolder",
 				DomainName = "cefsharp",
-				SchemeHandlerFactory = new FolderSchemeHandlerFactory(
+				SchemeHandlerFactory = new CustomFolderSchemeHandlerFactory(
 					rootFolder: DataHtmlDir,
 					hostName: "cefsharp",
 					defaultPage: "index.html" // will default to index.html
@@ -2040,7 +2040,20 @@ OriginalArgs := []
 			return Path.GetFullPath(initialRomPath);
 		}
 
-
+		public static bool Base64Decode(string base64txt, out string result)
+		{
+			try
+			{
+				byte[] data = Convert.FromBase64String(base64txt);
+				result = System.Text.Encoding.UTF8.GetString(data);
+				return true;
+			}
+			catch (FormatException)
+			{
+				result = "";
+				return false;
+			}
+		}
 	}
 
 }

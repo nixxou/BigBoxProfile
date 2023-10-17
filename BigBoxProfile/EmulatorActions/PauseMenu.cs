@@ -404,6 +404,54 @@ namespace BigBoxProfile.EmulatorActions
 				}
 
 
+
+				ArtCustomShemeHandler.ArtOverride.Clear();
+				if (_copyArt)
+				{
+
+					Dictionary<string, object> gameData = JsonConvert.DeserializeObject<Dictionary<string, object>>(BigBoxUtils.GameInfoJSON);
+					if (gameData != null)
+					{
+
+						string backgroundImage = "";
+						if (gameData.ContainsKey("BackgroundImagePath") && !string.IsNullOrEmpty((string)gameData["BackgroundImagePath"]) && File.Exists((string)gameData["BackgroundImagePath"]))
+						{
+							backgroundImage = (string)gameData["BackgroundImagePath"];
+						}
+						if (backgroundImage == "" && gameData.ContainsKey("PlatformBackgroundImagePath") && !string.IsNullOrEmpty((string)gameData["PlatformBackgroundImagePath"]) && File.Exists((string)gameData["PlatformBackgroundImagePath"]))
+						{
+							backgroundImage = (string)gameData["PlatformBackgroundImagePath"];
+						}
+						if(backgroundImage != "" && File.Exists(backgroundImage))
+						{
+							ArtCustomShemeHandler.ArtOverride.Add("background.jpg", backgroundImage);
+						}
+
+
+						if (gameData.ContainsKey("ClearLogoImagePath") && !string.IsNullOrEmpty((string)gameData["ClearLogoImagePath"]) && File.Exists((string)gameData["ClearLogoImagePath"]))
+						{
+							ArtCustomShemeHandler.ArtOverride.Add("clearlogo.png", (string)gameData["ClearLogoImagePath"]);
+						}
+						if (gameData.ContainsKey("BezelImagePath") && !string.IsNullOrEmpty((string)gameData["BezelImagePath"]) && File.Exists((string)gameData["BezelImagePath"]))
+						{
+							ArtCustomShemeHandler.ArtOverride.Add("bezel.png", (string)gameData["BezelImagePath"]);
+						}
+						if (gameData.ContainsKey("FrontImagePath") && !string.IsNullOrEmpty((string)gameData["FrontImagePath"]) && File.Exists((string)gameData["FrontImagePath"]))
+						{
+							ArtCustomShemeHandler.ArtOverride.Add("front.jpg", (string)gameData["FrontImagePath"]);
+						}
+						if (gameData.ContainsKey("CartFrontImagePath") && !string.IsNullOrEmpty((string)gameData["CartFrontImagePath"]))
+						{
+							ArtCustomShemeHandler.ArtOverride.Add("cart.jpg", (string)gameData["CartFrontImagePath"]);
+						}
+
+
+					}
+
+				}
+
+
+
 				specialVaribaleArgsData = JsonConvert.SerializeObject(argsData, Newtonsoft.Json.Formatting.Indented);
 
 			}
@@ -411,6 +459,7 @@ namespace BigBoxProfile.EmulatorActions
 			//MessageBox.Show("debug pause before");
 			if (IsConfigured() && _typeScreen == "pause")
 			{
+				
 				if (!string.IsNullOrEmpty(_keyCombo))
 				{
 					var keycombi = Combination.FromString(_keyCombo);
@@ -426,6 +475,7 @@ namespace BigBoxProfile.EmulatorActions
 					_globalHook.OnCombination(assignment);
 
 				}
+				
 
 				
 				if (!string.IsNullOrEmpty(_gamepadCombo))
@@ -451,7 +501,7 @@ namespace BigBoxProfile.EmulatorActions
 
 					gamepad.StateChanged += (object a, EventArgs b) =>
 					{
-						if (gamepad.state.Gamepad.IsButtonDown("Guide"))
+						if (gamepad.state.Gamepad.IsButtonDown(_gamepadCombo))
 						{
 							if (_gamepadKeyPressMinDuration == 0)
 							{
@@ -626,8 +676,13 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, (float)_restoreVolumeTo);
 				}
-				Thread.Sleep(2000);
-
+				Thread.Sleep(500);
+				IntPtr mainWindowHandle = _processEmulator.MainWindowHandle;
+				SystemParametersInfo((uint)0x2001, 0, 0, 0x0002 | 0x0001);
+				ShowWindowAsync(mainWindowHandle, WS_SHOWNORMAL);
+				SetForegroundWindow(mainWindowHandle);
+				SystemParametersInfo((uint)0x2001, 200000, 200000, 0x0002 | 0x0001);
+				Thread.Sleep(500);
 			}
 			string[] nargs = new List<string>().ToArray();
 			AhkExecute(nargs, _ahkResume, _ahkFromExe);

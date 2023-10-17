@@ -7,12 +7,13 @@ using System.Drawing;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CefSharp;
+using CefSharp.Handler;
 using CefSharp.SchemeHandler;
 using CefSharp.Web;
 using CefSharp.WinForms;
@@ -109,8 +110,8 @@ namespace BigBoxProfile.EmulatorActions
 			
 			this.Width = SizeWidth;
 			this.Height = SizeHeight;
-			this.BackColor = Color.LimeGreen;
-			this.TransparencyKey = Color.LimeGreen;
+			//this.BackColor = Color.LimeGreen;
+			//this.TransparencyKey = Color.LimeGreen;
 
 			//this.WindowState = FormWindowState.Maximized;
 
@@ -242,17 +243,21 @@ namespace BigBoxProfile.EmulatorActions
 
 		private void timer1_Tick(object sender, EventArgs e)
 		{
-			//timer1.Interval = 2000;
-			this.BringToFront();
-			this.TopMost = true;
-			this.Activate();
-			SystemParametersInfo((uint)0x2001, 0, 0, 0x0002 | 0x0001);
-			ShowWindowAsync(this.Handle, WS_SHOWNORMAL);
-			SetForegroundWindow(this.Handle);
-			SystemParametersInfo((uint)0x2001, 200000, 200000, 0x0002 | 0x0001);
-			chromiumWebBrowser1.Focus();
-			//if (!_config._forcefullActivation) 
-			timer1.Enabled = false;
+			if (Form.ActiveForm == null)
+			{
+				this.BringToFront();
+				this.TopMost = true;
+				this.Activate();
+
+
+				//SystemParametersInfo((uint)0x2001, 0, 0, 0x0002 | 0x0001);
+				//ShowWindowAsync(this.Handle, WS_SHOWNORMAL);
+				//SetForegroundWindow(this.Handle);
+				//SystemParametersInfo((uint)0x2001, 200000, 200000, 0x0002 | 0x0001);
+				chromiumWebBrowser1.Focus();
+				timer1.Interval = 1000;
+				if (!_config._forcefullActivation) timer1.Enabled = false;
+			}
 		}
 
 		private void PauseMenu_Show_Load(object sender, EventArgs e)
@@ -263,10 +268,10 @@ namespace BigBoxProfile.EmulatorActions
 
 
 		}
-		protected override void OnPaintBackground(PaintEventArgs e)
+		/*protected override void OnPaintBackground(PaintEventArgs e)
 		{
 			e.Graphics.FillRectangle(Brushes.LimeGreen, e.ClipRectangle);
-		}
+		}*/
 
 		private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
 		{
@@ -357,63 +362,5 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			_config.ahkCodeToExecute = code;
 		}
-	}
-
-	public class CefAHKIntercept : ILifeSpanHandler
-	{
-		// Load new URL (when clicking a link with target=_blank) in the same frame
-		public bool OnBeforePopup(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser)
-		{
-			if (targetUrl.StartsWith("ahk:"))
-			{
-
-				string code_base64 = targetUrl.Substring(4);
-				byte[] data = Convert.FromBase64String(code_base64);
-				string decodedString = System.Text.Encoding.UTF8.GetString(data);
-				//var ahk = new AutoHotkey.Interop.AutoHotkeyEngine();
-
-				var customBrowser = (CustomBrowser)chromiumWebBrowser;
-				customBrowser.ParentForm.Invoke(new Action(() =>
-				{
-					customBrowser.ParentForm.SetAHKCodeToExecute(decodedString);
-					customBrowser.ParentForm.Close();
-				}));
-				Thread.Sleep(200);
-				//ahk.ExecRaw(decodedString);
-
-				newBrowser = null;
-				return true;
-			}
-			else
-			{
-				browser.MainFrame.LoadUrl(targetUrl);
-				newBrowser = null;
-				return true;
-			}
-
-
-		}
-
-
-		// If you don't implement all of the interface members in the custom class
-		// you will find:
-		// Error CS0535	'MyCustomLifeSpanHandler' does not implement interface member 'ILifeSpanHandler.OnAfterCreated(IWebBrowser, IBrowser)'
-
-		public bool DoClose(IWebBrowser chromiumWebBrowser, IBrowser browser)
-		{
-			// throw new NotImplementedException();
-			return true;
-		}
-
-		public void OnAfterCreated(IWebBrowser chromiumWebBrowser, IBrowser browser)
-		{
-			// throw new NotImplementedException();
-		}
-
-		public void OnBeforeClose(IWebBrowser chromiumWebBrowser, IBrowser browser)
-		{
-			// throw new NotImplementedException();
-		}
-
 	}
 }
