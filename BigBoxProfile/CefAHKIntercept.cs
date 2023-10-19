@@ -1,4 +1,5 @@
-﻿using System;
+﻿/*
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -205,4 +206,4 @@ public class ArtCustomShemeHandler : ResourceHandler
 		return CefReturnValue.Cancel;
 	}
 }
-
+*/

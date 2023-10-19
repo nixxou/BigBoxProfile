@@ -76,61 +76,27 @@ namespace BigBoxProfile.EmulatorActions
 
 		public bool _includeSpecialVariable { get; private set; } = false;
 
+
+
 		public string specialVariableGameData { get; private set; } = "";
 		public string specialVaribaleArgsData { get; private set; } = "";
-
 		public string guessedRomFile { get; private set; } = "";
-		
-
 		public string ahkCodeToExecute = "";
-
-
 		public bool tempDisableHotkey = false;
-
 		private float? _restoreVolumeTo = null;
 		private Process _processEmulator = null;
 		private X.Gamepad gamepad = null;
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
-
 		//private int pressDurationMilliseconds = 1000; // Par exemple, 1000 millisecondes (1 seconde)
 		private bool isComboActive = false; // Variable pour suivre si la combinaison est active
 		private System.Timers.Timer timerGamepad = null;
 		private System.Timers.Timer timerStart = null;
-
-		
 		AutoHotkey.Interop.AutoHotkeyEngine ahk_session = null;
-
 		public string htmlContent = "";
 		private MemoryMappedFile mmf_dataIn = null;
-
-		/*
-		private PauseMenu_Show _activePauseMenu = null;
-		public PauseMenu_Show activePauseMenu
-		{
-			get { return _activePauseMenu; }
-			private set
-			{
-				if (_activePauseMenu != null && value == null)
-				{
-					_activePauseMenu = value;
-					var ActionOnClose = Task.Run(() => DoActionOnClose());
-					
-					//Action
-				}
-				else
-				{
-					_activePauseMenu = value;
-				}
-
-			}
-		}
-		*/
-
 		public Process activePauseProcess = null;
 		public bool abordPauseProcessThread = false;
-
-
-		//public Dictionary<string, string> Options = new Dictionary<string, string>();
+		private Dictionary<string, string> ArtOverride = new Dictionary<string, string>();
 
 		public IEmulatorAction CreateNewInstance()
 		{
@@ -269,25 +235,18 @@ namespace BigBoxProfile.EmulatorActions
 			string description = $"Menu {_typeScreen} : {Path.GetFileName(_htmlFile)}";
 			if (_filter != "") description += $" [Only if command line contains {_filter}]";
 			if (_exclude != "") description += $" [Exclude {_exclude}]";
-
 			return $"{ModuleName} => {description}";
-
-			//return $"{ModuleName} Instance {_instanceId}";
 		}
 
 		public string[] ModifyExemple(string[] args)
 		{
-
 			return args;
-
 		}
 		public string[] Modify(string[] args)
 		{
 
 			return args;
 		}
-
-
 
 		public string[] ModifyReal(string[] args)
 		{
@@ -368,11 +327,9 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void ExecuteBefore(string[] args)
 		{
-			//MessageBox.Show("ici");
 			if (IsConfigured()){
 				specialVariableGameData = BigBoxUtils.GameInfoJSON;
 				guessedRomFile = BigBoxUtils.GuessRomPath(args, EmulatorLauncher.OriginalArgs);
-
 
 				Dictionary<string,object> argsData = new Dictionary<string,object>();
 				argsData.Add("Args",new List<string>(args).ToArray());
@@ -417,7 +374,7 @@ namespace BigBoxProfile.EmulatorActions
 
 
 
-				ArtCustomShemeHandler.ArtOverride.Clear();
+				ArtOverride.Clear();
 				if (_copyArt)
 				{
 
@@ -436,47 +393,42 @@ namespace BigBoxProfile.EmulatorActions
 						}
 						if(backgroundImage != "" && File.Exists(backgroundImage))
 						{
-							ArtCustomShemeHandler.ArtOverride.Add("background.jpg", backgroundImage);
+							ArtOverride.Add("background.jpg", backgroundImage);
 						}
 
 
 						if (gameData.ContainsKey("ClearLogoImagePath") && !string.IsNullOrEmpty((string)gameData["ClearLogoImagePath"]) && File.Exists((string)gameData["ClearLogoImagePath"]))
 						{
-							ArtCustomShemeHandler.ArtOverride.Add("clearlogo.png", (string)gameData["ClearLogoImagePath"]);
+							ArtOverride.Add("clearlogo.png", (string)gameData["ClearLogoImagePath"]);
 						}
 						if (gameData.ContainsKey("BezelImagePath") && !string.IsNullOrEmpty((string)gameData["BezelImagePath"]) && File.Exists((string)gameData["BezelImagePath"]))
 						{
-							ArtCustomShemeHandler.ArtOverride.Add("bezel.png", (string)gameData["BezelImagePath"]);
-							if(backgroundImage == "") ArtCustomShemeHandler.ArtOverride.Add("background.jpg", (string)gameData["BezelImagePath"]);
+							ArtOverride.Add("bezel.png", (string)gameData["BezelImagePath"]);
+							if(backgroundImage == "") ArtOverride.Add("background.jpg", (string)gameData["BezelImagePath"]);
 						}
 						if (gameData.ContainsKey("FrontImagePath") && !string.IsNullOrEmpty((string)gameData["FrontImagePath"]) && File.Exists((string)gameData["FrontImagePath"]))
 						{
-							ArtCustomShemeHandler.ArtOverride.Add("front.jpg", (string)gameData["FrontImagePath"]);
+							ArtOverride.Add("front.jpg", (string)gameData["FrontImagePath"]);
 						}
 						if (gameData.ContainsKey("CartFrontImagePath") && !string.IsNullOrEmpty((string)gameData["CartFrontImagePath"]))
 						{
-							ArtCustomShemeHandler.ArtOverride.Add("cart.jpg", (string)gameData["CartFrontImagePath"]);
+							ArtOverride.Add("cart.jpg", (string)gameData["CartFrontImagePath"]);
 						}
 						if (gameData.ContainsKey("ManualPath") && !string.IsNullOrEmpty((string)gameData["ManualPath"]))
 						{
-							ArtCustomShemeHandler.ArtOverride.Add("manual.pdf", (string)gameData["ManualPath"]);
+							ArtOverride.Add("manual.pdf", (string)gameData["ManualPath"]);
 						}
 						if (gameData.ContainsKey("VideoPath") && !string.IsNullOrEmpty((string)gameData["VideoPath"]))
 						{
-							ArtCustomShemeHandler.ArtOverride.Add("video.mp4", (string)gameData["VideoPath"]);
+							ArtOverride.Add("video.mp4", (string)gameData["VideoPath"]);
 						}
 
 					}
 
 				}
-
-
-
 				specialVaribaleArgsData = JsonConvert.SerializeObject(argsData, Newtonsoft.Json.Formatting.Indented);
-
 			}
 
-			//MessageBox.Show("debug pause before");
 			if (IsConfigured() && _typeScreen == "pause")
 			{
 				
@@ -556,7 +508,6 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			if(tempDisableHotkey == true || ahk_session != null)
 			{
-				string zzzzz = "sd";
 				return;
 			}
 			if(activePauseProcess != null && tempDisableHotkey == false && ahk_session == null)
@@ -598,14 +549,6 @@ namespace BigBoxProfile.EmulatorActions
 				}
 				return;
 			}
-
-
-
-		}
-
-		private void GamepadKeyDown()
-		{
-			throw new NotImplementedException();
 		}
 
 		public void ExecuteAfter(string[] args)
@@ -639,11 +582,8 @@ namespace BigBoxProfile.EmulatorActions
 
 		public async void ShowPause(string[] args)
 		{
-			
-
 			if (!_executePauseAfter) AhkExecute(args, _ahkPause,_ahkFromExe);
 			
-			 
 			_processEmulator = BigBoxUtils.FindProcessEmulator(args);
 			if(_processEmulator != null)
 			{
@@ -667,11 +607,11 @@ namespace BigBoxProfile.EmulatorActions
 			activePauseProcess = process;
 			/*
 			activePauseMenu = new PauseMenu_Show(this, args);
+
 			if (_executePauseAfter)
 			{
 				activePauseMenu.Load += (sender, e) =>
 				{
-
 					Task.Run(() => AhkExecute(args, _ahkPause, _ahkFromExe));
 				};
 			}
@@ -691,7 +631,7 @@ namespace BigBoxProfile.EmulatorActions
 			configOptions.Add("specialVariableGameData", specialVariableGameData);
 			configOptions.Add("specialVaribaleArgsData", specialVaribaleArgsData);
 			configOptions.Add("guessedRomFile", guessedRomFile);
-			configOptions.Add("ArtOverride", JsonConvert.SerializeObject(ArtCustomShemeHandler.ArtOverride, Newtonsoft.Json.Formatting.Indented));
+			configOptions.Add("ArtOverride", JsonConvert.SerializeObject(ArtOverride, Newtonsoft.Json.Formatting.Indented));
 			configOptions.Add("AHK_gamedataPrefix", BigBoxUtils.AHKGetPrefix());
 			configOptions.Add("AHK_argsPrefix", BigBoxUtils.AHKGetPrefixArgs(args));
 
@@ -718,7 +658,6 @@ namespace BigBoxProfile.EmulatorActions
 			process.Start();
 			tempDisableHotkey = false;
 			process.WaitForExit();
-			//activePauseMenu = null;
 			abordPauseProcessThread = true;
 
 			pipeThread.Abort();

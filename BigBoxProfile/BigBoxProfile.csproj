@@ -211,9 +211,6 @@
     <Compile Include="BigBoxLauncher.cs" />
     <Compile Include="BigBoxUtils.cs" />
     <Compile Include="CCDWrapper.cs" />
-    <Compile Include="Class1.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Config.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -299,12 +296,6 @@
     </Compile>
     <Compile Include="EmulatorActions\PauseMenu_Config.Designer.cs">
       <DependentUpon>PauseMenu_Config.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EmulatorActions\PauseMenu_Show.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EmulatorActions\PauseMenu_Show.Designer.cs">
-      <DependentUpon>PauseMenu_Show.cs</DependentUpon>
     </Compile>
     <Compile Include="EmulatorActions\PrettyKeys.cs" />
     <Compile Include="EmulatorActions\PS3Mount.cs" />
@@ -487,9 +478,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\PauseMenu_Config.resx">
       <DependentUpon>PauseMenu_Config.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EmulatorActions\PauseMenu_Show.resx">
-      <DependentUpon>PauseMenu_Show.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\Replace_Config.resx">
       <DependentUpon>Replace_Config.cs</DependentUpon>

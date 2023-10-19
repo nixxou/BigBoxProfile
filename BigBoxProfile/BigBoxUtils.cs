@@ -1362,7 +1362,7 @@ namespace BigBoxProfile
 			{
 				SchemeName = "localfolder",
 				DomainName = "cefsharp",
-				SchemeHandlerFactory = new CustomFolderSchemeHandlerFactory(
+				SchemeHandlerFactory = new FolderSchemeHandlerFactory(
 					rootFolder: DataHtmlDir,
 					hostName: "cefsharp",
 					defaultPage: "index.html" // will default to index.html
