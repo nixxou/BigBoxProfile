@@ -50,6 +50,7 @@
 			this.cRegex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cFallback = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.cAhk = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btn_add = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_cancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -71,7 +72,6 @@
 			this.groupahk = new System.Windows.Forms.GroupBox();
 			this.txt_ahk = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
 			this.kryptonButton1 = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-			this.cAhk = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.groupBox1.SuspendLayout();
 			this.groupahk.SuspendLayout();
 			this.SuspendLayout();
@@ -446,7 +446,7 @@
 			this.txt_ahk.Name = "txt_ahk";
 			this.txt_ahk.Size = new System.Drawing.Size(629, 361);
 			this.txt_ahk.TabIndex = 94;
-			this.txt_ahk.Text = "Text In";
+			this.txt_ahk.Text = "";
 			// 
 			// kryptonButton1
 			// 

@@ -59,7 +59,6 @@
 			this.listBox1 = new System.Windows.Forms.ListBox();
 			this.btn_importFromLaunchbox = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.chk_executePauseAfter = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-			this.chk_executeResumeBefore = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_disableSound = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.kryptonLabel3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.num_delaystart = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
@@ -74,11 +73,11 @@
 			this.kryptonLabel7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.cmb_dpi = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
 			this.kryptonLabel8 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button3 = new System.Windows.Forms.Button();
 			this.chk_showDevTools = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_ahkFromExe = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_includeSpecialVariable = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.btn_clearkeyboard = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.btn_cleargamepad = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.groupBox2.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).BeginInit();
@@ -206,9 +205,9 @@
 			// 
 			// button6
 			// 
-			this.button6.Location = new System.Drawing.Point(31, 285);
+			this.button6.Location = new System.Drawing.Point(29, 285);
 			this.button6.Name = "button6";
-			this.button6.Size = new System.Drawing.Size(274, 24);
+			this.button6.Size = new System.Drawing.Size(230, 24);
 			this.button6.TabIndex = 99;
 			this.button6.Values.Text = "Set Keyboard Bind Keys";
 			this.button6.Click += new System.EventHandler(this.button6_Click);
@@ -227,7 +226,7 @@
 			// 
 			this.button1.Location = new System.Drawing.Point(368, 285);
 			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(276, 24);
+			this.button1.Size = new System.Drawing.Size(230, 24);
 			this.button1.TabIndex = 101;
 			this.button1.Values.Text = "Set Gamepad Bind Keys";
 			this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -283,11 +282,14 @@
 			// 
 			// chk_copyArty
 			// 
-			this.chk_copyArty.Location = new System.Drawing.Point(29, 454);
+			this.chk_copyArty.AutoSize = false;
+			this.chk_copyArty.Location = new System.Drawing.Point(29, 506);
 			this.chk_copyArty.Name = "chk_copyArty";
-			this.chk_copyArty.Size = new System.Drawing.Size(311, 20);
+			this.chk_copyArty.Size = new System.Drawing.Size(665, 20);
 			this.chk_copyArty.TabIndex = 108;
-			this.chk_copyArty.Values.Text = "Copy art img to %appdata%/BigBoxProfile/html/tmp";
+			this.chk_copyArty.Values.Text = "Override html call to games ressources (background.jpg, clearlogo.png, bezel.png," +
+    " front.jpg, manual.pdf, video.mp4)";
+			this.chk_copyArty.CheckedChanged += new System.EventHandler(this.chk_copyArty_CheckedChanged);
 			// 
 			// kryptonLabel1
 			// 
@@ -361,19 +363,11 @@
 			// 
 			// chk_executePauseAfter
 			// 
-			this.chk_executePauseAfter.Location = new System.Drawing.Point(29, 480);
+			this.chk_executePauseAfter.Location = new System.Drawing.Point(29, 454);
 			this.chk_executePauseAfter.Name = "chk_executePauseAfter";
 			this.chk_executePauseAfter.Size = new System.Drawing.Size(328, 20);
 			this.chk_executePauseAfter.TabIndex = 114;
 			this.chk_executePauseAfter.Values.Text = "Execute Pause Ahk code after showing the pause screen";
-			// 
-			// chk_executeResumeBefore
-			// 
-			this.chk_executeResumeBefore.Location = new System.Drawing.Point(29, 506);
-			this.chk_executeResumeBefore.Name = "chk_executeResumeBefore";
-			this.chk_executeResumeBefore.Size = new System.Drawing.Size(341, 20);
-			this.chk_executeResumeBefore.TabIndex = 115;
-			this.chk_executeResumeBefore.Values.Text = "Execute Resume ahk code before closing the pause screen";
 			// 
 			// chk_disableSound
 			// 
@@ -512,25 +506,6 @@
 			this.kryptonLabel8.TabIndex = 129;
 			this.kryptonLabel8.Values.Text = "Set DPI :";
 			// 
-			// button2
-			// 
-			this.button2.Location = new System.Drawing.Point(1001, 510);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(75, 23);
-			this.button2.TabIndex = 130;
-			this.button2.Text = "button2";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
-			// 
-			// button3
-			// 
-			this.button3.Location = new System.Drawing.Point(1082, 511);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(75, 23);
-			this.button3.TabIndex = 131;
-			this.button3.Text = "button3";
-			this.button3.UseVisualStyleBackColor = true;
-			// 
 			// chk_showDevTools
 			// 
 			this.chk_showDevTools.Location = new System.Drawing.Point(368, 433);
@@ -549,23 +524,41 @@
 			// 
 			// chk_includeSpecialVariable
 			// 
-			this.chk_includeSpecialVariable.Location = new System.Drawing.Point(368, 485);
+			this.chk_includeSpecialVariable.Location = new System.Drawing.Point(29, 480);
 			this.chk_includeSpecialVariable.Name = "chk_includeSpecialVariable";
 			this.chk_includeSpecialVariable.Size = new System.Drawing.Size(336, 20);
 			this.chk_includeSpecialVariable.TabIndex = 134;
 			this.chk_includeSpecialVariable.Values.Text = "Include special variable {{GAMEDATA}} and {{ARGSDATA}}";
+			// 
+			// btn_clearkeyboard
+			// 
+			this.btn_clearkeyboard.Location = new System.Drawing.Point(265, 285);
+			this.btn_clearkeyboard.Name = "btn_clearkeyboard";
+			this.btn_clearkeyboard.Size = new System.Drawing.Size(40, 24);
+			this.btn_clearkeyboard.TabIndex = 135;
+			this.btn_clearkeyboard.Values.Text = "Clear";
+			this.btn_clearkeyboard.Click += new System.EventHandler(this.btn_clearkeyboard_Click);
+			// 
+			// btn_cleargamepad
+			// 
+			this.btn_cleargamepad.Location = new System.Drawing.Point(604, 285);
+			this.btn_cleargamepad.Name = "btn_cleargamepad";
+			this.btn_cleargamepad.Size = new System.Drawing.Size(40, 24);
+			this.btn_cleargamepad.TabIndex = 136;
+			this.btn_cleargamepad.Values.Text = "Clear";
+			this.btn_cleargamepad.Click += new System.EventHandler(this.btn_cleargamepad_Click);
 			// 
 			// PauseMenu_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1720, 546);
+			this.Controls.Add(this.btn_cleargamepad);
+			this.Controls.Add(this.btn_clearkeyboard);
 			this.Controls.Add(this.chk_includeSpecialVariable);
 			this.Controls.Add(this.chk_ahkFromExe);
 			this.Controls.Add(this.btn_importFromLaunchbox);
 			this.Controls.Add(this.chk_showDevTools);
-			this.Controls.Add(this.button3);
-			this.Controls.Add(this.button2);
 			this.Controls.Add(this.kryptonLabel8);
 			this.Controls.Add(this.cmb_dpi);
 			this.Controls.Add(this.kryptonLabel7);
@@ -580,7 +573,6 @@
 			this.Controls.Add(this.kryptonLabel3);
 			this.Controls.Add(this.num_delaystart);
 			this.Controls.Add(this.chk_disableSound);
-			this.Controls.Add(this.chk_executeResumeBefore);
 			this.Controls.Add(this.chk_executePauseAfter);
 			this.Controls.Add(this.groupBox4);
 			this.Controls.Add(this.kryptonLabel2);
@@ -645,7 +637,6 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_manageVariables;
 		private System.Windows.Forms.ListBox listBox1;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_executePauseAfter;
-		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_executeResumeBefore;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_disableSound;
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel3;
 		private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown num_delaystart;
@@ -660,11 +651,11 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel7;
 		private ComponentFactory.Krypton.Toolkit.KryptonComboBox cmb_dpi;
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel8;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Button button3;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_showDevTools;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_importFromLaunchbox;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_ahkFromExe;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_includeSpecialVariable;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_clearkeyboard;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_cleargamepad;
 	}
 }

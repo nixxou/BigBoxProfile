@@ -52,7 +52,6 @@ namespace BigBoxProfile.EmulatorActions
 		public string variablesData = "";
 
 		public bool executePauseAfter = false;
-		public bool executeResumeBefore = false;
 		public int delayStarting = 0;
 		public int delayAutoClose = 0;
 		public string typeScreen = "pause";
@@ -92,7 +91,6 @@ namespace BigBoxProfile.EmulatorActions
 			variablesData = Options.ContainsKey("variablesData") ? Options["variablesData"] : "";
 
 			if (Options.ContainsKey("executePauseAfter") && Options["executePauseAfter"] == "yes") executePauseAfter = true;
-			if (Options.ContainsKey("executeResumeBefore") && Options["executeResumeBefore"] == "yes") executeResumeBefore = true;
 			if (Options.ContainsKey("includeSpecialVariable") && Options["includeSpecialVariable"] == "yes") includeSpecialVariable = true;
 
 
@@ -166,7 +164,6 @@ namespace BigBoxProfile.EmulatorActions
 			num_delaystart.Value = delayStarting;
 			num_autoclose.Value = delayAutoClose;
 			chk_executePauseAfter.Checked = executePauseAfter;
-			chk_executeResumeBefore.Checked = executeResumeBefore;
 
 			if(typeScreen=="pause") radio_pause.Checked = true;
 			if(typeScreen=="start") radio_startup.Checked = true;
@@ -321,7 +318,6 @@ namespace BigBoxProfile.EmulatorActions
 			delayStarting = (int)num_delaystart.Value;
 			delayAutoClose = (int)num_autoclose.Value;
 			executePauseAfter = chk_executePauseAfter.Checked;
-			executeResumeBefore = chk_executeResumeBefore.Checked;
 
 
 			if (radio_pause.Checked) typeScreen = "pause";
@@ -630,6 +626,21 @@ namespace BigBoxProfile.EmulatorActions
 
 			
 
+		}
+
+		private void chk_copyArty_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void btn_clearkeyboard_Click(object sender, EventArgs e)
+		{
+			TextBoxKeyCombo.Text = string.Empty;
+		}
+
+		private void btn_cleargamepad_Click(object sender, EventArgs e)
+		{
+			TextBoxGKeyCombo.Text = string.Empty;
 		}
 	}
 

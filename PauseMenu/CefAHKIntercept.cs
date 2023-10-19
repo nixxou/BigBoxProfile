@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -25,7 +27,8 @@ public class CefAHKIntercept : ILifeSpanHandler
 				var customBrowser = (CustomBrowser)chromiumWebBrowser;
 				customBrowser.ParentForm.Invoke(new Action(() =>
 				{
-					customBrowser.ParentForm.SetAHKCodeToExecute(decodedString);
+					//customBrowser.ParentForm.SetAHKCodeToExecute(decodedString);
+					customBrowser.ParentForm.SetCommandToHostProgram("ahkclose", decodedString);
 					customBrowser.ParentForm.Close();
 				}));
 				Thread.Sleep(200);
@@ -80,35 +83,19 @@ public class CefAHKIntercept : ILifeSpanHandler
 
 public class CustomFolderSchemeHandlerFactory : FolderSchemeHandlerFactory
 {
+	
 	public CustomFolderSchemeHandlerFactory(string rootFolder, string schemeName = null, string hostName = null, string defaultPage = "index.html", FileShare resourceFileShare = FileShare.Read) : base(rootFolder, schemeName, hostName, defaultPage, resourceFileShare)
 	{
 
 	}
 
-	static string RemoveAnchorFromUrl(string url)
-	{
-		return url;
-		// Utilise une expression régulière pour supprimer l'anchor
-		string pattern = @"^(.*?)(#.*)?$";
-		Match match = Regex.Match(url, pattern);
-
-		if (match.Success)
-		{
-			return match.Groups[1].Value;
-		}
-		else
-		{
-			// Gérer le cas où l'URL d'entrée n'est pas valide
-			return url;
-		}
-	}
 	protected override IResourceHandler Create(IBrowser browser, IFrame frame, string schemeName, IRequest request)
 	{
 
 		string FileName = "";
 		try
 		{
-			FileName = RemoveAnchorFromUrl(Path.GetFileName(request.Url));
+			FileName = Path.GetFileName(request.Url);
 		}
 		catch (Exception ex) { }
 		if (ArtCustomShemeHandler.ArtOverride.ContainsKey(FileName.ToLower().Trim()))
@@ -130,6 +117,8 @@ public class CustomFolderSchemeHandlerFactory : FolderSchemeHandlerFactory
 
 internal class MyCustomSchemeHandler : ResourceHandler
 {
+	public static bool ahkFromExe = false;
+
 	public static string AHK_argsPrefix = "";
 	public static string AHK_gamedataPrefix = "";
 
@@ -140,16 +129,63 @@ internal class MyCustomSchemeHandler : ResourceHandler
 		if (code.Contains("#includegamedata"))
 		{
 			code = code.Replace("#includegamedata", "");
-			code_prefix_gamedata = AHK_argsPrefix;
+			code_prefix_gamedata = AHK_gamedataPrefix;
 		}
 
 		if (code.Contains("#includeargs"))
 		{
 			code = code.Replace("#includeargs", "");
-			code_prefix_args = AHK_gamedataPrefix;
+			code_prefix_args = AHK_argsPrefix;
 		}
 
 		return code_prefix_gamedata + "\n" + code_prefix_args + "\n" + code;
+	}
+
+	public static string AHKExecuteFromExe(string decodedString, string returnvaluename = "returnvalue")
+	{
+		string currentDir = Path.GetFullPath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
+		string ahkExe = Path.Combine(currentDir, "AutoHotkeyU32.exe");
+		string tempFilePath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".ahk");
+		string tempFileRes = tempFilePath + ".res.txt";
+
+		string code = GetAHKCode(decodedString);
+
+		if(returnvaluename != "")
+		{
+			code += "\n";
+			code += @"FileAppend, %returnvalue%, " + tempFileRes;
+			code += "\n";
+		}
+
+		File.WriteAllText(tempFilePath, code);
+		if (File.Exists(tempFileRes))
+		{
+			Process process = new Process();
+			process.StartInfo.FileName = ahkExe;
+			process.StartInfo.Arguments = tempFilePath;
+			process.StartInfo.UseShellExecute = false;
+			process.StartInfo.CreateNoWindow = true;
+
+			// Démarrer le processus
+			process.Start();
+			process.WaitForExit();
+
+
+			File.Delete(tempFilePath);
+		}
+		
+
+		string result = "";
+		if (returnvaluename != "")
+		{
+			if (File.Exists(tempFileRes))
+			{
+				result = File.ReadAllText(tempFileRes);
+				File.Delete(tempFileRes);
+			}
+		}
+		return result;
+
 	}
 
 	public override CefReturnValue ProcessRequestAsync(IRequest request, ICallback callback)
@@ -159,18 +195,36 @@ internal class MyCustomSchemeHandler : ResourceHandler
 		string decodedString = "";
 		if (Utils.Base64Decode(code_base64, out decodedString))
 		{
-			var ahk_session = new AutoHotkey.Interop.AutoHotkeyEngine();
 			string resultatfinal = "";
-			try
+
+			if (ahkFromExe)
 			{
-				string code = GetAHKCode(decodedString);
-				ahk_session.ExecRaw(code);
-				resultatfinal = ahk_session.GetVar("returnvalue");
+				try
+				{
+					resultatfinal = AHKExecuteFromExe(decodedString, "returnvalue");
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message);
+					return CefReturnValue.Cancel;
+				}
+
 			}
-			catch (Exception ex)
+			else
 			{
-				MessageBox.Show(ex.Message);
-				return CefReturnValue.Cancel;
+				var ahk_session = new AutoHotkey.Interop.AutoHotkeyEngine();
+				try
+				{
+					string code = GetAHKCode(decodedString);
+					File.WriteAllText(@"E:\debugcode.ahk", code);
+					ahk_session.ExecRaw(code);
+					resultatfinal = ahk_session.GetVar("returnvalue");
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message);
+					return CefReturnValue.Cancel;
+				}
 			}
 
 
@@ -208,29 +262,12 @@ public class ArtCustomShemeHandler : ResourceHandler
 {
 	public static Dictionary<string, string> ArtOverride = new Dictionary<string, string>();
 
-	static string RemoveAnchorFromUrl(string url)
-	{
-		return url;
-		// Utilise une expression régulière pour supprimer l'anchor
-		string pattern = @"^(.*?)(#.*)?$";
-		Match match = Regex.Match(url, pattern);
-
-		if (match.Success)
-		{
-			return match.Groups[1].Value;
-		}
-		else
-		{
-			// Gérer le cas où l'URL d'entrée n'est pas valide
-			return url;
-		}
-	}
 	public override CefReturnValue ProcessRequestAsync(IRequest request, ICallback callback)
 	{
 		string FileName = "";
 		try
 		{
-			FileName = RemoveAnchorFromUrl(Path.GetFileName(request.Url));
+			FileName = Path.GetFileName(request.Url);
 		}
 		catch (Exception ex) { }
 		if (ArtCustomShemeHandler.ArtOverride.ContainsKey(FileName.ToLower().Trim()))

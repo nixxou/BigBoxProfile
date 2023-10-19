@@ -49,6 +49,7 @@ namespace PauseMenu
 
 		public Form1(Dictionary<string, object> configData)
 		{
+			//MessageBox.Show("debugpause");
 			ConfigData = configData;
 
 			string Config_selectedMonitor = (string)ConfigData["Monitor"];
@@ -58,6 +59,9 @@ namespace PauseMenu
 			MyCustomSchemeHandler.AHK_argsPrefix = (string)ConfigData["AHK_argsPrefix"];
 			MyCustomSchemeHandler.AHK_gamedataPrefix = (string)ConfigData["AHK_gamedataPrefix"];
 
+			bool ShowDevTools = (bool)ConfigData["ShowDevTools"];
+			bool ForcefullActivation = (bool)ConfigData["ForcefullActivation"];
+			int DelayAutoClose = int.Parse((string)ConfigData["delayAutoClose"]);
 
 			_selectedScreen = null;
 			Screen MainScreen = null;
@@ -136,7 +140,7 @@ namespace PauseMenu
 			settings.CefCommandLineArgs.Add("allow-file-access-from-files");
 			Cef.Initialize(settings);
 
-			//this.chromiumWebBrowser1.IsBrowserInitializedChanged += (a, b) => { chromiumWebBrowser1.ShowDevTools(); };
+			if(ShowDevTools) this.chromiumWebBrowser1.IsBrowserInitializedChanged += (a, b) => { chromiumWebBrowser1.ShowDevTools(); };
 
 			this.chromiumWebBrowser1.Location = fakebrowser_txt.Location;
 			this.chromiumWebBrowser1.Name = "chromiumWebBrowser1";
@@ -159,12 +163,31 @@ namespace PauseMenu
 			this.Activate();
 			chromiumWebBrowser1.Focus();
 
+			if((string)ConfigData["AHK_pauseCodeToSendOnceLoaded"] != "")
+			{
+				SetCommandToHostProgram("ahkcontinue", (string)ConfigData["AHK_pauseCodeToSendOnceLoaded"]);
+			}
+
 			timer1.Enabled = true;
-			//if (_config._forcefullActivation)
-			//{
+			if (ForcefullActivation)
+			{
 				this.LostFocus += timer1_Tick;
-			//}
+			}
 			SystemEvents.DisplaySettingsChanged += new EventHandler(SystemEvents_DisplaySettingsChanged);
+
+			if(DelayAutoClose > 0)
+			{
+				timerEnd = new System.Timers.Timer(DelayAutoClose);
+				timerEnd.Enabled = true;
+				timerEnd.Elapsed += (sender, e) =>
+				{
+					timerEnd.Stop();
+					this.Invoke(new Action(() =>
+					{
+						this.Close();
+					}));
+				};
+			}
 
 		}
 		private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e)
@@ -239,36 +262,29 @@ namespace PauseMenu
 
 		private void timer1_Tick(object sender, EventArgs e)
 		{
+			
 			if (Form.ActiveForm == null)
 			{
 				this.BringToFront();
 				this.TopMost = true;
 				this.Activate();
 
-
+				bool ForcefullActivation = (bool)ConfigData["ForcefullActivation"];
 				//SystemParametersInfo((uint)0x2001, 0, 0, 0x0002 | 0x0001);
 				//ShowWindowAsync(this.Handle, WS_SHOWNORMAL);
 				//SetForegroundWindow(this.Handle);
 				//SystemParametersInfo((uint)0x2001, 200000, 200000, 0x0002 | 0x0001);
 				//chromiumWebBrowser1.Focus();
 				timer1.Interval = 1000;
-				//if (!_config._forcefullActivation) timer1.Enabled = false;
+				if (!ForcefullActivation) timer1.Enabled = false;
 			}
 		}
 
+		/*
 		public void SetAHKCodeToExecute(string code)
 		{
-			/*
-			// Créez le MemoryMappedFile une seule fois
-			if (mmf_dataOut != null) { mmf_dataOut.Dispose(); mmf_dataOut = null; }
-			byte[] DataBytes = Encoding.UTF8.GetBytes(code);
-			mmf_dataOut = MemoryMappedFile.CreateOrOpen($"PauseMenu_OutInstance{Program.InstanceID}", DataBytes.Length);
-			using (MemoryMappedViewAccessor accessor = mmf_dataOut.CreateViewAccessor())
-			{
-				accessor.WriteArray(0, DataBytes, 0, DataBytes.Length);
-			}
-			*/
-			using (NamedPipeServerStream server = new NamedPipeServerStream("monTubeNomme"))
+
+			using (NamedPipeServerStream server = new NamedPipeServerStream($"PauseMenu_Tube-{Program.InstanceID}"))
 			{
 				server.WaitForConnection();
 				using (StreamWriter writer = new StreamWriter(server))
@@ -280,6 +296,20 @@ namespace PauseMenu
 
 			//MessageBox.Show(code);
 			//_config.ahkCodeToExecute = code;
+		}
+		*/
+
+		public void SetCommandToHostProgram(string command, string code)
+		{
+			using (NamedPipeServerStream server = new NamedPipeServerStream($"PauseMenu_Tube-{Program.InstanceID}"))
+			{
+				server.WaitForConnection();
+				using (StreamWriter writer = new StreamWriter(server))
+				{
+					writer.WriteLine(command + ":" + code);
+					// Écrire les données réelles ici
+				}
+			}
 		}
 	}
 

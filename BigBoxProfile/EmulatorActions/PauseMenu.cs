@@ -64,7 +64,6 @@ namespace BigBoxProfile.EmulatorActions
 		public string _ahkResume { get; private set; } = "";
 		public string _htmlFile { get; private set; } = "";
 		public bool _executePauseAfter { get; private set; } = false;
-		public bool _executeResumeBefore { get; private set; } = false;
 		public int _delayStarting { get; private set; } = 0;
 		public int _delayAutoClose { get; private set; } = 0;
 		public string _typeScreen { get; private set; } = "pause";
@@ -148,9 +147,6 @@ namespace BigBoxProfile.EmulatorActions
 				if (frm.executePauseAfter) Options["executePauseAfter"] = "yes";
 				else Options["executePauseAfter"] = "no";
 
-				if (frm.executeResumeBefore) Options["executeResumeBefore"] = "yes";
-				else Options["executeResumeBefore"] = "no";
-
 				Options["delayStarting"] = frm.delayStarting.ToString();
 				Options["delayAutoClose"] = frm.delayAutoClose.ToString();
 
@@ -203,7 +199,6 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("variablesData") == false) Options["variablesData"] = "";
 
 			if (Options.ContainsKey("executePauseAfter") == false) Options["executePauseAfter"] = "no";
-			if (Options.ContainsKey("executeResumeBefore") == false) Options["executeResumeBefore"] = "no";
 			if (Options.ContainsKey("delayStarting") == false) Options["delayStarting"] = "0";
 			if (Options.ContainsKey("delayAutoClose") == false) Options["delayAutoClose"] = "0";
 
@@ -286,7 +281,6 @@ namespace BigBoxProfile.EmulatorActions
 
 
 			_executePauseAfter = Options["executePauseAfter"] == "yes" ? true : false;
-			_executeResumeBefore = Options["executeResumeBefore"] == "yes" ? true : false;
 
 			tmpInt = 0;
 			_delayStarting = 0;
@@ -515,18 +509,23 @@ namespace BigBoxProfile.EmulatorActions
 				tempDisableHotkey = true;
 				//activePauseMenu.Close();
 
-				ProcessStartInfo psi = new ProcessStartInfo("taskkill")
+				if(activePauseProcess != null)
 				{
-					Arguments = "/F /IM PauseMenu.exe",
-					CreateNoWindow = true,
-					UseShellExecute = false
-				};
-				Process process = new Process
-				{
-					StartInfo = psi
-				};
-				process.Start();
-				process.WaitForExit();
+					int pidToKill = activePauseProcess.Id;
+					ProcessStartInfo psi = new ProcessStartInfo("taskkill")
+					{
+						Arguments = $"/F /PID {pidToKill}",
+						CreateNoWindow = true,
+						UseShellExecute = false
+					};
+					Process process = new Process
+					{
+						StartInfo = psi
+					};
+					process.Start();
+					process.WaitForExit();
+				}
+
 
 				activePauseProcess = null;
 
@@ -555,14 +554,39 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			if (IsConfigured() && _typeScreen == "end")
 			{
-				timerStart = new System.Timers.Timer(_delayStarting);
-
-				timerStart.Elapsed += (sender, e) =>
+				if(_delayStarting == 0) ShowPause(args);
+				else
 				{
-					timerStart.Stop();
-					ShowPause(args);
-				};
+					timerStart = new System.Timers.Timer(_delayStarting);
+
+					timerStart.Elapsed += (sender, e) =>
+					{
+						timerStart.Stop();
+						ShowPause(args);
+					};
+				}
+
 			}
+			if(IsConfigured() && (_typeScreen == "pause" || _typeScreen == "start"))
+			{
+				if (activePauseProcess != null)
+				{
+					int pidToKill = activePauseProcess.Id;
+					ProcessStartInfo psi = new ProcessStartInfo("taskkill")
+					{
+						Arguments = $"/F /PID {pidToKill}",
+						CreateNoWindow = true,
+						UseShellExecute = false
+					};
+					Process process = new Process
+					{
+						StartInfo = psi
+					};
+					process.Start();
+					process.WaitForExit();
+				}
+			}
+
 		}
 
 		public bool UseM3UContent()
@@ -627,7 +651,6 @@ namespace BigBoxProfile.EmulatorActions
 			configOptions.Add("HtmlDir", BigBoxUtils.DataHtmlDir);
 			configOptions.Add("ShowDevTools", _showDevTools);
 			configOptions.Add("ForcefullActivation", _forcefullActivation);
-			configOptions.Add("delayAutoClose", _delayAutoClose);
 			configOptions.Add("specialVariableGameData", specialVariableGameData);
 			configOptions.Add("specialVaribaleArgsData", specialVaribaleArgsData);
 			configOptions.Add("guessedRomFile", guessedRomFile);
@@ -635,6 +658,12 @@ namespace BigBoxProfile.EmulatorActions
 			configOptions.Add("AHK_gamedataPrefix", BigBoxUtils.AHKGetPrefix());
 			configOptions.Add("AHK_argsPrefix", BigBoxUtils.AHKGetPrefixArgs(args));
 
+			if (_typeScreen == "pause") configOptions.Add("delayAutoClose", "0");
+			else configOptions.Add("delayAutoClose", _delayAutoClose.ToString());
+
+			string AHK_pauseCodeToSendOnceLoaded = "";
+			if (_executePauseAfter) AHK_pauseCodeToSendOnceLoaded = _ahkPause;
+			configOptions.Add("AHK_pauseCodeToSendOnceLoaded", AHK_pauseCodeToSendOnceLoaded);
 
 			string json_resume = JsonConvert.SerializeObject(configOptions, Newtonsoft.Json.Formatting.Indented);
 			byte[] jsonDataBytes_resume = Encoding.UTF8.GetBytes(json_resume);
@@ -647,8 +676,9 @@ namespace BigBoxProfile.EmulatorActions
 			}
 
 			abordPauseProcessThread = false;
+			string[] argsToPass = new List<string>(args).ToArray();
 			Thread pipeThread = new Thread(StartPipeListener);
-			pipeThread.Start();
+			pipeThread.Start(argsToPass);
 
 			process.StartInfo.FileName = "PauseMenu.exe";
 			process.StartInfo.Arguments = _instanceId.ToString();
@@ -668,37 +698,63 @@ namespace BigBoxProfile.EmulatorActions
 
 		}
 
-		private void StartPipeListener()
+		private void StartPipeListener(object argdata)
 		{
-			
-			using (NamedPipeClientStream client = new NamedPipeClientStream(".", "monTubeNomme", PipeDirection.In))
+			string[] args = (string[])argdata;
+
+			using (NamedPipeClientStream client = new NamedPipeClientStream(".", $"PauseMenu_Tube-{_instanceId}", PipeDirection.In))
 			{
 				client.Connect();
 				using (StreamReader reader = new StreamReader(client))
 				{
 					while (!abordPauseProcessThread)
 					{
+
+
 						string data = reader.ReadToEnd(); // Lire l'ensemble des données
-						if (!string.IsNullOrEmpty(data))
+						if (!string.IsNullOrEmpty(data) && data.Contains(":"))
 						{
-							ahkCodeToExecute = data;
 
-							tempDisableHotkey = true;
-							ProcessStartInfo psi = new ProcessStartInfo("taskkill")
+							string[] parts = data.Split(new char[] { ':' }, 2);
+							if (parts.Length == 2)
 							{
-								Arguments = "/F /IM PauseMenu.exe",
-								CreateNoWindow = true,
-								UseShellExecute = false
-							};
-							Process process = new Process
-							{
-								StartInfo = psi
-							};
-							process.Start();
-							process.WaitForExit();
-							//activePauseMenu = null;
+								string commande = parts[0];
+								string action = parts[1];
 
-							return;
+								if(commande == "ahkclose")
+								{
+									ahkCodeToExecute = action;
+
+									tempDisableHotkey = true;
+
+									if (activePauseProcess != null)
+									{
+										int pidToKill = activePauseProcess.Id;
+										ProcessStartInfo psi = new ProcessStartInfo("taskkill")
+										{
+											Arguments = $"/F /PID {pidToKill}",
+											CreateNoWindow = true,
+											UseShellExecute = false
+										};
+										Process process = new Process
+										{
+											StartInfo = psi
+										};
+										process.Start();
+										process.WaitForExit();
+									}
+									//activePauseMenu = null;
+
+									return;
+								}
+								if(commande == "ahkcontinue")
+								{
+									Task.Run(() => AhkExecute(args, action, _ahkFromExe));
+								}
+
+							}
+
+
 
 						}
 						Thread.Sleep(100); // Vérification périodique
@@ -757,6 +813,7 @@ namespace BigBoxProfile.EmulatorActions
 
 				try
 				{
+
 					// Écrivez le code AHK dans le fichier temporaire
 					File.WriteAllText(tempFilePath, code);
 

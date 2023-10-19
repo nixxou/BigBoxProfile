@@ -107,7 +107,7 @@ namespace BigBoxProfile
 			}
 			else
 			{
-				if (String.IsNullOrEmpty(txt_variableName.Text) || String.IsNullOrEmpty(txt_regex.Text) || String.IsNullOrEmpty(txt_value.Text))
+				if (String.IsNullOrEmpty(txt_variableName.Text) || String.IsNullOrEmpty(txt_value.Text))
 				{
 					MessageBox.Show("You must fill the form");
 					return;
@@ -117,7 +117,7 @@ namespace BigBoxProfile
 					MessageBox.Show("You must select a file");
 					return;
 				}
-				if (!IsValidRegex(txt_regex.Text))
+				if (!IsValidRegex(txt_regex.Text) || txt_regex.Text == "")
 				{
 					MessageBox.Show("Invalid Regex");
 					return;

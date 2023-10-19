@@ -43,6 +43,13 @@ namespace PauseMenu
 					Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonResumeData);
 					if (configData != null)
 					{
+						bool ahkFromExe = false;
+						if (configData.ContainsKey("ahkFromExe"))
+						{
+							ahkFromExe = (bool)configData["ahkFromExe"];
+						}
+						MyCustomSchemeHandler.ahkFromExe = ahkFromExe;
+
 						if (configData.ContainsKey("HtmlContent"))
 						{
 							Application.EnableVisualStyles();
