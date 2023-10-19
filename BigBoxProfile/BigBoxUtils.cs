@@ -27,6 +27,7 @@ using System.IO.MemoryMappedFiles;
 using BigBoxProfile.RomExtractorUtils;
 using Newtonsoft.Json;
 using System.Diagnostics.Contracts;
+using CefSharp.DevTools.DOM;
 
 namespace BigBoxProfile
 {
@@ -1377,6 +1378,42 @@ namespace BigBoxProfile
 
 		}
 
+		public static string AHKGetPrefixArgs(string[] args)
+		{
+			string code_prefix_args = "";
+			int i = 0;
+			foreach (var arg in args)
+			{
+				code_prefix_args += $@"arg{i}=
+(
+{arg}
+)";
+				code_prefix_args += "\n";
+				code_prefix_args += $@"Args.Insert({i}, arg{i})";
+				code_prefix_args += "\n";
+				i++;
+			}
+
+			code_prefix_args += "\n";
+			if (EmulatorLauncher.OriginalArgs != null)
+			{
+				int y = 0;
+				foreach (var arg in EmulatorLauncher.OriginalArgs)
+				{
+					code_prefix_args += $@"originalarg{y}=
+(
+{arg}
+)";
+					code_prefix_args += "\n";
+					code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
+					code_prefix_args += "\n";
+					y++;
+				}
+			}
+			return code_prefix_args;
+
+		}
+
 		public static string AHKGetPrefix()
 		{
 			return @"
@@ -1770,13 +1807,39 @@ OriginalArgs := []
 
 		}
 
-		public static bool AHKSyntaxCheck(string ahkCode, bool addPrefix, out string errorTxt)
+		public static string GetAHKCode(string code, string[] args)
+		{
+			string code_prefix_gamedata = "";
+			string code_prefix_args = "";
+			if (code.Contains("#includegamedata"))
+			{
+				code = code.Replace("#includegamedata", "");
+				code_prefix_gamedata = AHKGetPrefix();
+			}
+
+			if (code.Contains("#includeargs"))
+			{
+				code = code.Replace("#includeargs", "");
+				code_prefix_args = AHKGetPrefixArgs(args);
+			}
+
+			return code_prefix_gamedata + "\n" + code_prefix_args + "\n" + code;
+		}
+
+		public static bool AHKSyntaxCheck(string ahkCode, bool addPrefix, out string errorTxt, string[] args = null)
 		{
 			errorTxt = "";
 			string ahk_code = ahkCode;
 			if (addPrefix)
 			{
-				ahk_code = AHKGetPrefix() + "\n" + ahkCode;
+				if(args == null)
+				{
+					if (EmulatorLauncher.OriginalArgs != null) args = new List<string>(EmulatorLauncher.OriginalArgs.ToArray()).ToArray();
+					else args = new string[0];
+				}
+
+				ahk_code = GetAHKCode(ahkCode, args);
+				//ahk_code = AHKGetPrefix() + "\n" + ahkCode;
 			}
 
 			string currentDir = Path.GetFullPath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
@@ -1950,7 +2013,7 @@ OriginalArgs := []
 					}
 				}
 			}
-			if (string.IsNullOrEmpty(initialRomPath))
+			if (!string.IsNullOrEmpty(initialRomPath))
 			{
 				foreach (string arg in Args)
 				{
@@ -2036,8 +2099,9 @@ OriginalArgs := []
 
 			}
 			if (biggestFileName != "") return biggestFileName;
+			if(initialRomPath != "") return Path.GetFullPath(initialRomPath);
+			return "";
 
-			return Path.GetFullPath(initialRomPath);
 		}
 
 		public static bool Base64Decode(string base64txt, out string result)

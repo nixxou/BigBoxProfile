@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RamDiskManager", "RamDiskMa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DualShock4Lib", "DualShock4Lib\DualShock4Lib.csproj", "{38899EBA-3D60-4884-A426-280E6BE8E1FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PauseMenu", "PauseMenu\PauseMenu.csproj", "{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,18 @@ Global
 		{38899EBA-3D60-4884-A426-280E6BE8E1FA}.Release|x64.Build.0 = Release|Any CPU
 		{38899EBA-3D60-4884-A426-280E6BE8E1FA}.Release|x86.ActiveCfg = Release|Any CPU
 		{38899EBA-3D60-4884-A426-280E6BE8E1FA}.Release|x86.Build.0 = Release|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Debug|x86.Build.0 = Debug|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Release|x64.Build.0 = Release|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Release|x86.ActiveCfg = Release|Any CPU
+		{B1DB5D8A-0F40-4271-99BF-D1A182D73BCE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

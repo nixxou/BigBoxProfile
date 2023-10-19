@@ -83,13 +83,13 @@ namespace BigBoxProfile
 				string code_prefix_gamedata = "";
 				string code_prefix_args = "";
 				string code = ahkCode;
-				if (code.StartsWith("#includegamedata"))
+				if (code.Contains("#includegamedata"))
 				{
 					code = code.Replace("#includegamedata", "");
 					code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
 				}
 				
-				if (code.StartsWith("#includeargs"))
+				if (code.Contains("#includeargs"))
 				{
 					code = code.Replace("#includeargs", "");
 					int i = 0;

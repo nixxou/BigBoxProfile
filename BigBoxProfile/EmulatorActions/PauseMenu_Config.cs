@@ -576,6 +576,34 @@ namespace BigBoxProfile.EmulatorActions
 										IsVariableAdded = true;
 									}
 								}
+								{
+									string keyname = "{{exit}}";
+									if (!variablesDictionary.ContainsKey(keyname))
+									{
+										VariableData newItem = new VariableData();
+										newItem.VariableName = keyname;
+										newItem.SourceData = "cmd";
+										newItem.VariableValue = "WinClose, ahk_exe {{{StartupEXE}}}";
+										variablesDictionary.Add(keyname, newItem);
+										IsVariableAdded = true;
+									}
+								}
+								{
+									string keyname = "{{{StartupEXE}}}";
+									if (!variablesDictionary.ContainsKey(keyname))
+									{
+										VariableData newItem = new VariableData();
+										newItem.VariableName = keyname;
+										newItem.SourceData = "cmd";
+										newItem.RegexToMatch = @"(.*?)(?:[\\/])?([^\\/]+)(\.exe)(.*)";
+										newItem.VariableValue = @"\2\3";
+										newItem.FallbackValue = Emulator.LastEmulatorName;
+										variablesDictionary.Add(keyname, newItem);
+										IsVariableAdded = true;
+									}
+								}
+
+
 
 								if (IsVariableAdded)
 								{

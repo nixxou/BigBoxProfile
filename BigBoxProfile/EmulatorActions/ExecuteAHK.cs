@@ -131,7 +131,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			string code_prefix_gamedata = "";
 			string code_prefix_args = "";
-			if (code.StartsWith("#includegamedata"))
+			if (code.Contains("#includegamedata"))
 			{
 				code = code.Replace("#includegamedata", "");
 				code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();

@@ -7,7 +7,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.MemoryMappedFiles;
+using System.IO.Pipes;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -86,9 +89,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		private float? _restoreVolumeTo = null;
 		private Process _processEmulator = null;
-
 		private X.Gamepad gamepad = null;
-
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
 		//private int pressDurationMilliseconds = 1000; // Par exemple, 1000 millisecondes (1 seconde)
@@ -96,9 +97,14 @@ namespace BigBoxProfile.EmulatorActions
 		private System.Timers.Timer timerGamepad = null;
 		private System.Timers.Timer timerStart = null;
 
-		private PauseMenu_Show _activePauseMenu = null;
+		
 		AutoHotkey.Interop.AutoHotkeyEngine ahk_session = null;
 
+		public string htmlContent = "";
+		private MemoryMappedFile mmf_dataIn = null;
+
+		/*
+		private PauseMenu_Show _activePauseMenu = null;
 		public PauseMenu_Show activePauseMenu
 		{
 			get { return _activePauseMenu; }
@@ -118,6 +124,11 @@ namespace BigBoxProfile.EmulatorActions
 
 			}
 		}
+		*/
+
+		public Process activePauseProcess = null;
+		public bool abordPauseProcessThread = false;
+
 
 		//public Dictionary<string, string> Options = new Dictionary<string, string>();
 
@@ -357,6 +368,7 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void ExecuteBefore(string[] args)
 		{
+			//MessageBox.Show("ici");
 			if (IsConfigured()){
 				specialVariableGameData = BigBoxUtils.GameInfoJSON;
 				guessedRomFile = BigBoxUtils.GuessRomPath(args, EmulatorLauncher.OriginalArgs);
@@ -435,6 +447,7 @@ namespace BigBoxProfile.EmulatorActions
 						if (gameData.ContainsKey("BezelImagePath") && !string.IsNullOrEmpty((string)gameData["BezelImagePath"]) && File.Exists((string)gameData["BezelImagePath"]))
 						{
 							ArtCustomShemeHandler.ArtOverride.Add("bezel.png", (string)gameData["BezelImagePath"]);
+							if(backgroundImage == "") ArtCustomShemeHandler.ArtOverride.Add("background.jpg", (string)gameData["BezelImagePath"]);
 						}
 						if (gameData.ContainsKey("FrontImagePath") && !string.IsNullOrEmpty((string)gameData["FrontImagePath"]) && File.Exists((string)gameData["FrontImagePath"]))
 						{
@@ -444,7 +457,14 @@ namespace BigBoxProfile.EmulatorActions
 						{
 							ArtCustomShemeHandler.ArtOverride.Add("cart.jpg", (string)gameData["CartFrontImagePath"]);
 						}
-
+						if (gameData.ContainsKey("ManualPath") && !string.IsNullOrEmpty((string)gameData["ManualPath"]))
+						{
+							ArtCustomShemeHandler.ArtOverride.Add("manual.pdf", (string)gameData["ManualPath"]);
+						}
+						if (gameData.ContainsKey("VideoPath") && !string.IsNullOrEmpty((string)gameData["VideoPath"]))
+						{
+							ArtCustomShemeHandler.ArtOverride.Add("video.mp4", (string)gameData["VideoPath"]);
+						}
 
 					}
 
@@ -539,16 +559,30 @@ namespace BigBoxProfile.EmulatorActions
 				string zzzzz = "sd";
 				return;
 			}
-			if(activePauseMenu != null && tempDisableHotkey == false && ahk_session == null)
+			if(activePauseProcess != null && tempDisableHotkey == false && ahk_session == null)
 			{
 				tempDisableHotkey = true;
-				activePauseMenu.Close();
-				activePauseMenu = null;
+				//activePauseMenu.Close();
+
+				ProcessStartInfo psi = new ProcessStartInfo("taskkill")
+				{
+					Arguments = "/F /IM PauseMenu.exe",
+					CreateNoWindow = true,
+					UseShellExecute = false
+				};
+				Process process = new Process
+				{
+					StartInfo = psi
+				};
+				process.Start();
+				process.WaitForExit();
+
+				activePauseProcess = null;
 
 				tempDisableHotkey = false;
 				return;
 			}
-			if(activePauseMenu == null && tempDisableHotkey == false && ahk_session == null)
+			if(activePauseProcess == null && tempDisableHotkey == false && ahk_session == null)
 			{
 				tempDisableHotkey = true;
 				if (_delayStarting == 0) ShowPause(args);
@@ -603,7 +637,7 @@ namespace BigBoxProfile.EmulatorActions
 			return emptylist.ToArray();
 		}
 
-		public void ShowPause(string[] args)
+		public async void ShowPause(string[] args)
 		{
 			
 
@@ -629,6 +663,9 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
+			Process process = new Process();
+			activePauseProcess = process;
+			/*
 			activePauseMenu = new PauseMenu_Show(this, args);
 			if (_executePauseAfter)
 			{
@@ -638,29 +675,98 @@ namespace BigBoxProfile.EmulatorActions
 					Task.Run(() => AhkExecute(args, _ahkPause, _ahkFromExe));
 				};
 			}
-			
-			activePauseMenu.FormClosed += CloseActiveMenu;
-			//Task.Run(() => activePauseMenu.ShowDialog());
-			//Thread.Sleep(1000);
-			activePauseMenu.ShowDialog();
+			*/
 
+
+			htmlContent = GetHTMLContent(args);
+			Dictionary<string,object> configOptions = new Dictionary<string, object>();
+			
+			configOptions.Add("Monitor", _selectedMonitor);
+			configOptions.Add("Dpi", _dpi.ToString());
+			configOptions.Add("HtmlContent", htmlContent);
+			configOptions.Add("HtmlDir", BigBoxUtils.DataHtmlDir);
+			configOptions.Add("ShowDevTools", _showDevTools);
+			configOptions.Add("ForcefullActivation", _forcefullActivation);
+			configOptions.Add("delayAutoClose", _delayAutoClose);
+			configOptions.Add("specialVariableGameData", specialVariableGameData);
+			configOptions.Add("specialVaribaleArgsData", specialVaribaleArgsData);
+			configOptions.Add("guessedRomFile", guessedRomFile);
+			configOptions.Add("ArtOverride", JsonConvert.SerializeObject(ArtCustomShemeHandler.ArtOverride, Newtonsoft.Json.Formatting.Indented));
+			configOptions.Add("AHK_gamedataPrefix", BigBoxUtils.AHKGetPrefix());
+			configOptions.Add("AHK_argsPrefix", BigBoxUtils.AHKGetPrefixArgs(args));
+
+
+			string json_resume = JsonConvert.SerializeObject(configOptions, Newtonsoft.Json.Formatting.Indented);
+			byte[] jsonDataBytes_resume = Encoding.UTF8.GetBytes(json_resume);
+			// Créez le MemoryMappedFile une seule fois
+			if (mmf_dataIn != null) { mmf_dataIn.Dispose(); mmf_dataIn = null; }
+			mmf_dataIn = MemoryMappedFile.CreateOrOpen($"PauseMenu_Instance{_instanceId}", jsonDataBytes_resume.Length);
+			using (MemoryMappedViewAccessor accessor = mmf_dataIn.CreateViewAccessor())
+			{
+				accessor.WriteArray(0, jsonDataBytes_resume, 0, jsonDataBytes_resume.Length);
+			}
+
+			abordPauseProcessThread = false;
+			Thread pipeThread = new Thread(StartPipeListener);
+			pipeThread.Start();
+
+			process.StartInfo.FileName = "PauseMenu.exe";
+			process.StartInfo.Arguments = _instanceId.ToString();
+			process.StartInfo.UseShellExecute = false;
+			process.StartInfo.CreateNoWindow = true;
+			// Démarrer le processus
+			process.Start();
+			tempDisableHotkey = false;
+			process.WaitForExit();
+			//activePauseMenu = null;
+			abordPauseProcessThread = true;
+
+			pipeThread.Abort();
+
+			activePauseProcess = null;
+			tempDisableHotkey = false;
+			DoActionOnClose();
 
 		}
 
-		private void CloseActiveMenu(object sender, FormClosedEventArgs e)
+		private void StartPipeListener()
 		{
 			
-			/*
-			//activePauseMenu.chromiumWebBrowser1.Dispose();
-			try {
-				activePauseMenu.Dispose();
+			using (NamedPipeClientStream client = new NamedPipeClientStream(".", "monTubeNomme", PipeDirection.In))
+			{
+				client.Connect();
+				using (StreamReader reader = new StreamReader(client))
+				{
+					while (!abordPauseProcessThread)
+					{
+						string data = reader.ReadToEnd(); // Lire l'ensemble des données
+						if (!string.IsNullOrEmpty(data))
+						{
+							ahkCodeToExecute = data;
+
+							tempDisableHotkey = true;
+							ProcessStartInfo psi = new ProcessStartInfo("taskkill")
+							{
+								Arguments = "/F /IM PauseMenu.exe",
+								CreateNoWindow = true,
+								UseShellExecute = false
+							};
+							Process process = new Process
+							{
+								StartInfo = psi
+							};
+							process.Start();
+							process.WaitForExit();
+							//activePauseMenu = null;
+
+							return;
+
+						}
+						Thread.Sleep(100); // Vérification périodique
+					}
+					return;
+				}
 			}
-			catch { }
-			*/
-			
-			activePauseMenu = null; // Réinitialise la référence lorsque la fenêtre est fermée.
-
-
 			
 		}
 
@@ -676,13 +782,13 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, (float)_restoreVolumeTo);
 				}
-				Thread.Sleep(500);
+				Thread.Sleep(300);
 				IntPtr mainWindowHandle = _processEmulator.MainWindowHandle;
 				SystemParametersInfo((uint)0x2001, 0, 0, 0x0002 | 0x0001);
 				ShowWindowAsync(mainWindowHandle, WS_SHOWNORMAL);
 				SetForegroundWindow(mainWindowHandle);
 				SystemParametersInfo((uint)0x2001, 200000, 200000, 0x0002 | 0x0001);
-				Thread.Sleep(500);
+				Thread.Sleep(300);
 			}
 			string[] nargs = new List<string>().ToArray();
 			AhkExecute(nargs, _ahkResume, _ahkFromExe);
@@ -706,49 +812,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (fromExe)
 			{
-				string code_prefix_gamedata = "";
-				string code_prefix_args = "";
-				if (code.StartsWith("#includegamedata"))
-				{
-					code = code.Replace("#includegamedata", "");
-					code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
-				}
-
-				if (code.StartsWith("#includeargs"))
-				{
-					code = code.Replace("#includeargs", "");
-					int i = 0;
-					foreach (var arg in args)
-					{
-						code_prefix_args += $@"arg{i}=
-(
-{arg}
-)";
-						code_prefix_args += "\n";
-						code_prefix_args += $@"Args.Insert({i}, arg{i})";
-						code_prefix_args += "\n";
-						i++;
-					}
-
-					code_prefix_args += "\n";
-					if (EmulatorLauncher.OriginalArgs != null)
-					{
-						int y = 0;
-						foreach (var arg in EmulatorLauncher.OriginalArgs)
-						{
-							code_prefix_args += $@"originalarg{y}=
-(
-{arg}
-)";
-							code_prefix_args += "\n";
-							code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
-							code_prefix_args += "\n";
-							y++;
-						}
-					}
-				}
-
-				code = code_prefix_gamedata + "\n" + code_prefix_args + "\n" + code;
+				code = BigBoxUtils.GetAHKCode(code, args);
 
 				string tempFilePath = Path.Combine(Path.GetTempPath(), "temp_script.ahk");
 
@@ -787,13 +851,13 @@ namespace BigBoxProfile.EmulatorActions
 
 				string code_prefix_gamedata = "";
 				string code_prefix_args = "";
-				if (code.StartsWith("#includegamedata"))
+				if (code.Contains("#includegamedata"))
 				{
 					code = code.Replace("#includegamedata", "");
 					code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
 				}
 
-				if (code.StartsWith("#includeargs"))
+				if (code.Contains("#includeargs"))
 				{
 					code = code.Replace("#includeargs", "");
 					int i = 0;
@@ -838,5 +902,54 @@ namespace BigBoxProfile.EmulatorActions
 			//string ahk_code = BigBoxUtils.AHKGetPrefix();
 		}
 
+		public string GetHTMLContent(string[] args)
+		{
+			Dictionary<string, VariableData> variablesDictionary = new Dictionary<string, VariableData>();
+			if (!String.IsNullOrEmpty(_variablesData))
+			{
+				var priority_arr = BigBoxUtils.explode(_variablesData, "|||");
+				foreach (var p in priority_arr)
+				{
+					var pObj = new VariableData(p);
+					if (!variablesDictionary.ContainsKey(pObj.VariableName))
+					{
+						variablesDictionary.Add(pObj.VariableName, pObj);
+					}
+				}
+			}
+
+			string htmlContent = File.ReadAllText(_htmlFile);
+
+			if (_includeSpecialVariable)
+			{
+				htmlContent = htmlContent.Replace("{{GAMEDATA}}", specialVariableGameData);
+				htmlContent = htmlContent.Replace("{{ARGSDATA}}", specialVaribaleArgsData);
+			}
+
+			if (variablesDictionary.Count > 0)
+			{
+				int currentLoopVariable = 0;
+				int maxLoopVariable = 10;
+				bool foundVariable = true;
+				while (foundVariable)
+				{
+					foundVariable = false;
+					currentLoopVariable++;
+					foreach (var v in variablesDictionary)
+					{
+						if (htmlContent.ToLower().Contains(v.Key.ToLower()))
+						{
+							foundVariable = true;
+							htmlContent = v.Value.ReplaceVariable(htmlContent, args);
+						}
+					}
+					if (currentLoopVariable > maxLoopVariable) break;
+				}
+			}
+			return htmlContent;
+
+		}
 	}
+
+
 }
