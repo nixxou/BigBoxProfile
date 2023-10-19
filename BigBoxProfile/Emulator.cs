@@ -12,6 +12,7 @@ namespace BigBoxProfile
 		public string FileNameConfig;
 		public bool IsRegistered = false;
 		public bool ApplyWithoutLaunchbox = false;
+		public bool UseAhkExe = false;
 
 		private List<ConfigurationData> _options = new List<ConfigurationData>();
 		public List<IEmulatorAction> _modules = new List<IEmulatorAction>();
@@ -62,6 +63,10 @@ namespace BigBoxProfile
 					if (OptionsEmulator.ContainsKey("ApplyWithoutLaunchbox") && OptionsEmulator["ApplyWithoutLaunchbox"] == "yes" && profileName.ToLower() == "default")
 					{
 						ApplyWithoutLaunchbox = true;
+					}
+					if (OptionsEmulator.ContainsKey("UseAhkExe") && OptionsEmulator["UseAhkExe"] == "yes")
+					{
+						UseAhkExe = true;
 					}
 				}
 
@@ -226,6 +231,15 @@ namespace BigBoxProfile
 			else
 			{
 				OptionsEmulator["ApplyWithoutLaunchbox"] = "no";
+			}
+
+			if (UseAhkExe)
+			{
+				OptionsEmulator["UseAhkExe"] = "yes";
+			}
+			else
+			{
+				OptionsEmulator["UseAhkExe"] = "no";
 			}
 
 			var emulationActionOptionEmulator = new ConfigurationData();

@@ -153,12 +153,13 @@ internal class MyCustomSchemeHandler : ResourceHandler
 		if(returnvaluename != "")
 		{
 			code += "\n";
-			code += @"FileAppend, %returnvalue%, " + tempFileRes;
+			code += @"FileAppend, %" + returnvaluename + @"%, " + tempFileRes;
 			code += "\n";
 		}
 
 		File.WriteAllText(tempFilePath, code);
-		if (File.Exists(tempFileRes))
+		Thread.Sleep(200);
+		if (File.Exists(tempFilePath))
 		{
 			Process process = new Process();
 			process.StartInfo.FileName = ahkExe;

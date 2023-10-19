@@ -50,6 +50,7 @@
 			this.label2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.chk_ApplyWithoutLaunchbox = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
+			this.chk_useAhkExe = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.groupBox3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.groupBox3.Panel)).BeginInit();
 			this.groupBox3.Panel.SuspendLayout();
@@ -60,7 +61,7 @@
 			// groupBox3
 			// 
 			this.groupBox3.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.groupBox3.Location = new System.Drawing.Point(12, 96);
+			this.groupBox3.Location = new System.Drawing.Point(12, 126);
 			this.groupBox3.Name = "groupBox3";
 			// 
 			// groupBox3.Panel
@@ -244,13 +245,23 @@
 			this.chk_ApplyWithoutLaunchbox.Size = new System.Drawing.Size(308, 20);
 			this.chk_ApplyWithoutLaunchbox.TabIndex = 18;
 			this.chk_ApplyWithoutLaunchbox.Values.Text = "Apply even if not launch thought Launchbox/Bigbox";
+			this.chk_ApplyWithoutLaunchbox.CheckedChanged += new System.EventHandler(this.chk_ApplyWithoutLaunchbox_CheckedChanged);
+			// 
+			// chk_useAhkExe
+			// 
+			this.chk_useAhkExe.Location = new System.Drawing.Point(17, 96);
+			this.chk_useAhkExe.Name = "chk_useAhkExe";
+			this.chk_useAhkExe.Size = new System.Drawing.Size(341, 20);
+			this.chk_useAhkExe.TabIndex = 19;
+			this.chk_useAhkExe.Values.Text = "Use AHK exe instead of dll (use temp file, but more stable)";
 			// 
 			// EmulatorConfig
 			// 
 			this.AcceptButton = this.btn_save;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(906, 654);
+			this.ClientSize = new System.Drawing.Size(906, 685);
+			this.Controls.Add(this.chk_useAhkExe);
 			this.Controls.Add(this.chk_ApplyWithoutLaunchbox);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
@@ -297,5 +308,6 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_up;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_ApplyWithoutLaunchbox;
 		private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_useAhkExe;
 	}
 }

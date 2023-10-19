@@ -1807,7 +1807,7 @@ OriginalArgs := []
 
 		}
 
-		public static string GetAHKCode(string code, string[] args)
+		public static string GetAHKCode(string code, string[] args, bool forceincludeargs=false)
 		{
 			string code_prefix_gamedata = "";
 			string code_prefix_args = "";
@@ -1817,7 +1817,7 @@ OriginalArgs := []
 				code_prefix_gamedata = AHKGetPrefix();
 			}
 
-			if (code.Contains("#includeargs"))
+			if (code.Contains("#includeargs") || forceincludeargs)
 			{
 				code = code.Replace("#includeargs", "");
 				code_prefix_args = AHKGetPrefixArgs(args);

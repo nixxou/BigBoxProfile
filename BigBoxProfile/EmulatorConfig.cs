@@ -34,6 +34,8 @@ namespace BigBoxProfile
 				else chk_ApplyWithoutLaunchbox.Checked = false;
 			}
 
+			if (_emulator.UseAhkExe) chk_useAhkExe.Checked = true;
+			else chk_useAhkExe.Checked = false;
 
 			foreach (var module in _emulator._modules)
 			{
@@ -164,6 +166,16 @@ namespace BigBoxProfile
 			{
 				emulationActionOptionEmulator.Options["ApplyWithoutLaunchbox"] = "no";
 			}
+
+			if (chk_useAhkExe.Checked)
+			{
+				emulationActionOptionEmulator.Options["UseAhkExe"] = "yes";
+			}
+			else
+			{
+				emulationActionOptionEmulator.Options["UseAhkExe"] = "no";
+			}
+
 			options.Add(emulationActionOptionEmulator);
 
 
@@ -236,6 +248,11 @@ namespace BigBoxProfile
 		}
 
 		private void groupBox3_Panel_Paint(object sender, PaintEventArgs e)
+		{
+
+		}
+
+		private void chk_ApplyWithoutLaunchbox_CheckedChanged(object sender, EventArgs e)
 		{
 
 		}

@@ -24,6 +24,8 @@ namespace BigBoxProfile
 		string[] Args;
 		public static string[] OriginalArgs { get; private set; }
 
+		public static bool UseAhkExe = false;
+
 		public static string BigBoxFolder = "";
 
 		private static Form form;
@@ -85,7 +87,6 @@ namespace BigBoxProfile
 			NewExe = Path.Combine(Dir, Path.GetFileNameWithoutExtension(ExeFileFull) + "_.exe");
 			Args = args;
 			OriginalArgs = new List<string>(args).ToArray();
-
 
 		}
 
@@ -185,10 +186,10 @@ namespace BigBoxProfile
 			}
 			else
 			{
-
-				//var argstring = BigBoxUtils.ArgsToCommandLine(Args);
-				//MessageBox.Show(argstring);
-
+				if (emulator.OptionsEmulator.ContainsKey("UseAhkExe"))
+				{
+					UseAhkExe = emulator.OptionsEmulator["UseAhkExe"] == "yes" ? true : false;
+				}
 				if (SelectedProfile.Configuration.ContainsKey("delay_emulator") && SelectedProfile.Configuration["delay_emulator"] != "")
 				{
 					int delay_emulator = 0;
@@ -201,11 +202,6 @@ namespace BigBoxProfile
 					}
 
 				}
-
-
-
-				//MessageBox.Show("Debug new");
-
 
 				ExecutePrelaunch();
 

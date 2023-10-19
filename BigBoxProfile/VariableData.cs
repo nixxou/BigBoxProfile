@@ -3,10 +3,12 @@ using CefSharp.DevTools.DOM;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static XInput.Wrapper.X.Gamepad;
@@ -77,61 +79,109 @@ namespace BigBoxProfile
 			if(SourceData == "ahk")
 			{
 				string resultatfinal = "";
-
-				var ahk_session = new AutoHotkey.Interop.AutoHotkeyEngine();
-
-				string code_prefix_gamedata = "";
-				string code_prefix_args = "";
-				string code = ahkCode;
-				if (code.Contains("#includegamedata"))
+				if (!EmulatorLauncher.UseAhkExe)
 				{
-					code = code.Replace("#includegamedata", "");
-					code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
-				}
-				
-				if (code.Contains("#includeargs"))
-				{
-					code = code.Replace("#includeargs", "");
-					int i = 0;
-					foreach (var arg in argsData)
+					var ahk_session = new AutoHotkey.Interop.AutoHotkeyEngine();
+
+					string code_prefix_gamedata = "";
+					string code_prefix_args = "";
+					string code = ahkCode;
+					if (code.Contains("#includegamedata"))
 					{
-						ahk_session.SetVar($"arg{i}", arg);
-						code_prefix_args += $@"Args.Insert({i}, arg{i})";
-						code_prefix_args += "\n";
-						i++;
+						code = code.Replace("#includegamedata", "");
+						code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
 					}
 
-					code_prefix_args += "\n";
-					if (EmulatorLauncher.OriginalArgs != null)
+					if (code.Contains("#includeargs"))
 					{
-						int y = 0;
-						foreach (var arg in EmulatorLauncher.OriginalArgs)
+						code = code.Replace("#includeargs", "");
+						int i = 0;
+						foreach (var arg in argsData)
 						{
-							ahk_session.SetVar($"originalarg{y}", arg);
-							code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
+							ahk_session.SetVar($"arg{i}", arg);
+							code_prefix_args += $@"Args.Insert({i}, arg{i})";
 							code_prefix_args += "\n";
-							y++;
+							i++;
+						}
+
+						code_prefix_args += "\n";
+						if (EmulatorLauncher.OriginalArgs != null)
+						{
+							int y = 0;
+							foreach (var arg in EmulatorLauncher.OriginalArgs)
+							{
+								ahk_session.SetVar($"originalarg{y}", arg);
+								code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
+								code_prefix_args += "\n";
+								y++;
+							}
+						}
+						code_prefix_args += "\n";
+						code_prefix_args += @"resultatfinal := Args.join(""|||"")";
+						code_prefix_args += "\n";
+					}
+
+					
+					string newcode = code_prefix_gamedata + "\n" + code_prefix_args + "\n";
+
+					newcode += "\n";
+					newcode += @"returnvalue := """"";
+					newcode += "\n";
+
+					code = newcode + code;
+
+					try
+					{
+						ahk_session.ExecRaw(code);
+						resultatfinal = ahk_session.GetVar("returnvalue");
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show(ex.Message);
+					}
+				}
+				else
+				{
+					try
+					{
+						string code = BigBoxUtils.GetAHKCode(ahkCode, argsData, true);
+						string currentDir = Path.GetFullPath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
+						string ahkExe = Path.Combine(currentDir, "AutoHotkeyU32.exe");
+						string tempFilePath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".ahk");
+						string tempFileRes = tempFilePath + ".res.txt";
+						code += "\n";
+						code += @"resultatfinal := Args.join(""|||"")";
+						code += "\n";
+						code += @"FileAppend, %returnvalue%, " + tempFileRes;
+						code += "\n";
+						File.WriteAllText(tempFilePath, code);
+						Thread.Sleep(50);
+						if (File.Exists(tempFilePath))
+						{
+							Process process = new Process();
+							process.StartInfo.FileName = ahkExe;
+							process.StartInfo.Arguments = tempFilePath;
+							process.StartInfo.UseShellExecute = false;
+							process.StartInfo.CreateNoWindow = true;
+
+							// Démarrer le processus
+							process.Start();
+							process.WaitForExit();
+
+							File.Delete(tempFilePath);
+						}
+						Thread.Sleep(50);
+						
+						if (File.Exists(tempFileRes))
+						{
+							resultatfinal = File.ReadAllText(tempFileRes);
+							File.Delete(tempFileRes);
 						}
 					}
-					code_prefix_args += "\n";
-					code_prefix_args += @"resultatfinal := Args.join(""|||"")";
-					code_prefix_args += "\n";
-				}
-
-				code = code_prefix_gamedata + "\n" + code_prefix_args + "\n" + code;
-
-				code += "\n";
-				code += @"returnvalue := """"";
-				code += "\n";
-
-				try
-				{
-					ahk_session.ExecRaw(code);
-					resultatfinal = ahk_session.GetVar("returnvalue");
-				}
-				catch (Exception ex)
-				{
-					MessageBox.Show(ex.Message);
+					catch (Exception ex)
+					{
+						MessageBox.Show(ex.Message);
+					}
 				}
 
 				RegexOptions optionsRemplace = RegexOptions.Multiline;

@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text;
+using System.Diagnostics;
 
 namespace BigBoxProfile.EmulatorActions
 {
@@ -127,54 +128,99 @@ namespace BigBoxProfile.EmulatorActions
 		private string[] AhkExecute(string[] args, string code)
 		{
 
-			var ahk_session = new AutoHotkey.Interop.AutoHotkeyEngine();
+            if (!EmulatorLauncher.UseAhkExe)
+            {
+				var ahk_session = new AutoHotkey.Interop.AutoHotkeyEngine();
 
-			string code_prefix_gamedata = "";
-			string code_prefix_args = "";
-			if (code.Contains("#includegamedata"))
-			{
-				code = code.Replace("#includegamedata", "");
-				code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
-			}
-
-
-			code = code.Replace("#includeargs", "");
-			int i = 0;
-			foreach (var arg in args)
-			{
-				ahk_session.SetVar($"arg{i}", arg);
-				code_prefix_args += $@"Args.Insert({i}, arg{i})";
-				code_prefix_args += "\n";
-				i++;
-			}
-
-			code_prefix_args += "\n";
-			if (EmulatorLauncher.OriginalArgs != null)
-			{
-				int y = 0;
-				foreach (var arg in EmulatorLauncher.OriginalArgs)
+				string code_prefix_gamedata = "";
+				string code_prefix_args = "";
+				if (code.Contains("#includegamedata"))
 				{
-					ahk_session.SetVar($"originalarg{y}", arg);
-					code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
+					code = code.Replace("#includegamedata", "");
+					code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
+				}
+
+
+				code = code.Replace("#includeargs", "");
+				int i = 0;
+				foreach (var arg in args)
+				{
+					ahk_session.SetVar($"arg{i}", arg);
+					code_prefix_args += $@"Args.Insert({i}, arg{i})";
 					code_prefix_args += "\n";
-					y++;
+					i++;
+				}
+
+				code_prefix_args += "\n";
+				if (EmulatorLauncher.OriginalArgs != null)
+				{
+					int y = 0;
+					foreach (var arg in EmulatorLauncher.OriginalArgs)
+					{
+						ahk_session.SetVar($"originalarg{y}", arg);
+						code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";
+						code_prefix_args += "\n";
+						y++;
+					}
+				}
+
+				code = code_prefix_gamedata + "\n" + code_prefix_args + "\n" + code;
+				code += "\n";
+				code += @"resultatfinal := Args.join(""|||"")";
+				code += "\n";
+
+				try
+				{
+					ahk_session.ExecRaw(code);
+					string resultatfinal = ahk_session.GetVar("resultatfinal");
+					args = BigBoxUtils.explode(resultatfinal, "|||");
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message);
 				}
 			}
-
-			code = code_prefix_gamedata + "\n" + code_prefix_args + "\n" + code;
-			code += "\n";
-			code += @"resultatfinal := Args.join(""|||"")";
-			code += "\n";
-
-			try
+			else
 			{
-				ahk_session.ExecRaw(code);
-				string resultatfinal = ahk_session.GetVar("resultatfinal");
-				args = BigBoxUtils.explode(resultatfinal, "|||");
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message);
+				try
+				{
+					code = BigBoxUtils.GetAHKCode(code, args, true);
+					string currentDir = Path.GetFullPath(Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName));
+					string ahkExe = Path.Combine(currentDir, "AutoHotkeyU32.exe");
+					string tempFilePath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName() + ".ahk");
+					string tempFileRes = tempFilePath + ".res.txt";
+					code += "\n";
+					code += @"resultatfinal := Args.join(""|||"")";
+					code += "\n";
+					code += @"FileAppend, %resultatfinal%, " + tempFileRes;
+					code += "\n";
+					File.WriteAllText(tempFilePath, code);
+					if (File.Exists(tempFilePath))
+					{
+						Process process = new Process();
+						process.StartInfo.FileName = ahkExe;
+						process.StartInfo.Arguments = tempFilePath;
+						process.StartInfo.UseShellExecute = false;
+						process.StartInfo.CreateNoWindow = true;
+
+						// Démarrer le processus
+						process.Start();
+						process.WaitForExit();
+
+						File.Delete(tempFilePath);
+					}
+					string resultatfinal = "";
+					if (File.Exists(tempFileRes))
+					{
+						resultatfinal = File.ReadAllText(tempFileRes);
+						File.Delete(tempFileRes);
+					}
+					args = BigBoxUtils.explode(resultatfinal, "|||");
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message);
+				}
 			}
 
 			return args;
