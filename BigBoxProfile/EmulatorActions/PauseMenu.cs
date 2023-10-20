@@ -428,17 +428,25 @@ namespace BigBoxProfile.EmulatorActions
 				
 				if (!string.IsNullOrEmpty(_keyCombo))
 				{
-					var keycombi = Combination.FromString(_keyCombo);
-					Action actionPauseMenu = () => {
-						ShowPauseWithDelay(args);
-						
-					};
-					var assignment = new Dictionary<Combination, Action>
+					try
 					{
-						{keycombi, actionPauseMenu}
-					};
-					_globalHook = Hook.GlobalEvents();
-					_globalHook.OnCombination(assignment);
+						var keycombi = Combination.FromString(_keyCombo);
+						Action actionPauseMenu = () => {
+							ShowPauseWithDelay(args);
+
+						};
+						var assignment = new Dictionary<Combination, Action>
+						{
+							{keycombi, actionPauseMenu}
+						};
+						_globalHook = Hook.GlobalEvents();
+						_globalHook.OnCombination(assignment);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show(ex.Message);
+					}
+
 
 				}
 				
