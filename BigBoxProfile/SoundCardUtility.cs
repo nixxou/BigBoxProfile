@@ -88,6 +88,25 @@ namespace BigBoxProfile
 
 		}
 
+		public static float GetMainVolume()
+		{
+			MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
+			// Enumerate all enabled devices in a collection
+			MMDevice defaultdevice = DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia);
+			var volume = defaultdevice.AudioEndpointVolume;
+			float masterVolumePercent = volume.MasterVolumeLevelScalar * 100;
+			return masterVolumePercent;
+		}
+
+		public static void SetMainVolume(float value)
+		{
+			MMDeviceEnumerator DevEnum = new MMDeviceEnumerator();
+			// Enumerate all enabled devices in a collection
+			MMDevice defaultdevice = DevEnum.GetDefaultAudioEndpoint(EDataFlow.eRender, ERole.eMultimedia);
+			var volume = defaultdevice.AudioEndpointVolume;
+			volume.MasterVolumeLevelScalar = (value/100f);
+		}
+
 	}
 
 }

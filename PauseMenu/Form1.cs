@@ -299,14 +299,14 @@ namespace PauseMenu
 		}
 		*/
 
-		public void SetCommandToHostProgram(string command, string code)
+		public void SetCommandToHostProgram(string command, string code, string volume="")
 		{
 			using (NamedPipeServerStream server = new NamedPipeServerStream($"PauseMenu_Tube-{Program.InstanceID}"))
 			{
 				server.WaitForConnection();
 				using (StreamWriter writer = new StreamWriter(server))
 				{
-					writer.WriteLine(command + ":" + code);
+					writer.WriteLine(command + volume + ":" + code);
 					// Écrire les données réelles ici
 				}
 			}

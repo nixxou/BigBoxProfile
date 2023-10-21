@@ -63,6 +63,8 @@ namespace BigBoxProfile.EmulatorActions
 
 		public int dpi = 0;
 
+		public string volumeControl = "No";
+
 
 		public PauseMenu_Config(Dictionary<string, string> Options)
 		{
@@ -139,6 +141,8 @@ namespace BigBoxProfile.EmulatorActions
 			selectedMonitor = Options.ContainsKey("selectedMonitor") ? Options["selectedMonitor"] : "Main";
 			if (Options.ContainsKey("showDevTools") && Options["showDevTools"] == "yes") showDevTools = true;
 			if (Options.ContainsKey("ahkFromExe") && Options["ahkFromExe"] == "yes") ahkFromExe = true;
+
+			volumeControl = Options.ContainsKey("volumeControl") ? Options["volumeControl"] : "No";
 
 			InitializeComponent();
 
@@ -223,8 +227,18 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				cmb_dpi.SelectedIndex = index;
 			}
-			
-			
+
+			cmb_VolumeControl.Items.Clear();
+			cmb_VolumeControl.Items.Add("No");
+			cmb_VolumeControl.Items.Add("Global");
+			cmb_VolumeControl.Items.Add("App");
+			cmb_VolumeControl.SelectedIndex = 0;
+			index = cmb_VolumeControl.Items.IndexOf(volumeControl);
+			if (index >= 0)
+			{
+				cmb_VolumeControl.SelectedIndex = index;
+			}
+
 
 
 
@@ -337,6 +351,8 @@ namespace BigBoxProfile.EmulatorActions
 					dpi = tmpDpi;
 				}
 			}
+
+			volumeControl = cmb_VolumeControl.SelectedItem.ToString();
 
 			showDevTools = chk_showDevTools.Checked;
 			ahkFromExe = chk_ahkFromExe.Checked;
@@ -641,6 +657,11 @@ namespace BigBoxProfile.EmulatorActions
 		private void btn_cleargamepad_Click(object sender, EventArgs e)
 		{
 			TextBoxGKeyCombo.Text = string.Empty;
+		}
+
+		private void button2_Click_1(object sender, EventArgs e)
+		{
+			MessageBox.Show(SoundCardUtils.GetMainVolume().ToString());
 		}
 	}
 

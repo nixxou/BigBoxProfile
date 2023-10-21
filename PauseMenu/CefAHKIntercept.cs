@@ -17,10 +17,12 @@ public class CefAHKIntercept : ILifeSpanHandler
 	// Load new URL (when clicking a link with target=_blank) in the same frame
 	public bool OnBeforePopup(IWebBrowser chromiumWebBrowser, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser)
 	{
-		if (targetUrl.StartsWith("ahk:"))
-		{
 
-			string code_base64 = targetUrl.Substring(4);
+		Match match = Regex.Match(targetUrl, @"^ahk([0-9]*):(.*)");
+		if (match.Success)
+		{
+			string code_base64 = match.Groups[2].Value;
+			string volume = match.Groups[1].Value;
 			string decodedString = "";
 			if (Utils.Base64Decode(code_base64, out decodedString))
 			{
@@ -28,8 +30,8 @@ public class CefAHKIntercept : ILifeSpanHandler
 				customBrowser.ParentForm.Invoke(new Action(() =>
 				{
 					//customBrowser.ParentForm.SetAHKCodeToExecute(decodedString);
-					customBrowser.ParentForm.SetCommandToHostProgram("ahkclose", decodedString);
-					customBrowser.ParentForm.Close();
+					customBrowser.ParentForm.SetCommandToHostProgram("ahkclose", decodedString,volume);
+					//customBrowser.ParentForm.Close();
 				}));
 				Thread.Sleep(200);
 				//ahk.ExecRaw(decodedString);
@@ -43,8 +45,6 @@ public class CefAHKIntercept : ILifeSpanHandler
 				newBrowser = null;
 				return true;
 			}
-
-
 		}
 		else
 		{

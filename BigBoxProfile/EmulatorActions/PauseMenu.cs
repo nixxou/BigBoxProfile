@@ -1,5 +1,6 @@
 ﻿using CliWrap;
 using CliWrap.Buffered;
+using CoreAudioApi;
 using Gma.System.MouseKeyHook;
 using Newtonsoft.Json;
 using System;
@@ -11,6 +12,7 @@ using System.IO.MemoryMappedFiles;
 using System.IO.Pipes;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -72,6 +74,7 @@ namespace BigBoxProfile.EmulatorActions
 		public int _dpi { get; private set; } = 0;
 		public bool _showDevTools { get; private set; } = false;
 		public bool _ahkFromExe { get; private set; } = false;
+		public string _volumeControl { get; private set; } = "No";
 
 		public bool _includeSpecialVariable { get; private set; } = false;
 
@@ -82,7 +85,11 @@ namespace BigBoxProfile.EmulatorActions
 		public string guessedRomFile { get; private set; } = "";
 		public string ahkCodeToExecute = "";
 		public bool tempDisableHotkey = false;
-		private float? _restoreVolumeTo = null;
+
+		//private float? _restoreVolumeTo = null;
+		private int? _restoreAppVolumeTo = null;
+		private int? _restoreGlobalVolumeTo = null;
+
 		private Process _processEmulator = null;
 		private X.Gamepad gamepad = null;
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
@@ -96,6 +103,9 @@ namespace BigBoxProfile.EmulatorActions
 		public Process activePauseProcess = null;
 		public bool abordPauseProcessThread = false;
 		private Dictionary<string, string> ArtOverride = new Dictionary<string, string>();
+
+		private Dictionary<string, string> volumeInfo = new Dictionary<string, string>();
+		private long lastGamepadActionTick = 0;
 
 		public IEmulatorAction CreateNewInstance()
 		{
@@ -167,6 +177,8 @@ namespace BigBoxProfile.EmulatorActions
 				if (frm.includeSpecialVariable) Options["includeSpecialVariable"] = "yes";
 				else Options["includeSpecialVariable"] = "no";
 
+				Options["volumeControl"] = frm.volumeControl.Trim();
+
 				UpdateConfig();
 			}
 
@@ -213,7 +225,9 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("ahkFromExe") == false) Options["ahkFromExe"] = "no";
 
 			if (Options.ContainsKey("includeSpecialVariable") == false) Options["includeSpecialVariable"] = "no";
-			
+
+			if (Options.ContainsKey("volumeControl") == false) Options["volumeControl"] = "No";
+
 			UpdateConfig();
 
 		}
@@ -317,6 +331,7 @@ namespace BigBoxProfile.EmulatorActions
 			_showDevTools = Options["showDevTools"] == "yes" ? true : false;
 			_ahkFromExe = Options["ahkFromExe"] == "yes" ? true : false;
 			_includeSpecialVariable = Options["includeSpecialVariable"] == "yes" ? true : false;
+			_volumeControl = Options["volumeControl"];
 		}
 
 		public void ExecuteBefore(string[] args)
@@ -477,18 +492,27 @@ namespace BigBoxProfile.EmulatorActions
 					{
 						if (gamepad.state.Gamepad.IsButtonDown(_gamepadCombo))
 						{
-							if (_gamepadKeyPressMinDuration == 0)
+							long currentTick = DateTime.Now.Ticks;
+							if(TimeSpan.FromTicks(currentTick-lastGamepadActionTick).TotalMilliseconds > 1500)
 							{
-								ShowPauseWithDelay(args);
-							}
-							else
-							{
-								if (!isComboActive)
+								lastGamepadActionTick = currentTick;
+								if (_gamepadKeyPressMinDuration == 0)
 								{
-									isComboActive = true;
-									timerGamepad.Start();
+									ShowPauseWithDelay(args);
 								}
+								else
+								{
+									if (!isComboActive)
+									{
+										isComboActive = true;
+										timerGamepad.Start();
+									}
+								}
+
+
 							}
+
+
 						}
 						else
 						{
@@ -614,19 +638,63 @@ namespace BigBoxProfile.EmulatorActions
 
 		public async void ShowPause(string[] args)
 		{
+			_processEmulator = BigBoxUtils.FindProcessEmulator(args);
+
+			float? currentVolume = null;
+			float? currentVolumeApp = null;
+
+			int currentVolumeInt = -1;
+			volumeInfo = new Dictionary<string, string>();
+			volumeInfo["controlType"] = _volumeControl;
+			if (_volumeControl == "App")
+			{
+				try
+				{
+					currentVolume = (VolumeMix.VolumeMixer.GetApplicationVolume(_processEmulator.Id));
+					currentVolumeApp = currentVolume;
+					if (currentVolume != null) currentVolumeInt = (int)Math.Round((Decimal)(currentVolume));
+				}
+				catch (Exception ex) { }
+			}
+			if(_volumeControl == "Global")
+			{
+				try
+				{
+					currentVolume = SoundCardUtils.GetMainVolume();
+					if (currentVolume != null) currentVolumeInt = (int)Math.Round((Decimal)(currentVolume));
+				}
+				catch (Exception ex) { }
+
+				
+			}
+			if(currentVolumeInt >= 0)
+			{
+				volumeInfo["currentVolume"] = currentVolumeInt.ToString();
+			}
+			else
+			{
+				volumeInfo["controlType"] = "No";
+				_volumeControl = "No";
+			}
+			
+
+
 			if (!_executePauseAfter) AhkExecute(args, _ahkPause,_ahkFromExe);
 			
-			_processEmulator = BigBoxUtils.FindProcessEmulator(args);
+			
 			if(_processEmulator != null)
 			{
 				if (_disableSound)
 				{
-					float? currentVolume = VolumeMix.VolumeMixer.GetApplicationVolume(_processEmulator.Id);
-					if(currentVolume != null)
+					
+					if(currentVolumeApp == null) currentVolumeApp = (VolumeMix.VolumeMixer.GetApplicationVolume(_processEmulator.Id) * 100f);
+					if (currentVolumeApp != null)
 					{
+						int VolumeInt = (int)Math.Round((Decimal)(currentVolume));
+						_restoreAppVolumeTo = VolumeInt;
 						VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, 0f);
-						_restoreVolumeTo = currentVolume;
 					}
+					
 						
 				}
 				if (_pauseEmulation)
@@ -728,9 +796,25 @@ namespace BigBoxProfile.EmulatorActions
 							{
 								string commande = parts[0];
 								string action = parts[1];
-
-								if(commande == "ahkclose")
+								int newVolume = -1;
+								Match match = Regex.Match(commande, @"\d+$");
+								if (match.Success)
 								{
+									newVolume = int.Parse(match.Value);
+								}
+
+								if (commande.StartsWith("ahkclose"))
+								{
+
+									if(newVolume >= 0 && newVolume <= 1000 && volumeInfo.ContainsKey("controlType") && (volumeInfo["controlType"]=="App" || volumeInfo["controlType"] == "Global"))
+									{
+										int oldVolume = int.Parse(volumeInfo["currentVolume"]);
+										if (newVolume != int.Parse(volumeInfo["currentVolume"]))
+										{
+											if (volumeInfo["controlType"] == "App") _restoreAppVolumeTo = newVolume;
+											if (volumeInfo["controlType"] == "Global") _restoreGlobalVolumeTo = newVolume;
+										}
+									}
 									ahkCodeToExecute = action;
 
 									tempDisableHotkey = true;
@@ -781,10 +865,29 @@ namespace BigBoxProfile.EmulatorActions
 				{
 					BigBoxUtils.ResumeProcess(_processEmulator.Id);
 				}
+				if (_restoreGlobalVolumeTo != null)
+				{
+					try
+					{
+						SoundCardUtils.SetMainVolume((float)_restoreGlobalVolumeTo);
+					}
+					catch (Exception ex) { }
+				}
+				if (_restoreAppVolumeTo != null)
+				{
+					try
+					{
+						VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, (float)(_restoreAppVolumeTo));
+					}
+					catch (Exception ex) { }
+				}
+
+				/*
 				if (_restoreVolumeTo != null)
 				{
 					VolumeMix.VolumeMixer.SetApplicationVolume(_processEmulator.Id, (float)_restoreVolumeTo);
 				}
+				*/
 				Thread.Sleep(300);
 				IntPtr mainWindowHandle = _processEmulator.MainWindowHandle;
 				SystemParametersInfo((uint)0x2001, 0, 0, 0x0002 | 0x0001);
@@ -924,10 +1027,14 @@ namespace BigBoxProfile.EmulatorActions
 
 			string htmlContent = File.ReadAllText(_htmlFile);
 
+
+
 			if (_includeSpecialVariable)
 			{
 				htmlContent = htmlContent.Replace("{{GAMEDATA}}", specialVariableGameData);
 				htmlContent = htmlContent.Replace("{{ARGSDATA}}", specialVaribaleArgsData);
+				string json_volume = JsonConvert.SerializeObject(volumeInfo, Newtonsoft.Json.Formatting.Indented);
+				htmlContent = htmlContent.Replace("{{VOLUMEINFO}}", json_volume);
 			}
 
 			if (variablesDictionary.Count > 0)

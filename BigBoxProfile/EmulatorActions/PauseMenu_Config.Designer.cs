@@ -78,10 +78,13 @@
 			this.chk_includeSpecialVariable = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.btn_clearkeyboard = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_cleargamepad = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.kryptonLabel9 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.cmb_VolumeControl = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
 			this.groupBox2.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_dpi)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.cmb_VolumeControl)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// groupBox2
@@ -548,11 +551,31 @@
 			this.btn_cleargamepad.Values.Text = "Clear";
 			this.btn_cleargamepad.Click += new System.EventHandler(this.btn_cleargamepad_Click);
 			// 
+			// kryptonLabel9
+			// 
+			this.kryptonLabel9.Location = new System.Drawing.Point(368, 485);
+			this.kryptonLabel9.Name = "kryptonLabel9";
+			this.kryptonLabel9.Size = new System.Drawing.Size(103, 20);
+			this.kryptonLabel9.TabIndex = 138;
+			this.kryptonLabel9.Values.Text = "Control Volume :";
+			// 
+			// cmb_VolumeControl
+			// 
+			this.cmb_VolumeControl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmb_VolumeControl.DropDownWidth = 363;
+			this.cmb_VolumeControl.FormattingEnabled = true;
+			this.cmb_VolumeControl.Location = new System.Drawing.Point(473, 485);
+			this.cmb_VolumeControl.Name = "cmb_VolumeControl";
+			this.cmb_VolumeControl.Size = new System.Drawing.Size(171, 21);
+			this.cmb_VolumeControl.TabIndex = 137;
+			// 
 			// PauseMenu_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1720, 546);
+			this.Controls.Add(this.kryptonLabel9);
+			this.Controls.Add(this.cmb_VolumeControl);
 			this.Controls.Add(this.btn_cleargamepad);
 			this.Controls.Add(this.btn_clearkeyboard);
 			this.Controls.Add(this.chk_includeSpecialVariable);
@@ -600,6 +623,7 @@
 			this.groupBox4.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_dpi)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.cmb_VolumeControl)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -657,5 +681,7 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_includeSpecialVariable;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_clearkeyboard;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_cleargamepad;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel9;
+		private ComponentFactory.Krypton.Toolkit.KryptonComboBox cmb_VolumeControl;
 	}
 }
