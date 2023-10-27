@@ -1,0 +1,77 @@
+/* latin-ext */
+@font-face {
+  font-family: 'Audiowide';
+  font-style: normal;
+  font-weight: 400;
+  src: url('AudiowideA.woff2') format('woff2');
+  unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Audiowide';
+  font-style: normal;
+  font-weight: 400;
+  src: url('AudiowideB.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.threeD-button-set {
+	/*pointer-events:auto;*/
+  
+    /* remove <ul> margins */
+    margin: 0;
+	margin-left: -40px;
+  
+    /* vertical rag-right layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5vh;
+    
+  }
+  
+  .threeD-button-set > li {
+    display: inline-flex;
+    position: relative;
+  }
+    
+  .threeD-button-set a {
+	text-decoration: none;
+    appearance: none;
+    outline: none;
+    border: none;
+	
+    -webkit-tap-highlight-color: transparent;
+    background-color: hsl(180 100% 50% / 25%);
+    color: white;
+    text-shadow: 0 1px 1px varhsl(180 100% 10% / 25%);
+  
+    font-size: 1.5vw;
+    font-family: Audiowide;
+    padding-block: .3vw;
+    padding-inline: 2vw;
+    border-radius: 0.1vw 1vw;
+  
+    
+    &:is(:hover, :focus-visible):not(:active) {
+      background-color: hsl(180 100% 50% / 40%);
+    }
+    
+  }
+
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+
+
+body {
+  min-block-size: 100%;
+  font-family: system-ui, sans-serif;
+  
+  display: grid;
+  place-content: center;
+}

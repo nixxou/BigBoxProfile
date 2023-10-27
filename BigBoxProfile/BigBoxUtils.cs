@@ -2007,7 +2007,7 @@ OriginalArgs := []
 				Dictionary<string, object> gameData = JsonConvert.DeserializeObject<Dictionary<string, object>>(GameInfoJSON);
 				if (gameData != null)
 				{
-					if (gameData.ContainsKey("GameApplicationPath"))
+					if (gameData.ContainsKey("GameApplicationPath") && !string.IsNullOrEmpty((string)gameData["GameApplicationPath"]))
 					{
 						initialRomPath = (string)gameData["GameApplicationPath"];
 					}
@@ -2050,6 +2050,7 @@ OriginalArgs := []
 			if(Args.Length > 0)
 			{
 				FilteredArgs.RemoveAt(0);
+				/*
 				foreach (string oarg in OriginalArgs)
 				{
 					if (FilteredArgs.Contains(oarg))
@@ -2057,6 +2058,7 @@ OriginalArgs := []
 						FilteredArgs.Remove(oarg);
 					}
 				}
+				*/
 			}
 			string biggestFileName = "";
 			long biggestFileSize = -1;

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script id="jsonGameData" type="text/plain">{{GAMEDATA}}</script>
+    <script id="jsonArgsData" type="text/plain">{{ARGSDATA}}</script>
+    <script id="jsonVolumeData" type="text/plain">{{VOLUMEINFO}}</script>	
+    <script id="loadState" type="text/plain">{{loadstate}}</script>
+    <script id="saveState" type="text/plain">{{saveState}}</script>
+    <script id="reset" type="text/plain">{{reset}}</script>
+    <script id="swapDiscs" type="text/plain">{{swapDiscs}}</script>
+    <script id="exit" type="text/plain">{{exit}}</script>
+    <link rel="stylesheet" href="style.css">
+	<style>
+html {
+  block-size: 100%;
+  background: url('background.jpg'), black;/*conic-gradient(at -10% 50%, deeppink, cyan); */
+  background-size: cover;
+}
+:root{
+  --percentage: 30%;
+  --main-color: 255,255,255;
+  --el-bg-color: 220,220,220;
+}
+.volume-container {
+  position: absolute;
+    top: 5vh;
+    right: 15vw;
+  /* Vous pouvez ajouter des styles supplémentaires ici pour personnaliser la position du bloc en haut à droite. */
+}
+
+#sound-slider__container{
+  display: flex;
+  width: 15vw;
+  height: 5vh;
+  padding: 2vh 1vw;
+  background: rgba(0,0,0,0.50);
+  border: 1px solid rgba(var(--main-color),0.03);
+  border-radius: 1in;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+#sound-slider__container::after{
+  content:"";
+  height: 100%;
+  opacity: 0;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+  transition: opacity 500ms;
+  width: 100%;
+  background: radial-gradient(
+    500px circle at var(--mouse-x) var(--mouse-y), 
+    rgba(var(--main-color), 0.06),
+    transparent 40%
+  );
+  z-index:-1;
+}
+
+#sound-slider__container:hover::after{
+  opacity:1;
+}
+
+#sound-picto{
+  fill: rgb(var(--el-bg-color));
+  margin-right: 0.2vw;
+  cursor: pointer;
+}
+
+#sound-slider {
+  margin: 0 0.2vw;
+  appearance: none;
+  width: 100%;
+  height: 1vh;
+  border-radius: 1in;
+  outline: none;
+  transition: .2s;
+  cursor: pointer;
+  background: rgba(var(--el-bg-color),0.5);
+  background-image: linear-gradient(rgb(var(--main-color)),rgb(var(--main-color)));
+  background-size: calc(var(--percentage) - 9px) 100%;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+/* round the volume progress */
+#sound-slider::after{
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 0.5vw;
+  border-radius: 0 1in 1in 0;
+  background-color:rgb(var(--main-color));
+  transition: .2s;
+  left: calc(var(--percentage) - 0.5vw);
+}
+
+#sound-slider::-webkit-slider-thumb{
+  appearance: none;
+  visibility:hidden;
+  width: 1px;
+  height: 2vh;
+}
+
+#sound-slider:hover{
+  height: 1em;
+}
+
+#volume{
+  font-family: sans-serif;
+  color: rgb(var(--el-bg-color));
+  min-width: 2em;
+  text-align: right;
+}
+	</style>	
+	
+	
+    <script src="gamepad.min.js"></script>
+    <style></style>
+    <title>Game Menu</title>
+  </head>
+  <body>
+    <div style="text-align:center;">
+      <img style="max-width:25vw;" id="clearlogo" src="clearlogo.png">
+      <h1 id="gametitle" style="text-align:center;font-size: 4vw;font-family: Audiowide;color:white;-webkit-text-stroke: 2px #000;padding-bottom:3vw;">DumyMenu</h1>
+      <div id="menu">
+        <ul class="threeD-button-set">
+          <li>
+            <a tabindex="0" type="button" href="javascript:testAhk();" class="button">Option 1</a>
+          </li>
+          <li>
+            <a tabindex="-1" type="button" href="javascript:createSubmenu();" class="button">Option 2</a>
+          </li>
+          <li>
+            <a tabindex="-1" type="button" href="javascript:void(0);" class="button">Option 3</a>
+          </li>
+        </ul>
+      </div>
+      <div>
+	  <div class="volume-container">
+<div id="sound-slider__container">
+  <svg id="sound-picto" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 17h-5v-10h5v10zm2-10v10l9 5v-20l-9 5zm11.008 2.093c.742.743 1.2 1.77 1.198 2.903-.002 1.133-.462 2.158-1.205 2.9l1.219 1.223c1.057-1.053 1.712-2.511 1.715-4.121.002-1.611-.648-3.068-1.702-4.125l-1.225 1.22zm2.142-2.135c1.288 1.292 2.082 3.073 2.079 5.041s-.804 3.75-2.096 5.039l1.25 1.254c1.612-1.608 2.613-3.834 2.616-6.291.005-2.457-.986-4.681-2.595-6.293l-1.254 1.25z"/></svg>
+  <input type="range" value="30" min="0" max="100" id="sound-slider">
+  <p id="volume">30</p>
+</div>	  
+	  
+	  </div>
+  </body>
+  <script>
+  //Load Data
+    var jsonGameData = null;
+    var jsonArgsData = null;
+	var jsonVolumeData = null;
+    var GameTitle = "";
+    if (document.getElementById("jsonGameData").innerHTML == "{{" + "GAMEDATA" + "}}") document.getElementById("jsonGameData").innerHTML = "{}";
+    if (document.getElementById("jsonArgsData").innerHTML == "{{" + "ARGSDATA" + "}}") document.getElementById("jsonArgsData").innerHTML = "{}";
+	if (document.getElementById("jsonVolumeData").innerHTML == "{{" + "VOLUMEDATA" + "}}") document.getElementById("jsonVolumeData").innerHTML = "{}";
+    if (document.getElementById("loadState").innerHTML == "{{" + "loadstate" + "}}") document.getElementById("loadState").innerHTML = "";
+    if (document.getElementById("saveState").innerHTML == "{{" + "saveState" + "}}") document.getElementById("saveState").innerHTML = "";
+    if (document.getElementById("reset").innerHTML == "{{" + "reset" + "}}") document.getElementById("reset").innerHTML = "";
+    if (document.getElementById("swapDiscs").innerHTML == "{{" + "swapDiscs" + "}}") document.getElementById("swapDiscs").innerHTML = "";
+    if (document.getElementById("exit").innerHTML == "{{" + "exit" + "}}") document.getElementById("exit").innerHTML = "";
+    var haveManual = false;
+    if (document.getElementById("jsonGameData").innerHTML != "") {
+      jsonGameData = JSON.parse(document.getElementById("jsonGameData").innerHTML);
+      if (jsonGameData.hasOwnProperty('Title')) {
+        GameTitle = jsonGameData.Title;
+      }
+      if (jsonGameData.hasOwnProperty('ManualPath')) {
+        if (jsonGameData.ManualPath != "") haveManual = true;
+      }
+    }
+    if (document.getElementById("jsonArgsData").innerHTML != "") {
+      jsonArgsData = JSON.parse(document.getElementById("jsonArgsData").innerHTML);
+      if (GameTitle == "" && jsonArgsData.hasOwnProperty('RomFileName')) {
+        GameTitle = jsonArgsData.RomFileName;
+      }
+    }
+    if (jsonGameData != null && jsonGameData.hasOwnProperty('ClearLogoImagePath') && jsonGameData.ClearLogoImagePath != "") {
+      GameTitle = "";
+    }
+    document.querySelector('#gametitle').innerHTML = GameTitle;
+
+	var haveVolumeInfo = false;
+	let startVolume = 0;
+	let volumeType = "No";
+	let lastVolume = 0;
+	let volumevalue = 0;
+	const volumeElement = document.getElementById('volume');
+    if (document.getElementById("jsonVolumeData").innerHTML != "") {
+      jsonVolumeData = JSON.parse(document.getElementById("jsonVolumeData").innerHTML);
+	  if(jsonVolumeData.hasOwnProperty('currentVolume')) {
+		  console.log(jsonVolumeData);
+		  haveVolumeInfo = true;
+		  startVolume = jsonVolumeData["currentVolume"];
+		  lastVolume = startVolume;
+		  volumevalue = startVolume;
+		  volumeElement.innerHTML = startVolume;
+		  volumeType = jsonVolumeData["controlType"];
+	  }
+    }	
+	
+	function execAhkAndClose(chaineEnBase64){
+		if(haveVolumeInfo){
+			window.open("ahk"+ volumevalue +":" + chaineEnBase64, '_blank');
+		}
+		else{
+			window.open("ahk:" + chaineEnBase64, '_blank');
+		}
+		
+		
+	}
+	
+	//Create Menu
+    const submenu = document.createElement('ul');
+    submenu.classList.add('threeD-button-set'); // Ajoute une classe au sous-menu
+    // Crée trois nouveaux éléments li pour le sous-menu
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.setAttribute('tabindex', '-1');
+    a.setAttribute('type', 'button');
+    a.setAttribute('href', 'javascript:execAhkAndClose("");');
+    a.textContent = 'Resume Game';
+    a.classList.add('button'); // Ajoute une classe au lien
+    li.appendChild(a);
+    submenu.appendChild(li);
+    if (haveManual) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.setAttribute('tabindex', '-1');
+      a.setAttribute('type', 'button');
+      a.setAttribute('href', 'javascript:openPDFViewer(\'../manual.pdf\');');
+      a.textContent = 'View Manual';
+      a.classList.add('button'); // Ajoute une classe au lien
+      li.appendChild(a);
+      submenu.appendChild(li);
+    }
+    var loadStateAHK = document.getElementById("loadState").innerHTML;
+    if (loadStateAHK != "") {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.setAttribute('tabindex', '-1');
+      a.setAttribute('type', 'button');
+      a.setAttribute('href', 'javascript:execAhkAndClose("'+ b64EncodeUnicode(loadStateAHK) + '");');
+      a.textContent = 'Load State';
+      a.classList.add('button'); // Ajoute une classe au lien
+      li.appendChild(a);
+      submenu.appendChild(li);
+    }
+    var saveStateAHK = document.getElementById("saveState").innerHTML;
+    if (saveStateAHK != "") {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.setAttribute('tabindex', '-1');
+      a.setAttribute('type', 'button');
+      a.setAttribute('href', 'javascript:execAhkAndClose("'+ b64EncodeUnicode(saveStateAHK) + '");');
+      a.textContent = 'Save State';
+      a.classList.add('button'); // Ajoute une classe au lien
+      li.appendChild(a);
+      submenu.appendChild(li);
+    }
+    var swapDiscsAHK = document.getElementById("swapDiscs").innerHTML;
+    if (swapDiscsAHK != "") {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.setAttribute('tabindex', '-1');
+      a.setAttribute('type', 'button');
+      a.setAttribute('href', 'javascript:execAhkAndClose("'+ b64EncodeUnicode(swapDiscsAHK) + '");');
+      a.textContent = 'Swap Discs';
+      a.classList.add('button'); // Ajoute une classe au lien
+      li.appendChild(a);
+      submenu.appendChild(li);
+    }
+    var resetAHK = document.getElementById("reset").innerHTML;
+    if (resetAHK != "") {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.setAttribute('tabindex', '-1');
+      a.setAttribute('type', 'button');
+      a.setAttribute('href', 'javascript:execAhkAndClose("'+ b64EncodeUnicode(resetAHK) + '");');
+      a.textContent = 'Reset';
+      a.classList.add('button'); // Ajoute une classe au lien
+      li.appendChild(a);
+      submenu.appendChild(li);
+    }
+    var exitAHK = document.getElementById("exit").innerHTML;
+    if (exitAHK != "") {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.setAttribute('tabindex', '-1');
+      a.setAttribute('type', 'button');
+      a.setAttribute('href', 'javascript:execAhkAndClose("'+ b64EncodeUnicode(exitAHK) + '");');
+      a.textContent = 'Exit';
+      a.classList.add('button'); // Ajoute une classe au lien
+      li.appendChild(a);
+      submenu.appendChild(li);
+    }
+    const buttonSet = document.querySelector('#menu');
+    if (buttonSet) {
+      menuOriginal = buttonSet.innerHTML;
+      buttonSet.innerHTML = ''; // Supprime les éléments existants
+      buttonSet.appendChild(submenu); // Ajoute le sous-menu
+      const firstButton = buttonSet.querySelector('a');
+      //if (firstButton) {
+      //activate(firstButton);
+      // }
+    }
+	
+	
+    var lastActivate = null;
+	var pdfactive = false;
+	
+	
+    function testAhk() {
+      let ahkCode = `MsgBox, This is an AHK Test`
+      var chaineEnBase64 = btoa(ahkCode);
+      window.open("ahk:" + chaineEnBase64, '_blank');
+    }
+
+    function b64EncodeUnicode(str) {
+      const uriEncoding = encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode(parseInt(p1, 16));
+      });
+      return btoa(uriEncoding);
+    }
+	
+    //PDF
+    function closeOnEscape(event) {
+      if (event.key === 'Escape' || event.keyCode === 27) {
+        closePDFViewer();
+      }
+    }
+
+    function closePDFViewer() {
+      document.body.removeChild(document.querySelector('#pdfcontainer'));
+      // Retirez le gestionnaire d'événements pour la touche "Escape"
+      window.removeEventListener('keydown', closeOnEscape);
+      pdfactive = false;
+    }
+
+    function openPDFViewer(pdfFile) {
+      pdfactive = true;
+      // Créez un élément iframe pour afficher la visionneuse PDF
+      const iframe = document.createElement('iframe');
+      iframe.src = 'pdf/viewer.html?file=sss' + pdfFile + '#zoom=page-fit&pagemode=none';
+      iframe.style.width = '100%';
+      iframe.style.height = '80vh'; // Hauteur de 80% de la hauteur de la vue
+      // Créez un conteneur pour la fenêtre modale
+      const modalContainer = document.createElement('div');
+      modalContainer.style.position = 'fixed';
+      modalContainer.style.top = '10%'; // Centré verticalement
+      modalContainer.style.left = '10%'; // Centré horizontalement
+      modalContainer.style.width = '80%';
+      modalContainer.style.height = '80%';
+      modalContainer.style.backgroundColor = 'white'; // Couleur de fond de la fenêtre modale
+      modalContainer.style.border = '1px solid #000'; // Bordure
+      modalContainer.style.zIndex = '1000'; // Z-index pour s'assurer qu'il est au-dessus du reste de la page
+      modalContainer.id = "pdfcontainer";
+      // Ajoutez l'iframe au conteneur
+      modalContainer.appendChild(iframe);
+      // Ajoutez le conteneur à la page
+      document.body.appendChild(modalContainer);
+      // Ajoutez le gestionnaire d'événements pour la touche "Escape"
+      window.addEventListener('keydown', closeOnEscape);
+      // Ajoutez un bouton "Fermer" à la fenêtre modale (si nécessaire)
+      //const closeButton = document.createElement('button');
+      //closeButton.innerText = 'Fermer';
+      //closeButton.addEventListener('click', closePDFViewer);
+      //modalContainer.appendChild(closeButton);
+      iframe.focus();
+    }
+    //FIN PDF	
+	
+	
+    const KEYCODE = {
+      UP: 38,
+      DOWN: 40
+    };
+    var menuOriginal = "";
+
+    function restoreMenu() {
+      // Remplace les éléments existants avec le sous-menu
+      const buttonSet = document.querySelector('.threeD-button-set');
+      if (buttonSet) {
+        buttonSet.innerHTML = menuOriginal; // Supprime les éléments existants
+      }
+      const firstButton = buttonSet.querySelector('a');
+      if (firstButton) {
+        activate(firstButton);
+      }
+    }
+
+    function createSubmenu() {
+      // Crée un nouvel élément ul pour le sous-menu
+      const submenu = document.createElement('ul');
+      submenu.classList.add('threeD-button-set'); // Ajoute une classe au sous-menu
+      // Crée trois nouveaux éléments li pour le sous-menu
+      for (let i = 1; i <= 3; i++) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.setAttribute('tabindex', '-1');
+        a.setAttribute('type', 'button');
+        a.setAttribute('href', 'javascript:void(0);');
+        a.textContent = `Submenu Option ${i}`;
+        a.classList.add('button'); // Ajoute une classe au lien
+        li.appendChild(a);
+        submenu.appendChild(li);
+      }
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.setAttribute('tabindex', '-1');
+      a.setAttribute('type', 'button');
+      a.setAttribute('href', 'javascript:restoreMenu();');
+      a.textContent = 'Quit';
+      a.classList.add('button'); // Ajoute une classe au lien
+      li.appendChild(a);
+      submenu.appendChild(li);
+      // Remplace les éléments existants avec le sous-menu
+      const buttonSet = document.querySelector('.threeD-button-set');
+      if (buttonSet) {
+        menuOriginal = buttonSet.innerHTML;
+        buttonSet.innerHTML = ''; // Supprime les éléments existants
+        buttonSet.appendChild(submenu); // Ajoute le sous-menu
+        const firstButton = buttonSet.querySelector('a');
+        if (firstButton) {
+          activate(firstButton);
+        }
+      }
+    }
+    let eventLock = false;
+    const toolbar = document.querySelector(".threeD-button-set");
+    if (toolbar) {
+      var gamepad = new Gamepad();
+      gamepad.bind(Gamepad.Event.BUTTON_DOWN, function(e) {
+        if (!eventLock) {
+          // e.control of gamepad e.gamepad pressed down
+          if (e.control == "DPAD_DOWN") {
+            console.log("DOWN");
+            focusNextItem();
+            eventLock = true;
+          }
+          if (e.control == "DPAD_UP") {
+            console.log("UP");
+            focusPreviousItem();
+            eventLock = true;
+          }
+          if (e.control == "DPAD_RIGHT") {
+            console.log("RIGHT");
+			slider.value = parseInt(volumevalue,10) + 5;
+			handleRangeUpdate(slider)
+            eventLock = true;
+          }
+          if (e.control == "DPAD_LEFT") {
+            console.log("LEFT");
+			slider.value = parseInt(volumevalue,10) - 5;
+			handleRangeUpdate(slider)
+            eventLock = true;
+          }		  
+          if (e.control == "START_FORWARD") {
+            eventLock = true;
+            if (pdfactive) {
+              closePDFViewer();
+              activate(lastActivate);
+            } else {
+              const SelectedItem = document.activeElement;
+              // Vérifie si SelectedItem a un attribut href
+              if (SelectedItem && SelectedItem.getAttribute('href')) {
+                // Créez un événement de clic
+                const clickEvent = new MouseEvent('click', {
+                  bubbles: true,
+                  cancelable: true,
+                  view: window
+                });
+                // Déclenchez l'événement de clic sur l'élément actif
+                SelectedItem.dispatchEvent(clickEvent);
+              }
+              console.log(SelectedItem);
+            }
+          }
+          if (eventLock) {
+            setTimeout(function() {
+              eventLock = false;
+            }, 150);
+          }
+        }
+      });
+	  
+      if (!gamepad.init()) {
+        // Your browser does not support gamepads, get the latest Google Chrome or Firefox
+      }
+      toolbar.addEventListener("keydown", onKeyDown);
+      const firstButton = toolbar.querySelector('a');
+      if (firstButton) {
+        activate(firstButton);
+      }
+    }
+
+    function onKeyDown(event) {
+      console.log(event)
+	          if (!eventLock) {
+      switch (event.keyCode) {
+        case KEYCODE.DOWN:
+          //console.log(event)
+          event.preventDefault();
+          focusNextItem();
+          break;
+        case KEYCODE.UP:
+          ///event.preventDefault();
+          focusPreviousItem();
+          break;
+        case 39:
+			slider.value = parseInt(volumevalue,10) + 5;
+			handleRangeUpdate(slider)
+          break;
+        case 37:
+			slider.value = parseInt(volumevalue,10) - 5;
+			handleRangeUpdate(slider)
+          break;				  
+      }
+	            if (eventLock) {
+            setTimeout(function() {
+              eventLock = false;
+            }, 150);
+          }
+        }
+    }
+	
+	
+    // Figure out if the current element has a next sibling.
+    // If so, moving focus to it.
+    function focusNextItem() {
+      const item = document.activeElement.parentNode;
+      if (item.nextElementSibling) {
+        const buttonInsideNextSibling = item.nextElementSibling.querySelector('a');
+        activate(buttonInsideNextSibling);
+      }
+    }
+    // Figure out if the current element has a previous sibling.
+    // If so, moving focus to it.
+    function focusPreviousItem() {
+      const item = document.activeElement.parentNode;
+      if (item.previousElementSibling) {
+        const buttonInsidePreviousSibling = item.previousElementSibling.querySelector('a');
+        activate(buttonInsidePreviousSibling);
+      }
+    }
+    // This is where the roving tabindex magic happens!
+    function activate(item) {
+      lastActivate = item;
+      console.log(item)
+      // Set all of the buttons to tabindex -1
+      toolbar.querySelectorAll("a").forEach((btn) => (btn.tabIndex = -1));
+      // Make the current button "active"
+      item.tabIndex = 0;
+      item.focus();
+    }
+    const anyButtonPressedChangeListener = {
+      listeners: [],
+      addListener(cb) {
+        this.listeners.push(cb);
+      },
+      signal(state) {
+        for (const cb of this.listeners) {
+          cb(state);
+        }
+      }
+    }
+    document.addEventListener("focusout", function(event) {
+      //activate(lastActivate)
+    });
+	
+//Volume
+
+const soundSVG = `<path d="M5 17h-5v-10h5v10zm2-10v10l9 5v-20l-9 5zm11.008 2.093c.742.743 1.2 1.77 1.198 2.903-.002 1.133-.462 2.158-1.205 2.9l1.219 1.223c1.057-1.053 1.712-2.511 1.715-4.121.002-1.611-.648-3.068-1.702-4.125l-1.225 1.22zm2.142-2.135c1.288 1.292 2.082 3.073 2.079 5.041s-.804 3.75-2.096 5.039l1.25 1.254c1.612-1.608 2.613-3.834 2.616-6.291.005-2.457-.986-4.681-2.595-6.293l-1.254 1.25z"/>`
+const muteSVG = `<path d="M5 17h-5v-10h5v10zm2-10v10l9 5v-20l-9 5zm15.324 4.993l1.646-1.659-1.324-1.324-1.651 1.67-1.665-1.648-1.316 1.318 1.67 1.657-1.65 1.669 1.318 1.317 1.658-1.672 1.666 1.653 1.324-1.325-1.676-1.656z"/>`
+const root = document.querySelector(':root')
+const volume = document.querySelector('#volume')
+const soundPicto = document.querySelector('#sound-picto')
+const sliderContainer = document.querySelector('#sound-slider__container')
+const slider = document.querySelector('#sound-slider')
+
+const volumediv = document.querySelector(".volume-container");
+if(!haveVolumeInfo){
+	volumediv.style.display = "none";
+}
+else{
+		slider.value = startVolume;
+		handleRangeUpdate(slider)
+}
+
+function handleRangeUpdate(el){
+  if (el.target){el = el.target}
+  volume.innerHTML = el.value
+  console.log("handleval="+el.value);
+  console.log(el);
+  root.style.setProperty('--percentage', `${el.value * 100 / (el.max - el.min)}%`)
+  el.value > 0 ? soundPicto.innerHTML = soundSVG : soundPicto.innerHTML = muteSVG
+}
+function toggleMute(){
+  if(slider.value > 0){
+	lastVolume = slider.value
+	slider.value = 0
+	handleRangeUpdate(slider)
+  }else{
+	  slider.value = lastVolume
+	  handleRangeUpdate(slider)
+  }
+}
+if(haveVolumeInfo){
+	
+
+
+	slider.addEventListener('input', handleRangeUpdate)
+	soundPicto.addEventListener('click', toggleMute)
+
+
+
+	sliderContainer.onmousemove = e => {
+	  const rect = sliderContainer.getBoundingClientRect(),
+	  x = e.clientX - rect.left,
+	  y = e.clientY - rect.top
+	  
+	  sliderContainer.style.setProperty("--mouse-x", `${x}px`)
+	  sliderContainer.style.setProperty("--mouse-y", `${y}px`)
+	}
+
+
+
+
+	const observer = new MutationObserver(function(mutations) {
+	  mutations.forEach(function(mutation) {
+		if (mutation.type === 'childList' && mutation.target === volumeElement) {
+		  // Mettez à jour la variable de volume en fonction du nouveau contenu de l'élément
+		  volumevalue = parseInt(volumeElement.innerHTML, 10);
+		  console.log('Le volume a été mis à jour :', volumevalue);
+		  console.log(slider.value);
+		  // Vous pouvez exécuter d'autres actions ici en cas de modification du volume
+		}
+	  });
+	});
+	const observerConfig = { childList: true };
+	observer.observe(volumeElement, observerConfig);
+}	
+
+	
+  </script>
+</html>

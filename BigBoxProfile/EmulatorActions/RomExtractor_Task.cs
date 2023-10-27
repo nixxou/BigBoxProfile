@@ -373,6 +373,8 @@ namespace BigBoxProfile.EmulatorActions
 		private async void LaunchGame(string name)
 		{
 			if (name == "") return;
+			UnregisterHotkey();
+			//DisableHotkey();
 			Progress<ExtractionProgress> progress = new Progress<ExtractionProgress>(progressData =>
 			{
 				progressBar1.Value = progressData.PercentDone;

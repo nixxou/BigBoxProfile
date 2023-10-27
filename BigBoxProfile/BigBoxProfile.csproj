@@ -490,6 +490,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\RomExtractor_DesktopSelect.resx">
       <DependentUpon>RomExtractor_DesktopSelect.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\RomExtractor_PopupExtract.resx">
       <DependentUpon>RomExtractor_PopupExtract.cs</DependentUpon>
