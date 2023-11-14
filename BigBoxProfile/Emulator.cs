@@ -39,6 +39,7 @@ namespace BigBoxProfile
 			_modules.Add(new UseFileContent());
 			_modules.Add(new ChangeRomPath());
 			_modules.Add(new CopyFile());
+			_modules.Add(new CreateFile());
 
 			_modules.Add(new ChangeDisposition());
 			_modules.Add(new FakeFullScreen());
@@ -48,6 +49,7 @@ namespace BigBoxProfile
 			_modules.Add(new ExecutePrePostCmdAsAdmin());
 
 			_modules.Add(new RomExtractor());
+			
 
 			_modules.Add(new PS3Mount());
 			_modules.Add(new HidDeviceDetector());
@@ -120,6 +122,12 @@ namespace BigBoxProfile
 				if (module.name == "CopyFile")
 				{
 					var obj = new CopyFile();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+				if (module.name == "CreateFile")
+				{
+					var obj = new CreateFile();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}

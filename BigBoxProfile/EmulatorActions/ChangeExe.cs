@@ -148,6 +148,10 @@ namespace BigBoxProfile.EmulatorActions
 				args[0] = Path.Combine(Path.GetDirectoryName(args[0]), _newexe);
 			}
 
+			string FileExeFullPath = Path.GetFullPath(args[0]);
+			string FileDir = Path.GetDirectoryName(FileExeFullPath);
+			EmulatorLauncher.WorkingDirExe = FileDir;
+
 			return args;
 		}
 

@@ -31,6 +31,7 @@
 			this.components = new System.ComponentModel.Container();
 			this.fakebrowser_txt = new System.Windows.Forms.TextBox();
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
+			this.timer_pause = new System.Windows.Forms.Timer(this.components);
 			this.SuspendLayout();
 			// 
 			// fakebrowser_txt
@@ -44,6 +45,11 @@
 			// timer1
 			// 
 			this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+			// 
+			// timer_pause
+			// 
+			this.timer_pause.Interval = 1000;
+			this.timer_pause.Tick += new System.EventHandler(this.timer_pause_Tick);
 			// 
 			// Form1
 			// 
@@ -62,6 +68,7 @@
 
 		private System.Windows.Forms.TextBox fakebrowser_txt;
 		private System.Windows.Forms.Timer timer1;
+		private System.Windows.Forms.Timer timer_pause;
 	}
 }
 

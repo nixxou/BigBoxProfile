@@ -169,7 +169,7 @@ namespace BigBoxProfile.EmulatorActions
 					RegexOptions options = RegexOptions.Multiline;
 					if (!chk_casesensitive.Checked) options |= RegexOptions.IgnoreCase;
 					Regex regex = chk_useregex.Checked ? new Regex(txt_search.Text, options) : null;
-					fileContent = chk_useregex.Checked ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(txt_search.Text), txt_replacewith.Text, options);
+					fileContent = chk_useregex.Checked ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(txt_search.Text), txt_replacewith.Text.Replace("$", "$$"), options);
 				}
 				catch (Exception ex)
 				{
@@ -295,7 +295,7 @@ namespace BigBoxProfile.EmulatorActions
 				options |= RegexOptions.Singleline;
 
 				Regex regex = chk_useregex.Checked ? new Regex(txt_search.Text, options) : null;
-				fileContent = chk_useregex.Checked ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(txt_search.Text), txt_replacewith.Text, options);
+				fileContent = chk_useregex.Checked ? regex.Replace(fileContent, MatchEvaluator) : Regex.Replace(fileContent, Regex.Escape(txt_search.Text), txt_replacewith.Text.Replace("$", "$$"), options);
 
 				txt_textout.Text = fileContent;
 
@@ -344,6 +344,16 @@ namespace BigBoxProfile.EmulatorActions
 				variablesData = frm.result;
 				UpdateGUI();
 			}
+		}
+
+		private void txt_file_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void txt_textin_TextChanged(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

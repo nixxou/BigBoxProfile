@@ -74,6 +74,7 @@ namespace BigBoxProfile.EmulatorActions
 
 			InitializeComponent();
 
+			txt_filter.Text = filter;
 			txt_exclude.Text = exclude;
 			chk_exclude_comma.Checked = commaExclude;
 			chk_filter_comma.Checked = commaFilter;

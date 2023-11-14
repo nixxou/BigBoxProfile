@@ -1381,6 +1381,8 @@ namespace BigBoxProfile
 		public static string AHKGetPrefixArgs(string[] args)
 		{
 			string code_prefix_args = "";
+			code_prefix_args += "Args := []\n";
+			code_prefix_args += "OriginalArgs := []\n";
 			int i = 0;
 			foreach (var arg in args)
 			{
@@ -1412,6 +1414,29 @@ namespace BigBoxProfile
 			}
 			return code_prefix_args;
 
+		}
+
+		public static string AHKGetArgPrefix()
+		{
+			return @"
+Array(items*) {
+	items.base := ArrayEx
+	return items
+}
+
+class ArrayEx
+{
+	join(sep := "","") {
+		for k, v in this {
+			out .= sep v
+		}
+		return SubStr(out, StrLen(sep)+1)
+	}
+}
+returnvalue := """"
+Args := []
+OriginalArgs := []
+";
 		}
 
 		public static string AHKGetPrefix()
@@ -1774,7 +1799,7 @@ ChangeObjToString(obj)
 
 gameDataJson =
 (
-" + BigBoxUtils.GameInfoJSON + @"
+" + BigBoxUtils.GameInfoJSON.Replace("%", "`%") + @"
 )
 
 if(Json.test(gameDataJson)){
@@ -1816,6 +1841,7 @@ OriginalArgs := []
 				code = code.Replace("#includegamedata", "");
 				code_prefix_gamedata = AHKGetPrefix();
 			}
+			else code_prefix_gamedata = AHKGetArgPrefix();
 
 			if (code.Contains("#includeargs") || forceincludeargs)
 			{

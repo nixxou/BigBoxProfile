@@ -91,10 +91,13 @@ namespace BigBoxProfile
 						code = code.Replace("#includegamedata", "");
 						code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
 					}
+					else code_prefix_gamedata = BigBoxUtils.AHKGetArgPrefix();
 
 					if (code.Contains("#includeargs"))
 					{
 						code = code.Replace("#includeargs", "");
+						code_prefix_args += "Args := []\n";
+						code_prefix_args += "OriginalArgs := []\n";
 						int i = 0;
 						foreach (var arg in argsData)
 						{
@@ -188,7 +191,7 @@ namespace BigBoxProfile
 				optionsRemplace |= RegexOptions.IgnoreCase;
 				optionsRemplace |= RegexOptions.Singleline;
 
-				textOut = Regex.Replace(textOut, Regex.Escape(VariableName), resultatfinal, optionsRemplace);
+				textOut = Regex.Replace(textOut, Regex.Escape(VariableName), resultatfinal.Replace("$", "$$"), optionsRemplace);
 				return textOut;
 			}
 
@@ -226,8 +229,7 @@ namespace BigBoxProfile
 					}
 				}
 			}
-
-			textOut = Regex.Replace(textOut, Regex.Escape(VariableName), ReplaceTo, options);
+			textOut = Regex.Replace(textOut, Regex.Escape(VariableName), ReplaceTo.Replace("$", "$$"), options);
 			return textOut;
 		}
 
@@ -237,7 +239,8 @@ namespace BigBoxProfile
 			string replaceWith = VariableValue;
 			for (int i = 1; i <= groups.Count; i++)
 			{
-				replaceWith = replaceWith.Replace($"\\{i}", groups[i].Value);
+				//replaceWith = replaceWith.Replace($"\\{i}", groups[i].Value);
+				replaceWith = replaceWith.Replace($"\\{i}", Regex.Escape(groups[i].Value));
 			}
 			return replaceWith;
 		}

@@ -80,6 +80,10 @@
 			this.btn_cleargamepad = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.kryptonLabel9 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.cmb_VolumeControl = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
+			this.chk_enableGuideButton = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_useBezelAsBackground = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.num_delayPauseProcess = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
+			this.kryptonLabel10 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.groupBox2.SuspendLayout();
 			this.groupBox4.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_add)).BeginInit();
@@ -279,14 +283,14 @@
 			// 
 			this.chk_pauseEmulation.Location = new System.Drawing.Point(29, 404);
 			this.chk_pauseEmulation.Name = "chk_pauseEmulation";
-			this.chk_pauseEmulation.Size = new System.Drawing.Size(113, 20);
+			this.chk_pauseEmulation.Size = new System.Drawing.Size(158, 20);
 			this.chk_pauseEmulation.TabIndex = 107;
-			this.chk_pauseEmulation.Values.Text = "Pause Emulation";
+			this.chk_pauseEmulation.Values.Text = "Pause Process Emulation";
 			// 
 			// chk_copyArty
 			// 
 			this.chk_copyArty.AutoSize = false;
-			this.chk_copyArty.Location = new System.Drawing.Point(29, 506);
+			this.chk_copyArty.Location = new System.Drawing.Point(29, 541);
 			this.chk_copyArty.Name = "chk_copyArty";
 			this.chk_copyArty.Size = new System.Drawing.Size(665, 20);
 			this.chk_copyArty.TabIndex = 108;
@@ -366,15 +370,16 @@
 			// 
 			// chk_executePauseAfter
 			// 
-			this.chk_executePauseAfter.Location = new System.Drawing.Point(29, 454);
+			this.chk_executePauseAfter.Location = new System.Drawing.Point(31, 456);
 			this.chk_executePauseAfter.Name = "chk_executePauseAfter";
 			this.chk_executePauseAfter.Size = new System.Drawing.Size(328, 20);
 			this.chk_executePauseAfter.TabIndex = 114;
 			this.chk_executePauseAfter.Values.Text = "Execute Pause Ahk code after showing the pause screen";
+			this.chk_executePauseAfter.CheckedChanged += new System.EventHandler(this.chk_executePauseAfter_CheckedChanged);
 			// 
 			// chk_disableSound
 			// 
-			this.chk_disableSound.Location = new System.Drawing.Point(29, 428);
+			this.chk_disableSound.Location = new System.Drawing.Point(29, 486);
 			this.chk_disableSound.Name = "chk_disableSound";
 			this.chk_disableSound.Size = new System.Drawing.Size(102, 20);
 			this.chk_disableSound.TabIndex = 116;
@@ -527,7 +532,7 @@
 			// 
 			// chk_includeSpecialVariable
 			// 
-			this.chk_includeSpecialVariable.Location = new System.Drawing.Point(29, 480);
+			this.chk_includeSpecialVariable.Location = new System.Drawing.Point(29, 515);
 			this.chk_includeSpecialVariable.Name = "chk_includeSpecialVariable";
 			this.chk_includeSpecialVariable.Size = new System.Drawing.Size(336, 20);
 			this.chk_includeSpecialVariable.TabIndex = 134;
@@ -569,11 +574,57 @@
 			this.cmb_VolumeControl.Size = new System.Drawing.Size(171, 21);
 			this.cmb_VolumeControl.TabIndex = 137;
 			// 
+			// chk_enableGuideButton
+			// 
+			this.chk_enableGuideButton.Location = new System.Drawing.Point(368, 351);
+			this.chk_enableGuideButton.Name = "chk_enableGuideButton";
+			this.chk_enableGuideButton.Size = new System.Drawing.Size(165, 20);
+			this.chk_enableGuideButton.TabIndex = 139;
+			this.chk_enableGuideButton.Values.Text = "Also bind to Guide Button";
+			// 
+			// chk_useBezelAsBackground
+			// 
+			this.chk_useBezelAsBackground.AutoSize = false;
+			this.chk_useBezelAsBackground.Location = new System.Drawing.Point(29, 567);
+			this.chk_useBezelAsBackground.Name = "chk_useBezelAsBackground";
+			this.chk_useBezelAsBackground.Size = new System.Drawing.Size(260, 20);
+			this.chk_useBezelAsBackground.TabIndex = 140;
+			this.chk_useBezelAsBackground.Values.Text = "Use bezel as background.jpg if availiable";
+			// 
+			// num_delayPauseProcess
+			// 
+			this.num_delayPauseProcess.Increment = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+			this.num_delayPauseProcess.Location = new System.Drawing.Point(212, 428);
+			this.num_delayPauseProcess.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+			this.num_delayPauseProcess.Name = "num_delayPauseProcess";
+			this.num_delayPauseProcess.Size = new System.Drawing.Size(120, 22);
+			this.num_delayPauseProcess.TabIndex = 141;
+			// 
+			// kryptonLabel10
+			// 
+			this.kryptonLabel10.Location = new System.Drawing.Point(29, 430);
+			this.kryptonLabel10.Name = "kryptonLabel10";
+			this.kryptonLabel10.Size = new System.Drawing.Size(154, 20);
+			this.kryptonLabel10.TabIndex = 142;
+			this.kryptonLabel10.Values.Text = "Delay pause process (ms) :";
+			// 
 			// PauseMenu_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1720, 546);
+			this.ClientSize = new System.Drawing.Size(1720, 604);
+			this.Controls.Add(this.kryptonLabel10);
+			this.Controls.Add(this.num_delayPauseProcess);
+			this.Controls.Add(this.chk_useBezelAsBackground);
+			this.Controls.Add(this.chk_enableGuideButton);
 			this.Controls.Add(this.kryptonLabel9);
 			this.Controls.Add(this.cmb_VolumeControl);
 			this.Controls.Add(this.btn_cleargamepad);
@@ -683,5 +734,9 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_cleargamepad;
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel9;
 		private ComponentFactory.Krypton.Toolkit.KryptonComboBox cmb_VolumeControl;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_enableGuideButton;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_useBezelAsBackground;
+		private ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown num_delayPauseProcess;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel10;
 	}
 }

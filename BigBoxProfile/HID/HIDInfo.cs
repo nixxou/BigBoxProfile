@@ -111,6 +111,8 @@ namespace BigBoxProfile
 
 			LastSDL = "";
 			SDL2.SDL.SDL_Init(SDL2.SDL.SDL_INIT_JOYSTICK);
+
+
 			for (int i = 0; i < SDL2.SDL.SDL_NumJoysticks(); i++)
 			{
 				var currentJoy = SDL.SDL_JoystickOpen(i);
@@ -118,6 +120,9 @@ namespace BigBoxProfile
 				string signature = GetMD5Short(caps);
 				LastSDL += $"SDL{i}<>{SDL2.SDL.SDL_JoystickNameForIndex(i)}<>{signature}<>{SDL.SDL_JoystickGetDeviceGUID(i)}<>{SDL.SDL_JoystickGetSerial(currentJoy)}" + "\r\n";
 				SDL.SDL_JoystickClose(currentJoy);
+				
+				
+				
 			}
 
 

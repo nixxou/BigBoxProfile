@@ -244,6 +244,7 @@
 			this.txt_file.Name = "txt_file";
 			this.txt_file.Size = new System.Drawing.Size(401, 23);
 			this.txt_file.TabIndex = 88;
+			this.txt_file.TextChanged += new System.EventHandler(this.txt_file_TextChanged);
 			// 
 			// groupBox1
 			// 
@@ -272,6 +273,7 @@
 			this.txt_textin.Size = new System.Drawing.Size(493, 202);
 			this.txt_textin.TabIndex = 94;
 			this.txt_textin.Text = "Text In";
+			this.txt_textin.TextChanged += new System.EventHandler(this.txt_textin_TextChanged);
 			// 
 			// btn_testReplace
 			// 

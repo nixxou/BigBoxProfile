@@ -11,8 +11,16 @@ namespace DualShock4Lib
 
 		public static bool IsDS4(HidDevice device)
 		{
-			return device.Attributes.VendorId == VendorId 
-				&& ProductIds.Contains(device.Attributes.ProductId);
+			try
+			{
+				return device.Attributes.VendorId == VendorId
+					&& ProductIds.Contains(device.Attributes.ProductId);
+			}
+			catch
+			{
+				return false;
+			}
+
 		}
 	}
 }

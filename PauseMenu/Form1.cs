@@ -18,12 +18,26 @@ using System.Net.Http;
 using System.IO.MemoryMappedFiles;
 using System.IO.Pipes;
 using System.IO;
+using System.Threading;
 
 namespace PauseMenu
 {
 
 	public partial class Form1 : Form
 	{
+
+		[DllImport("kernel32.dll")]
+		private static extern IntPtr OpenThread(int dwDesiredAccess, bool bInheritHandle, int dwThreadId);
+
+		[DllImport("kernel32.dll")]
+		private static extern bool SuspendThread(IntPtr hThread);
+
+		[DllImport("kernel32.dll")]
+		private static extern int ResumeThread(IntPtr hThread);
+
+		[DllImport("kernel32.dll")]
+		private static extern int CloseHandle(IntPtr hObject);
+
 		[DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
 		public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
 
@@ -46,6 +60,8 @@ namespace PauseMenu
 
 		private MemoryMappedFile mmf_dataOut = null;
 
+		private int _processIdToPause = 0;
+		private string _pauseCodeToSendOnceLoaded = "";
 
 		public Form1(Dictionary<string, object> configData)
 		{
@@ -59,9 +75,18 @@ namespace PauseMenu
 			MyCustomSchemeHandler.AHK_argsPrefix = (string)ConfigData["AHK_argsPrefix"];
 			MyCustomSchemeHandler.AHK_gamedataPrefix = (string)ConfigData["AHK_gamedataPrefix"];
 
+			MyCustomSchemeHandler.ahkFromExe = (bool)ConfigData["ahkFromExe"];
+
 			bool ShowDevTools = (bool)ConfigData["ShowDevTools"];
 			bool ForcefullActivation = (bool)ConfigData["ForcefullActivation"];
 			int DelayAutoClose = int.Parse((string)ConfigData["delayAutoClose"]);
+
+			_processIdToPause = int.Parse((string)ConfigData["delayedPauseProcess"]);
+			int delayedPauseDelay = int.Parse((string)ConfigData["delayedPauseDelay"]);
+			if (delayedPauseDelay == 0) delayedPauseDelay = 500;
+			_pauseCodeToSendOnceLoaded = (string)ConfigData["AHK_pauseCodeToSendOnceLoaded"];
+
+
 
 			_selectedScreen = null;
 			Screen MainScreen = null;
@@ -163,10 +188,42 @@ namespace PauseMenu
 			this.Activate();
 			chromiumWebBrowser1.Focus();
 
-			if((string)ConfigData["AHK_pauseCodeToSendOnceLoaded"] != "")
+			/*
+			Process processEmulator = null;
+			if (DelayPause > 0)
+			{
+				try
+				{
+					processEmulator = Process.GetProcessById(DelayPause);
+				}
+				catch (Exception ex) { }
+				if (processEmulator != null)
+				{
+					foreach (ProcessThread thread in processEmulator.Threads)
+					{
+						IntPtr hThread = OpenThread(0x0002, false, thread.Id); // THREAD_SUSPEND_RESUME
+						if (hThread != IntPtr.Zero)
+						{
+							SuspendThread(hThread);
+							CloseHandle(hThread);
+						}
+					}
+				}
+			}
+			*/
+			timer_pause.Interval = delayedPauseDelay;
+			if(_processIdToPause > 0 || _pauseCodeToSendOnceLoaded != "")
+			{
+				timer_pause.Start();
+			}
+			
+			
+			/*
+			if ((string)ConfigData["AHK_pauseCodeToSendOnceLoaded"] != "")
 			{
 				SetCommandToHostProgram("ahkcontinue", (string)ConfigData["AHK_pauseCodeToSendOnceLoaded"]);
 			}
+			*/
 
 			timer1.Enabled = true;
 			if (ForcefullActivation)
@@ -310,6 +367,36 @@ namespace PauseMenu
 					// Écrire les données réelles ici
 				}
 			}
+		}
+
+		private void timer_pause_Tick(object sender, EventArgs e)
+		{
+			if(_pauseCodeToSendOnceLoaded != "")
+			{
+				SetCommandToHostProgram("ahkcontinue", _pauseCodeToSendOnceLoaded);
+			}
+			Process processEmulator = null;
+			if (_processIdToPause > 0)
+			{
+				try
+				{
+					processEmulator = Process.GetProcessById(_processIdToPause);
+				}
+				catch (Exception ex) { }
+				if (processEmulator != null)
+				{
+					foreach (ProcessThread thread in processEmulator.Threads)
+					{
+						IntPtr hThread = OpenThread(0x0002, false, thread.Id); // THREAD_SUSPEND_RESUME
+						if (hThread != IntPtr.Zero)
+						{
+							SuspendThread(hThread);
+							CloseHandle(hThread);
+						}
+					}
+				}
+			}
+			timer_pause.Enabled = false;
 		}
 	}
 

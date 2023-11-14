@@ -24,6 +24,8 @@ namespace BigBoxProfile
 		string[] Args;
 		public static string[] OriginalArgs { get; private set; }
 
+		public static string WorkingDirExe = "";
+
 		public static bool UseAhkExe = false;
 
 		public static string BigBoxFolder = "";
@@ -111,12 +113,27 @@ namespace BigBoxProfile
 				string JustRunExe = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "JustRun.exe");
 				//JustRunExe = @"C:\LaunchBox\Emulators\SimpleFowarder.exe";
 
-				var ResultRPCS = await Cli.Wrap(JustRunExe)
-					.WithArguments(Args)
-					.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
-					.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
-					.WithValidation(CommandResultValidation.None)
-					.ExecuteAsync();
+				if(string.IsNullOrEmpty(WorkingDirExe))
+				{
+					var ResultRPCS = await Cli.Wrap(JustRunExe)
+						.WithArguments(Args)
+						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
+						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
+						.WithValidation(CommandResultValidation.None)
+						.ExecuteAsync();
+
+				}
+				else
+				{
+					var ResultRPCS = await Cli.Wrap(JustRunExe)
+						.WithArguments(Args)
+						.WithWorkingDirectory(WorkingDirExe)
+						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardOutput()))
+						.WithStandardOutputPipe(PipeTarget.ToStream(Console.OpenStandardError()))
+						.WithValidation(CommandResultValidation.None)
+						.ExecuteAsync();
+				}
+
 			}
 			catch (Exception ex)
 			{
@@ -208,6 +225,7 @@ namespace BigBoxProfile
 				string m3uFile = BigBoxUtils.HaveLaunchboxM3U(Args);
 				if (String.IsNullOrEmpty(m3uFile))
 				{
+					//MessageBox.Show("Debug Start");
 					List<string> FilterToRemove = new List<string>();
 					foreach (var module in emulator._selectedModules)
 					{

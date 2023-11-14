@@ -139,9 +139,12 @@ namespace BigBoxProfile.EmulatorActions
 					code = code.Replace("#includegamedata", "");
 					code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
 				}
+				else code_prefix_gamedata = BigBoxUtils.AHKGetArgPrefix();
 
 
 				code = code.Replace("#includeargs", "");
+				code_prefix_args += "Args := []\n";
+				code_prefix_args += "OriginalArgs := []\n";
 				int i = 0;
 				foreach (var arg in args)
 				{

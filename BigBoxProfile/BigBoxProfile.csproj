@@ -207,6 +207,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CefAHKIntercept.cs" />
+    <Compile Include="EmulatorActions\CreateFile.cs" />
+    <Compile Include="EmulatorActions\CreateFile_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\CreateFile_Config.Designer.cs">
+      <DependentUpon>CreateFile_Config.cs</DependentUpon>
+    </Compile>
     <Compile Include="VolumeMixer.cs" />
     <Compile Include="BigBoxLauncher.cs" />
     <Compile Include="BigBoxUtils.cs" />
@@ -460,6 +467,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\CopyFile_Task.resx">
       <DependentUpon>CopyFile_Task.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\CreateFile_Config.resx">
+      <DependentUpon>CreateFile_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\ExecuteAHK_Config.resx">
       <DependentUpon>ExecuteAHK_Config.cs</DependentUpon>

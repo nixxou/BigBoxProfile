@@ -59,6 +59,10 @@ namespace BigBoxProfile.EmulatorActions
 		public bool showDevTools = false;
 		public bool ahkFromExe = false;
 		public bool includeSpecialVariable = false;
+		public bool enableGuideButton = false;
+		public bool useBezelAsBackground = false;
+
+		public int delayPauseProcess = 0;
 
 
 		public int dpi = 0;
@@ -144,6 +148,19 @@ namespace BigBoxProfile.EmulatorActions
 
 			volumeControl = Options.ContainsKey("volumeControl") ? Options["volumeControl"] : "No";
 
+			if (Options.ContainsKey("enableGuideButton") && Options["enableGuideButton"] == "yes") enableGuideButton = true;
+			if (Options.ContainsKey("useBezelAsBackground") && Options["useBezelAsBackground"] == "yes") useBezelAsBackground = true;
+
+			tmpInt = 0;
+			delayPauseProcess = 0;
+			if (Options.ContainsKey("delayPauseProcess"))
+			{
+				if (int.TryParse(Options["delayPauseProcess"], out tmpInt))
+				{
+					delayPauseProcess = tmpInt;
+				}
+			}
+
 			InitializeComponent();
 
 			txt_filter.Text = filter;
@@ -176,7 +193,10 @@ namespace BigBoxProfile.EmulatorActions
 			chk_showDevTools.Checked = showDevTools;
 			chk_ahkFromExe.Checked = ahkFromExe;
 			chk_includeSpecialVariable.Checked = includeSpecialVariable;
+			chk_enableGuideButton.Checked = enableGuideButton;
+			chk_useBezelAsBackground.Checked = useBezelAsBackground;
 
+			num_delayPauseProcess.Value = delayPauseProcess;
 
 			UpdateGUI();
 			UpdateRadioGUI();
@@ -357,6 +377,10 @@ namespace BigBoxProfile.EmulatorActions
 			showDevTools = chk_showDevTools.Checked;
 			ahkFromExe = chk_ahkFromExe.Checked;
 			includeSpecialVariable = chk_includeSpecialVariable.Checked;
+			enableGuideButton = chk_enableGuideButton.Checked;
+			useBezelAsBackground = chk_useBezelAsBackground.Checked;
+
+			delayPauseProcess = (int)num_delayPauseProcess.Value;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
@@ -662,6 +686,16 @@ namespace BigBoxProfile.EmulatorActions
 		private void button2_Click_1(object sender, EventArgs e)
 		{
 			MessageBox.Show(SoundCardUtils.GetMainVolume().ToString());
+		}
+
+		private void chk_executePauseAfter_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void timer1_Tick(object sender, EventArgs e)
+		{
+
 		}
 	}
 

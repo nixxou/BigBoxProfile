@@ -356,7 +356,7 @@ namespace BigBoxProfile.EmulatorActions
 					if (!_casesensitive) options |= RegexOptions.IgnoreCase;
 					Regex regex = _useregex ? new Regex(_searchFinal, options) : null;
 					//string result = _useregex ? regex.Replace(elem, MatchEvaluator) : elem.Replace(_search, _replacewith);
-					string result = _useregex ? regex.Replace(elem, MatchEvaluator2) : Regex.Replace(elem, Regex.Escape(_searchFinal), _replacewithFinal, options);
+					string result = _useregex ? regex.Replace(elem, MatchEvaluator2) : Regex.Replace(elem, Regex.Escape(_searchFinal), _replacewithFinal.Replace("$", "$$"), options);
 
 					if (variablesDictionary.Count > 0)
 					{
@@ -391,7 +391,7 @@ namespace BigBoxProfile.EmulatorActions
 				Regex regex = _useregex ? new Regex(_searchFinal, options) : null;
 
 				//string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator) : filteredCmd.Replace(_search, _replacewith);
-				string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator2) : Regex.Replace(filteredCmd, Regex.Escape(_searchFinal), _replacewithFinal, options);
+				string result = _useregex ? regex.Replace(filteredCmd, MatchEvaluator2) : Regex.Replace(filteredCmd, Regex.Escape(_searchFinal), _replacewithFinal.Replace("$", "$$"), options);
 
 
 				
@@ -624,7 +624,7 @@ namespace BigBoxProfile.EmulatorActions
 				if (!_casesensitive) options |= RegexOptions.IgnoreCase;
 				options |= RegexOptions.Singleline;
 				Regex regex = _useregex ? new Regex(_searchFinal, options) : null;
-				string newFileContent = _useregex ? regex.Replace(fileContent, MatchEvaluator2) : Regex.Replace(fileContent, Regex.Escape(_searchFinal), _replacewithFinal, options);
+				string newFileContent = _useregex ? regex.Replace(fileContent, MatchEvaluator2) : Regex.Replace(fileContent, Regex.Escape(_searchFinal), _replacewithFinal.Replace("$", "$$"), options);
 
 
 				//string newFileContent = regex.Replace(fileContent, MatchEvaluator2);

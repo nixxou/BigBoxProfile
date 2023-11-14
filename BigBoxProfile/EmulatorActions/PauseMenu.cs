@@ -78,6 +78,12 @@ namespace BigBoxProfile.EmulatorActions
 
 		public bool _includeSpecialVariable { get; private set; } = false;
 
+		public bool _enableGuideButton { get; private set; } = false;
+		public bool _useBezelAsBackground { get; private set; } = false;
+
+		public int _delayPauseProcess { get; private set; } = 0;
+
+
 
 
 		public string specialVariableGameData { get; private set; } = "";
@@ -106,6 +112,8 @@ namespace BigBoxProfile.EmulatorActions
 
 		private Dictionary<string, string> volumeInfo = new Dictionary<string, string>();
 		private long lastGamepadActionTick = 0;
+
+		private string[] storedArgs = new List<string>().ToArray();
 
 		public IEmulatorAction CreateNewInstance()
 		{
@@ -179,6 +187,13 @@ namespace BigBoxProfile.EmulatorActions
 
 				Options["volumeControl"] = frm.volumeControl.Trim();
 
+				if (frm.enableGuideButton) Options["enableGuideButton"] = "yes";
+				else Options["enableGuideButton"] = "no";
+
+				if (frm.useBezelAsBackground) Options["useBezelAsBackground"] = "yes";
+				else Options["useBezelAsBackground"] = "no";
+
+				Options["delayPauseProcess"] = frm.delayPauseProcess.ToString();
 				UpdateConfig();
 			}
 
@@ -227,6 +242,12 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("includeSpecialVariable") == false) Options["includeSpecialVariable"] = "no";
 
 			if (Options.ContainsKey("volumeControl") == false) Options["volumeControl"] = "No";
+
+			if (Options.ContainsKey("enableGuideButton") == false) Options["enableGuideButton"] = "no";
+
+			if (Options.ContainsKey("useBezelAsBackground") == false) Options["useBezelAsBackground"] = "no";
+
+			if (Options.ContainsKey("delayPauseProcess") == false) Options["delayPauseProcess"] = "0";
 
 			UpdateConfig();
 
@@ -332,10 +353,77 @@ namespace BigBoxProfile.EmulatorActions
 			_ahkFromExe = Options["ahkFromExe"] == "yes" ? true : false;
 			_includeSpecialVariable = Options["includeSpecialVariable"] == "yes" ? true : false;
 			_volumeControl = Options["volumeControl"];
+
+			_enableGuideButton = Options["enableGuideButton"] == "yes" ? true : false;
+			_useBezelAsBackground = Options["useBezelAsBackground"] == "yes" ? true : false;
+
+			tmpInt = 0;
+			_delayPauseProcess = 0;
+			if (Options.ContainsKey("delayPauseProcess"))
+			{
+				if (int.TryParse(Options["delayPauseProcess"], out tmpInt))
+				{
+					_delayPauseProcess = tmpInt;
+				}
+			}
 		}
 
 		public void ExecuteBefore(string[] args)
 		{
+			//filterstart
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
+			{
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+			//filterend
+			storedArgs = args;
 			if (IsConfigured()){
 				specialVariableGameData = BigBoxUtils.GameInfoJSON;
 				guessedRomFile = BigBoxUtils.GuessRomPath(args, EmulatorLauncher.OriginalArgs);
@@ -371,7 +459,12 @@ namespace BigBoxProfile.EmulatorActions
 					argsData.Add("EmulatorFilePath", args[0]);
 					argsData.Add("EmulatorFileName", Path.GetFileName(args[0]));
 					argsData.Add("EmulatorNameWithoutExt", Path.GetFileNameWithoutExtension(args[0]));
-					argsData.Add("EmulatorFileDir", Path.GetDirectoryName(args[0]));
+
+					// Obtenez le chemin du répertoire de travail actuel
+					string workingDirectory = Environment.CurrentDirectory;
+					string emulatorFileDir = Path.GetDirectoryName(args[0]);
+					if(!Path.IsPathRooted(emulatorFileDir)) emulatorFileDir = Path.Combine(workingDirectory, emulatorFileDir);
+					argsData.Add("EmulatorFileDir", emulatorFileDir);
 				}
 				else
 				{
@@ -400,7 +493,11 @@ namespace BigBoxProfile.EmulatorActions
 						{
 							backgroundImage = (string)gameData["PlatformBackgroundImagePath"];
 						}
-						if(backgroundImage != "" && File.Exists(backgroundImage))
+						if (_useBezelAsBackground && gameData.ContainsKey("BezelImagePath") && !string.IsNullOrEmpty((string)gameData["BezelImagePath"]) && File.Exists((string)gameData["BezelImagePath"]))
+						{
+							backgroundImage = (string)gameData["BezelImagePath"];
+						}
+						if (backgroundImage != "" && File.Exists(backgroundImage))
 						{
 							ArtOverride.Add("background.jpg", backgroundImage);
 						}
@@ -465,8 +562,6 @@ namespace BigBoxProfile.EmulatorActions
 
 				}
 				
-
-				
 				if (!string.IsNullOrEmpty(_gamepadCombo))
 				{
 					gamepad = X.Gamepad_1;
@@ -490,35 +585,47 @@ namespace BigBoxProfile.EmulatorActions
 
 					gamepad.StateChanged += (object a, EventArgs b) =>
 					{
-						if (gamepad.state.Gamepad.IsButtonDown(_gamepadCombo))
+						if (_enableGuideButton && gamepad.state.Gamepad.IsButtonDown("Guide"))
 						{
 							long currentTick = DateTime.Now.Ticks;
-							if(TimeSpan.FromTicks(currentTick-lastGamepadActionTick).TotalMilliseconds > 1500)
+							if (TimeSpan.FromTicks(currentTick - lastGamepadActionTick).TotalMilliseconds > 1500)
 							{
 								lastGamepadActionTick = currentTick;
-								if (_gamepadKeyPressMinDuration == 0)
+								ShowPauseWithDelay(args);
+							}
+						}
+						else
+						{
+							if (gamepad.state.Gamepad.IsButtonDown(_gamepadCombo))
+							{
+								long currentTick = DateTime.Now.Ticks;
+								if (TimeSpan.FromTicks(currentTick - lastGamepadActionTick).TotalMilliseconds > 1500)
 								{
-									ShowPauseWithDelay(args);
-								}
-								else
-								{
-									if (!isComboActive)
+									lastGamepadActionTick = currentTick;
+									if (_gamepadKeyPressMinDuration == 0)
 									{
-										isComboActive = true;
-										timerGamepad.Start();
+										ShowPauseWithDelay(args);
+									}
+									else
+									{
+										if (!isComboActive)
+										{
+											isComboActive = true;
+											timerGamepad.Start();
+										}
 									}
 								}
 
 
 							}
-
+							else
+							{
+								if (timerGamepad != null) timerGamepad.Stop();
+								isComboActive = false; // Réinitialisez la variable
+							}
 
 						}
-						else
-						{
-							if(timerGamepad != null) timerGamepad.Stop();
-							isComboActive = false; // Réinitialisez la variable
-						}
+
 					};
 				}
 				
@@ -584,6 +691,60 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void ExecuteAfter(string[] args)
 		{
+			//filterstart
+			string cmd = BigBoxUtils.ArgsToCommandLine(args);
+			string cmdlower = cmd.ToLower();
+			if (_filter != "")
+			{
+				if (_commaFilter)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_filter.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (!filter_found) return;
+				}
+				else
+				{
+					if (!cmdlower.Contains(_filter.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+
+			if (_exclude != "")
+			{
+				if (_commaExclude)
+				{
+					bool filter_found = false;
+					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
+					foreach (var filter in liste_filter)
+					{
+						if (filter.Trim() == "") continue;
+						if (cmdlower.Contains(filter.Trim()))
+						{
+							filter_found = true;
+						}
+					}
+					if (filter_found) return;
+				}
+				else
+				{
+					if (cmdlower.Contains(_exclude.ToLower()))
+					{
+						return;
+					}
+				}
+			}
+			//filterend
+
 			if (IsConfigured() && _typeScreen == "end")
 			{
 				if(_delayStarting == 0) ShowPause(args);
@@ -676,10 +837,15 @@ namespace BigBoxProfile.EmulatorActions
 				volumeInfo["controlType"] = "No";
 				_volumeControl = "No";
 			}
-			
 
 
-			if (!_executePauseAfter) AhkExecute(args, _ahkPause,_ahkFromExe);
+
+			if (!_executePauseAfter)
+			{
+				string pauseCode = ReplaceVariable(args, _ahkPause);
+				AhkExecute(args, pauseCode, _ahkFromExe);
+
+			}
 			
 			
 			if(_processEmulator != null)
@@ -697,7 +863,7 @@ namespace BigBoxProfile.EmulatorActions
 					
 						
 				}
-				if (_pauseEmulation)
+				if (_pauseEmulation && _delayPauseProcess == 0)
 				{
 					BigBoxUtils.PauseProcess(_processEmulator.Id);
 				}
@@ -733,13 +899,29 @@ namespace BigBoxProfile.EmulatorActions
 			configOptions.Add("ArtOverride", JsonConvert.SerializeObject(ArtOverride, Newtonsoft.Json.Formatting.Indented));
 			configOptions.Add("AHK_gamedataPrefix", BigBoxUtils.AHKGetPrefix());
 			configOptions.Add("AHK_argsPrefix", BigBoxUtils.AHKGetPrefixArgs(args));
+			configOptions.Add("ahkFromExe", _ahkFromExe);
 
 			if (_typeScreen == "pause") configOptions.Add("delayAutoClose", "0");
 			else configOptions.Add("delayAutoClose", _delayAutoClose.ToString());
 
 			string AHK_pauseCodeToSendOnceLoaded = "";
-			if (_executePauseAfter) AHK_pauseCodeToSendOnceLoaded = _ahkPause;
+			if (_executePauseAfter)
+			{
+				string pauseCode = ReplaceVariable(args, _ahkPause);
+				AHK_pauseCodeToSendOnceLoaded = pauseCode;
+			}
 			configOptions.Add("AHK_pauseCodeToSendOnceLoaded", AHK_pauseCodeToSendOnceLoaded);
+
+			if (_pauseEmulation && _delayPauseProcess > 0)
+			{
+				configOptions.Add("delayedPauseDelay", _delayPauseProcess.ToString());
+				configOptions.Add("delayedPauseProcess", _processEmulator == null ? "0" : _processEmulator.Id.ToString());
+			}
+			else
+			{
+				configOptions.Add("delayedPauseDelay", "0");
+				configOptions.Add("delayedPauseProcess", "0");
+			}
 
 			string json_resume = JsonConvert.SerializeObject(configOptions, Newtonsoft.Json.Formatting.Indented);
 			byte[] jsonDataBytes_resume = Encoding.UTF8.GetBytes(json_resume);
@@ -896,8 +1078,13 @@ namespace BigBoxProfile.EmulatorActions
 				SystemParametersInfo((uint)0x2001, 200000, 200000, 0x0002 | 0x0001);
 				Thread.Sleep(300);
 			}
-			string[] nargs = new List<string>().ToArray();
-			AhkExecute(nargs, _ahkResume, _ahkFromExe);
+			string[] nargs = storedArgs;
+			if (!ahkCodeToExecute.Contains(";skiprestore"))
+			{
+				string resumeCode = ReplaceVariable(nargs, _ahkResume);
+				AhkExecute(nargs, resumeCode, _ahkFromExe);
+			}
+			
 
 			if(ahkCodeToExecute != "")
 			{
@@ -963,10 +1150,13 @@ namespace BigBoxProfile.EmulatorActions
 					code = code.Replace("#includegamedata", "");
 					code_prefix_gamedata = BigBoxUtils.AHKGetPrefix();
 				}
+				else code_prefix_gamedata = BigBoxUtils.AHKGetArgPrefix();
 
 				if (code.Contains("#includeargs"))
 				{
 					code = code.Replace("#includeargs", "");
+					code_prefix_args += "Args := []\n";
+					code_prefix_args += "OriginalArgs := []\n";
 					int i = 0;
 					foreach (var arg in args)
 					{
@@ -1007,6 +1197,46 @@ namespace BigBoxProfile.EmulatorActions
 
 
 			//string ahk_code = BigBoxUtils.AHKGetPrefix();
+		}
+
+		public string ReplaceVariable(string[] args, string textin)
+		{
+			Dictionary<string, VariableData> variablesDictionary = new Dictionary<string, VariableData>();
+			if (!String.IsNullOrEmpty(_variablesData))
+			{
+				var priority_arr = BigBoxUtils.explode(_variablesData, "|||");
+				foreach (var p in priority_arr)
+				{
+					var pObj = new VariableData(p);
+					if (!variablesDictionary.ContainsKey(pObj.VariableName))
+					{
+						variablesDictionary.Add(pObj.VariableName, pObj);
+					}
+				}
+			}
+
+			if (variablesDictionary.Count > 0)
+			{
+				int currentLoopVariable = 0;
+				int maxLoopVariable = 10;
+				bool foundVariable = true;
+				while (foundVariable)
+				{
+					foundVariable = false;
+					currentLoopVariable++;
+					foreach (var v in variablesDictionary)
+					{
+						if (textin.ToLower().Contains(v.Key.ToLower()))
+						{
+							foundVariable = true;
+							textin = v.Value.ReplaceVariable(textin, args);
+						}
+					}
+					if (currentLoopVariable > maxLoopVariable) break;
+				}
+			}
+			return textin;
+
 		}
 
 		public string GetHTMLContent(string[] args)

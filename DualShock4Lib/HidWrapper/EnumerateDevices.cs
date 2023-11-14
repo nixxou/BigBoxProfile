@@ -42,13 +42,18 @@ namespace HidWrapper
 							Description = GetDeviceDescription(deviceInfoSet, ref deviceInfoData)
 						};
 
-						using (var handle = CreateFileHandle(device.DevicePath))
+						try
 						{
-							device.Capabilities = GetDeviceCapabilities(handle);
-							device.Attributes = GetDeviceAttributes(handle);
-							device.Manufacturer = GetManufacturer(handle);
-							device.Product = GetProduct(handle);
+							using (var handle = CreateFileHandle(device.DevicePath))
+							{
+								device.Capabilities = GetDeviceCapabilities(handle);
+								device.Attributes = GetDeviceAttributes(handle);
+								device.Manufacturer = GetManufacturer(handle);
+								device.Product = GetProduct(handle);
+							}
 						}
+						catch { }
+
 
 						// Return item
 						yield return device;
