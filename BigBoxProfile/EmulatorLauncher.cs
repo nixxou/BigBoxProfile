@@ -99,11 +99,11 @@ namespace BigBoxProfile
 
 		public void ExecutePostlaunch()
 		{
-			var targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
-			if (targetProcess != null)
-			{
-				SetForegroundWindow(targetProcess.MainWindowHandle);
-			}
+				var targetProcess = Process.GetProcessesByName("BigBox").FirstOrDefault(p => p.MainWindowTitle != "");
+				if (targetProcess != null)
+				{
+					SetForegroundWindow(targetProcess.MainWindowHandle);
+				}
 		}
 
 		public async Task ExecuteJustRun()

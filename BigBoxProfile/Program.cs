@@ -11,7 +11,7 @@ namespace BigBoxProfile
 {
 	internal static class Program
 	{
-
+		public static bool DisableLaunchboxHook = false;
 
 		[DllImport("user32.dll")]
 		private static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -21,6 +21,11 @@ namespace BigBoxProfile
 		[STAThread]
 		public static void Main(string[] args)
 		{
+			if (File.Exists(Path.Combine(Profile.PathMainProfileDir, "disableLaunchboxHook")))
+			{
+				DisableLaunchboxHook = true;
+			}
+
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			/*

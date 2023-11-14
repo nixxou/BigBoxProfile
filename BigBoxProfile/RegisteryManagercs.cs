@@ -61,8 +61,13 @@ namespace BigBoxProfile
 		public bool CheckIfActionIsNeeded()
 		{
 			var listeExe = GetExeListFromProfileDir();
-			listeExe.Add("BigBox.exe");
-			listeExe.Add("LaunchBox.exe");
+
+			if (!Program.DisableLaunchboxHook)
+			{
+				listeExe.Add("BigBox.exe");
+				listeExe.Add("LaunchBox.exe");
+			}
+
 
 			var listeReg = GetRegisteryKeysWithDebugger(true);
 			var listeRegSouple = GetRegisteryKeysWithDebugger(false);
@@ -109,8 +114,11 @@ namespace BigBoxProfile
 			{
 
 				var listeExe = GetExeListFromProfileDir();
-				listeExe.Add("BigBox.exe");
-				listeExe.Add("LaunchBox.exe");
+				if (!Program.DisableLaunchboxHook)
+				{
+					listeExe.Add("BigBox.exe");
+					listeExe.Add("LaunchBox.exe");
+				}
 
 				var listeReg = GetRegisteryKeysWithDebugger(true);
 				var listeRegSouple = GetRegisteryKeysWithDebugger(false);

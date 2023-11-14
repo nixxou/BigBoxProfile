@@ -59,6 +59,7 @@
 			this.cmb_DispositionList = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
 			this.label9 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
+			this.chk_Disable = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_listProfiles)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_emulatorList)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.groupBox1)).BeginInit();
@@ -364,11 +365,22 @@
 			this.label9.TabIndex = 14;
 			this.label9.Values.Text = "Quick Monitor Disposition Switch :";
 			// 
+			// chk_Disable
+			// 
+			this.chk_Disable.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.chk_Disable.Location = new System.Drawing.Point(390, 60);
+			this.chk_Disable.Name = "chk_Disable";
+			this.chk_Disable.Size = new System.Drawing.Size(63, 20);
+			this.chk_Disable.TabIndex = 15;
+			this.chk_Disable.Values.Text = "Disable";
+			this.chk_Disable.CheckedChanged += new System.EventHandler(this.chk_Disable_CheckedChanged);
+			// 
 			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(473, 395);
+			this.Controls.Add(this.chk_Disable);
 			this.Controls.Add(this.label9);
 			this.Controls.Add(this.cmb_DispositionList);
 			this.Controls.Add(this.label5);
@@ -428,6 +440,7 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_editSoundcard;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_editMonitorSwitch;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_editPriority;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_Disable;
 	}
 }
 

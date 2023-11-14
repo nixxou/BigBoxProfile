@@ -41,6 +41,7 @@ namespace BigBoxProfile
 
 			ReloadDispositionCmb();
 
+			chk_Disable.Checked = Program.DisableLaunchboxHook;
 
 
 		}
@@ -310,6 +311,30 @@ namespace BigBoxProfile
 				BigBoxUtils.UseMonitorDisposition(cmb_DispositionList.SelectedItem.ToString());
 				ReloadDispositionCmb();
 			}
+		}
+
+		private void chk_Disable_CheckedChanged(object sender, EventArgs e)
+		{
+			if (chk_Disable.Checked)
+			{
+				try
+				{
+					File.WriteAllText(Path.Combine(Profile.PathMainProfileDir, "disableLaunchboxHook"), "1");
+					Program.DisableLaunchboxHook = true;
+				}
+				catch { }
+				
+			}
+			else
+			{
+				try
+				{
+					File.Delete(Path.Combine(Profile.PathMainProfileDir, "disableLaunchboxHook"));
+					Program.DisableLaunchboxHook = false;
+				}
+				catch { }
+			}
+			//MessageBox.Show("Relaunch BBProfile to apply change");
 		}
 	}
 }
