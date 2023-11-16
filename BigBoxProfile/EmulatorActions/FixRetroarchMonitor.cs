@@ -70,9 +70,55 @@ namespace BigBoxProfile.EmulatorActions
 			return args;
 		}
 
+		public static string LocateRetroarchConfig(string[] args)
+		{
+			string exeArg = args[0];
+			var filteredArgs = BigBoxUtils.ArgsWithoutFirstElement(args);
+
+			string PathConfig = "";
+
+			foreach (var arg in filteredArgs)
+			{
+				if (arg.Trim().StartsWith("--config="))
+				{
+					PathConfig = arg.Trim().Substring(9);
+					if (File.Exists(PathConfig))
+					{
+						return PathConfig;
+					}
+				}
+			}
+
+			for (int i = 0; i < filteredArgs.Length; i++)
+			{
+				if (filteredArgs[i] == "-c" && i < filteredArgs.Length - 1 && !string.IsNullOrEmpty(filteredArgs[i + 1]))
+				{
+					PathConfig = filteredArgs[i + 1];
+					if (File.Exists(PathConfig))
+					{
+						return PathConfig;
+					}
+				}
+			}
+
+			PathConfig = Path.Combine(Environment.CurrentDirectory, "retroarch.cfg");
+			if (File.Exists(PathConfig))
+			{
+				return PathConfig;
+			}
+
+			PathConfig = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "retroarch.cfg");
+			if (File.Exists(PathConfig))
+			{
+				return PathConfig;
+			}
+
+			return "";
+		}
+
 		public string[] ModifyReal(string[] args)
 		{
-
+			/*
 			string configFile = null;
 			for (int i = 0; i < args.Length; i++)
 			{
@@ -88,8 +134,11 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				configFilePath = Path.IsPathRooted(configFile) ? configFile : Path.Combine(Environment.CurrentDirectory, configFile);
 			}
+			*/
 
-			if (File.Exists(configFilePath))
+			string configFilePath = LocateRetroarchConfig(args);
+
+			if (configFilePath != "" && File.Exists(configFilePath))
 			{
 				int main_monitor_number = 0;
 				Screen[] screens = Screen.AllScreens;

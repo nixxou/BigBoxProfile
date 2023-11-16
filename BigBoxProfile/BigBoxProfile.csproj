@@ -214,6 +214,14 @@
     <Compile Include="EmulatorActions\CreateFile_Config.Designer.cs">
       <DependentUpon>CreateFile_Config.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmulatorActions\RetroarchFixSiden.cs" />
+    <Compile Include="EmulatorActions\RetroarchFixSiden_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\RetroarchFixSiden_Config.Designer.cs">
+      <DependentUpon>RetroarchFixSiden_Config.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HID\MouseIndexRetroarch.cs" />
     <Compile Include="VolumeMixer.cs" />
     <Compile Include="BigBoxLauncher.cs" />
     <Compile Include="BigBoxUtils.cs" />
@@ -491,6 +499,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\Replace_Config.resx">
       <DependentUpon>Replace_Config.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\RetroarchFixSiden_Config.resx">
+      <DependentUpon>RetroarchFixSiden_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\RomExtractor_BigBoxSelect.resx">
       <DependentUpon>RomExtractor_BigBoxSelect.cs</DependentUpon>
