@@ -324,7 +324,6 @@ namespace BigBoxProfile.EmulatorActions
 
 		public void ExecuteBefore(string[] args)
 		{
-
 			//filterstart
 			string cmd = BigBoxUtils.ArgsToCommandLine(args);
 			string cmdlower = cmd.ToLower();

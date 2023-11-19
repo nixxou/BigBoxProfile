@@ -30,6 +30,7 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RetroarchFixSiden_Config));
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.chk_forceDefaultNoFilter = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.btn_manage_exclude = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.txt_filter = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.label3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
@@ -42,6 +43,7 @@
 			this.btn_cancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.kryptonGroupBox1 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+			this.chk_forceDefaultNoMatch = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.infoLabel = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.label11 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.label12 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
@@ -53,10 +55,8 @@
 			this.btn_down_priority = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_up_priority = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.txt_priority_res = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
-			this.chk_forceDefaultNoFilter = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.txt_showMouse = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.btn_showMouse = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-			this.chk_forceDefaultNoMatch = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.kryptonGroupBox1)).BeginInit();
@@ -84,6 +84,16 @@
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Filters";
 			this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+			// 
+			// chk_forceDefaultNoFilter
+			// 
+			this.chk_forceDefaultNoFilter.AutoSize = false;
+			this.chk_forceDefaultNoFilter.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.TitleControl;
+			this.chk_forceDefaultNoFilter.Location = new System.Drawing.Point(17, 138);
+			this.chk_forceDefaultNoFilter.Name = "chk_forceDefaultNoFilter";
+			this.chk_forceDefaultNoFilter.Size = new System.Drawing.Size(714, 45);
+			this.chk_forceDefaultNoFilter.TabIndex = 87;
+			this.chk_forceDefaultNoFilter.Values.Text = "Set Input Driver to DINPUT AND Mouse Index to Default if filters don\'t match";
 			// 
 			// btn_manage_exclude
 			// 
@@ -201,6 +211,18 @@
 			this.kryptonGroupBox1.TabIndex = 99;
 			this.kryptonGroupBox1.Values.Heading = "Priority List";
 			// 
+			// chk_forceDefaultNoMatch
+			// 
+			this.chk_forceDefaultNoMatch.AutoSize = false;
+			this.chk_forceDefaultNoMatch.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
+			this.chk_forceDefaultNoMatch.Location = new System.Drawing.Point(9, 107);
+			this.chk_forceDefaultNoMatch.Name = "chk_forceDefaultNoMatch";
+			this.chk_forceDefaultNoMatch.Size = new System.Drawing.Size(541, 36);
+			this.chk_forceDefaultNoMatch.TabIndex = 88;
+			this.chk_forceDefaultNoMatch.Values.Text = "Set Input Driver to DINPUT AND Mouse Index to Default if priority list don\'t matc" +
+    "h";
+			this.chk_forceDefaultNoMatch.CheckedChanged += new System.EventHandler(this.chk_forceDefaultNoMatch_CheckedChanged);
+			// 
 			// infoLabel
 			// 
 			this.infoLabel.AutoSize = false;
@@ -301,16 +323,6 @@
 			this.txt_priority_res.TextChanged += new System.EventHandler(this.txt_priority_res_TextChanged);
 			this.txt_priority_res.Leave += new System.EventHandler(this.txt_priority_res_Leave);
 			// 
-			// chk_forceDefaultNoFilter
-			// 
-			this.chk_forceDefaultNoFilter.AutoSize = false;
-			this.chk_forceDefaultNoFilter.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.TitleControl;
-			this.chk_forceDefaultNoFilter.Location = new System.Drawing.Point(17, 138);
-			this.chk_forceDefaultNoFilter.Name = "chk_forceDefaultNoFilter";
-			this.chk_forceDefaultNoFilter.Size = new System.Drawing.Size(714, 45);
-			this.chk_forceDefaultNoFilter.TabIndex = 87;
-			this.chk_forceDefaultNoFilter.Values.Text = "Set Input Driver to DINPUT AND Mouse Index to Default if filters don\'t match";
-			// 
 			// txt_showMouse
 			// 
 			this.txt_showMouse.Location = new System.Drawing.Point(18, 740);
@@ -329,18 +341,6 @@
 			this.btn_showMouse.TabIndex = 101;
 			this.btn_showMouse.Values.Text = "Show\r\nYour\r\nCurrent\r\nMouse\r\nOrder";
 			this.btn_showMouse.Click += new System.EventHandler(this.btn_showMouse_Click);
-			// 
-			// chk_forceDefaultNoMatch
-			// 
-			this.chk_forceDefaultNoMatch.AutoSize = false;
-			this.chk_forceDefaultNoMatch.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
-			this.chk_forceDefaultNoMatch.Location = new System.Drawing.Point(9, 107);
-			this.chk_forceDefaultNoMatch.Name = "chk_forceDefaultNoMatch";
-			this.chk_forceDefaultNoMatch.Size = new System.Drawing.Size(541, 36);
-			this.chk_forceDefaultNoMatch.TabIndex = 88;
-			this.chk_forceDefaultNoMatch.Values.Text = "Set Input Driver to DINPUT AND Mouse Index to Default if priority list don\'t matc" +
-    "h";
-			this.chk_forceDefaultNoMatch.CheckedChanged += new System.EventHandler(this.chk_forceDefaultNoMatch_CheckedChanged);
 			// 
 			// kryptonLabel1
 			// 

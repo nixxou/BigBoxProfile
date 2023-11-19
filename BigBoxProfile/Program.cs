@@ -107,7 +107,8 @@ namespace BigBoxProfile
 
 				if (args.Length >= 1)
 				{
-					
+					MessageBox.Show("debug disable lb hook2");
+
 					//if (!Directory.Exists(DataHtmlDir)) { Directory.CreateDirectory(DataHtmlDir); }
 
 					if (File.Exists(args[0]))

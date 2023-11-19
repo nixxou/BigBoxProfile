@@ -1187,7 +1187,9 @@ namespace BigBoxProfile
 			{
 				var managementObject = collection.OfType<ManagementObject>().FirstOrDefault();
 
-				return managementObject != null ? (string)managementObject["CommandLine"] : "";
+				string result = managementObject != null ? (string)managementObject["CommandLine"] : "";
+				result = result.Trim().Trim('"').Trim();
+				return result;
 			}
 		}
 
@@ -2093,6 +2095,9 @@ OriginalArgs := []
 				try{
 					if (File.Exists(farg))
 					{
+						if (Path.GetExtension(farg).ToLower() == ".dll" || Path.GetExtension(farg).ToLower() == ".png" || Path.GetExtension(farg).ToLower() == ".cfg") continue;
+
+
 						long taille = new FileInfo(farg).Length;
 						if (taille > biggestFileSize)
 						{
