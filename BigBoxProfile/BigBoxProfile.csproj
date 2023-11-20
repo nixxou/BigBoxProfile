@@ -214,6 +214,13 @@
     <Compile Include="EmulatorActions\CreateFile_Config.Designer.cs">
       <DependentUpon>CreateFile_Config.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmulatorActions\MultiConfigReplace.cs" />
+    <Compile Include="EmulatorActions\MultiConfigReplace_Config.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EmulatorActions\MultiConfigReplace_Config.Designer.cs">
+      <DependentUpon>MultiConfigReplace_Config.cs</DependentUpon>
+    </Compile>
     <Compile Include="EmulatorActions\RetroarchFixSiden.cs" />
     <Compile Include="EmulatorActions\RetroarchFixSiden_Config.cs">
       <SubType>Form</SubType>
@@ -493,6 +500,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\HidDeviceDetector_PopupEdit.resx">
       <DependentUpon>HidDeviceDetector_PopupEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EmulatorActions\MultiConfigReplace_Config.resx">
+      <DependentUpon>MultiConfigReplace_Config.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EmulatorActions\PauseMenu_Config.resx">
       <DependentUpon>PauseMenu_Config.cs</DependentUpon>

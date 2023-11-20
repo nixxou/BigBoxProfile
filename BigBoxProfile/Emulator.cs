@@ -31,6 +31,7 @@ namespace BigBoxProfile
 			_modules.Add(new Prefix());
 			_modules.Add(new Suffix());
 			_modules.Add(new Replace());
+			_modules.Add(new MultiConfigReplace());
 			_modules.Add(new ChangeExe());
 			_modules.Add(new FixRetroarchMonitor());
 			_modules.Add(new RetroarchFixSiden());
@@ -90,6 +91,12 @@ namespace BigBoxProfile
 				if (module.name == "Replace")
 				{
 					var obj = new Replace();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+				if (module.name == "MultiConfigReplace")
+				{
+					var obj = new MultiConfigReplace();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}

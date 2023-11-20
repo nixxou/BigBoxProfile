@@ -114,6 +114,7 @@
 			this.txt_filter.Name = "txt_filter";
 			this.txt_filter.Size = new System.Drawing.Size(401, 23);
 			this.txt_filter.TabIndex = 9;
+			this.txt_filter.TextChanged += new System.EventHandler(this.txt_filter_TextChanged);
 			// 
 			// label3
 			// 
@@ -122,6 +123,7 @@
 			this.label3.Size = new System.Drawing.Size(150, 20);
 			this.label3.TabIndex = 10;
 			this.label3.Values.Text = "Only if cmdLine contains :";
+			this.label3.Paint += new System.Windows.Forms.PaintEventHandler(this.label3_Paint);
 			// 
 			// btn_manage_exclude
 			// 
