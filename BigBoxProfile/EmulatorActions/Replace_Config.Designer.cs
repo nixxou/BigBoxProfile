@@ -63,6 +63,8 @@
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
 			this.btn_manageVariables = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.chk_filter_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_exclude_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.groupBox1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.groupBox3.SuspendLayout();
@@ -163,7 +165,7 @@
 			// 
 			// btn_manage_exclude
 			// 
-			this.btn_manage_exclude.Location = new System.Drawing.Point(541, 112);
+			this.btn_manage_exclude.Location = new System.Drawing.Point(541, 134);
 			this.btn_manage_exclude.Name = "btn_manage_exclude";
 			this.btn_manage_exclude.Size = new System.Drawing.Size(91, 24);
 			this.btn_manage_exclude.TabIndex = 78;
@@ -172,7 +174,7 @@
 			// 
 			// chk_exclude_comma
 			// 
-			this.chk_exclude_comma.Location = new System.Drawing.Point(190, 112);
+			this.chk_exclude_comma.Location = new System.Drawing.Point(190, 134);
 			this.chk_exclude_comma.Name = "chk_exclude_comma";
 			this.chk_exclude_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_exclude_comma.TabIndex = 77;
@@ -181,7 +183,7 @@
 			// 
 			// label6
 			// 
-			this.label6.Location = new System.Drawing.Point(17, 86);
+			this.label6.Location = new System.Drawing.Point(17, 108);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(167, 20);
 			this.label6.TabIndex = 76;
@@ -189,7 +191,7 @@
 			// 
 			// txt_exclude
 			// 
-			this.txt_exclude.Location = new System.Drawing.Point(190, 83);
+			this.txt_exclude.Location = new System.Drawing.Point(190, 105);
 			this.txt_exclude.Name = "txt_exclude";
 			this.txt_exclude.Size = new System.Drawing.Size(442, 23);
 			this.txt_exclude.TabIndex = 75;
@@ -214,7 +216,7 @@
 			// 
 			// chk_filter_remove
 			// 
-			this.chk_filter_remove.Location = new System.Drawing.Point(190, 62);
+			this.chk_filter_remove.Location = new System.Drawing.Point(190, 84);
 			this.chk_filter_remove.Name = "chk_filter_remove";
 			this.chk_filter_remove.Size = new System.Drawing.Size(237, 20);
 			this.chk_filter_remove.TabIndex = 86;
@@ -302,6 +304,8 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.chk_exclude_matchall);
+			this.groupBox2.Controls.Add(this.chk_filter_matchall);
 			this.groupBox2.Controls.Add(this.btn_manage_exclude);
 			this.groupBox2.Controls.Add(this.txt_filter);
 			this.groupBox2.Controls.Add(this.label3);
@@ -313,7 +317,7 @@
 			this.groupBox2.Controls.Add(this.chk_filter_remove);
 			this.groupBox2.Location = new System.Drawing.Point(12, 332);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(654, 158);
+			this.groupBox2.Size = new System.Drawing.Size(654, 184);
 			this.groupBox2.TabIndex = 95;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Filters";
@@ -368,6 +372,26 @@
 			this.listBox1.Size = new System.Drawing.Size(233, 407);
 			this.listBox1.TabIndex = 0;
 			this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+			// 
+			// chk_filter_matchall
+			// 
+			this.chk_filter_matchall.Enabled = false;
+			this.chk_filter_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
+			this.chk_filter_matchall.Location = new System.Drawing.Point(190, 65);
+			this.chk_filter_matchall.Name = "chk_filter_matchall";
+			this.chk_filter_matchall.Size = new System.Drawing.Size(138, 20);
+			this.chk_filter_matchall.TabIndex = 101;
+			this.chk_filter_matchall.Values.Text = "Must match all args";
+			// 
+			// chk_exclude_matchall
+			// 
+			this.chk_exclude_matchall.Enabled = false;
+			this.chk_exclude_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
+			this.chk_exclude_matchall.Location = new System.Drawing.Point(190, 156);
+			this.chk_exclude_matchall.Name = "chk_exclude_matchall";
+			this.chk_exclude_matchall.Size = new System.Drawing.Size(138, 20);
+			this.chk_exclude_matchall.TabIndex = 102;
+			this.chk_exclude_matchall.Values.Text = "Must match all args";
 			// 
 			// Replace_Config
 			// 
@@ -433,5 +457,7 @@
 		private System.Windows.Forms.GroupBox groupBox4;
 		private System.Windows.Forms.ListBox listBox1;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_manageVariables;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_matchall;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_exclude_matchall;
 	}
 }

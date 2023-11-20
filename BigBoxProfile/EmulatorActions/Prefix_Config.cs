@@ -16,6 +16,7 @@ namespace BigBoxProfile.EmulatorActions
 		public bool commaExclude = false;
 		public bool removeFilter = false;
 		public bool matchAllFilter = false;
+		public bool matchAllExclude = false;
 		public Prefix_Config(Dictionary<string, string> Options)
 		{
 			result = Options.ContainsKey("prefix") ? Options["prefix"] : "";
@@ -34,8 +35,9 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
 			if (Options.ContainsKey("removeFilter") && Options["removeFilter"] == "yes") removeFilter = true;
 			if (Options.ContainsKey("matchAllFilter") && Options["matchAllFilter"] == "yes") matchAllFilter = true;
+			if (Options.ContainsKey("matchAllExclude") && Options["matchAllExclude"] == "yes") matchAllExclude = true;
 
-			if(!commaFilter) matchAllFilter=false;
+			if (!commaFilter) matchAllFilter=false;
 
 			InitializeComponent();
 			txt_option.Text = result;
@@ -52,6 +54,9 @@ namespace BigBoxProfile.EmulatorActions
 
 			chk_filter_matchall.Checked = matchAllFilter;
 			if (!commaFilter) chk_filter_matchall.Enabled = false;
+
+			chk_exclude_matchall.Checked = matchAllExclude;
+			if (!commaExclude) chk_exclude_matchall.Enabled = false;
 
 		}
 
@@ -72,6 +77,7 @@ namespace BigBoxProfile.EmulatorActions
 			removeFilter = chk_filter_remove.Checked;
 
 			matchAllFilter = chk_filter_matchall.Checked;
+			matchAllExclude = chk_exclude_matchall.Checked;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
@@ -123,6 +129,9 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			commaExclude = chk_exclude_comma.Checked;
 			btn_manage_exclude.Enabled = commaExclude;
+
+			chk_exclude_matchall.Enabled = chk_exclude_comma.Checked;
+			if (!chk_exclude_comma.Checked) chk_exclude_matchall.Checked = false;
 		}
 
 		private void chk_filter_remove_CheckedChanged(object sender, EventArgs e)

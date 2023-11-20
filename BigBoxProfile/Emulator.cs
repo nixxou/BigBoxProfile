@@ -44,7 +44,7 @@ namespace BigBoxProfile
 			_modules.Add(new CreateFile());
 
 			_modules.Add(new ChangeDisposition());
-			_modules.Add(new FakeFullScreen());
+			//_modules.Add(new FakeFullScreen());
 			_modules.Add(new RunAsAdminTask());
 			_modules.Add(new ExecuteAHK());
 
@@ -166,13 +166,14 @@ namespace BigBoxProfile
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
-
+				/*
 				if (module.name == "FakeFullScreen")
 				{
 					var obj = new FakeFullScreen();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}
+				*/
 
 				if (module.name == "RunAsAdminTask")
 				{

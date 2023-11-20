@@ -46,6 +46,7 @@
 			this.chk_useBT = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_useXinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.grp_globalconf = new System.Windows.Forms.GroupBox();
+			this.chk_useSDL = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_useDinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_forceRemoveOtherArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.txt_prefixOther = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
@@ -73,6 +74,7 @@
 			this.num_nblightgun = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
 			this.num_nbcontroller = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
 			this.grp_addNewDevice = new System.Windows.Forms.GroupBox();
+			this.chk_addDevSDL = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_addDevDinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_addDevMatchUnique = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.num_addDevMaxMatch = new ComponentFactory.Krypton.Toolkit.KryptonNumericUpDown();
@@ -105,10 +107,10 @@
 			this.cMaxMatch = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cUniqueMatch = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cUseDInput = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.btn_testconfig = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-			this.chk_useSDL = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-			this.chk_addDevSDL = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.cUseSDL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.btn_testconfig = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.chk_filter_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_exclude_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.grp_globalconf.SuspendLayout();
 			this.grp_addNewDevice.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_addDevType)).BeginInit();
@@ -116,7 +118,7 @@
 			// 
 			// chk_filter_remove
 			// 
-			this.chk_filter_remove.Location = new System.Drawing.Point(182, 54);
+			this.chk_filter_remove.Location = new System.Drawing.Point(182, 76);
 			this.chk_filter_remove.Name = "chk_filter_remove";
 			this.chk_filter_remove.Size = new System.Drawing.Size(237, 20);
 			this.chk_filter_remove.TabIndex = 107;
@@ -124,7 +126,7 @@
 			// 
 			// btn_manage_exclude
 			// 
-			this.btn_manage_exclude.Location = new System.Drawing.Point(497, 102);
+			this.btn_manage_exclude.Location = new System.Drawing.Point(497, 124);
 			this.btn_manage_exclude.Name = "btn_manage_exclude";
 			this.btn_manage_exclude.Size = new System.Drawing.Size(91, 24);
 			this.btn_manage_exclude.TabIndex = 106;
@@ -133,7 +135,7 @@
 			// 
 			// chk_exclude_comma
 			// 
-			this.chk_exclude_comma.Location = new System.Drawing.Point(182, 102);
+			this.chk_exclude_comma.Location = new System.Drawing.Point(182, 124);
 			this.chk_exclude_comma.Name = "chk_exclude_comma";
 			this.chk_exclude_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_exclude_comma.TabIndex = 105;
@@ -142,7 +144,7 @@
 			// 
 			// label6
 			// 
-			this.label6.Location = new System.Drawing.Point(9, 78);
+			this.label6.Location = new System.Drawing.Point(9, 100);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(167, 20);
 			this.label6.TabIndex = 104;
@@ -150,7 +152,7 @@
 			// 
 			// txt_exclude
 			// 
-			this.txt_exclude.Location = new System.Drawing.Point(182, 75);
+			this.txt_exclude.Location = new System.Drawing.Point(182, 97);
 			this.txt_exclude.Name = "txt_exclude";
 			this.txt_exclude.Size = new System.Drawing.Size(406, 23);
 			this.txt_exclude.TabIndex = 103;
@@ -304,6 +306,14 @@
 			this.grp_globalconf.TabIndex = 114;
 			this.grp_globalconf.TabStop = false;
 			this.grp_globalconf.Text = "Global Config";
+			// 
+			// chk_useSDL
+			// 
+			this.chk_useSDL.Location = new System.Drawing.Point(687, 275);
+			this.chk_useSDL.Name = "chk_useSDL";
+			this.chk_useSDL.Size = new System.Drawing.Size(68, 20);
+			this.chk_useSDL.TabIndex = 121;
+			this.chk_useSDL.Values.Text = "Use SDL";
 			// 
 			// chk_useDinput
 			// 
@@ -558,6 +568,14 @@
 			this.grp_addNewDevice.TabIndex = 115;
 			this.grp_addNewDevice.TabStop = false;
 			this.grp_addNewDevice.Text = "Add new Device";
+			// 
+			// chk_addDevSDL
+			// 
+			this.chk_addDevSDL.Location = new System.Drawing.Point(394, 130);
+			this.chk_addDevSDL.Name = "chk_addDevSDL";
+			this.chk_addDevSDL.Size = new System.Drawing.Size(68, 20);
+			this.chk_addDevSDL.TabIndex = 122;
+			this.chk_addDevSDL.Values.Text = "Use SDL";
 			// 
 			// chk_addDevDinput
 			// 
@@ -821,27 +839,34 @@
 			this.btn_testconfig.Values.Text = "Test Config";
 			this.btn_testconfig.Click += new System.EventHandler(this.btn_testconfig_Click);
 			// 
-			// chk_useSDL
+			// chk_filter_matchall
 			// 
-			this.chk_useSDL.Location = new System.Drawing.Point(687, 275);
-			this.chk_useSDL.Name = "chk_useSDL";
-			this.chk_useSDL.Size = new System.Drawing.Size(68, 20);
-			this.chk_useSDL.TabIndex = 121;
-			this.chk_useSDL.Values.Text = "Use SDL";
+			this.chk_filter_matchall.Enabled = false;
+			this.chk_filter_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
+			this.chk_filter_matchall.Location = new System.Drawing.Point(182, 56);
+			this.chk_filter_matchall.Name = "chk_filter_matchall";
+			this.chk_filter_matchall.Size = new System.Drawing.Size(138, 20);
+			this.chk_filter_matchall.TabIndex = 121;
+			this.chk_filter_matchall.Values.Text = "Must match all args";
 			// 
-			// chk_addDevSDL
+			// chk_exclude_matchall
 			// 
-			this.chk_addDevSDL.Location = new System.Drawing.Point(394, 130);
-			this.chk_addDevSDL.Name = "chk_addDevSDL";
-			this.chk_addDevSDL.Size = new System.Drawing.Size(68, 20);
-			this.chk_addDevSDL.TabIndex = 122;
-			this.chk_addDevSDL.Values.Text = "Use SDL";
+			this.chk_exclude_matchall.Enabled = false;
+			this.chk_exclude_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
+			this.chk_exclude_matchall.Location = new System.Drawing.Point(182, 146);
+			this.chk_exclude_matchall.Name = "chk_exclude_matchall";
+			this.chk_exclude_matchall.Size = new System.Drawing.Size(138, 20);
+			this.chk_exclude_matchall.TabIndex = 122;
+			this.chk_exclude_matchall.Values.Text = "Must match all args";
+			this.chk_exclude_matchall.CheckedChanged += new System.EventHandler(this.chk_exclude_matchall_CheckedChanged);
 			// 
 			// HidDeviceDetector_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1455, 801);
+			this.Controls.Add(this.chk_exclude_matchall);
+			this.Controls.Add(this.chk_filter_matchall);
 			this.Controls.Add(this.btn_testconfig);
 			this.Controls.Add(this.btn_delete_priority);
 			this.Controls.Add(this.btn_up_priority);
@@ -960,5 +985,7 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_useSDL;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevSDL;
 		private System.Windows.Forms.ColumnHeader cUseSDL;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_matchall;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_exclude_matchall;
 	}
 }

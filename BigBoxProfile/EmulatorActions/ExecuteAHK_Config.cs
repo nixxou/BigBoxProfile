@@ -20,6 +20,8 @@ namespace BigBoxProfile.EmulatorActions
 		public bool commaExclude = false;
 		public bool removeFilter = false;
 		public bool runbeforebackground = false;
+		public bool matchAllFilter = false;
+		public bool matchAllExclude = false;
 
 		public ExecuteAHK_Config(Dictionary<string, string> Options)
 		{
@@ -36,6 +38,9 @@ namespace BigBoxProfile.EmulatorActions
 
 			if (Options.ContainsKey("runbeforebackground") && Options["runbeforebackground"] == "yes") runbeforebackground = true;
 
+			if (Options.ContainsKey("matchAllFilter") && Options["matchAllFilter"] == "yes") matchAllFilter = true;
+			if (Options.ContainsKey("matchAllExclude") && Options["matchAllExclude"] == "yes") matchAllExclude = true;
+
 			InitializeComponent();
 
 			txt_filter.Text = filter;
@@ -51,6 +56,12 @@ namespace BigBoxProfile.EmulatorActions
 			btn_manage_exclude.Enabled = commaExclude;
 			chk_filter_remove.Checked = removeFilter;
 			chk_runbeforebackground.Checked = runbeforebackground;
+
+			chk_filter_matchall.Checked = matchAllFilter;
+			if (!commaFilter) chk_filter_matchall.Enabled = false;
+
+			chk_exclude_matchall.Checked = matchAllExclude;
+			if (!commaExclude) chk_exclude_matchall.Enabled = false;
 
 		}
 
@@ -109,6 +120,9 @@ namespace BigBoxProfile.EmulatorActions
 			removeFilter = chk_filter_remove.Checked;
 			runbeforebackground = chk_runbeforebackground.Checked;
 
+			matchAllFilter = chk_filter_matchall.Checked;
+			matchAllExclude = chk_exclude_matchall.Checked;
+
 			this.DialogResult = DialogResult.OK;
 			this.Close();
 		}
@@ -143,12 +157,16 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			commaFilter = chk_filter_comma.Checked;
 			btn_manage_filter.Enabled = commaFilter;
+			chk_filter_matchall.Enabled = chk_filter_comma.Checked;
+			if (!chk_filter_comma.Checked) chk_filter_matchall.Checked = false;
 		}
 
 		private void chk_exclude_comma_CheckedChanged(object sender, EventArgs e)
 		{
 			commaExclude = chk_exclude_comma.Checked;
 			btn_manage_exclude.Enabled = commaExclude;
+			chk_exclude_matchall.Enabled = chk_exclude_comma.Checked;
+			if (!chk_exclude_comma.Checked) chk_exclude_matchall.Checked = false;
 		}
 	}
 }

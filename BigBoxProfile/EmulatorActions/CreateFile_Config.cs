@@ -22,6 +22,8 @@ namespace BigBoxProfile.EmulatorActions
 		public bool removeFilter = false;
 		public string filepath = "";
 		public string filecontent = "";
+		public bool matchAllFilter = false;
+		public bool matchAllExclude = false;
 
 		public CreateFile_Config(Dictionary<string, string> Options)
 		{
@@ -33,6 +35,8 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("commaFilter") && Options["commaFilter"] == "yes") commaFilter = true;
 			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
 			if (Options.ContainsKey("removeFilter") && Options["removeFilter"] == "yes") removeFilter = true;
+			if (Options.ContainsKey("matchAllFilter") && Options["matchAllFilter"] == "yes") matchAllFilter = true;
+			if (Options.ContainsKey("matchAllExclude") && Options["matchAllExclude"] == "yes") matchAllExclude = true;
 
 			InitializeComponent();
 
@@ -45,6 +49,13 @@ namespace BigBoxProfile.EmulatorActions
 			chk_filter_remove.Checked = removeFilter;
 			txt_file.Text = filepath;
 			txt_textin.Text = filecontent;
+
+			chk_filter_matchall.Checked = matchAllFilter;
+			if (!commaFilter) chk_filter_matchall.Enabled = false;
+
+			chk_exclude_matchall.Checked = matchAllExclude;
+			if (!commaExclude) chk_exclude_matchall.Enabled = false;
+
 		}
 
 		private void CreateFile_Config_Load(object sender, EventArgs e)
@@ -62,6 +73,9 @@ namespace BigBoxProfile.EmulatorActions
 			commaFilter = chk_filter_comma.Checked;
 			commaExclude = chk_exclude_comma.Checked;
 			removeFilter = chk_filter_remove.Checked;
+
+			matchAllFilter = chk_filter_matchall.Checked;
+			matchAllExclude = chk_exclude_matchall.Checked;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
@@ -102,12 +116,17 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			commaFilter = chk_filter_comma.Checked;
 			btn_manage_filter.Enabled = commaFilter;
+
+			chk_filter_matchall.Enabled = chk_filter_comma.Checked;
+			if (!chk_filter_comma.Checked) chk_filter_matchall.Checked = false;
 		}
 
 		private void chk_exclude_comma_CheckedChanged(object sender, EventArgs e)
 		{
 			commaExclude = chk_exclude_comma.Checked;
 			btn_manage_exclude.Enabled = commaExclude;
+			chk_exclude_matchall.Enabled = chk_exclude_comma.Checked;
+			if (!chk_exclude_comma.Checked) chk_exclude_matchall.Checked = false;
 		}
 
 		private void btn_file_Click(object sender, EventArgs e)
@@ -121,6 +140,12 @@ namespace BigBoxProfile.EmulatorActions
 
 				}
 			}
+		}
+
+		private void chk_filter_matchall_CheckedChanged(object sender, EventArgs e)
+		{
+
+
 		}
 	}
 }

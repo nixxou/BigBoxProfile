@@ -58,6 +58,8 @@
 			this.txt_showMouse = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.btn_showMouse = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.chk_filter_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_exclude_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.kryptonGroupBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.kryptonGroupBox1.Panel)).BeginInit();
@@ -67,6 +69,8 @@
 			// 
 			// groupBox2
 			// 
+			this.groupBox2.Controls.Add(this.chk_exclude_matchall);
+			this.groupBox2.Controls.Add(this.chk_filter_matchall);
 			this.groupBox2.Controls.Add(this.chk_forceDefaultNoFilter);
 			this.groupBox2.Controls.Add(this.btn_manage_exclude);
 			this.groupBox2.Controls.Add(this.txt_filter);
@@ -79,7 +83,7 @@
 			this.groupBox2.Controls.Add(this.chk_filter_remove);
 			this.groupBox2.Location = new System.Drawing.Point(12, 12);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(717, 190);
+			this.groupBox2.Size = new System.Drawing.Size(717, 218);
 			this.groupBox2.TabIndex = 96;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Filters";
@@ -89,7 +93,7 @@
 			// 
 			this.chk_forceDefaultNoFilter.AutoSize = false;
 			this.chk_forceDefaultNoFilter.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.TitleControl;
-			this.chk_forceDefaultNoFilter.Location = new System.Drawing.Point(17, 138);
+			this.chk_forceDefaultNoFilter.Location = new System.Drawing.Point(17, 166);
 			this.chk_forceDefaultNoFilter.Name = "chk_forceDefaultNoFilter";
 			this.chk_forceDefaultNoFilter.Size = new System.Drawing.Size(714, 45);
 			this.chk_forceDefaultNoFilter.TabIndex = 87;
@@ -97,7 +101,7 @@
 			// 
 			// btn_manage_exclude
 			// 
-			this.btn_manage_exclude.Location = new System.Drawing.Point(541, 112);
+			this.btn_manage_exclude.Location = new System.Drawing.Point(541, 134);
 			this.btn_manage_exclude.Name = "btn_manage_exclude";
 			this.btn_manage_exclude.Size = new System.Drawing.Size(91, 24);
 			this.btn_manage_exclude.TabIndex = 78;
@@ -139,14 +143,14 @@
 			// 
 			// txt_exclude
 			// 
-			this.txt_exclude.Location = new System.Drawing.Point(190, 83);
+			this.txt_exclude.Location = new System.Drawing.Point(190, 105);
 			this.txt_exclude.Name = "txt_exclude";
 			this.txt_exclude.Size = new System.Drawing.Size(442, 23);
 			this.txt_exclude.TabIndex = 75;
 			// 
 			// label6
 			// 
-			this.label6.Location = new System.Drawing.Point(17, 86);
+			this.label6.Location = new System.Drawing.Point(17, 108);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(167, 20);
 			this.label6.TabIndex = 76;
@@ -154,7 +158,7 @@
 			// 
 			// chk_exclude_comma
 			// 
-			this.chk_exclude_comma.Location = new System.Drawing.Point(190, 112);
+			this.chk_exclude_comma.Location = new System.Drawing.Point(190, 134);
 			this.chk_exclude_comma.Name = "chk_exclude_comma";
 			this.chk_exclude_comma.Size = new System.Drawing.Size(255, 20);
 			this.chk_exclude_comma.TabIndex = 77;
@@ -163,7 +167,7 @@
 			// 
 			// chk_filter_remove
 			// 
-			this.chk_filter_remove.Location = new System.Drawing.Point(190, 62);
+			this.chk_filter_remove.Location = new System.Drawing.Point(190, 84);
 			this.chk_filter_remove.Name = "chk_filter_remove";
 			this.chk_filter_remove.Size = new System.Drawing.Size(237, 20);
 			this.chk_filter_remove.TabIndex = 86;
@@ -172,7 +176,7 @@
 			// btn_cancel
 			// 
 			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_cancel.Location = new System.Drawing.Point(569, 918);
+			this.btn_cancel.Location = new System.Drawing.Point(569, 990);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 98;
@@ -181,7 +185,7 @@
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(654, 918);
+			this.btn_ok.Location = new System.Drawing.Point(654, 990);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 97;
@@ -190,7 +194,7 @@
 			// 
 			// kryptonGroupBox1
 			// 
-			this.kryptonGroupBox1.Location = new System.Drawing.Point(18, 201);
+			this.kryptonGroupBox1.Location = new System.Drawing.Point(18, 273);
 			this.kryptonGroupBox1.Name = "kryptonGroupBox1";
 			// 
 			// kryptonGroupBox1.Panel
@@ -325,7 +329,7 @@
 			// 
 			// txt_showMouse
 			// 
-			this.txt_showMouse.Location = new System.Drawing.Point(18, 740);
+			this.txt_showMouse.Location = new System.Drawing.Point(18, 812);
 			this.txt_showMouse.Multiline = true;
 			this.txt_showMouse.Name = "txt_showMouse";
 			this.txt_showMouse.Size = new System.Drawing.Size(626, 142);
@@ -335,7 +339,7 @@
 			// 
 			// btn_showMouse
 			// 
-			this.btn_showMouse.Location = new System.Drawing.Point(650, 740);
+			this.btn_showMouse.Location = new System.Drawing.Point(650, 812);
 			this.btn_showMouse.Name = "btn_showMouse";
 			this.btn_showMouse.Size = new System.Drawing.Size(79, 142);
 			this.btn_showMouse.TabIndex = 101;
@@ -344,17 +348,37 @@
 			// 
 			// kryptonLabel1
 			// 
-			this.kryptonLabel1.Location = new System.Drawing.Point(18, 716);
+			this.kryptonLabel1.Location = new System.Drawing.Point(18, 788);
 			this.kryptonLabel1.Name = "kryptonLabel1";
 			this.kryptonLabel1.Size = new System.Drawing.Size(269, 20);
 			this.kryptonLabel1.TabIndex = 88;
 			this.kryptonLabel1.Values.Text = "Here you can check your current Mouse Order :";
 			// 
+			// chk_filter_matchall
+			// 
+			this.chk_filter_matchall.Enabled = false;
+			this.chk_filter_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
+			this.chk_filter_matchall.Location = new System.Drawing.Point(190, 65);
+			this.chk_filter_matchall.Name = "chk_filter_matchall";
+			this.chk_filter_matchall.Size = new System.Drawing.Size(138, 20);
+			this.chk_filter_matchall.TabIndex = 101;
+			this.chk_filter_matchall.Values.Text = "Must match all args";
+			// 
+			// chk_exclude_matchall
+			// 
+			this.chk_exclude_matchall.Enabled = false;
+			this.chk_exclude_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
+			this.chk_exclude_matchall.Location = new System.Drawing.Point(190, 150);
+			this.chk_exclude_matchall.Name = "chk_exclude_matchall";
+			this.chk_exclude_matchall.Size = new System.Drawing.Size(138, 20);
+			this.chk_exclude_matchall.TabIndex = 102;
+			this.chk_exclude_matchall.Values.Text = "Must match all args";
+			// 
 			// RetroarchFixSiden_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(743, 954);
+			this.ClientSize = new System.Drawing.Size(743, 1024);
 			this.Controls.Add(this.kryptonLabel1);
 			this.Controls.Add(this.btn_showMouse);
 			this.Controls.Add(this.txt_showMouse);
@@ -408,5 +432,7 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_showMouse;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_forceDefaultNoMatch;
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel1;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_matchall;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_exclude_matchall;
 	}
 }

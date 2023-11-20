@@ -59,6 +59,7 @@
 			this.chk_filter_matchall.Size = new System.Drawing.Size(138, 20);
 			this.chk_filter_matchall.TabIndex = 100;
 			this.chk_filter_matchall.Values.Text = "Must match all args";
+			this.chk_filter_matchall.CheckedChanged += new System.EventHandler(this.chk_filter_matchall_CheckedChanged);
 			// 
 			// chk_filter_remove
 			// 
@@ -162,6 +163,7 @@
 			this.chk_exclude_matchall.Size = new System.Drawing.Size(138, 20);
 			this.chk_exclude_matchall.TabIndex = 101;
 			this.chk_exclude_matchall.Values.Text = "Must match all args";
+			this.chk_exclude_matchall.CheckedChanged += new System.EventHandler(this.chk_exclude_matchall_CheckedChanged);
 			// 
 			// groupBox4
 			// 

@@ -48,6 +48,7 @@
 			this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
 			this.chk_filter_remove = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_filter_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_exclude_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.SuspendLayout();
 			// 
 			// btn_ok
@@ -195,6 +196,16 @@
 			this.chk_filter_matchall.TabIndex = 88;
 			this.chk_filter_matchall.Values.Text = "Must match all args";
 			// 
+			// chk_exclude_matchall
+			// 
+			this.chk_exclude_matchall.Enabled = false;
+			this.chk_exclude_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
+			this.chk_exclude_matchall.Location = new System.Drawing.Point(185, 197);
+			this.chk_exclude_matchall.Name = "chk_exclude_matchall";
+			this.chk_exclude_matchall.Size = new System.Drawing.Size(138, 20);
+			this.chk_exclude_matchall.TabIndex = 102;
+			this.chk_exclude_matchall.Values.Text = "Must match all args";
+			// 
 			// Prefix_Config
 			// 
 			this.AcceptButton = this.btn_ok;
@@ -202,6 +213,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btn_cancel;
 			this.ClientSize = new System.Drawing.Size(603, 330);
+			this.Controls.Add(this.chk_exclude_matchall);
 			this.Controls.Add(this.chk_filter_matchall);
 			this.Controls.Add(this.chk_filter_remove);
 			this.Controls.Add(this.btn_manage_exclude);
@@ -252,5 +264,6 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_remove;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_matchall;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_exclude_matchall;
 	}
 }

@@ -23,6 +23,8 @@ namespace BigBoxProfile.EmulatorActions
 		public bool commaFilter = false;
 		public bool commaExclude = false;
 		public bool removeFilter = false;
+		public bool matchAllFilter = false;
+		public bool matchAllExclude = false;
 
 		public string variablesData = "";
 
@@ -81,6 +83,8 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("commaFilter") && Options["commaFilter"] == "yes") commaFilter = true;
 			if (Options.ContainsKey("commaExclude") && Options["commaExclude"] == "yes") commaExclude = true;
 			if (Options.ContainsKey("removeFilter") && Options["removeFilter"] == "yes") removeFilter = true;
+			if (Options.ContainsKey("matchAllFilter") && Options["matchAllFilter"] == "yes") matchAllFilter = true;
+			if (Options.ContainsKey("matchAllExclude") && Options["matchAllExclude"] == "yes") matchAllExclude = true;
 
 			variablesData = Options.ContainsKey("variablesData") ? Options["variablesData"] : "";
 
@@ -106,6 +110,13 @@ namespace BigBoxProfile.EmulatorActions
 			btn_manage_filter.Enabled = commaFilter;
 			btn_manage_exclude.Enabled = commaExclude;
 			chk_filter_remove.Checked = removeFilter;
+
+			chk_filter_matchall.Checked = matchAllFilter;
+			if (!commaFilter) chk_filter_matchall.Enabled = false;
+
+			chk_exclude_matchall.Checked = matchAllExclude;
+			if (!commaExclude) chk_exclude_matchall.Enabled = false;
+
 			UpdateGUI();
 
 		}
@@ -203,6 +214,8 @@ namespace BigBoxProfile.EmulatorActions
 			commaFilter = chk_filter_comma.Checked;
 			commaExclude = chk_exclude_comma.Checked;
 			removeFilter = chk_filter_remove.Checked;
+			matchAllFilter = chk_filter_matchall.Checked;
+			matchAllExclude = chk_exclude_matchall.Checked;
 
 
 			this.DialogResult = DialogResult.OK;
@@ -259,12 +272,17 @@ namespace BigBoxProfile.EmulatorActions
 		{
 			commaFilter = chk_filter_comma.Checked;
 			btn_manage_filter.Enabled = commaFilter;
+
+			chk_filter_matchall.Enabled = chk_filter_comma.Checked;
+			if (!chk_filter_comma.Checked) chk_filter_matchall.Checked = false;
 		}
 
 		private void chk_exclude_comma_CheckedChanged(object sender, EventArgs e)
 		{
 			commaExclude = chk_exclude_comma.Checked;
 			btn_manage_exclude.Enabled = commaExclude;
+			chk_exclude_matchall.Enabled = chk_exclude_comma.Checked;
+			if (!chk_exclude_comma.Checked) chk_exclude_matchall.Checked = false;
 		}
 
 		private void radio_file_CheckedChanged(object sender, EventArgs e)

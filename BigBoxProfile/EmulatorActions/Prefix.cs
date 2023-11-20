@@ -25,6 +25,7 @@ namespace BigBoxProfile.EmulatorActions
 		private bool _commaExclude = false;
 		private bool _removeFilter = false;
 		private bool _matchAllFilter = false;
+		private bool _matchAllExclude = false;
 
 		public Dictionary<string, string> Options { get; set; } = new Dictionary<string, string>();
 
@@ -61,6 +62,9 @@ namespace BigBoxProfile.EmulatorActions
 				if (frm.matchAllFilter) Options["matchAllFilter"] = "yes";
 				else Options["matchAllFilter"] = "no";
 
+				if (frm.matchAllExclude) Options["matchAllExclude"] = "yes";
+				else Options["matchAllExclude"] = "no";
+
 				UpdateConfig();
 			}
 
@@ -77,6 +81,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("commaExclude") == false) Options["commaExclude"] = "no";
 			if (Options.ContainsKey("removeFilter") == false) Options["removeFilter"] = "no";
 			if (Options.ContainsKey("matchAllFilter") == false) Options["matchAllFilter"] = "no";
+			if (Options.ContainsKey("matchAllExclude") == false) Options["matchAllExclude"] = "no";
 			UpdateConfig();
 
 		}
@@ -102,10 +107,12 @@ namespace BigBoxProfile.EmulatorActions
 				description += Options["prefix"].ToString();
 
 				string matchall = "";
+				string matchallexclude = "";
 				if (_matchAllFilter) matchall = "[matchall=on]";
+				if (_matchAllExclude) matchallexclude = "[matchall=on]";
 
 				if (_filter != "") description += $" [Only if command line contains {_filter}]{matchall}";
-				if (_exclude != "") description += $" [Exclude {_exclude}]";
+				if (_exclude != "") description += $" [Exclude {_exclude}]{matchallexclude}";
 
 			}
 			else
@@ -197,17 +204,22 @@ namespace BigBoxProfile.EmulatorActions
 			{
 				if (_commaExclude)
 				{
+					int nbFilter = 0;
+					int nbFilterFound = 0;
 					bool filter_found = false;
 					var liste_filter = BigBoxUtils.explode(_exclude.ToLower(), ",");
 					foreach (var filter in liste_filter)
 					{
 						if (filter.Trim() == "") continue;
+						nbFilter++;
 						if (cmdlower.Contains(filter.Trim()))
 						{
+							nbFilterFound++;
 							filter_found = true;
 						}
 					}
 					if (filter_found) return args;
+					if (_matchAllExclude && nbFilter > nbFilterFound) return args;
 				}
 				else
 				{
@@ -260,6 +272,7 @@ namespace BigBoxProfile.EmulatorActions
 			_commaExclude = Options["commaExclude"] == "yes" ? true : false;
 			_removeFilter = Options["removeFilter"] == "yes" ? true : false;
 			_matchAllFilter = Options["matchAllFilter"] == "yes" ? true : false;
+			_matchAllExclude = Options["matchAllExclude"] == "yes" ? true : false;
 		}
 
 		public void ExecuteBefore(string[] args)

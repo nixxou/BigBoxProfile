@@ -169,5 +169,15 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 		}
+
+		private void chk_filter_matchall_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void chk_exclude_matchall_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
 	}
 }

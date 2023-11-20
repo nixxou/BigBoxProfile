@@ -124,11 +124,9 @@ namespace BigBoxProfile.EmulatorActions
 				string matchall = "";
 				string matchallexclude = "";
 				if (_matchAllFilter) matchall = "[matchall=on]";
-
+				if (_matchAllExclude) matchallexclude = "[matchall=on]";
 
 				if (_filter != "") description += $" [Only if command line contains {_filter}]{matchall}";
-
-				if (_matchAllExclude) matchallexclude = "[matchall=on]";
 				if (_exclude != "") description += $" [Exclude {_exclude}]{matchallexclude}";
 
 			}
