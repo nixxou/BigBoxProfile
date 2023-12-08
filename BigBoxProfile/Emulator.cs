@@ -35,6 +35,7 @@ namespace BigBoxProfile
 			_modules.Add(new ChangeExe());
 			_modules.Add(new FixRetroarchMonitor());
 			_modules.Add(new RetroarchFixSiden());
+			_modules.Add(new SupermodelFixSiden());
 			_modules.Add(new FixMameMonitor());
 
 			//_modules.Add(new ChangeDisposition());
@@ -150,6 +151,13 @@ namespace BigBoxProfile
 				if (module.name == "RetroarchFixSiden")
 				{
 					var obj = new RetroarchFixSiden();
+					obj.LoadConfiguration(module.Options);
+					_selectedModules.Add(obj);
+				}
+
+				if (module.name == "SupermodelFixSiden")
+				{
+					var obj = new SupermodelFixSiden();
 					obj.LoadConfiguration(module.Options);
 					_selectedModules.Add(obj);
 				}

@@ -72,7 +72,8 @@ namespace BigBoxProfile.EmulatorActions
 
 		public string[] ModifyReal(string[] args)
 		{
-			string configFilePath = Path.Combine(Environment.CurrentDirectory, "mame.ini");
+			string currDir = String.IsNullOrEmpty(EmulatorLauncher.WorkingDirExe) ? Environment.CurrentDirectory : EmulatorLauncher.WorkingDirExe;
+			string configFilePath = Path.Combine(currDir, "mame.ini");
 			if (File.Exists(configFilePath))
 			{
 				string DeviceNameMain = "";

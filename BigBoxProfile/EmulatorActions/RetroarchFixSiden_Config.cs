@@ -30,15 +30,47 @@ namespace BigBoxProfile.EmulatorActions
 		public bool matchAllExclude = false;
 
 		public string priority = "SidenBlue,SidenRed,SidenBlack,SidenPlayer2";
-		public bool forceDefaultNoFilter = false;
-		public bool forceDefaultNoMatch = false;
+		//public bool forceDefaultNoFilter = false;
+		//public bool forceDefaultNoMatch = false;
 
+		public bool matchModuleOnce = true;
+		public string restrictgun1 = "";
+		public string restrictgun2 = "";
+		public string restrictgun3 = "";
+		public string restrictgun4 = "";
+		public bool enablegun1 = true;
+		public bool enablegun2 = true;
+		public bool enablegun3 = false;
+		public bool enablegun4 = false;
 
+		public bool addInputArg = true;
+		public string supermodelConfig = @"
+InputGunX = ""GUN1_XAXIS,JOY1_XAXIS""
+InputGunY = ""GUN1_YAXIS,JOY1_YAXIS""
+InputTrigger = ""KEY_A,JOY1_BUTTON1,GUN1_LEFT_BUTTON""
+InputOffscreen = ""KEY_S,JOY1_BUTTON2,GUN1_RIGHT_BUTTON""   
 
+InputGunX2 = ""GUN2_XAXIS,JOY2_XAXIS""    
+InputGunY2 = ""GUN2_YAXIS,JOY2_YAXIS""    
+InputTrigger2 = ""KEY_A,JOY1_BUTTON1,GUN2_LEFT_BUTTON""
+InputOffscreen2 = ""KEY_S,JOY1_BUTTON2,GUN2_RIGHT_BUTTON"" 
 
-		public RetroarchFixSiden_Config(Dictionary<string, string> Options)
+InputAnalogGunX = ""GUN1_XAXIS,JOY1_XAXIS""    
+InputAnalogGunY = ""GUN1_YAXIS,JOY1_YAXIS""   
+InputAnalogTriggerLeft = ""KEY_A,JOY1_BUTTON1,GUN1_LEFT_BUTTON""
+InputAnalogTriggerRight = ""KEY_S,JOY1_BUTTON2,GUN1_RIGHT_BUTTON""
+
+InputAnalogGunX2 = ""GUN2_XAXIS,JOY2_XAXIS""
+InputAnalogGunY2 = ""GUN2_YAXIS,JOY2_YAXIS""
+InputAnalogTriggerLeft2 = ""KEY_C,JOY1_BUTTON1,GUN2_LEFT_BUTTON""
+InputAnalogTriggerRight2 = ""KEY_D,JOY1_BUTTON2,GUN2_RIGHT_BUTTON""
+";
+
+		public bool Supermodel = false;
+
+		public RetroarchFixSiden_Config(Dictionary<string, string> Options, bool supermodel = false)
 		{
-
+			Supermodel = supermodel;
 			filter = Options.ContainsKey("filter") ? Options["filter"] : "";
 			exclude = Options.ContainsKey("exclude") ? Options["exclude"] : "";
 
@@ -50,9 +82,24 @@ namespace BigBoxProfile.EmulatorActions
 
 			priority = Options.ContainsKey("priority") ? Options["priority"] : "SidenBlue,SidenRed,SidenBlack,SidenPlayer2";
 
-			if (Options.ContainsKey("forceDefaultNoFilter") && Options["forceDefaultNoFilter"] == "yes") forceDefaultNoFilter = true;
-			if (Options.ContainsKey("forceDefaultNoMatch") && Options["forceDefaultNoMatch"] == "yes") forceDefaultNoMatch = true;
+			//if (Options.ContainsKey("forceDefaultNoFilter") && Options["forceDefaultNoFilter"] == "yes") forceDefaultNoFilter = true;
+			//if (Options.ContainsKey("forceDefaultNoMatch") && Options["forceDefaultNoMatch"] == "yes") forceDefaultNoMatch = true;
 
+
+			if (Options.ContainsKey("matchModuleOnce") && Options["matchModuleOnce"] == "no") matchModuleOnce = false;
+			if (Options.ContainsKey("enablegun1") && Options["enablegun1"] == "no") enablegun1 = false;
+			if (Options.ContainsKey("enablegun2") && Options["enablegun2"] == "no") enablegun2 = false;
+			if (Options.ContainsKey("enablegun3") && Options["enablegun3"] == "yes") enablegun1 = true;
+			if (Options.ContainsKey("enablegun4") && Options["enablegun4"] == "yes") enablegun2 = true;
+
+			restrictgun1 = Options.ContainsKey("restrictgun1") ? Options["restrictgun1"] : "";
+			restrictgun2 = Options.ContainsKey("restrictgun2") ? Options["restrictgun2"] : "";
+			restrictgun3 = Options.ContainsKey("restrictgun3") ? Options["restrictgun3"] : "";
+			restrictgun4 = Options.ContainsKey("restrictgun4") ? Options["restrictgun4"] : "";
+
+			if (Options.ContainsKey("addInputArg") && Options["addInputArg"] == "no") addInputArg = false;
+
+			supermodelConfig = Options.ContainsKey("supermodelConfig") ? Options["supermodelConfig"] : supermodelConfig;
 
 			InitializeComponent();
 
@@ -71,9 +118,41 @@ namespace BigBoxProfile.EmulatorActions
 			if (!commaExclude) chk_exclude_matchall.Enabled = false;
 
 			txt_priority_res.Text = priority;
-			chk_forceDefaultNoFilter.Checked = forceDefaultNoFilter;
-			chk_forceDefaultNoMatch.Checked = forceDefaultNoMatch;
-			
+			//chk_dontmatch.Checked = forceDefaultNoFilter;
+			//chk_forceDefaultNoMatch.Checked = forceDefaultNoMatch;
+
+			chk_matchModuleOnce.Checked = matchModuleOnce;
+			chk_fillgun1.Checked = enablegun1;
+			chk_fillgun2.Checked = enablegun2;
+			chk_fillgun3.Checked = enablegun3;
+			chk_fillgun4.Checked = enablegun4;
+
+			txt_restrictgun1.Text = restrictgun1;
+			txt_restrictgun2.Text = restrictgun2;
+			txt_restrictgun3.Text = restrictgun3;
+			txt_restrictgun4.Text = restrictgun4;
+
+			chk_addInputArg.Checked = addInputArg;
+			txt_supermodelConfig.Text = supermodelConfig;
+
+			if (Supermodel)
+			{
+				chk_fillgun3.Visible = false;
+				chk_fillgun4.Visible = false;
+				txt_restrictgun3.Visible = false;
+				txt_restrictgun4.Visible = false;
+				kryptonLabel4.Visible = false;
+				kryptonLabel5.Visible = false;
+				kryptonLabel1.Text = "Supermodel Sinden Fix";
+				kryptonLabel7.Text = "In your Supermodel.ini instead of MOUSE1, use GUN1";
+				
+			}
+			else
+			{
+				txt_supermodelConfig.Visible = false;
+				chk_addInputArg.Visible = false;
+			}
+
 		}
 
 		private void btn_ok_Click(object sender, EventArgs e)
@@ -89,8 +168,22 @@ namespace BigBoxProfile.EmulatorActions
 
 			priority = txt_priority_res.Text;
 
-			forceDefaultNoFilter = chk_forceDefaultNoFilter.Checked;
-			forceDefaultNoMatch = chk_forceDefaultNoMatch.Checked;
+			//forceDefaultNoFilter = chk_dontmatch.Checked;
+			//forceDefaultNoMatch = chk_forceDefaultNoMatch.Checked;
+
+			matchModuleOnce = chk_matchModuleOnce.Checked;
+			enablegun1 = chk_fillgun1.Checked;
+			enablegun2 = chk_fillgun2.Checked;
+			enablegun3 = chk_fillgun3.Checked;
+			enablegun4 = chk_fillgun4.Checked;
+
+			restrictgun1 = txt_restrictgun1.Text;
+			restrictgun2 = txt_restrictgun2.Text;
+			restrictgun3 = txt_restrictgun3.Text;
+			restrictgun4 = txt_restrictgun4.Text;
+
+			addInputArg = chk_addInputArg.Checked;
+			supermodelConfig = txt_supermodelConfig.Text;
 
 			this.DialogResult = DialogResult.OK;
 			this.Close();
@@ -231,7 +324,7 @@ namespace BigBoxProfile.EmulatorActions
 		private void btn_showMouse_Click(object sender, EventArgs e)
 		{
 			txt_showMouse.Text = "";
-			var mouseList = MouseIndexRetroarch.ListMouse();
+			var mouseList = MouseIndexRetroarch.ListMouse(Supermodel);
 			foreach(var item in mouseList)
 			{
 				string Line = $"{item.Index} : {item.Name} : {item.Path}\r\n";
@@ -327,6 +420,41 @@ namespace BigBoxProfile.EmulatorActions
 		}
 
 		private void chk_forceDefaultNoMatch_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void kryptonTextBox1_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void txt_restrictgun4_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void txt_restrictgun2_TextChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void kryptonButton1_Click(object sender, EventArgs e)
+		{
+
+		}
+
+		private void kryptonLabel1_Paint(object sender, PaintEventArgs e)
+		{
+
+		}
+
+		private void groupBox1_Enter(object sender, EventArgs e)
+		{
+
+		}
+
+		private void txt_restrictgun3_TextChanged(object sender, EventArgs e)
 		{
 
 		}

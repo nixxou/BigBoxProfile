@@ -43,6 +43,7 @@ namespace BigBoxProfile
 
 			txt_regex.Text = vdItem.RegexToMatch;
 			txt_value.Text = vdItem.VariableValue;
+			txt_fallback.Text = vdItem.FallbackValue;
 			txt_ahk.Text = vdItem.ahkCode;
 			UpdateGui();
 

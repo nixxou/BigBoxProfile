@@ -228,6 +228,7 @@
     <Compile Include="EmulatorActions\RetroarchFixSiden_Config.Designer.cs">
       <DependentUpon>RetroarchFixSiden_Config.cs</DependentUpon>
     </Compile>
+    <Compile Include="EmulatorActions\SupermodelFixSiden.cs" />
     <Compile Include="HID\MouseIndexRetroarch.cs" />
     <Compile Include="VolumeMixer.cs" />
     <Compile Include="BigBoxLauncher.cs" />

@@ -126,4 +126,14 @@ If there is match, it also generate temporary arguments --rawplayer1 and --rawpl
 other modules to do extra work, like enabling bezel, disable crosshair ...
 </value>
   </data>
+  <data name="kryptonLabel1.Values.Text" xml:space="preserve">
+    <value>Help : 
+It's a good idea to add before a MultiConfigReplace Module to set drivers to dinput and mouse index to 0 for player 1, so the retroarch.cfg get initialized with base values.
+
+If you use the checkbox 'dont match if previous FixSiden module where triggered', it will allow you to chain this module. For exemple, you could start with one for NES that will set existing gun for player2 if the command line contains "fceumm_libretro.dll"
+
+By default mouse index will be filled according to the priority order set on the left side.
+For exemple, if you check Fill Gun 1, Fill Gun 2, the priority order is SidenBlue, SidenRed, SidenBlack, and you have the blue and black plugged, Gun 1 will be set to blue, gun 2 to black.
+</value>
+  </data>
 </root>

@@ -1380,6 +1380,13 @@ namespace BigBoxProfile
 
 		}
 
+		public static string ahkEscape(string input)
+		{
+			input = input.Replace("`", "``");
+			input = input.Replace("%", "`%");
+			return input;
+		}
+
 		public static string AHKGetPrefixArgs(string[] args)
 		{
 			string code_prefix_args = "";
@@ -1390,7 +1397,7 @@ namespace BigBoxProfile
 			{
 				code_prefix_args += $@"arg{i}=
 (
-{arg}
+{ahkEscape(arg)}
 )";
 				code_prefix_args += "\n";
 				code_prefix_args += $@"Args.Insert({i}, arg{i})";
@@ -1406,7 +1413,7 @@ namespace BigBoxProfile
 				{
 					code_prefix_args += $@"originalarg{y}=
 (
-{arg}
+{ahkEscape(arg)}
 )";
 					code_prefix_args += "\n";
 					code_prefix_args += $@"OriginalArgs.Insert({y}, originalarg{y})";

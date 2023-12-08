@@ -102,6 +102,7 @@ namespace BigBoxProfile.EmulatorActions
 			if (Options.ContainsKey("exclude") == false) Options["exclude"] = "";
 			if (Options.ContainsKey("commaFilter") == false) Options["commaFilter"] = "no";
 			if (Options.ContainsKey("commaExclude") == false) Options["commaExclude"] = "no";
+			if (Options.ContainsKey("removeFilter") == false) Options["removeFilter"] = "no";
 			if (Options.ContainsKey("matchAllFilter") == false) Options["matchAllFilter"] = "no";
 			if (Options.ContainsKey("matchAllExclude") == false) Options["matchAllExclude"] = "no";
 			UpdateConfig();
@@ -144,7 +145,6 @@ namespace BigBoxProfile.EmulatorActions
 
 		private string[] AhkExecute(string[] args, string code)
 		{
-
             if (!EmulatorLauncher.UseAhkExe)
             {
 				var ahk_session = new AutoHotkey.Interop.AutoHotkeyEngine();

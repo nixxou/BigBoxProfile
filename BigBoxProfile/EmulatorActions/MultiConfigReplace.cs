@@ -515,7 +515,7 @@ namespace BigBoxProfile.EmulatorActions
 						if (newline != lign) change = true;
 					}
 				}
-				File.WriteAllText(_selectedFileFinal + ".bis.txt", outContent);
+				File.WriteAllText(_selectedFileFinal, outContent);
 
 			}
 

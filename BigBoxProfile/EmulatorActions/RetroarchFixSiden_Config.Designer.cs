@@ -30,7 +30,9 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RetroarchFixSiden_Config));
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.chk_forceDefaultNoFilter = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_exclude_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_filter_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_matchModuleOnce = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.btn_manage_exclude = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.txt_filter = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.label3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
@@ -43,7 +45,6 @@
 			this.btn_cancel = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_ok = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.kryptonGroupBox1 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
-			this.chk_forceDefaultNoMatch = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.infoLabel = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.label11 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.label12 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
@@ -57,21 +58,40 @@
 			this.txt_priority_res = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.txt_showMouse = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
 			this.btn_showMouse = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.chk_addInputArg = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.kryptonLabel6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.txt_addarg = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.kryptonLabel5 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.txt_restrictgun4 = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.kryptonLabel4 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.txt_restrictgun3 = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.chk_fillgun4 = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_fillgun3 = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.kryptonLabel3 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.kryptonLabel2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.txt_restrictgun2 = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.txt_restrictgun1 = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
+			this.chk_fillgun2 = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_fillgun1 = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-			this.chk_filter_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-			this.chk_exclude_matchall = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.kryptonLabel7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+			this.txt_supermodelConfig = new System.Windows.Forms.RichTextBox();
 			this.groupBox2.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.kryptonGroupBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.kryptonGroupBox1.Panel)).BeginInit();
 			this.kryptonGroupBox1.Panel.SuspendLayout();
 			this.kryptonGroupBox1.SuspendLayout();
+			this.groupBox1.SuspendLayout();
+			this.groupBox3.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// groupBox2
 			// 
 			this.groupBox2.Controls.Add(this.chk_exclude_matchall);
 			this.groupBox2.Controls.Add(this.chk_filter_matchall);
-			this.groupBox2.Controls.Add(this.chk_forceDefaultNoFilter);
+			this.groupBox2.Controls.Add(this.chk_matchModuleOnce);
 			this.groupBox2.Controls.Add(this.btn_manage_exclude);
 			this.groupBox2.Controls.Add(this.txt_filter);
 			this.groupBox2.Controls.Add(this.label3);
@@ -89,15 +109,35 @@
 			this.groupBox2.Text = "Filters";
 			this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
 			// 
-			// chk_forceDefaultNoFilter
+			// chk_exclude_matchall
 			// 
-			this.chk_forceDefaultNoFilter.AutoSize = false;
-			this.chk_forceDefaultNoFilter.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.TitleControl;
-			this.chk_forceDefaultNoFilter.Location = new System.Drawing.Point(17, 166);
-			this.chk_forceDefaultNoFilter.Name = "chk_forceDefaultNoFilter";
-			this.chk_forceDefaultNoFilter.Size = new System.Drawing.Size(714, 45);
-			this.chk_forceDefaultNoFilter.TabIndex = 87;
-			this.chk_forceDefaultNoFilter.Values.Text = "Set Input Driver to DINPUT AND Mouse Index to Default if filters don\'t match";
+			this.chk_exclude_matchall.Enabled = false;
+			this.chk_exclude_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
+			this.chk_exclude_matchall.Location = new System.Drawing.Point(190, 150);
+			this.chk_exclude_matchall.Name = "chk_exclude_matchall";
+			this.chk_exclude_matchall.Size = new System.Drawing.Size(138, 20);
+			this.chk_exclude_matchall.TabIndex = 102;
+			this.chk_exclude_matchall.Values.Text = "Must match all args";
+			// 
+			// chk_filter_matchall
+			// 
+			this.chk_filter_matchall.Enabled = false;
+			this.chk_filter_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
+			this.chk_filter_matchall.Location = new System.Drawing.Point(190, 65);
+			this.chk_filter_matchall.Name = "chk_filter_matchall";
+			this.chk_filter_matchall.Size = new System.Drawing.Size(138, 20);
+			this.chk_filter_matchall.TabIndex = 101;
+			this.chk_filter_matchall.Values.Text = "Must match all args";
+			// 
+			// chk_matchModuleOnce
+			// 
+			this.chk_matchModuleOnce.AutoSize = false;
+			this.chk_matchModuleOnce.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.TitleControl;
+			this.chk_matchModuleOnce.Location = new System.Drawing.Point(17, 166);
+			this.chk_matchModuleOnce.Name = "chk_matchModuleOnce";
+			this.chk_matchModuleOnce.Size = new System.Drawing.Size(714, 45);
+			this.chk_matchModuleOnce.TabIndex = 87;
+			this.chk_matchModuleOnce.Values.Text = "Don\'t match if previous FixSiden module where triggered";
 			// 
 			// btn_manage_exclude
 			// 
@@ -176,7 +216,7 @@
 			// btn_cancel
 			// 
 			this.btn_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_cancel.Location = new System.Drawing.Point(569, 990);
+			this.btn_cancel.Location = new System.Drawing.Point(1244, 788);
 			this.btn_cancel.Name = "btn_cancel";
 			this.btn_cancel.Size = new System.Drawing.Size(75, 24);
 			this.btn_cancel.TabIndex = 98;
@@ -185,7 +225,7 @@
 			// 
 			// btn_ok
 			// 
-			this.btn_ok.Location = new System.Drawing.Point(654, 990);
+			this.btn_ok.Location = new System.Drawing.Point(1325, 788);
 			this.btn_ok.Name = "btn_ok";
 			this.btn_ok.Size = new System.Drawing.Size(75, 24);
 			this.btn_ok.TabIndex = 97;
@@ -199,7 +239,6 @@
 			// 
 			// kryptonGroupBox1.Panel
 			// 
-			this.kryptonGroupBox1.Panel.Controls.Add(this.chk_forceDefaultNoMatch);
 			this.kryptonGroupBox1.Panel.Controls.Add(this.infoLabel);
 			this.kryptonGroupBox1.Panel.Controls.Add(this.label11);
 			this.kryptonGroupBox1.Panel.Controls.Add(this.label12);
@@ -214,18 +253,6 @@
 			this.kryptonGroupBox1.Size = new System.Drawing.Size(711, 509);
 			this.kryptonGroupBox1.TabIndex = 99;
 			this.kryptonGroupBox1.Values.Heading = "Priority List";
-			// 
-			// chk_forceDefaultNoMatch
-			// 
-			this.chk_forceDefaultNoMatch.AutoSize = false;
-			this.chk_forceDefaultNoMatch.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
-			this.chk_forceDefaultNoMatch.Location = new System.Drawing.Point(9, 107);
-			this.chk_forceDefaultNoMatch.Name = "chk_forceDefaultNoMatch";
-			this.chk_forceDefaultNoMatch.Size = new System.Drawing.Size(541, 36);
-			this.chk_forceDefaultNoMatch.TabIndex = 88;
-			this.chk_forceDefaultNoMatch.Values.Text = "Set Input Driver to DINPUT AND Mouse Index to Default if priority list don\'t matc" +
-    "h";
-			this.chk_forceDefaultNoMatch.CheckedChanged += new System.EventHandler(this.chk_forceDefaultNoMatch_CheckedChanged);
 			// 
 			// infoLabel
 			// 
@@ -329,59 +356,219 @@
 			// 
 			// txt_showMouse
 			// 
-			this.txt_showMouse.Location = new System.Drawing.Point(18, 812);
+			this.txt_showMouse.Location = new System.Drawing.Point(9, 19);
 			this.txt_showMouse.Multiline = true;
 			this.txt_showMouse.Name = "txt_showMouse";
-			this.txt_showMouse.Size = new System.Drawing.Size(626, 142);
+			this.txt_showMouse.Size = new System.Drawing.Size(621, 142);
 			this.txt_showMouse.TabIndex = 100;
 			this.txt_showMouse.Text = "kryptonTextBox1";
 			this.txt_showMouse.TextChanged += new System.EventHandler(this.txt_showMouse_TextChanged);
 			// 
 			// btn_showMouse
 			// 
-			this.btn_showMouse.Location = new System.Drawing.Point(650, 812);
+			this.btn_showMouse.Location = new System.Drawing.Point(9, 167);
 			this.btn_showMouse.Name = "btn_showMouse";
-			this.btn_showMouse.Size = new System.Drawing.Size(79, 142);
+			this.btn_showMouse.Size = new System.Drawing.Size(189, 36);
 			this.btn_showMouse.TabIndex = 101;
-			this.btn_showMouse.Values.Text = "Show\r\nYour\r\nCurrent\r\nMouse\r\nOrder";
+			this.btn_showMouse.Values.Text = "show connected mouses";
 			this.btn_showMouse.Click += new System.EventHandler(this.btn_showMouse_Click);
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.Controls.Add(this.txt_supermodelConfig);
+			this.groupBox1.Controls.Add(this.chk_addInputArg);
+			this.groupBox1.Controls.Add(this.kryptonLabel6);
+			this.groupBox1.Controls.Add(this.txt_addarg);
+			this.groupBox1.Controls.Add(this.kryptonLabel5);
+			this.groupBox1.Controls.Add(this.txt_restrictgun4);
+			this.groupBox1.Controls.Add(this.kryptonLabel4);
+			this.groupBox1.Controls.Add(this.txt_restrictgun3);
+			this.groupBox1.Controls.Add(this.chk_fillgun4);
+			this.groupBox1.Controls.Add(this.chk_fillgun3);
+			this.groupBox1.Controls.Add(this.kryptonLabel3);
+			this.groupBox1.Controls.Add(this.kryptonLabel2);
+			this.groupBox1.Controls.Add(this.txt_restrictgun2);
+			this.groupBox1.Controls.Add(this.txt_restrictgun1);
+			this.groupBox1.Controls.Add(this.chk_fillgun2);
+			this.groupBox1.Controls.Add(this.chk_fillgun1);
+			this.groupBox1.Location = new System.Drawing.Point(759, 244);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(641, 304);
+			this.groupBox1.TabIndex = 102;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Options";
+			this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+			// 
+			// chk_addInputArg
+			// 
+			this.chk_addInputArg.Location = new System.Drawing.Point(13, 13);
+			this.chk_addInputArg.Name = "chk_addInputArg";
+			this.chk_addInputArg.Size = new System.Drawing.Size(278, 20);
+			this.chk_addInputArg.TabIndex = 104;
+			this.chk_addInputArg.Values.Text = "Add -input-system=rawinput if one gun match";
+			// 
+			// kryptonLabel6
+			// 
+			this.kryptonLabel6.Location = new System.Drawing.Point(7, 272);
+			this.kryptonLabel6.Name = "kryptonLabel6";
+			this.kryptonLabel6.Size = new System.Drawing.Size(341, 20);
+			this.kryptonLabel6.TabIndex = 103;
+			this.kryptonLabel6.Values.Text = "[Optional] If at least one gun match, add this temporary arg :";
+			// 
+			// txt_addarg
+			// 
+			this.txt_addarg.Location = new System.Drawing.Point(350, 269);
+			this.txt_addarg.Name = "txt_addarg";
+			this.txt_addarg.Size = new System.Drawing.Size(285, 23);
+			this.txt_addarg.TabIndex = 102;
+			// 
+			// kryptonLabel5
+			// 
+			this.kryptonLabel5.Location = new System.Drawing.Point(7, 148);
+			this.kryptonLabel5.Name = "kryptonLabel5";
+			this.kryptonLabel5.Size = new System.Drawing.Size(337, 20);
+			this.kryptonLabel5.TabIndex = 101;
+			this.kryptonLabel5.Values.Text = "[Optional] Restrict Gun4 to this devices (comma separated) :";
+			// 
+			// txt_restrictgun4
+			// 
+			this.txt_restrictgun4.Location = new System.Drawing.Point(350, 145);
+			this.txt_restrictgun4.Name = "txt_restrictgun4";
+			this.txt_restrictgun4.Size = new System.Drawing.Size(285, 23);
+			this.txt_restrictgun4.TabIndex = 100;
+			this.txt_restrictgun4.TextChanged += new System.EventHandler(this.txt_restrictgun4_TextChanged);
+			// 
+			// kryptonLabel4
+			// 
+			this.kryptonLabel4.Location = new System.Drawing.Point(7, 120);
+			this.kryptonLabel4.Name = "kryptonLabel4";
+			this.kryptonLabel4.Size = new System.Drawing.Size(337, 20);
+			this.kryptonLabel4.TabIndex = 99;
+			this.kryptonLabel4.Values.Text = "[Optional] Restrict Gun3 to this devices (comma separated) :";
+			// 
+			// txt_restrictgun3
+			// 
+			this.txt_restrictgun3.Location = new System.Drawing.Point(350, 117);
+			this.txt_restrictgun3.Name = "txt_restrictgun3";
+			this.txt_restrictgun3.Size = new System.Drawing.Size(285, 23);
+			this.txt_restrictgun3.TabIndex = 98;
+			this.txt_restrictgun3.TextChanged += new System.EventHandler(this.txt_restrictgun3_TextChanged);
+			// 
+			// chk_fillgun4
+			// 
+			this.chk_fillgun4.Location = new System.Drawing.Point(250, 34);
+			this.chk_fillgun4.Name = "chk_fillgun4";
+			this.chk_fillgun4.Size = new System.Drawing.Size(74, 20);
+			this.chk_fillgun4.TabIndex = 97;
+			this.chk_fillgun4.Values.Text = "Fill Gun 4";
+			// 
+			// chk_fillgun3
+			// 
+			this.chk_fillgun3.Location = new System.Drawing.Point(170, 34);
+			this.chk_fillgun3.Name = "chk_fillgun3";
+			this.chk_fillgun3.Size = new System.Drawing.Size(74, 20);
+			this.chk_fillgun3.TabIndex = 96;
+			this.chk_fillgun3.Values.Text = "Fill Gun 3";
+			// 
+			// kryptonLabel3
+			// 
+			this.kryptonLabel3.Location = new System.Drawing.Point(7, 91);
+			this.kryptonLabel3.Name = "kryptonLabel3";
+			this.kryptonLabel3.Size = new System.Drawing.Size(337, 20);
+			this.kryptonLabel3.TabIndex = 95;
+			this.kryptonLabel3.Values.Text = "[Optional] Restrict Gun2 to this devices (comma separated) :";
+			// 
+			// kryptonLabel2
+			// 
+			this.kryptonLabel2.Location = new System.Drawing.Point(7, 62);
+			this.kryptonLabel2.Name = "kryptonLabel2";
+			this.kryptonLabel2.Size = new System.Drawing.Size(337, 20);
+			this.kryptonLabel2.TabIndex = 94;
+			this.kryptonLabel2.Values.Text = "[Optional] Restrict Gun1 to this devices (comma separated) :";
+			// 
+			// txt_restrictgun2
+			// 
+			this.txt_restrictgun2.Location = new System.Drawing.Point(350, 88);
+			this.txt_restrictgun2.Name = "txt_restrictgun2";
+			this.txt_restrictgun2.Size = new System.Drawing.Size(285, 23);
+			this.txt_restrictgun2.TabIndex = 93;
+			this.txt_restrictgun2.TextChanged += new System.EventHandler(this.txt_restrictgun2_TextChanged);
+			// 
+			// txt_restrictgun1
+			// 
+			this.txt_restrictgun1.Location = new System.Drawing.Point(350, 59);
+			this.txt_restrictgun1.Name = "txt_restrictgun1";
+			this.txt_restrictgun1.Size = new System.Drawing.Size(285, 23);
+			this.txt_restrictgun1.TabIndex = 92;
+			this.txt_restrictgun1.TextChanged += new System.EventHandler(this.kryptonTextBox1_TextChanged);
+			// 
+			// chk_fillgun2
+			// 
+			this.chk_fillgun2.Location = new System.Drawing.Point(90, 34);
+			this.chk_fillgun2.Name = "chk_fillgun2";
+			this.chk_fillgun2.Size = new System.Drawing.Size(74, 20);
+			this.chk_fillgun2.TabIndex = 91;
+			this.chk_fillgun2.Values.Text = "Fill Gun 2";
+			// 
+			// chk_fillgun1
+			// 
+			this.chk_fillgun1.Location = new System.Drawing.Point(13, 34);
+			this.chk_fillgun1.Name = "chk_fillgun1";
+			this.chk_fillgun1.Size = new System.Drawing.Size(71, 20);
+			this.chk_fillgun1.TabIndex = 90;
+			this.chk_fillgun1.Values.Text = "Fill Gun1";
+			// 
+			// groupBox3
+			// 
+			this.groupBox3.Controls.Add(this.txt_showMouse);
+			this.groupBox3.Controls.Add(this.btn_showMouse);
+			this.groupBox3.Location = new System.Drawing.Point(763, 554);
+			this.groupBox3.Name = "groupBox3";
+			this.groupBox3.Size = new System.Drawing.Size(636, 228);
+			this.groupBox3.TabIndex = 103;
+			this.groupBox3.TabStop = false;
+			this.groupBox3.Text = "Test";
 			// 
 			// kryptonLabel1
 			// 
-			this.kryptonLabel1.Location = new System.Drawing.Point(18, 788);
+			this.kryptonLabel1.AutoSize = false;
+			this.kryptonLabel1.Location = new System.Drawing.Point(746, 12);
 			this.kryptonLabel1.Name = "kryptonLabel1";
-			this.kryptonLabel1.Size = new System.Drawing.Size(269, 20);
-			this.kryptonLabel1.TabIndex = 88;
-			this.kryptonLabel1.Values.Text = "Here you can check your current Mouse Order :";
+			this.kryptonLabel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+			this.kryptonLabel1.Size = new System.Drawing.Size(648, 128);
+			this.kryptonLabel1.TabIndex = 104;
+			this.kryptonLabel1.Values.Text = resources.GetString("kryptonLabel1.Values.Text");
+			this.kryptonLabel1.Paint += new System.Windows.Forms.PaintEventHandler(this.kryptonLabel1_Paint);
 			// 
-			// chk_filter_matchall
+			// kryptonLabel7
 			// 
-			this.chk_filter_matchall.Enabled = false;
-			this.chk_filter_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
-			this.chk_filter_matchall.Location = new System.Drawing.Point(190, 65);
-			this.chk_filter_matchall.Name = "chk_filter_matchall";
-			this.chk_filter_matchall.Size = new System.Drawing.Size(138, 20);
-			this.chk_filter_matchall.TabIndex = 101;
-			this.chk_filter_matchall.Values.Text = "Must match all args";
+			this.kryptonLabel7.AutoSize = false;
+			this.kryptonLabel7.Location = new System.Drawing.Point(745, 137);
+			this.kryptonLabel7.Name = "kryptonLabel7";
+			this.kryptonLabel7.RightToLeft = System.Windows.Forms.RightToLeft.No;
+			this.kryptonLabel7.Size = new System.Drawing.Size(648, 45);
+			this.kryptonLabel7.TabIndex = 105;
+			this.kryptonLabel7.Values.Text = "By default, gun will be assigned according to the priority order.\r\nIf you want to" +
+    " force a specific gun to a player slot, you can use the restrict textbox on the " +
+    "option.";
 			// 
-			// chk_exclude_matchall
+			// txt_supermodelConfig
 			// 
-			this.chk_exclude_matchall.Enabled = false;
-			this.chk_exclude_matchall.LabelStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.BoldControl;
-			this.chk_exclude_matchall.Location = new System.Drawing.Point(190, 150);
-			this.chk_exclude_matchall.Name = "chk_exclude_matchall";
-			this.chk_exclude_matchall.Size = new System.Drawing.Size(138, 20);
-			this.chk_exclude_matchall.TabIndex = 102;
-			this.chk_exclude_matchall.Values.Text = "Must match all args";
+			this.txt_supermodelConfig.Location = new System.Drawing.Point(13, 118);
+			this.txt_supermodelConfig.Name = "txt_supermodelConfig";
+			this.txt_supermodelConfig.Size = new System.Drawing.Size(621, 125);
+			this.txt_supermodelConfig.TabIndex = 105;
+			this.txt_supermodelConfig.Text = "";
 			// 
 			// RetroarchFixSiden_Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(743, 1024);
+			this.ClientSize = new System.Drawing.Size(1418, 819);
+			this.Controls.Add(this.kryptonLabel7);
 			this.Controls.Add(this.kryptonLabel1);
-			this.Controls.Add(this.btn_showMouse);
-			this.Controls.Add(this.txt_showMouse);
+			this.Controls.Add(this.groupBox3);
+			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.kryptonGroupBox1);
 			this.Controls.Add(this.btn_cancel);
 			this.Controls.Add(this.btn_ok);
@@ -396,8 +583,11 @@
 			this.kryptonGroupBox1.Panel.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.kryptonGroupBox1)).EndInit();
 			this.kryptonGroupBox1.ResumeLayout(false);
+			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
+			this.groupBox3.ResumeLayout(false);
+			this.groupBox3.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -427,12 +617,30 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_down_priority;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_up_priority;
 		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_priority_res;
-		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_forceDefaultNoFilter;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_matchModuleOnce;
 		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_showMouse;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_showMouse;
-		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_forceDefaultNoMatch;
-		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel1;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_filter_matchall;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_exclude_matchall;
+		private System.Windows.Forms.GroupBox groupBox1;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_fillgun2;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_fillgun1;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel3;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel2;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_restrictgun2;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_restrictgun1;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel5;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_restrictgun4;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel4;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_restrictgun3;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_fillgun4;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_fillgun3;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel6;
+		private ComponentFactory.Krypton.Toolkit.KryptonTextBox txt_addarg;
+		private System.Windows.Forms.GroupBox groupBox3;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel1;
+		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel7;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addInputArg;
+		private System.Windows.Forms.RichTextBox txt_supermodelConfig;
 	}
 }

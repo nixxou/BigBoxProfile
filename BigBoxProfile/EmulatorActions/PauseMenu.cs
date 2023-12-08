@@ -491,7 +491,7 @@ namespace BigBoxProfile.EmulatorActions
 					argsData.Add("EmulatorNameWithoutExt", Path.GetFileNameWithoutExtension(args[0]));
 
 					// Obtenez le chemin du répertoire de travail actuel
-					string workingDirectory = Environment.CurrentDirectory;
+					string workingDirectory = String.IsNullOrEmpty(EmulatorLauncher.WorkingDirExe) ? Environment.CurrentDirectory : EmulatorLauncher.WorkingDirExe;
 					string emulatorFileDir = Path.GetDirectoryName(args[0]);
 					if(!Path.IsPathRooted(emulatorFileDir)) emulatorFileDir = Path.Combine(workingDirectory, emulatorFileDir);
 					argsData.Add("EmulatorFileDir", emulatorFileDir);

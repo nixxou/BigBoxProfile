@@ -101,7 +101,8 @@ namespace BigBoxProfile.EmulatorActions
 				}
 			}
 
-			PathConfig = Path.Combine(Environment.CurrentDirectory, "retroarch.cfg");
+			string currDir = String.IsNullOrEmpty(EmulatorLauncher.WorkingDirExe) ? Environment.CurrentDirectory : EmulatorLauncher.WorkingDirExe;
+			PathConfig = Path.Combine(currDir, "retroarch.cfg");
 			if (File.Exists(PathConfig))
 			{
 				return PathConfig;

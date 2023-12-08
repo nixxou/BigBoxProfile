@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace BigBoxProfile.HID
 {
@@ -52,7 +53,7 @@ namespace BigBoxProfile.HID
 		[DllImport("hid.dll", SetLastError = true, CharSet = CharSet.Auto)]
 		static extern bool HidD_GetProductString(IntPtr h, StringBuilder buf, uint length);
 
-		public static List<MouseRetroarch> ListMouse()
+		public static List<MouseRetroarch> ListMouse(bool reverse = false)
 		{
 			List<MouseRetroarch> mouseList = new List<MouseRetroarch>();
 
@@ -153,6 +154,20 @@ namespace BigBoxProfile.HID
 			{
 				MessageBox.Show(ex.Message);
 			}
+
+			if (reverse)
+			{
+				List<MouseRetroarch> mouseListReverse = new List<MouseRetroarch>();
+				mouseList.Reverse();
+				int i = 0;
+				foreach(MouseRetroarch mouse in mouseList)
+				{
+					i++;
+					mouseListReverse.Add(new MouseRetroarch { Index = i, Name = mouse.Name, Path = mouse.Path });
+				}
+				return mouseListReverse;
+			}
+
 			return mouseList;
 		}
 
