@@ -50,6 +50,7 @@
 			this.btn_addEmulator = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_editEmulator = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.groupBox1 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
+			this.btn_copyFromDefault = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_editSoundcard = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_editMonitorSwitch = new ComponentFactory.Krypton.Toolkit.KryptonButton();
 			this.btn_editPriority = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -72,7 +73,7 @@
 			// label_status
 			// 
 			this.label_status.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label_status.Location = new System.Drawing.Point(393, 34);
+			this.label_status.Location = new System.Drawing.Point(453, 36);
 			this.label_status.Name = "label_status";
 			this.label_status.Size = new System.Drawing.Size(52, 20);
 			this.label_status.TabIndex = 0;
@@ -81,7 +82,7 @@
 			// label1
 			// 
 			this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.label1.Location = new System.Drawing.Point(385, 10);
+			this.label1.Location = new System.Drawing.Point(445, 12);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(76, 20);
 			this.label1.TabIndex = 2;
@@ -102,9 +103,9 @@
 			// button1
 			// 
 			this.button1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.button1.Location = new System.Drawing.Point(252, 34);
+			this.button1.Location = new System.Drawing.Point(253, 34);
 			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(119, 35);
+			this.button1.Size = new System.Drawing.Size(118, 35);
 			this.button1.TabIndex = 11;
 			this.button1.Values.Text = "Add New Profile";
 			this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -114,7 +115,7 @@
 			this.button2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.button2.Location = new System.Drawing.Point(122, 34);
 			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(119, 35);
+			this.button2.Size = new System.Drawing.Size(125, 35);
 			this.button2.TabIndex = 12;
 			this.button2.Values.Text = "Delete profile";
 			this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -171,7 +172,7 @@
 			this.txt_monitorpriority.Location = new System.Drawing.Point(165, 3);
 			this.txt_monitorpriority.Name = "txt_monitorpriority";
 			this.txt_monitorpriority.ReadOnly = true;
-			this.txt_monitorpriority.Size = new System.Drawing.Size(144, 23);
+			this.txt_monitorpriority.Size = new System.Drawing.Size(269, 23);
 			this.txt_monitorpriority.TabIndex = 21;
 			// 
 			// txt_soundcard
@@ -180,7 +181,7 @@
 			this.txt_soundcard.Location = new System.Drawing.Point(165, 61);
 			this.txt_soundcard.Name = "txt_soundcard";
 			this.txt_soundcard.ReadOnly = true;
-			this.txt_soundcard.Size = new System.Drawing.Size(144, 23);
+			this.txt_soundcard.Size = new System.Drawing.Size(269, 23);
 			this.txt_soundcard.TabIndex = 22;
 			// 
 			// txt_monitorswitch
@@ -189,7 +190,7 @@
 			this.txt_monitorswitch.Location = new System.Drawing.Point(165, 32);
 			this.txt_monitorswitch.Name = "txt_monitorswitch";
 			this.txt_monitorswitch.ReadOnly = true;
-			this.txt_monitorswitch.Size = new System.Drawing.Size(144, 23);
+			this.txt_monitorswitch.Size = new System.Drawing.Size(269, 23);
 			this.txt_monitorswitch.TabIndex = 23;
 			// 
 			// chk_launchbox
@@ -221,7 +222,7 @@
 			this.cmb_emulatorList.FormattingEnabled = true;
 			this.cmb_emulatorList.Location = new System.Drawing.Point(167, 221);
 			this.cmb_emulatorList.Name = "cmb_emulatorList";
-			this.cmb_emulatorList.Size = new System.Drawing.Size(144, 21);
+			this.cmb_emulatorList.Size = new System.Drawing.Size(217, 21);
 			this.cmb_emulatorList.TabIndex = 8;
 			this.cmb_emulatorList.SelectedIndexChanged += new System.EventHandler(this.cmb_emulatorList_SelectedIndexChanged);
 			// 
@@ -237,7 +238,7 @@
 			// btn_addEmulator
 			// 
 			this.btn_addEmulator.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_addEmulator.Location = new System.Drawing.Point(317, 221);
+			this.btn_addEmulator.Location = new System.Drawing.Point(390, 221);
 			this.btn_addEmulator.Name = "btn_addEmulator";
 			this.btn_addEmulator.Size = new System.Drawing.Size(44, 24);
 			this.btn_addEmulator.TabIndex = 10;
@@ -248,7 +249,7 @@
 			// 
 			this.btn_editEmulator.Enabled = false;
 			this.btn_editEmulator.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_editEmulator.Location = new System.Drawing.Point(366, 221);
+			this.btn_editEmulator.Location = new System.Drawing.Point(440, 221);
 			this.btn_editEmulator.Name = "btn_editEmulator";
 			this.btn_editEmulator.Size = new System.Drawing.Size(44, 24);
 			this.btn_editEmulator.TabIndex = 9;
@@ -258,11 +259,12 @@
 			// groupBox1
 			// 
 			this.groupBox1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.groupBox1.Location = new System.Drawing.Point(25, 75);
+			this.groupBox1.Location = new System.Drawing.Point(25, 99);
 			this.groupBox1.Name = "groupBox1";
 			// 
 			// groupBox1.Panel
 			// 
+			this.groupBox1.Panel.Controls.Add(this.btn_copyFromDefault);
 			this.groupBox1.Panel.Controls.Add(this.btn_editSoundcard);
 			this.groupBox1.Panel.Controls.Add(this.btn_editMonitorSwitch);
 			this.groupBox1.Panel.Controls.Add(this.btn_editPriority);
@@ -282,15 +284,27 @@
 			this.groupBox1.Panel.Controls.Add(this.chk_restore);
 			this.groupBox1.Panel.Controls.Add(this.label3);
 			this.groupBox1.Panel.Controls.Add(this.label4);
-			this.groupBox1.Size = new System.Drawing.Size(429, 279);
+			this.groupBox1.Size = new System.Drawing.Size(506, 303);
 			this.groupBox1.TabIndex = 5;
 			this.groupBox1.Values.Heading = "&";
 			this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
 			// 
+			// btn_copyFromDefault
+			// 
+			this.btn_copyFromDefault.Enabled = false;
+			this.btn_copyFromDefault.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.btn_copyFromDefault.Location = new System.Drawing.Point(329, 249);
+			this.btn_copyFromDefault.Name = "btn_copyFromDefault";
+			this.btn_copyFromDefault.Size = new System.Drawing.Size(155, 27);
+			this.btn_copyFromDefault.TabIndex = 30;
+			this.btn_copyFromDefault.Values.Text = "Copy From Default profile";
+			this.btn_copyFromDefault.Visible = false;
+			this.btn_copyFromDefault.Click += new System.EventHandler(this.btn_copyFromDefault_Click);
+			// 
 			// btn_editSoundcard
 			// 
 			this.btn_editSoundcard.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_editSoundcard.Location = new System.Drawing.Point(317, 60);
+			this.btn_editSoundcard.Location = new System.Drawing.Point(440, 60);
 			this.btn_editSoundcard.Name = "btn_editSoundcard";
 			this.btn_editSoundcard.Size = new System.Drawing.Size(44, 24);
 			this.btn_editSoundcard.TabIndex = 29;
@@ -300,7 +314,7 @@
 			// btn_editMonitorSwitch
 			// 
 			this.btn_editMonitorSwitch.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_editMonitorSwitch.Location = new System.Drawing.Point(317, 31);
+			this.btn_editMonitorSwitch.Location = new System.Drawing.Point(440, 32);
 			this.btn_editMonitorSwitch.Name = "btn_editMonitorSwitch";
 			this.btn_editMonitorSwitch.Size = new System.Drawing.Size(44, 24);
 			this.btn_editMonitorSwitch.TabIndex = 28;
@@ -310,7 +324,7 @@
 			// btn_editPriority
 			// 
 			this.btn_editPriority.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.btn_editPriority.Location = new System.Drawing.Point(317, 2);
+			this.btn_editPriority.Location = new System.Drawing.Point(440, 2);
 			this.btn_editPriority.Name = "btn_editPriority";
 			this.btn_editPriority.Size = new System.Drawing.Size(44, 24);
 			this.btn_editPriority.TabIndex = 27;
@@ -351,15 +365,15 @@
 			this.cmb_DispositionList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmb_DispositionList.DropDownWidth = 224;
 			this.cmb_DispositionList.FormattingEnabled = true;
-			this.cmb_DispositionList.Location = new System.Drawing.Point(229, 361);
+			this.cmb_DispositionList.Location = new System.Drawing.Point(229, 408);
 			this.cmb_DispositionList.Name = "cmb_DispositionList";
-			this.cmb_DispositionList.Size = new System.Drawing.Size(224, 21);
+			this.cmb_DispositionList.Size = new System.Drawing.Size(302, 21);
 			this.cmb_DispositionList.TabIndex = 13;
 			this.cmb_DispositionList.SelectedIndexChanged += new System.EventHandler(this.cmb_DispositionList_SelectedIndexChanged);
 			// 
 			// label9
 			// 
-			this.label9.Location = new System.Drawing.Point(25, 363);
+			this.label9.Location = new System.Drawing.Point(25, 410);
 			this.label9.Name = "label9";
 			this.label9.Size = new System.Drawing.Size(198, 20);
 			this.label9.TabIndex = 14;
@@ -368,18 +382,19 @@
 			// chk_Disable
 			// 
 			this.chk_Disable.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.chk_Disable.Location = new System.Drawing.Point(390, 60);
+			this.chk_Disable.Location = new System.Drawing.Point(25, 73);
 			this.chk_Disable.Name = "chk_Disable";
-			this.chk_Disable.Size = new System.Drawing.Size(63, 20);
+			this.chk_Disable.Size = new System.Drawing.Size(463, 20);
 			this.chk_Disable.TabIndex = 15;
-			this.chk_Disable.Values.Text = "Disable";
+			this.chk_Disable.Values.Text = "Disable LB/BB \"hooking\" and just use Hijack Emulator feature with default profile" +
+    "";
 			this.chk_Disable.CheckedChanged += new System.EventHandler(this.chk_Disable_CheckedChanged);
 			// 
 			// Config
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(473, 395);
+			this.ClientSize = new System.Drawing.Size(543, 441);
 			this.Controls.Add(this.chk_Disable);
 			this.Controls.Add(this.label9);
 			this.Controls.Add(this.cmb_DispositionList);
@@ -441,6 +456,7 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_editMonitorSwitch;
 		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_editPriority;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_Disable;
+		private ComponentFactory.Krypton.Toolkit.KryptonButton btn_copyFromDefault;
 	}
 }
 

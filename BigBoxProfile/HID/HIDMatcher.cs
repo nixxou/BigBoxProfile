@@ -26,6 +26,7 @@ namespace BigBoxProfile
 		public bool UniqueMatch { get; set; }
 		public bool UseDInput { get; set; }
 		public bool UseSDL { get; set; }
+		public bool UseSDLNoRI { get; set; }
 
 		public HIDMatcher()
 		{
@@ -40,6 +41,7 @@ namespace BigBoxProfile
 			this.UniqueMatch = false;
 			this.UseDInput = false;
 			this.UseSDL = false;
+			this.UseSDLNoRI = false;
 		}
 
 		public HIDMatcher(string json)
@@ -58,6 +60,7 @@ namespace BigBoxProfile
 				this.UniqueMatch = DeserializeData.UniqueMatch;
 				this.UseDInput = DeserializeData.UseDInput;
 				this.UseSDL = DeserializeData.UseSDL;
+				this.UseSDLNoRI = DeserializeData.UseSDLNoRI;
 			}
 			catch(Exception ex) 
 			{
@@ -69,7 +72,7 @@ namespace BigBoxProfile
 
 		public string[] ToStringArray()
 		{
-			var arrayString = new string[12];
+			var arrayString = new string[13];
 			arrayString[0] = Serialize();
 			arrayString[1] = this.RegexToMatch;
 			arrayString[2] = this.Suffix;
@@ -82,6 +85,7 @@ namespace BigBoxProfile
 			arrayString[9] = (this.UniqueMatch ? "YES" : "NO");
 			arrayString[10] = (this.UseDInput ? "YES" : "NO");
 			arrayString[11] = (this.UseSDL ? "YES" : "NO");
+			arrayString[12] = (this.UseSDLNoRI ? "YES" : "NO");
 			return arrayString;
 
 		}
@@ -102,6 +106,7 @@ namespace BigBoxProfile
 			if(UseXInput) libData += HIDInfo.GetXINPUT(forceRefresh, logdir);
 			if(UseDInput) libData += HIDInfo.GetDInputInfo(forceRefresh);
 			if(UseSDL) libData += HIDInfo.GetSDLInfo(forceRefresh);
+			if(UseSDLNoRI) libData += HIDInfo.GetSDLNoRIInfo(forceRefresh);
 
 			List<string> suffixList = new List<string>();
 			int currentMatchCount = 0;

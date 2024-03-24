@@ -15,6 +15,7 @@ using System.Security.Cryptography;
 using SharpDX.DirectInput;
 using SDL2;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace BigBoxProfile
 {
@@ -30,6 +31,8 @@ namespace BigBoxProfile
 		public static string LastDInput { get; private set; }
 
 		public static string LastSDL { get; private set; }
+
+		public static string LastSDLNoRI { get; private set; }
 
 		public static string GetHIDSharpInfo(bool refresh)
 		{
@@ -60,7 +63,7 @@ namespace BigBoxProfile
 		public static string GetDInputInfo(bool refresh)
 		{
 			if (!refresh && !String.IsNullOrEmpty(LastDInput)) return LastDInput;
-
+			int index = 0;
 			LastDInput = "";
 			DirectInput directInput = new DirectInput();
 			var ddevices = directInput.GetDevices();
@@ -70,8 +73,8 @@ namespace BigBoxProfile
 					continue;
 
 				var joystick = new Joystick(directInput, deviceInstance.InstanceGuid);
-				LastDInput += $"{deviceInstance.ProductName}<>{deviceInstance.Type}<>{deviceInstance.InstanceGuid}<>{deviceInstance.InstanceName}<>{joystick.Properties.InterfacePath}" + "\r\n";
-
+				LastDInput += $"DINPUT{index}<>{deviceInstance.ProductName}<>{deviceInstance.Type}<>{deviceInstance.InstanceGuid}<>{deviceInstance.InstanceName}<>{joystick.Properties.InterfacePath}" + "\r\n";
+				index++;
 				//deviceList.Add(new DeviceInfo(deviceInstance));
 			}
 
@@ -110,7 +113,44 @@ namespace BigBoxProfile
 			if (!refresh && !String.IsNullOrEmpty(LastSDL)) return LastSDL;
 
 			LastSDL = "";
-			SDL2.SDL.SDL_Init(SDL2.SDL.SDL_INIT_JOYSTICK);
+			//SDL2.SDL.SDL_SetHint(SDL2.SDL.SDL_HINT_JOYSTICK_RAWINPUT, "0");
+			SDL2.SDL.SDL_Quit();
+			SDL2.SDL.SDL_Init(SDL2.SDL.SDL_INIT_JOYSTICK | SDL2.SDL.SDL_INIT_GAMECONTROLLER);
+			SDL2.SDL.SDL_JoystickUpdate();
+
+			
+			for (int i = 0; i < SDL2.SDL.SDL_NumJoysticks(); i++)
+			{
+				var currentJoy = SDL.SDL_JoystickOpen(i);
+				string caps = $"{SDL.SDL_JoystickNumAxes(currentJoy)} {SDL.SDL_JoystickNumBalls(currentJoy)} {SDL.SDL_JoystickNumButtons(currentJoy)} {SDL.SDL_JoystickNumHats(currentJoy)}";
+				string signature = GetMD5Short(caps);
+				const int bufferSize = 256; // La taille doit être au moins 33 pour stocker le GUID sous forme de chaîne (32 caractères + le caractère nul)
+				byte[] guidBuffer = new byte[bufferSize];
+				SDL.SDL_JoystickGetGUIDString(SDL.SDL_JoystickGetGUID(currentJoy), guidBuffer, bufferSize);
+				string guidString = System.Text.Encoding.UTF8.GetString(guidBuffer).Trim('\0');
+
+				string joyname = SDL2.SDL.SDL_JoystickName(currentJoy);
+				ushort vendorId = SDL2.SDL.SDL_JoystickGetVendor(currentJoy);
+				ushort productId = SDL2.SDL.SDL_JoystickGetProduct(currentJoy);
+
+
+				LastSDL += $"SDL{i}<>{SDL2.SDL.SDL_JoystickNameForIndex(i)}<>{signature}<>{SDL.SDL_JoystickGetDeviceGUID(i)}<>{SDL.SDL_JoystickGetSerial(currentJoy)}<>{guidString}<>VendorID=0x{vendorId:X04}<>ProductID=0x{productId:X04}" + "\r\n";
+				SDL.SDL_JoystickClose(currentJoy);
+				
+			}
+
+			return LastSDL;
+		}
+
+		public static string GetSDLNoRIInfo(bool refresh)
+		{
+			if (!refresh && !String.IsNullOrEmpty(LastSDLNoRI)) return LastSDLNoRI;
+
+			LastSDLNoRI = "";
+			SDL2.SDL.SDL_Quit();
+			SDL2.SDL.SDL_SetHint(SDL2.SDL.SDL_HINT_JOYSTICK_RAWINPUT, "0");
+			SDL2.SDL.SDL_Init(SDL2.SDL.SDL_INIT_JOYSTICK | SDL2.SDL.SDL_INIT_GAMECONTROLLER);
+			SDL2.SDL.SDL_JoystickUpdate();
 
 
 			for (int i = 0; i < SDL2.SDL.SDL_NumJoysticks(); i++)
@@ -118,15 +158,15 @@ namespace BigBoxProfile
 				var currentJoy = SDL.SDL_JoystickOpen(i);
 				string caps = $"{SDL.SDL_JoystickNumAxes(currentJoy)} {SDL.SDL_JoystickNumBalls(currentJoy)} {SDL.SDL_JoystickNumButtons(currentJoy)} {SDL.SDL_JoystickNumHats(currentJoy)}";
 				string signature = GetMD5Short(caps);
-				LastSDL += $"SDL{i}<>{SDL2.SDL.SDL_JoystickNameForIndex(i)}<>{signature}<>{SDL.SDL_JoystickGetDeviceGUID(i)}<>{SDL.SDL_JoystickGetSerial(currentJoy)}" + "\r\n";
+				const int bufferSize = 256; // La taille doit être au moins 33 pour stocker le GUID sous forme de chaîne (32 caractères + le caractère nul)
+				byte[] guidBuffer = new byte[bufferSize];
+				SDL.SDL_JoystickGetGUIDString(SDL.SDL_JoystickGetGUID(currentJoy), guidBuffer, bufferSize);
+				string guidString = System.Text.Encoding.UTF8.GetString(guidBuffer).Trim('\0');
+
+				LastSDLNoRI += $"SDLNORI{i}<>{SDL2.SDL.SDL_JoystickNameForIndex(i)}<>{signature}<>{SDL.SDL_JoystickGetDeviceGUID(i)}<>{SDL.SDL_JoystickGetSerial(currentJoy)}<>{guidString}" + "\r\n";
 				SDL.SDL_JoystickClose(currentJoy);
-				
-				
-				
 			}
-
-
-			return LastSDL;
+			return LastSDLNoRI;
 		}
 
 		public static string GetDS4Info(bool refresh)
@@ -198,6 +238,9 @@ namespace BigBoxProfile
 					signature = "DS4WIN";
 					extra = $"<>{ds4data.MacAddress}<>{ds4data.ControllerType}<>{ds4data.ConnectionType}<>{ds4data.ControllerInputSlot}" + "\r\n";
 				}
+				var capsEx = XExt.GetExtraData(slot-1);
+				extra = $"<>VendorID=0x{capsEx.vendorId:X04}<>ProductID=0x{capsEx.productId:X04}<>RevisionID=0x{capsEx.revisionId:X04}" + extra;
+
 				LastXInput += $"XINPUT{slot}<>{gamepad.Capabilities.SubType.ToString().Trim()}<>{signature}" + extra;
 			}
 
@@ -216,6 +259,8 @@ namespace BigBoxProfile
 					signature = "DS4WIN";
 					extra = $"<>{ds4data.MacAddress}<>{ds4data.ControllerType}<>{ds4data.ConnectionType}<>{ds4data.ControllerInputSlot}" + "\r\n";
 				}
+				var capsEx = XExt.GetExtraData(slot-1);
+				extra = $"<>VendorID=0x{capsEx.vendorId:X04}<>ProductID=0x{capsEx.productId:X04}<>RevisionID=0x{capsEx.revisionId:X04}" + extra;
 				LastXInput += $"XINPUT{slot}<>{gamepad.Capabilities.SubType.ToString().Trim()}<>{signature}" + extra;
 			}
 
@@ -233,6 +278,8 @@ namespace BigBoxProfile
 					signature = "DS4WIN";
 					extra = $"<>{ds4data.MacAddress}<>{ds4data.ControllerType}<>{ds4data.ConnectionType}<>{ds4data.ControllerInputSlot}" + "\r\n";
 				}
+				var capsEx = XExt.GetExtraData(slot-1);
+				extra = $"<>VendorID=0x{capsEx.vendorId:X04}<>ProductID=0x{capsEx.productId:X04}<>RevisionID=0x{capsEx.revisionId:X04}" + extra;
 				LastXInput += $"XINPUT{slot}<>{gamepad.Capabilities.SubType.ToString().Trim()}<>{signature}" + extra;
 			}
 
@@ -250,6 +297,8 @@ namespace BigBoxProfile
 					signature = "DS4WIN";
 					extra = $"<>{ds4data.MacAddress}<>{ds4data.ControllerType}<>{ds4data.ConnectionType}<>{ds4data.ControllerInputSlot}" + "\r\n";
 				}
+				var capsEx = XExt.GetExtraData(slot-1);
+				extra = $"<>VendorID=0x{capsEx.vendorId:X04}<>ProductID=0x{capsEx.productId:X04}<>RevisionID=0x{capsEx.revisionId:X04}" + extra;
 				LastXInput += $"XINPUT{slot}<>{gamepad.Capabilities.SubType.ToString().Trim()}<>{signature}" + extra;
 			}
 			return LastXInput;
@@ -282,6 +331,8 @@ namespace BigBoxProfile
 			LastHIDSharpInfo = null;
 			LastDS4Info = null;
 			LastDInput = null;
+			LastSDLNoRI = null;
+			LastSDL = null;
 		}
 
 

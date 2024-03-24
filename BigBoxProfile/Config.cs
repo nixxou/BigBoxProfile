@@ -1,4 +1,5 @@
 ﻿using BigBoxProfile.EmulatorActions;
+using CefSharp.DevTools.Profiler;
 using ComponentFactory.Krypton.Toolkit;
 using Microsoft.VisualBasic;
 using System;
@@ -192,6 +193,25 @@ namespace BigBoxProfile
 			if (selected != Profile.ActiveProfile.ProfileName)
 			{
 				Profile.SetActive(selected);
+				if (selected == "default")
+				{
+					//btn_copyFromDefault.Enabled = false;
+					btn_copyFromDefault.Visible = false;
+				}
+				else
+				{
+					//btn_copyFromDefault.Enabled = true;
+					btn_copyFromDefault.Visible = true;
+					string selected_emulatorExe = cmb_emulatorList.GetItemText(cmb_emulatorList.SelectedItem);
+					if (selected_emulatorExe.ToLower().EndsWith(".exe"))
+					{
+						btn_copyFromDefault.Enabled = true;
+					}
+					else
+					{
+						btn_copyFromDefault.Enabled = false;
+					}
+				}
 			}
 
 		}
@@ -280,10 +300,12 @@ namespace BigBoxProfile
 			if (cmb_emulatorList.SelectedIndex == -1)
 			{
 				btn_editEmulator.Enabled = false;
+				if (btn_copyFromDefault.Visible) btn_copyFromDefault.Enabled = false;
 			}
 			else
 			{
 				btn_editEmulator.Enabled = true;
+				if (btn_copyFromDefault.Visible) btn_copyFromDefault.Enabled = true;
 			}
 		}
 
@@ -336,5 +358,33 @@ namespace BigBoxProfile
 			}
 			//MessageBox.Show("Relaunch BBProfile to apply change");
 		}
-	}
+
+		private void btn_copyFromDefault_Click(object sender, EventArgs e)
+		{
+			var resultat = Interaction.MsgBox("Are you sure ? It will erase the existing configuration.", MsgBoxStyle.YesNo, "Confirmation");
+
+								if (resultat == MsgBoxResult.Yes)
+								{
+									string selected_emulatorExe = cmb_emulatorList.GetItemText(cmb_emulatorList.SelectedItem);
+									if (selected_emulatorExe.ToLower().EndsWith(".exe"))
+									{
+										string FileNameConfig = Path.Combine(Profile.PathMainProfileDir, selected_emulatorExe, Profile.ActiveProfile.ProfileName + ".xml");
+										string DefaultProfileFile = Path.Combine(Path.GetDirectoryName(FileNameConfig), "default.xml");
+										if(File.Exists(DefaultProfileFile))
+										{
+											File.Copy(DefaultProfileFile, FileNameConfig, true);
+										}
+										else
+										{
+											MessageBox.Show($"Failed to copy {DefaultProfileFile}, File not found");
+										}
+
+
+									}
+								}
+
+
+
+							}
+						}
 }

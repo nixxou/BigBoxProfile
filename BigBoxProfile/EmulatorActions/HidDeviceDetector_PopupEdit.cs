@@ -49,6 +49,7 @@ namespace BigBoxProfile.EmulatorActions
 			chk_addDevMatchUnique.Checked = hidMatcher.UniqueMatch;
 			chk_addDevDinput.Checked = hidMatcher.UseDInput;
 			chk_addDevSDL.Checked = hidMatcher.UseSDL;
+			chk_addDevSDLNoRI.Checked = hidMatcher.UseSDLNoRI;
 		}
 
 		private void HidDeviceDetector_PopupEdit_Load(object sender, EventArgs e)
@@ -104,6 +105,7 @@ namespace BigBoxProfile.EmulatorActions
 			HidData.UniqueMatch = chk_addDevMatchUnique.Checked;
 			HidData.UseDInput = chk_addDevDinput.Checked;
 			HidData.UseSDL = chk_addDevSDL.Checked;
+			HidData.UseSDLNoRI = chk_addDevSDLNoRI.Checked;
 			this.DialogResult = DialogResult.OK;
 			this.Close();
 		}

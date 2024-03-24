@@ -239,6 +239,11 @@ namespace BigBoxProfile.EmulatorActions
 				txt_testdevice.Text += "SDLLIB:\r\n";
 				txt_testdevice.Text += HIDInfo.GetSDLInfo(true);
 			}
+			if (chk_useSDLNoRI.Checked)
+			{
+				txt_testdevice.Text += "SDLLIB-NoRI:\r\n";
+				txt_testdevice.Text += HIDInfo.GetSDLNoRIInfo(true);
+			}
 			if (chk_useDinput.Checked)
 			{
 				txt_testdevice.Text += "DINPUTLIB:\r\n";
@@ -308,6 +313,7 @@ namespace BigBoxProfile.EmulatorActions
 			hidMatcher.UniqueMatch = chk_addDevMatchUnique.Checked;
 			hidMatcher.UseDInput = chk_addDevDinput.Checked;
 			hidMatcher.UseSDL = chk_addDevSDL.Checked;
+			hidMatcher.UseSDLNoRI = chk_addDevSDLNoRI.Checked;
 
 
 			ListViewItem item = new ListViewItem(hidMatcher.ToStringArray());
@@ -350,6 +356,7 @@ namespace BigBoxProfile.EmulatorActions
 			hidMatcher.UniqueMatch = chk_addDevMatchUnique.Checked;
 			hidMatcher.UseDInput = chk_addDevDinput.Checked;
 			hidMatcher.UseSDL = chk_addDevSDL.Checked;
+			hidMatcher.UseSDLNoRI = chk_addDevSDLNoRI.Checked;
 
 			var result = hidMatcher.isMatching(true,txt_DS4Win.Text);
 			if(result == null)
@@ -614,6 +621,11 @@ namespace BigBoxProfile.EmulatorActions
 		}
 
 		private void chk_exclude_matchall_CheckedChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		private void chk_useSDLNoRI_CheckedChanged(object sender, EventArgs e)
 		{
 
 		}

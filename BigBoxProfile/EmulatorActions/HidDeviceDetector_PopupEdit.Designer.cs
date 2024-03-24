@@ -46,6 +46,7 @@
 			this.kryptonLabel16 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
 			this.chk_addDevDinput = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			this.chk_addDevSDL = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
+			this.chk_addDevSDLNoRI = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.cmb_addDevType)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -208,11 +209,20 @@
 			this.chk_addDevSDL.TabIndex = 136;
 			this.chk_addDevSDL.Values.Text = "Use SDL";
 			// 
+			// chk_addDevSDLNoRI
+			// 
+			this.chk_addDevSDLNoRI.Location = new System.Drawing.Point(457, 138);
+			this.chk_addDevSDLNoRI.Name = "chk_addDevSDLNoRI";
+			this.chk_addDevSDLNoRI.Size = new System.Drawing.Size(150, 20);
+			this.chk_addDevSDLNoRI.TabIndex = 137;
+			this.chk_addDevSDLNoRI.Values.Text = "Use SDL (No RawInput)";
+			// 
 			// HidDeviceDetector_PopupEdit
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(712, 197);
+			this.Controls.Add(this.chk_addDevSDLNoRI);
 			this.Controls.Add(this.chk_addDevSDL);
 			this.Controls.Add(this.chk_addDevDinput);
 			this.Controls.Add(this.chk_addDevMatchUnique);
@@ -262,5 +272,6 @@
 		private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel16;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevDinput;
 		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevSDL;
+		private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chk_addDevSDLNoRI;
 	}
 }
